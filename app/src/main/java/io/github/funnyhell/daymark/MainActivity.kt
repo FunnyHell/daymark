@@ -6,6 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.github.funnyhell.daymark.data.repo.Settings
+import io.github.funnyhell.daymark.data.repo.ThemeMode
 import io.github.funnyhell.daymark.ui.DaymarkRoot
 import io.github.funnyhell.daymark.ui.theme.DaymarkTheme
 
@@ -15,9 +17,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         val container = (application as DaymarkApplication).container
         setContent {
-            val settings by container.settings.settings.collectAsStateWithLifecycle(initialValue = null)
+            val settings by container.settings.settings.collectAsStateWithLifecycle<Settings?>(initialValue = null)
             val s = settings
-            DaymarkTheme(themeMode = s?.themeMode ?: io.github.funnyhell.daymark.data.repo.ThemeMode.SYSTEM, dynamicColor = s?.dynamicColor ?: true) {
+            DaymarkTheme(themeMode = s?.themeMode ?: ThemeMode.SYSTEM, dynamicColor = s?.dynamicColor ?: true) {
                 if (s != null) DaymarkRoot(onboardingDone = s.onboardingDone)
             }
         }

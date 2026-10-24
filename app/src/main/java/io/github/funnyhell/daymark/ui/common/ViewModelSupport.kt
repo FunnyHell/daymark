@@ -48,7 +48,7 @@ abstract class AppViewModel(application: Application) : AndroidViewModel(applica
     }
 }
 
-fun <VM : ViewModel> appViewModelFactory(create: (Application, SavedStateHandle) -> VM): ViewModelProvider.Factory =
+inline fun <reified VM : ViewModel> appViewModelFactory(crossinline create: (Application, SavedStateHandle) -> VM): ViewModelProvider.Factory =
     viewModelFactory {
         initializer {
             val app = this[APPLICATION_KEY] as Application

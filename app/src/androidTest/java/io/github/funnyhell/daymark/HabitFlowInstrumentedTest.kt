@@ -46,6 +46,8 @@ class HabitFlowInstrumentedTest {
         rule.waitUntil(10_000) { rule.onAllNodes(hasSetTextAction() and hasText("Name")).fetchSemanticsNodes().isNotEmpty() }
         rule.onAllNodes(hasSetTextAction() and hasText("Name")).onFirst().performTextInput(name)
         rule.onAllNodesWithText("Save").onFirst().performClick()
+        // The editor closes after the save completes; then the tab bar is visible again.
+        rule.waitUntil(10_000) { rule.onAllNodes(tab("Today")).fetchSemanticsNodes().isNotEmpty() }
         waitForText(name)
 
         rule.onAllNodes(tab("Today")).onFirst().performClick()

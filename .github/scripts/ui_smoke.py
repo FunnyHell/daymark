@@ -29,10 +29,14 @@ def adb(*args, check=True):
     return r.stdout
 
 
+LAST_DUMP = {"raw": ""}
+
+
 def dump():
     for _ in range(3):
-        adb("shell", "uiautomator", "dump", "/sdcard/ui.xml", check=False)
+        LAST_DUMP["raw"] = adb("shell", "uiautomator", "dump", "/sdcard/ui.xml", check=False)
         xml = adb("shell", "cat", "/sdcard/ui.xml", check=False)
+        LAST_DUMP["raw"] += "\n" + xml
         if xml.strip().startswith("<?xml"):
             try:
                 return ET.fromstring(xml[xml.index("<hierarchy"):])
@@ -84,6 +88,8 @@ def tap(text, exact=True, bottom=False):
         pos = wait_for(text, timeout=3, exact=exact, bottom=bottom)
     if not pos:
         shot(f"fail-{re.sub(r'[^A-Za-z0-9]+', '-', text)}")
+        with open(os.path.join(OUT, "fail-dump.xml"), "w") as f:
+            f.write(LAST_DUMP["raw"])
         raise SystemExit(f"FAIL: '{text}' not found")
     adb("shell", "input", "tap", str(pos[0]), str(pos[1]))
     say(f"tapped '{text}' at {pos}")

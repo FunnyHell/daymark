@@ -47,6 +47,7 @@ import io.github.funnyhell.daymark.R
 import io.github.funnyhell.daymark.domain.common.LifecycleStatus
 import io.github.funnyhell.daymark.domain.common.formatQuantity
 import io.github.funnyhell.daymark.domain.medication.InventoryAdjustment
+import io.github.funnyhell.daymark.domain.medication.InventoryRules
 import io.github.funnyhell.daymark.domain.medication.MedicationData
 import io.github.funnyhell.daymark.domain.medication.MedicationEvent
 import io.github.funnyhell.daymark.domain.medication.OccurrenceRules
@@ -305,6 +306,7 @@ fun MedicationDetailScreen(
             title = stringResource(R.string.add_package),
             label = stringResource(R.string.package_quantity, data.medication.inventoryUnit),
             withNote = true,
+            suggestions = InventoryRules.packageSizeSuggestions(data.adjustments),
             onConfirm = vm::addPackage,
             onDismiss = { packageDialog = false },
         )

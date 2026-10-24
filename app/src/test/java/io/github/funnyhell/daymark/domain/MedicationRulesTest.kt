@@ -207,4 +207,16 @@ class MedicationRulesTest {
         assertEquals(10, InventoryRules.daysOfSupply(20.0, medSchedule()))
         assertNull(InventoryRules.daysOfSupply(20.0, null))
     }
+
+    @Test
+    fun packageSuggestions_rememberRecentSizes() {
+        assertEquals(InventoryRules.DEFAULT_PACKAGE_SIZES, InventoryRules.packageSizeSuggestions(emptyList()))
+        val history = listOf(
+            InventoryAdjustment("a1", "m1", 30.0, AdjustmentType.PACKAGE_ADDED, null, null, EPOCH),
+            InventoryAdjustment("a2", "m1", -1.0, AdjustmentType.INTAKE, null, "e", EPOCH.plusSeconds(10)),
+            InventoryAdjustment("a3", "m1", 60.0, AdjustmentType.PACKAGE_ADDED, null, null, EPOCH.plusSeconds(20)),
+            InventoryAdjustment("a4", "m1", 30.0, AdjustmentType.PACKAGE_ADDED, null, null, EPOCH.plusSeconds(30)),
+        )
+        assertEquals(listOf(30.0, 60.0), InventoryRules.packageSizeSuggestions(history))
+    }
 }

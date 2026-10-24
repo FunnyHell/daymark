@@ -53,16 +53,16 @@
     <string name="perm_allow">Разрешить</string>
     <string name="perm_open_settings">Открыть настройки</string>
 
-    <string name="type_check">Отметка раз в день</string>
+    <string name="type_check">Раз в день</string>
     <string name="type_multi">Несколько раз в день</string>
-    <string name="type_quantity">Количество</string>
-    <string name="type_weekly">Цель на неделю</string>
-    <string name="type_abstinence">Воздержание</string>
-    <string name="type_check_help">Отмечайте выполнение один раз в каждый запланированный день.</string>
-    <string name="type_multi_help">Несколько выполнений в запланированный день, например 3 разминки.</string>
-    <string name="type_quantity_help">Записывайте количество к дневной цели, например 2000 мл воды.</string>
-    <string name="type_weekly_help">Количество выполнений за неделю — в любые дни.</string>
-    <string name="type_abstinence_help">Считайте время без нежелательного поведения. Срыв записывается отдельно; прошлые серии остаются в истории.</string>
+    <string name="type_quantity">Количество за день</string>
+    <string name="type_weekly">Раз в неделю (N раз)</string>
+    <string name="type_abstinence">Отказ от привычки</string>
+    <string name="type_check_help">Чтение, зарядка, дневник</string>
+    <string name="type_multi_help">3 разминки в день</string>
+    <string name="type_quantity_help">2000 мл воды, 30 минут учёбы</string>
+    <string name="type_weekly_help">Спортзал 3 раза в неделю, в любые дни</string>
+    <string name="type_abstinence_help">Каждый день засчитывается сам; отмечаете только срыв</string>
     <string name="type_locked">тип нельзя изменить после создания</string>
     <string name="recurrence_daily">Каждый день</string>
     <string name="recurrence_weekdays">По дням недели</string>
@@ -72,8 +72,8 @@
     <string name="schedule_abstinence">С %1$s</string>
     <string name="schedule_with_target">%1$s · %2$s</string>
     <string name="times_per_day">%1$s раз в день</string>
-    <string name="interval_help">Отсчёт от даты начала (или от даты последнего изменения расписания).</string>
-    <string name="schedule_change_note">Изменения расписания действуют с сегодняшнего дня. Прошлые дни оцениваются по расписанию, которое действовало тогда.</string>
+    <string name="interval_help">Отсчёт от даты начала.</string>
+    <string name="schedule_change_note">Изменения действуют с сегодня; прошлые дни сохраняют старое расписание.</string>
     <string name="start_locked">Дату начала нельзя изменить после первой записи.</string>
 
     <string name="edit_habit">Изменить привычку</string>
@@ -105,19 +105,19 @@
     <string name="progress_count">%1$s из %2$s</string>
     <string name="progress_amount">%1$s / %2$s %3$s</string>
     <string name="progress_week">%1$s из %2$s на этой неделе</string>
-    <string name="abstinence_lapsed_today">Сегодня записан срыв</string>
+    <string name="abstinence_lapsed_today">Сегодня отмечен срыв</string>
     <string name="best_streak_days">Лучшая серия: %1$d дн.</string>
     <string name="action_done">Готово</string>
     <string name="action_plus_one">+1</string>
-    <string name="action_lapse">Записать срыв</string>
+    <string name="action_lapse">Срыв</string>
     <string name="skip_today">Пропустить сегодня</string>
     <string name="cd_add_one">Добавить выполнение: %1$s</string>
     <string name="cd_add_amount">Добавить количество: %1$s</string>
     <string name="add_progress_title">Добавить: %1$s</string>
     <string name="add_amount">Добавить количество</string>
     <string name="add_completion">Отметить выполнение</string>
-    <string name="lapse_title">Записать срыв для «%1$s»?</string>
-    <string name="lapse_body">Текущая серия начнётся заново с завтрашнего дня. Прошлые серии и история сохранятся.</string>
+    <string name="lapse_title">Отметить срыв: %1$s?</string>
+    <string name="lapse_body">Серия начнётся заново с завтрашнего дня. Прошлые серии останутся в истории.</string>
 
     <string name="day_future">Будущее</string>
     <string name="day_before_start">До даты начала</string>
@@ -166,7 +166,7 @@
     <string name="stat_rate_30">Выполнение за 30 дней</string>
     <string name="stat_total">Всего записано</string>
     <string name="stat_lapses">Срывы</string>
-    <string name="stats_rules_note">Учитываются только запланированные дни (или недели). Незапланированные, пропущенные и дни паузы не считаются ни выполненными, ни невыполненными; сегодняшний день учитывается после выполнения.</string>
+    <string name="stats_rules_note">Учитываются только запланированные дни. Пауза и пропуск не прерывают серию.</string>
     <string name="section_calendar">Календарь</string>
     <string name="section_weeks">Недели</string>
     <string name="section_clean_runs">Периоды без срывов</string>
@@ -191,7 +191,7 @@
     <string name="field_days">Дни</string>
     <string name="add_dose_time">Добавить время приёма</string>
     <string name="remove_dose">Удалить это время приёма</string>
-    <string name="dose_help">«Описание приёма» показывается в напоминаниях, например «1 таблетка после еды». «Расход из запаса» — сколько списывается с запаса за один приём.</string>
+    <string name="dose_help">Описание показывается в напоминании. «Расход из запаса» — сколько списывается за приём.</string>
     <string name="dose_default">Запланированный приём</string>
     <string name="error_duplicate_time">У двух приёмов одинаковое время</string>
     <string name="error_dose_quantity">Для каждого приёма нужно корректное количество (0 или больше)</string>
@@ -235,7 +235,7 @@
     <string name="low_stock_label">Мало: %1$s</string>
     <string name="low_stock_reached">Запас достиг вашего порога или ниже</string>
     <string name="threshold_is">Предупреждение при %1$s %2$s</string>
-    <string name="stock_estimate_note">Рассчитано по вашим записям; совпадает с реальным запасом, только если записаны все приёмы и упаковки.</string>
+    <string name="stock_estimate_note">По вашим записям.</string>
     <string name="add_package">Добавить упаковку</string>
     <string name="set_stock">Указать пересчитанный запас</string>
     <string name="package_quantity">Количество в упаковке (%1$s)</string>
@@ -257,7 +257,7 @@
     <string name="last_week">Прошлая неделя</string>
     <string name="this_month">Этот месяц</string>
     <string name="last_month">Прошлый месяц</string>
-    <string name="summary_rules_note">Выполнено ÷ (выполнено + не выполнено) по всем привычкам с учётом расписания каждой. Дни паузы, пропуски и незапланированные дни не учитываются.</string>
+    <string name="summary_rules_note">Доля выполненных запланированных привычек. Пауза и пропуски не учитываются.</string>
     <string name="current_best">Сейчас %1$s, лучшая %2$d</string>
     <string name="rate_30_short">%1$d%% за 30 дней</string>
     <string name="lapses_count">срывов: %1$d</string>
@@ -272,7 +272,7 @@
     <string name="adherence_counts">Принято %1$d · Пропущено %2$d · Не отмечено %3$d</string>
     <string name="adherence_rate">%1$d%% прошедших приёмов отмечены как принятые</string>
     <string name="not_enough_data">За этот период прошедших приёмов нет</string>
-    <string name="adherence_note">Приём считается неотмеченным, если в течение 3 часов после его времени (или после окончания откладывания) ничего не записано. В дни паузы приёмов нет. Это ваши записи, а не оценка лечения.</string>
+    <string name="adherence_note">«Не отмечено» — за 3 часа после времени приёма ничего не записано. В дни паузы приёмов нет.</string>
 
     <string name="settings_appearance">Оформление</string>
     <string name="settings_theme">Тема</string>
@@ -406,4 +406,9 @@
     </plurals>
     <string name="settings_sound">Звук и вибрация</string>
     <string name="settings_sound_desc">Напоминания о лекарствах звучат стандартным звуком уведомления и вибрируют. Звук можно сменить в системных настройках.</string>
+    <string name="msg_deleted">Удалено</string>
+    <string name="list_actions_hint">Свайп вправо — пауза, влево — архив; долгое нажатие — меню.</string>
+    <string name="dose_group">%1$s · приёмов: %2$d</string>
+    <string name="take_all">Принять все</string>
+    <string name="msg_taken_all">Отмечено как принятые: %1$d</string>
 </resources>

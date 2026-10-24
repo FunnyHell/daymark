@@ -8,6 +8,7 @@ import io.github.funnyhell.daymark.data.repo.MedicationActionResult
 import io.github.funnyhell.daymark.domain.medication.ActionSource
 import io.github.funnyhell.daymark.domain.medication.MedicationEventType
 import io.github.funnyhell.daymark.domain.medication.RejectReason
+import io.github.funnyhell.daymark.ui.medications.DoseItem
 import java.time.LocalDate
 
 /**
@@ -33,6 +34,21 @@ abstract class TrackingViewModel(application: Application) : AppViewModel(applic
             is MedicationActionResult.Rejected -> say(string(if (r.reason == RejectReason.FUTURE_DATE) R.string.msg_future_dose else R.string.msg_stale_dose))
             MedicationActionResult.AlreadySnoozed -> Unit
             MedicationActionResult.NotFound -> say(string(R.string.msg_not_found))
+        }
+    }
+
+    /** Records TAKEN for several doses (e.g. everything due at 08:00); each one is validated on its own. */
+    fun takeAll(doses: List<DoseItem>) = launchSafely {
+        val recorded = doses.mapNotNull { dose ->
+            (container.medications.recordDose(dose.medicationId, dose.occurrenceKey, MedicationEventType.TAKEN, ActionSource.APP)
+                as? MedicationActionResult.Recorded)?.eventId
+        }
+        if (recorded.isEmpty()) {
+            say(string(R.string.msg_already_recorded))
+        } else {
+            say(string(R.string.msg_taken_all, recorded.size), string(R.string.undo)) {
+                launchSafely { recorded.forEach { container.medications.voidEvent(it) } }
+            }
         }
     }
 

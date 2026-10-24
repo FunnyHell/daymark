@@ -32,7 +32,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.funnyhell.daymark.R
 import io.github.funnyhell.daymark.domain.common.LifecycleStatus
 import io.github.funnyhell.daymark.domain.medication.OccurrenceRules
-import io.github.funnyhell.daymark.ui.common.AppCard
+import io.github.funnyhell.daymark.ui.common.ActionableListCard
+import io.github.funnyhell.daymark.ui.common.ItemActions
 import io.github.funnyhell.daymark.ui.common.AppViewModel
 import io.github.funnyhell.daymark.ui.common.ColorDot
 import io.github.funnyhell.daymark.ui.common.EmptyState
@@ -76,6 +77,14 @@ class MedicationsViewModel(application: Application) : AppViewModel(application)
         )
     }.flowOn(Dispatchers.Default).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), MedicationsState())
 
+    fun actionsFor(item: MedicationListItem) = ItemActions(
+        status = item.status,
+        onPause = { launchSafely { container.medications.pause(item.id); say(string(R.string.msg_paused)) } },
+        onResume = { launchSafely { container.medications.resume(item.id); say(string(R.string.msg_resumed)) } },
+        onArchive = { launchSafely { container.medications.archive(item.id); say(string(R.string.msg_archived_done), string(R.string.undo)) { launchSafely { container.medications.resume(item.id) } } } },
+        onDelete = { launchSafely { container.medications.delete(item.id); say(string(R.string.msg_deleted)) } },
+    )
+
     companion object {
         val Factory = appViewModelFactory { app, _ -> MedicationsViewModel(app) }
     }
@@ -98,11 +107,21 @@ fun MedicationsScreen(
                 }
             }
         }
+        if (state.items.isNotEmpty()) {
+            item(key = "hint") {
+                Text(
+                    stringResource(R.string.list_actions_hint),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp),
+                )
+            }
+        }
         for ((status, title) in listOf(LifecycleStatus.ACTIVE to R.string.status_active, LifecycleStatus.PAUSED to R.string.status_paused)) {
             val list = state.items.filter { it.status == status }
             if (list.isEmpty()) continue
             item(key = "m-$status") { SectionHeader(stringResource(title)) }
-            items(list, key = { it.id }) { MedicationRow(it, onOpen) }
+            items(list, key = { it.id }) { MedicationRow(it, vm.actionsFor(it), onOpen) }
         }
         val archived = state.items.filter { it.status == LifecycleStatus.ARCHIVED }
         if (archived.isNotEmpty()) {
@@ -113,7 +132,7 @@ fun MedicationsScreen(
                     }
                 }
             }
-            if (showArchived) items(archived, key = { it.id }) { MedicationRow(it, onOpen) }
+            if (showArchived) items(archived, key = { it.id }) { MedicationRow(it, vm.actionsFor(it), onOpen) }
         }
         if (state.items.isNotEmpty()) {
             item {
@@ -129,8 +148,13 @@ fun MedicationsScreen(
 }
 
 @Composable
-private fun MedicationRow(item: MedicationListItem, onOpen: (String) -> Unit) {
-    AppCard(onClick = { onOpen(item.id) }) {
+private fun MedicationRow(item: MedicationListItem, actions: ItemActions, onOpen: (String) -> Unit) {
+    ActionableListCard(
+        actions = actions,
+        deleteTitle = stringResource(R.string.delete_title),
+        deleteBody = stringResource(R.string.delete_med_body),
+        onClick = { onOpen(item.id) },
+    ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             ColorDot(item.colorArgb, size = 14)
             Spacer(Modifier.width(12.dp))

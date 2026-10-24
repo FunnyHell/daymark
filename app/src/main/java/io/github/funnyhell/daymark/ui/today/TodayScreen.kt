@@ -20,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -166,15 +167,27 @@ fun TodayScreen(
         }
         if (state.doses.isNotEmpty()) {
             item { SectionHeader(stringResource(R.string.section_medications)) }
-            items(state.doses, key = { "dose" + it.occurrenceKey }) { dose ->
-                DoseRow(
-                    item = dose,
-                    onTake = { vm.takeDose(dose.medicationId, dose.occurrenceKey, dose.name) },
-                    onSkip = { vm.skipDose(dose.medicationId, dose.occurrenceKey, dose.name) },
-                    onSnooze = { vm.snoozeDose(dose.medicationId, dose.occurrenceKey) },
-                    onCorrect = { vm.undoMedicationEvent(it) },
-                    onOpen = { onOpenMedication(dose.medicationId) },
-                )
+            state.doses.groupBy { it.time }.forEach { (time, group) ->
+                val open = group.filter { !it.resolved }
+                if (group.size > 1) {
+                    item(key = "group$time") {
+                        Row(
+                            Modifier.fillMaxWidth().padding(start = 20.dp, end = 12.dp, top = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Text(
+                                stringResource(R.string.dose_group, group.first().timeText, group.size),
+                                style = MaterialTheme.typography.labelLarge,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.weight(1f),
+                            )
+                            if (open.size > 1) {
+                                TextButton(onClick = { vm.takeAll(open) }) { Text(stringResource(R.string.take_all)) }
+                            }
+                        }
+                    }
+                }
+                doseItems(group, vm, onOpenMedication)
             }
         }
         item { SectionHeader(stringResource(R.string.section_habits)) }
@@ -199,5 +212,22 @@ fun TodayScreen(
                 onUndo = { vm.undoHabitEvent(it) },
             )
         }
+    }
+}
+
+private fun androidx.compose.foundation.lazy.LazyListScope.doseItems(
+    doses: List<DoseItem>,
+    vm: TodayViewModel,
+    onOpenMedication: (String) -> Unit,
+) {
+    items(doses, key = { "dose" + it.occurrenceKey }) { dose ->
+        DoseRow(
+            item = dose,
+            onTake = { vm.takeDose(dose.medicationId, dose.occurrenceKey, dose.name) },
+            onSkip = { vm.skipDose(dose.medicationId, dose.occurrenceKey, dose.name) },
+            onSnooze = { vm.snoozeDose(dose.medicationId, dose.occurrenceKey) },
+            onCorrect = { vm.undoMedicationEvent(it) },
+            onOpen = { onOpenMedication(dose.medicationId) },
+        )
     }
 }

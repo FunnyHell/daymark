@@ -58,16 +58,16 @@
     <string name="perm_open_settings">Open settings</string>
 
     <!-- Habit types and schedules -->
-    <string name="type_check">Daily check</string>
+    <string name="type_check">Once a day</string>
     <string name="type_multi">Several times a day</string>
-    <string name="type_quantity">Amount</string>
-    <string name="type_weekly">Weekly goal</string>
-    <string name="type_abstinence">Abstinence</string>
-    <string name="type_check_help">Mark it done once on each scheduled day.</string>
-    <string name="type_multi_help">A number of completions per scheduled day, for example 3 stretching breaks.</string>
-    <string name="type_quantity_help">Record amounts towards a daily target, for example 2000 ml of water.</string>
-    <string name="type_weekly_help">A number of completions per week, on any days you like.</string>
-    <string name="type_abstinence_help">Track time without a behaviour. Record a lapse if it happens; earlier streaks stay in your history.</string>
+    <string name="type_quantity">Amount per day</string>
+    <string name="type_weekly">Times per week</string>
+    <string name="type_abstinence">Quit a habit</string>
+    <string name="type_check_help">Read, stretch, journal</string>
+    <string name="type_multi_help">3 stretching breaks</string>
+    <string name="type_quantity_help">2000 ml of water, 30 min of study</string>
+    <string name="type_weekly_help">Gym 3 times a week, any days</string>
+    <string name="type_abstinence_help">Every day counts as clean; mark only a slip</string>
     <string name="type_locked">type can\'t be changed after creation</string>
     <string name="recurrence_daily">Every day</string>
     <string name="recurrence_weekdays">Specific days</string>
@@ -77,8 +77,8 @@
     <string name="schedule_abstinence">Since %1$s</string>
     <string name="schedule_with_target">%1$s · %2$s</string>
     <string name="times_per_day">%1$s times a day</string>
-    <string name="interval_help">Counted from the start date (or from the date the schedule last changed).</string>
-    <string name="schedule_change_note">Schedule changes apply from today. Earlier days keep the schedule that applied then.</string>
+    <string name="interval_help">Counted from the start date.</string>
+    <string name="schedule_change_note">Changes apply from today; past days keep the old schedule.</string>
     <string name="start_locked">The start date can\'t be changed once something has been recorded.</string>
 
     <!-- Habit editor -->
@@ -112,19 +112,19 @@
     <string name="progress_count">%1$s of %2$s</string>
     <string name="progress_amount">%1$s / %2$s %3$s</string>
     <string name="progress_week">%1$s of %2$s this week</string>
-    <string name="abstinence_lapsed_today">Lapse recorded today</string>
+    <string name="abstinence_lapsed_today">Slip marked today</string>
     <string name="best_streak_days">Best: %1$d days</string>
     <string name="action_done">Done</string>
     <string name="action_plus_one">+1</string>
-    <string name="action_lapse">Record lapse</string>
+    <string name="action_lapse">Slip</string>
     <string name="skip_today">Skip today</string>
     <string name="cd_add_one">Add one completion to %1$s</string>
     <string name="cd_add_amount">Add an amount to %1$s</string>
     <string name="add_progress_title">Add to %1$s</string>
     <string name="add_amount">Add amount</string>
     <string name="add_completion">Add completion</string>
-    <string name="lapse_title">Record a lapse for %1$s?</string>
-    <string name="lapse_body">The current streak restarts from tomorrow. Your earlier streaks and history are kept.</string>
+    <string name="lapse_title">Mark a slip for %1$s?</string>
+    <string name="lapse_body">The streak starts again tomorrow. Earlier streaks stay in history.</string>
 
     <string name="day_future">Future</string>
     <string name="day_before_start">Before the start date</string>
@@ -135,12 +135,12 @@
     <string name="day_skipped">Skipped</string>
     <string name="day_pending">Not done yet</string>
     <string name="day_missed">Missed</string>
-    <string name="day_lapsed">Lapse</string>
+    <string name="day_lapsed">Slip</string>
 
     <string name="event_completion">Completion</string>
     <string name="event_progress">Added %1$s %2$s</string>
     <string name="event_skip">Skipped</string>
-    <string name="event_lapse">Lapse</string>
+    <string name="event_lapse">Slip</string>
     <string name="recorded_at">Recorded %1$s</string>
     <string name="corrected">corrected</string>
     <string name="correct">Correct</string>
@@ -173,15 +173,15 @@
     <string name="stat_best_streak">Best streak</string>
     <string name="stat_rate_30">Completion, last 30 days</string>
     <string name="stat_total">Total recorded</string>
-    <string name="stat_lapses">Lapses</string>
-    <string name="stats_rules_note">Rates count scheduled days (or weeks) only. Unscheduled, skipped and paused days are neither done nor missed; today counts once it is done.</string>
+    <string name="stat_lapses">Slips</string>
+    <string name="stats_rules_note">Only scheduled days count. Paused and skipped days don\'t break a streak.</string>
     <string name="section_calendar">Calendar</string>
     <string name="section_weeks">Weeks</string>
     <string name="section_clean_runs">Clean streaks</string>
     <string name="section_history">History</string>
     <string name="history_empty">Nothing recorded yet.</string>
     <string name="week_of">Week of %1$s</string>
-    <string name="ended_by_lapse">ended by a lapse</string>
+    <string name="ended_by_lapse">ended by a slip</string>
     <string name="outcome_success">goal met</string>
     <string name="outcome_failure">not met</string>
     <string name="outcome_neutral">not counted</string>
@@ -200,7 +200,7 @@
     <string name="field_days">Days</string>
     <string name="add_dose_time">Add a dose time</string>
     <string name="remove_dose">Remove this dose time</string>
-    <string name="dose_help">“Dose description” is shown in reminders, e.g. “1 tablet with food”. “Uses from stock” is how much one dose removes from inventory.</string>
+    <string name="dose_help">Description is shown in the reminder. “Uses from stock” is how much one dose removes.</string>
     <string name="dose_default">Scheduled dose</string>
     <string name="error_duplicate_time">Two doses have the same time</string>
     <string name="error_dose_quantity">Each dose needs a valid amount (0 or more)</string>
@@ -245,7 +245,7 @@
     <string name="low_stock_label">Low: %1$s</string>
     <string name="low_stock_reached">At or below your low-stock threshold</string>
     <string name="threshold_is">Warning at %1$s %2$s</string>
-    <string name="stock_estimate_note">Calculated from your entries; it matches your real supply only if every dose and package is recorded.</string>
+    <string name="stock_estimate_note">Based on your records.</string>
     <string name="add_package">Add package</string>
     <string name="set_stock">Set counted stock</string>
     <string name="package_quantity">Quantity in package (%1$s)</string>
@@ -268,10 +268,10 @@
     <string name="last_week">Last week</string>
     <string name="this_month">This month</string>
     <string name="last_month">Last month</string>
-    <string name="summary_rules_note">Done ÷ (done + missed) across all habits, using each habit\'s own schedule. Paused, skipped and unscheduled days are excluded.</string>
+    <string name="summary_rules_note">Share of scheduled habits done. Paused and skipped days are not counted.</string>
     <string name="current_best">Now %1$s, best %2$d</string>
     <string name="rate_30_short">%1$d%% in 30 days</string>
-    <string name="lapses_count">%1$d lapses</string>
+    <string name="lapses_count">%1$d slips</string>
     <string name="total_amount">total %1$s %2$s</string>
     <string name="quantity_chart_caption">Line shows the daily target of %1$s %2$s</string>
     <string name="history_no_habits_title">No habit history yet</string>
@@ -283,7 +283,7 @@
     <string name="adherence_counts">Taken %1$d · Skipped %2$d · Missed %3$d</string>
     <string name="adherence_rate">%1$d%% of past doses recorded as taken</string>
     <string name="not_enough_data">No past doses in this period</string>
-    <string name="adherence_note">A dose counts as missed when nothing was recorded within 3 hours of its time (or of the end of a snooze). Paused days have no doses. These are records you made, not a measure of treatment.</string>
+    <string name="adherence_note">“Missed” means nothing was recorded within 3 hours. Paused days have no doses.</string>
 
     <!-- Settings -->
     <string name="settings_appearance">Appearance</string>
@@ -409,4 +409,9 @@
     </plurals>
     <string name="settings_sound">Sound and vibration</string>
     <string name="settings_sound_desc">Medication reminders play the default notification sound and vibrate. Change the sound in the system settings.</string>
+    <string name="msg_deleted">Deleted</string>
+    <string name="list_actions_hint">Swipe right to pause, left to archive; long-press for more.</string>
+    <string name="dose_group">%1$s · %2$d doses</string>
+    <string name="take_all">Take all</string>
+    <string name="msg_taken_all">%1$d doses recorded as taken</string>
 </resources>

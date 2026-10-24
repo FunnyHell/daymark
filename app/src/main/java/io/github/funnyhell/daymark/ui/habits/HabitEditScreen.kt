@@ -16,6 +16,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.RadioButton
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.ui.semantics.Role
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -220,9 +224,14 @@ fun HabitEditScreen(
 
             SectionHeader(stringResource(R.string.field_type))
             if (vm.isNew) {
-                FlowRow(Modifier.padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Column(Modifier.selectableGroup().padding(horizontal = 8.dp)) {
                     HabitType.entries.forEach { t ->
-                        FilterChip(selected = vm.type == t, onClick = { vm.selectType(t) }, label = { Text(HabitPresentation.typeLabel(context, t)) })
+                        TypeOption(
+                            title = HabitPresentation.typeLabel(context, t),
+                            example = stringResource(typeHelp(t)),
+                            selected = vm.type == t,
+                            onSelect = { vm.selectType(t) },
+                        )
                     }
                 }
             } else {
@@ -232,12 +241,6 @@ fun HabitEditScreen(
                     modifier = Modifier.padding(horizontal = 20.dp),
                 )
             }
-            Text(
-                stringResource(typeHelp(vm.type)),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(horizontal = 20.dp, vertical = 6.dp),
-            )
 
             if (vm.type == HabitType.MULTI || vm.type == HabitType.QUANTITY || vm.type == HabitType.WEEKLY_GOAL) {
                 Row(Modifier.padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -379,6 +382,23 @@ fun HabitEditScreen(
             },
             dismissButton = { TextButton(onClick = { dateDialog = false }) { Text(stringResource(R.string.cancel)) } },
         ) { DatePicker(state = state) }
+    }
+}
+
+@Composable
+private fun TypeOption(title: String, example: String, selected: Boolean, onSelect: () -> Unit) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .selectable(selected = selected, onClick = onSelect, role = Role.RadioButton)
+            .padding(horizontal = 8.dp, vertical = 6.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        RadioButton(selected = selected, onClick = null)
+        Column(Modifier.padding(start = 12.dp)) {
+            Text(title, style = MaterialTheme.typography.bodyLarge)
+            Text(example, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
     }
 }
 

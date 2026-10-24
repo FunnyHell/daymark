@@ -167,6 +167,23 @@ object InventoryRules {
     /** Delta needed to make the stock equal [counted] (a manual stock count). */
     fun correctionDelta(currentStock: Double, counted: Double): Double = (counted - currentStock).roundQuantity()
 
+    /** Common package sizes offered before the user has added any package. */
+    val DEFAULT_PACKAGE_SIZES: List<Double> = listOf(10.0, 20.0, 28.0, 30.0, 60.0, 100.0)
+
+    /**
+     * Package sizes to offer as one-tap choices: sizes of packages added before (most recent first, without
+     * duplicates), or common sizes if there is no history yet.
+     */
+    fun packageSizeSuggestions(adjustments: List<InventoryAdjustment>, limit: Int = 4): List<Double> {
+        val remembered = adjustments
+            .filter { it.type == AdjustmentType.PACKAGE_ADDED && it.delta > 0 }
+            .sortedByDescending { it.recordedAt }
+            .map { it.delta.roundQuantity() }
+            .distinct()
+            .take(limit)
+        return remembered.ifEmpty { DEFAULT_PACKAGE_SIZES }
+    }
+
     /** Rough number of days the stock covers at the current schedule, or null if unknown. */
     fun daysOfSupply(stock: Double, schedule: MedicationSchedule?): Int? {
         if (schedule == null || schedule.doses.isEmpty() || schedule.days.isEmpty()) return null

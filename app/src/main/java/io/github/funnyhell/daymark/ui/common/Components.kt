@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -24,6 +26,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimeInput
@@ -46,6 +49,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import io.github.funnyhell.daymark.R
+import io.github.funnyhell.daymark.domain.common.formatQuantity
 import java.time.LocalTime
 
 @Composable
@@ -205,6 +209,7 @@ fun TimePickerDialog(initial: LocalTime, onConfirm: (LocalTime) -> Unit, onDismi
 }
 
 /** Dialog asking for one positive number, validated before it is accepted. */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun NumberInputDialog(
     title: String,
@@ -212,6 +217,7 @@ fun NumberInputDialog(
     initial: String = "",
     allowZero: Boolean = false,
     withNote: Boolean = false,
+    suggestions: List<Double> = emptyList(),
     onConfirm: (Double, String?) -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -233,6 +239,14 @@ fun NumberInputDialog(
                     supportingText = { if (text.isNotEmpty() && !valid) Text(stringResource(R.string.error_number)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 )
+                if (suggestions.isNotEmpty()) {
+                    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        suggestions.forEach { size ->
+                            val label = size.formatQuantity()
+                            SuggestionChip(onClick = { text = label }, label = { Text(label) })
+                        }
+                    }
+                }
                 if (withNote) {
                     OutlinedTextField(value = note, onValueChange = { note = it }, label = { Text(stringResource(R.string.note_optional)) }, singleLine = true)
                 }

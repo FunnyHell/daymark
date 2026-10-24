@@ -129,11 +129,15 @@ jobs:
           disable-animations: true
           disk-size: 4096M
           profile: pixel_6
+          cores: 4
+          ram-size: 4096M
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: |
             ./gradlew --no-daemon connectedDebugAndroidTest > emulator-androidtest.log 2>&1 && echo PASS > androidtest-status || echo FAIL > androidtest-status
             tail -n 60 emulator-androidtest.log
+            adb shell settings put global hide_error_dialogs 1
             adb install -r app/build/outputs/apk/debug/app-debug.apk
+            sleep 30
             python3 .github/scripts/ui_smoke.py smoke
             grep -q PASS androidtest-status
 

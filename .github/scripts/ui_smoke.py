@@ -121,6 +121,21 @@ def alive():
     return pid
 
 
+def tap_fab(label):
+    """Extended FAB above the navigation bar; falls back to its on-screen position if the dump omits it."""
+    pos = wait_for(label, timeout=5)
+    if pos:
+        adb("shell", "input", "tap", str(pos[0]), str(pos[1]))
+        say(f"tapped FAB '{label}' at {pos}")
+    else:
+        size = re.findall(r"(\d+)x(\d+)", adb("shell", "wm", "size"))[-1]
+        w, h = int(size[0]), int(size[1])
+        x, y = int(w * 0.8), int(h * 0.84)
+        adb("shell", "input", "tap", str(x), str(y))
+        say(f"FAB '{label}' not in UI dump; tapped its position ({x}, {y})")
+    time.sleep(1.5)
+
+
 def type_text(text):
     adb("shell", "input", "text", text.replace(" ", "%s"))
     time.sleep(1)
@@ -147,7 +162,7 @@ alive()
 
 # Create a quantity habit.
 tap("Habits", bottom=True)
-tap("New habit")
+tap_fab("New habit")
 tap("Name", exact=False)
 type_text("Water")
 adb("shell", "input", "keyevent", "111")
@@ -163,7 +178,7 @@ shot("04-habits-list")
 
 # Create a medication with the default 08:00 dose (taking a dose of today is allowed before its time).
 tap("Medications", bottom=True)
-tap("New medication")
+tap_fab("New medication")
 tap("Medication name", exact=False)
 type_text("Vitamin D")
 adb("shell", "input", "keyevent", "111")

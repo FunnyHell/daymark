@@ -70,9 +70,20 @@ def wait_for(text, timeout=15, exact=True, bottom=False):
     return None
 
 
+def swipe_up():
+    adb("shell", "input", "swipe", "500", "1500", "500", "700", "300")
+    time.sleep(1)
+
+
 def tap(text, exact=True, bottom=False):
     pos = wait_for(text, exact=exact, bottom=bottom)
+    scrolls = 0
+    while not pos and scrolls < 4:
+        swipe_up()
+        scrolls += 1
+        pos = wait_for(text, timeout=3, exact=exact, bottom=bottom)
     if not pos:
+        shot(f"fail-{re.sub(r'[^A-Za-z0-9]+', '-', text)}")
         raise SystemExit(f"FAIL: '{text}' not found")
     adb("shell", "input", "tap", str(pos[0]), str(pos[1]))
     say(f"tapped '{text}' at {pos}")

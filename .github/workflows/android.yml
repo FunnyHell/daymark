@@ -128,6 +128,7 @@ jobs:
           arch: x86_64
           disable-animations: true
           disk-size: 4096M
+          profile: pixel_6
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: |
             ./gradlew --no-daemon connectedDebugAndroidTest > emulator-androidtest.log 2>&1 && echo PASS > androidtest-status || echo FAIL > androidtest-status

@@ -37,26 +37,30 @@ import io.github.funnyhell.daymark.R
 @Composable
 fun OnboardingScreen(onDone: () -> Unit) {
     Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-        Column(
-            Modifier.fillMaxSize().safeDrawingPadding().verticalScroll(rememberScrollState()).padding(24.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            Spacer(Modifier.height(24.dp))
-            Icon(
-                painterResource(R.drawable.ic_launcher_foreground),
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(72.dp),
-            )
-            Text(stringResource(R.string.onboarding_title), style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.SemiBold)
-            Text(stringResource(R.string.onboarding_subtitle), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            Feature(Icons.Filled.CheckCircle, stringResource(R.string.onboarding_habits_title), stringResource(R.string.onboarding_habits_body))
-            Feature(Icons.Filled.DateRange, stringResource(R.string.onboarding_meds_title), stringResource(R.string.onboarding_meds_body))
-            Feature(Icons.Filled.Notifications, stringResource(R.string.onboarding_reminders_title), stringResource(R.string.onboarding_reminders_body))
-            Feature(Icons.Filled.Lock, stringResource(R.string.onboarding_privacy_title), stringResource(R.string.onboarding_privacy_body))
-            Text(stringResource(R.string.medical_disclaimer), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            Spacer(Modifier.height(8.dp))
-            Button(onClick = onDone, modifier = Modifier.fillMaxWidth().height(52.dp)) { Text(stringResource(R.string.onboarding_start)) }
+        Column(Modifier.fillMaxSize().safeDrawingPadding()) {
+            Column(
+                Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 24.dp, vertical = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                Spacer(Modifier.height(16.dp))
+                Icon(
+                    painterResource(R.drawable.ic_launcher_foreground),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(72.dp),
+                )
+                Text(stringResource(R.string.onboarding_title), style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.SemiBold)
+                Text(stringResource(R.string.onboarding_subtitle), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Feature(Icons.Filled.CheckCircle, stringResource(R.string.onboarding_habits_title), stringResource(R.string.onboarding_habits_body))
+                Feature(Icons.Filled.DateRange, stringResource(R.string.onboarding_meds_title), stringResource(R.string.onboarding_meds_body))
+                Feature(Icons.Filled.Notifications, stringResource(R.string.onboarding_reminders_title), stringResource(R.string.onboarding_reminders_body))
+                Feature(Icons.Filled.Lock, stringResource(R.string.onboarding_privacy_title), stringResource(R.string.onboarding_privacy_body))
+                Text(stringResource(R.string.medical_disclaimer), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            // Kept outside the scrolling area so it is reachable on small screens and with large fonts.
+            Button(onClick = onDone, modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp).fillMaxWidth().height(52.dp)) {
+                Text(stringResource(R.string.onboarding_start))
+            }
         }
     }
 }

@@ -28,12 +28,13 @@ Daymark records what you enter and reminds you at the times you choose. It does 
 - Optional per medication, user-defined unit, initial stock, add packages (previous package sizes offered as one-tap choices), set a counted stock, low-stock threshold and notification, full change log.
 
 **Reminders and widgets**
-- Exact alarms (`USE_EXACT_ALARM` on Android 13+, the "Alarms & reminders" permission on Android 12; falls back to inexact), rebuilt after reboot, app update, time and time-zone changes, plus a 6-hourly safety net. Reminders play the default notification sound and vibrate (change it in Settings → Reminders → Sound and vibration).
+- Reminders use alarm-clock alarms (delivered with the screen off; the alarm icon shows in the status bar while one is pending), with `USE_EXACT_ALARM` on Android 13+ and the "Alarms & reminders" permission on Android 12 (falls back to inexact). Settings → Reminders has a battery-restriction shortcut and a test reminder., rebuilt after reboot, app update, time and time-zone changes, plus a 6-hourly safety net. Reminders play the default notification sound and vibrate (change it in Settings → Reminders → Sound and vibration).
 - Lock-screen privacy: medication and habit names hidden on the lock screen by default.
-- Five home-screen widgets (Jetpack Glance), each with its own settings including accent color (system or fixed) and background opacity (long-press the widget → Settings on Android 12+):
+- Six home-screen widgets (Jetpack Glance), each with its own settings including accent color (system or fixed) and background opacity (long-press the widget → Settings on Android 12+):
   - **Habits** — today's habits with a compact tick or radio button that marks and unmarks;
   - **Medications** — today's doses grouped by time, tap to mark/unmark, "mark all" for a time group;
-  - **Progress** — rings for today (one sector per habit, done/due count), this week and this month (average progress per habit, unfinished weekly goals included); rings scale with the widget;
+  - **Today** — one ring for today (one sector per habit, done/due count); resizable down to about one cell;
+  - **Progress** — rings for today, this week and this month (average progress per habit, unfinished weekly goals included); a row, or today large with week and month stacked when the widget is narrow;
   - **Calendar** — the month with a ring around every day: one sector per habit due that day, filled by its progress (all habits or one);
   - **Streak** — one habit's current streak in large type, best streak and the last 7 days.
 
@@ -90,8 +91,8 @@ CI (`.github/workflows/android.yml`) runs the unit tests, builds and inspects th
 
 ## Next steps: what to test on the Galaxy A52
 
-1. Install, open, finish onboarding, create one habit with a reminder a few minutes ahead and one medication with a dose a few minutes ahead and stock tracking on.
-2. Allow notifications; in Settings → Daymark → Reminders, open "Alarms & reminders" and allow it.
+1. Install, open, tap Get started and allow notifications, create one habit with a reminder a few minutes ahead and one medication with a dose a few minutes ahead and stock tracking on.
+2. In Settings → Reminders, allow Battery → Unrestricted, then tap Test reminder and lock the phone: the reminder should sound about a minute later.
 3. Lock the phone and wait: does the medication reminder arrive on time, with names hidden on the lock screen?
 4. Press **Taken** in the notification; then open the app: one "Taken" record, stock reduced by exactly one. Repeat with **Skip** and **Snooze 30 min** on other doses (snooze must bring the reminder back ~30 min later).
 5. Add the widgets to the home screen; tap a tick on the widget, then tap it again to unmark; check the app shows the same state and the widget updates after changes made in the app. Change a widget's color and opacity in its settings.
@@ -109,7 +110,7 @@ Please report the results (or anything odd) so they can be recorded in `docs/DEV
 | `docs/SPEC.md` | Product requirements and acceptance criteria |
 | `docs/ARCHITECTURE.md` | Architecture, including the as-built structure |
 | `docs/DEVELOPMENT_STATUS.md` | Current progress and verification state |
-| `docs/DECISIONS.md` | Technical decisions (ADR-001 … ADR-027) |
+| `docs/DECISIONS.md` | Technical decisions (ADR-001 … ADR-029) |
 
 ## Data and privacy
 

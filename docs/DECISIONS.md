@@ -813,6 +813,45 @@ The week and month rings used the History completion rate, which leaves out a we
 
 ---
 
+## ADR-028 — Alarm-clock alarms for reminders (refines ADR-025)
+
+**Status:** Accepted
+
+#### Context
+
+With `USE_EXACT_ALARM` in place, reminders on the test Samsung phone still sounded only when the screen was on. Exact alarms set with `setExactAndAllowWhileIdle` can still be deferred by Samsung's battery management.
+
+#### Decision
+
+- When the next alarm is a reminder, it is set with `AlarmManager.setAlarmClock`, which Android and Samsung deliver on time in Doze; the status bar shows the alarm icon while one is set. The midnight widget refresh keeps an ordinary exact alarm.
+- Settings shows the battery-optimization state and offers the system dialog to exempt Daymark (`REQUEST_IGNORE_BATTERY_OPTIMIZATIONS`), and the Today banner asks for it when reminders exist. A "Test reminder" posts a notification one minute later through the same alarm path.
+- Onboarding asks for notification permission on its single button (Android 13+); the app continues whatever the answer.
+
+#### Consequences
+
+The alarm icon is visible whenever a reminder is pending. A store release must justify the battery-optimization request. Screen-off delivery on the Samsung device still needs confirmation by the user.
+
+#### Date
+
+2026-10-24
+
+---
+
+## ADR-029 — Separate Today widget; shorter, US-English text
+
+**Status:** Accepted
+
+#### Decision
+
+- The "today only" option of the progress widget became its own widget (Daymark today), resizable down to about one cell. The progress widget keeps three rings and chooses between a row and "today large, week and month stacked" by whichever keeps the smallest ring larger; its minimum size is raised.
+- English strings use US spelling. Explanatory notes under statistics, lists and editors were removed and the remaining text shortened; the medical disclaimer stays in onboarding and Settings → About.
+
+#### Date
+
+2026-10-24
+
+---
+
 \## Future decisions
 
 

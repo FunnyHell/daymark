@@ -51,7 +51,7 @@ The debug APK is built by GitHub Actions on every push and published to the bran
 
 Package ID: `io.github.funnyhell.daymark.debug` · version `0.1.0-debug` (versionCode 1) · minSdk 26 · targetSdk 35.
 
-Debug builds are signed with the CI runner's debug key; a later debug build from a different machine may need the old one uninstalled first (Android refuses updates with a different signature). Export a backup before uninstalling.
+Debug builds are signed with the CI runner's temporary debug key, so a later CI build usually cannot be installed over an earlier one ("App not installed" / signature conflict). Export a backup, uninstall, install the new APK, then import the backup.
 
 ### Recommended phone settings for reliable reminders
 

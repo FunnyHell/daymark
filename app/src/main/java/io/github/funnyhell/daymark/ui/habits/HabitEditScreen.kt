@@ -62,7 +62,7 @@ import io.github.funnyhell.daymark.ui.common.TimePickerDialog
 import io.github.funnyhell.daymark.ui.common.UiMessage
 import io.github.funnyhell.daymark.ui.common.appViewModelFactory
 import io.github.funnyhell.daymark.ui.common.parseNumber
-import io.github.funnyhell.daymark.ui.common.rememberNotificationPermissionRequest
+import io.github.funnyhell.daymark.ui.common.rememberQuietNotificationPermissionRequest
 import io.github.funnyhell.daymark.ui.format.Formats
 import io.github.funnyhell.daymark.ui.theme.ItemColors
 import java.time.DayOfWeek
@@ -181,7 +181,7 @@ fun HabitEditScreen(
     val context = LocalContext.current
     var timeDialog by remember { mutableStateOf(false) }
     var dateDialog by remember { mutableStateOf(false) }
-    val requestNotifications = rememberNotificationPermissionRequest()
+    val requestNotifications = rememberQuietNotificationPermissionRequest()
 
     Scaffold(
         topBar = {

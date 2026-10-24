@@ -7,6 +7,8 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.media.AudioAttributes
+import android.media.RingtoneManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -35,24 +37,24 @@ class Notifier(private val context: Context, private val settings: SettingsRepos
     fun createChannels() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
         val nm = context.getSystemService(NotificationManager::class.java)
-        nm.createNotificationChannel(
-            NotificationChannel(CHANNEL_MEDICATION, context.getString(R.string.channel_medication), NotificationManager.IMPORTANCE_HIGH).apply {
-                description = context.getString(R.string.channel_medication_desc)
-                lockscreenVisibility = android.app.Notification.VISIBILITY_PRIVATE
-            },
-        )
-        nm.createNotificationChannel(
-            NotificationChannel(CHANNEL_HABIT, context.getString(R.string.channel_habit), NotificationManager.IMPORTANCE_DEFAULT).apply {
-                description = context.getString(R.string.channel_habit_desc)
-                lockscreenVisibility = android.app.Notification.VISIBILITY_PRIVATE
-            },
-        )
-        nm.createNotificationChannel(
-            NotificationChannel(CHANNEL_STOCK, context.getString(R.string.channel_stock), NotificationManager.IMPORTANCE_DEFAULT).apply {
-                description = context.getString(R.string.channel_stock_desc)
-                lockscreenVisibility = android.app.Notification.VISIBILITY_PRIVATE
-            },
-        )
+        // Version 1 channels had no explicit sound/vibration; channel settings are immutable, so they are replaced.
+        LEGACY_CHANNELS.forEach { nm.deleteNotificationChannel(it) }
+        val sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val audio = AudioAttributes.Builder()
+            .setUsage(AudioAttributes.USAGE_NOTIFICATION_EVENT)
+            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+            .build()
+        fun channel(id: String, name: Int, desc: Int, importance: Int) = NotificationChannel(id, context.getString(name), importance).apply {
+            description = context.getString(desc)
+            lockscreenVisibility = android.app.Notification.VISIBILITY_PRIVATE
+            setSound(sound, audio)
+            enableVibration(true)
+            vibrationPattern = longArrayOf(0, 250, 150, 250)
+            enableLights(true)
+        }
+        nm.createNotificationChannel(channel(CHANNEL_MEDICATION, R.string.channel_medication, R.string.channel_medication_desc, NotificationManager.IMPORTANCE_HIGH))
+        nm.createNotificationChannel(channel(CHANNEL_HABIT, R.string.channel_habit, R.string.channel_habit_desc, NotificationManager.IMPORTANCE_HIGH))
+        nm.createNotificationChannel(channel(CHANNEL_STOCK, R.string.channel_stock, R.string.channel_stock_desc, NotificationManager.IMPORTANCE_DEFAULT))
     }
 
     fun hasPermission(): Boolean = Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
@@ -77,12 +79,12 @@ class Notifier(private val context: Context, private val settings: SettingsRepos
             .setContentTitle(title)
             .setContentText(text)
             .setCategory(NotificationCompat.CATEGORY_REMINDER)
+            .setDefaults(NotificationCompat.DEFAULT_ALL)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setVisibility(if (hide) NotificationCompat.VISIBILITY_PRIVATE else NotificationCompat.VISIBILITY_PUBLIC)
             .setPublicVersion(publicVersion)
             .setContentIntent(openAppIntent())
             .setAutoCancel(false)
-            .setOnlyAlertOnce(true)
             .addAction(0, context.getString(R.string.action_taken), medAction(NotificationActionReceiver.ACTION_TAKEN, med.id, occurrence.key))
             .addAction(0, context.getString(R.string.action_skip), medAction(NotificationActionReceiver.ACTION_SKIP, med.id, occurrence.key))
             .addAction(0, context.getString(R.string.action_snooze), medAction(NotificationActionReceiver.ACTION_SNOOZE, med.id, occurrence.key))
@@ -103,6 +105,7 @@ class Notifier(private val context: Context, private val settings: SettingsRepos
             .setContentTitle(context.getString(R.string.notif_habit_title, habit.name))
             .setContentText(context.getString(R.string.notif_habit_text))
             .setCategory(NotificationCompat.CATEGORY_REMINDER)
+            .setDefaults(NotificationCompat.DEFAULT_ALL)
             .setVisibility(if (hide) NotificationCompat.VISIBILITY_PRIVATE else NotificationCompat.VISIBILITY_PUBLIC)
             .setPublicVersion(publicVersion)
             .setContentIntent(openAppIntent())
@@ -187,9 +190,10 @@ class Notifier(private val context: Context, private val settings: SettingsRepos
     }
 
     companion object {
-        const val CHANNEL_MEDICATION = "medication_reminders"
-        const val CHANNEL_HABIT = "habit_reminders"
-        const val CHANNEL_STOCK = "low_stock"
+        const val CHANNEL_MEDICATION = "medication_reminders_v2"
+        const val CHANNEL_HABIT = "habit_reminders_v2"
+        const val CHANNEL_STOCK = "low_stock_v2"
+        private val LEGACY_CHANNELS = listOf("medication_reminders", "habit_reminders", "low_stock")
         const val NOTIFICATION_ID = 1
         private const val TAG_MED = "med:"
         private const val TAG_HABIT = "habit:"

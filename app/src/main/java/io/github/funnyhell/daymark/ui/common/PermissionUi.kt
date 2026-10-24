@@ -69,6 +69,22 @@ fun rememberNotificationPermissionRequest(): () -> Unit {
     }
 }
 
+/**
+ * For implicit moments (turning on a reminder, adding a dose time): shows the system permission dialog only if
+ * the permission is missing and Android still allows asking. It never opens the settings screen; a refused
+ * permission is explained by [PermissionBanners] instead.
+ */
+@Composable
+fun rememberQuietNotificationPermissionRequest(): () -> Unit {
+    val context = LocalContext.current
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { }
+    return {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !context.container.notifier.hasPermission()) {
+            launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+    }
+}
+
 /** Explains missing permissions only when reminders actually exist, with a direct way to fix them. */
 @Composable
 fun PermissionBanners(needed: Boolean) {
@@ -114,6 +130,17 @@ object SystemSettings {
             appDetails(context)
         }
         start(context, intent)
+    }
+
+    fun openChannelSettings(context: Context, channelId: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            start(
+                context,
+                Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS)
+                    .putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+                    .putExtra(Settings.EXTRA_CHANNEL_ID, channelId),
+            )
+        }
     }
 
     fun openExactAlarmSettings(context: Context) {

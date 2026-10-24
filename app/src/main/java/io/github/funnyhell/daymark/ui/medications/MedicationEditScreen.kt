@@ -61,7 +61,7 @@ import io.github.funnyhell.daymark.ui.common.TimePickerDialog
 import io.github.funnyhell.daymark.ui.common.UiMessage
 import io.github.funnyhell.daymark.ui.common.appViewModelFactory
 import io.github.funnyhell.daymark.ui.common.parseNumber
-import io.github.funnyhell.daymark.ui.common.rememberNotificationPermissionRequest
+import io.github.funnyhell.daymark.ui.common.rememberQuietNotificationPermissionRequest
 import io.github.funnyhell.daymark.ui.format.Formats
 import io.github.funnyhell.daymark.ui.theme.ItemColors
 import java.time.DayOfWeek
@@ -169,7 +169,7 @@ fun MedicationEditScreen(
     LaunchedEffect(vm.saved) { if (vm.saved) onDone() }
     val context = LocalContext.current
     var timeDialogFor by remember { mutableStateOf<Int?>(null) }
-    val requestNotifications = rememberNotificationPermissionRequest()
+    val requestNotifications = rememberQuietNotificationPermissionRequest()
     val errors = vm.errors
 
     Scaffold(

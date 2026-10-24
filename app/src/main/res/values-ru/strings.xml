@@ -404,4 +404,6 @@
         <item quantity="many">%1$d недель</item>
         <item quantity="other">%1$d недели</item>
     </plurals>
+    <string name="settings_sound">Звук и вибрация</string>
+    <string name="settings_sound_desc">Напоминания о лекарствах звучат стандартным звуком уведомления и вибрируют. Звук можно сменить в системных настройках.</string>
 </resources>

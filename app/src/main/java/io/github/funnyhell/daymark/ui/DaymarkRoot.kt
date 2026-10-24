@@ -21,7 +21,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarData
 import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxValue
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
@@ -30,6 +35,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -39,6 +45,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -93,29 +100,53 @@ fun DaymarkRoot(onboardingDone: Boolean) {
         val result = snackbar.showSnackbar(
             message = msg.text,
             actionLabel = msg.actionLabel,
-            duration = if (msg.actionLabel != null) SnackbarDuration.Long else SnackbarDuration.Short,
+            withDismissAction = true,
+            duration = SnackbarDuration.Short,
         )
         if (result == SnackbarResult.ActionPerformed) msg.onAction?.invoke()
     }
     Box(Modifier.fillMaxSize()) {
         NavHost(nav, startDestination = "main") {
             composable("main") { MainTabs(nav, showMessage) }
-            composable(Routes.HABIT_EDIT, arguments = listOf(optionalId())) {
-                HabitEditScreen(onDone = { nav.popBackStack() }, showMessage = showMessage)
+            composable(Routes.HABIT_EDIT, arguments = listOf(optionalId())) { entry ->
+                HabitEditScreen(onDone = { nav.popFrom(entry) }, showMessage = showMessage)
             }
-            composable(Routes.HABIT_DETAIL) {
-                HabitDetailScreen(onBack = { nav.popBackStack() }, onEdit = { nav.navigate(Routes.habitEdit(it)) }, showMessage = showMessage)
+            composable(Routes.HABIT_DETAIL) { entry ->
+                HabitDetailScreen(onBack = { nav.popFrom(entry) }, onEdit = { nav.navigate(Routes.habitEdit(it)) }, showMessage = showMessage)
             }
-            composable(Routes.MED_EDIT, arguments = listOf(optionalId())) {
-                MedicationEditScreen(onDone = { nav.popBackStack() }, showMessage = showMessage)
+            composable(Routes.MED_EDIT, arguments = listOf(optionalId())) { entry ->
+                MedicationEditScreen(onDone = { nav.popFrom(entry) }, showMessage = showMessage)
             }
-            composable(Routes.MED_DETAIL) {
-                MedicationDetailScreen(onBack = { nav.popBackStack() }, onEdit = { nav.navigate(Routes.medEdit(it)) }, showMessage = showMessage)
+            composable(Routes.MED_DETAIL) { entry ->
+                MedicationDetailScreen(onBack = { nav.popFrom(entry) }, onEdit = { nav.navigate(Routes.medEdit(it)) }, showMessage = showMessage)
             }
         }
         // One snackbar host above all screens, kept clear of the bottom navigation bar.
-        SnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(bottom = 88.dp))
+        SnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(bottom = 88.dp)) { data ->
+            key(data) { SwipeableSnackbar(data) }
+        }
     }
+}
+
+/** A snackbar that can also be swiped away sideways. */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun SwipeableSnackbar(data: SnackbarData) {
+    val state = rememberSwipeToDismissBoxState(
+        confirmValueChange = { value ->
+            if (value != SwipeToDismissBoxValue.Settled) data.dismiss()
+            true
+        },
+    )
+    SwipeToDismissBox(state = state, backgroundContent = {}) { Snackbar(data) }
+}
+
+/**
+ * Leaves [entry] only if it is still the screen on top. Repeated calls (a double tap on Back, or "deleted" and
+ * "record disappeared" both asking to close) therefore never pop the main screen and leave a blank window.
+ */
+private fun NavHostController.popFrom(entry: NavBackStackEntry) {
+    if (currentBackStackEntry?.id == entry.id && previousBackStackEntry != null) popBackStack()
 }
 
 private fun optionalId() = navArgument("id") {

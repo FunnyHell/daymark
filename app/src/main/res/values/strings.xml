@@ -407,4 +407,6 @@
         <item quantity="one">%1$d week</item>
         <item quantity="other">%1$d weeks</item>
     </plurals>
+    <string name="settings_sound">Sound and vibration</string>
+    <string name="settings_sound_desc">Medication reminders play the default notification sound and vibrate. Change the sound in the system settings.</string>
 </resources>

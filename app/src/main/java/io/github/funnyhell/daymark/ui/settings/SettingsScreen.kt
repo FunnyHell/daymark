@@ -41,6 +41,7 @@ import io.github.funnyhell.daymark.data.backup.DecodeResult
 import io.github.funnyhell.daymark.data.backup.ImportResult
 import io.github.funnyhell.daymark.data.repo.Settings
 import io.github.funnyhell.daymark.data.repo.ThemeMode
+import io.github.funnyhell.daymark.platform.notifications.Notifier
 import io.github.funnyhell.daymark.ui.common.AppViewModel
 import io.github.funnyhell.daymark.ui.common.MessageEffect
 import io.github.funnyhell.daymark.ui.common.SectionHeader
@@ -193,6 +194,14 @@ fun SettingsScreen(
             action = stringResource(if (permissions.notifications) R.string.perm_open_settings else R.string.perm_allow),
             onAction = { if (permissions.notifications) SystemSettings.openNotificationSettings(context) else requestNotifications() },
         )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            StatusRow(
+                title = stringResource(R.string.settings_sound),
+                status = stringResource(R.string.settings_sound_desc),
+                action = stringResource(R.string.perm_open_settings),
+                onAction = { SystemSettings.openChannelSettings(context, Notifier.CHANNEL_MEDICATION) },
+            )
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             StatusRow(
                 title = stringResource(R.string.settings_exact_alarms),

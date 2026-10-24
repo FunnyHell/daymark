@@ -267,8 +267,8 @@ class HabitRepository(
             evaluator.progressOn(date) >= evaluator.targetOn(date)
         }
         return when {
-            done && !isDone -> completeIfIncomplete(habitId, date) is HabitActionResult.Recorded
-            !done && isDone -> undoCompletion(habitId, date)
+            done && !isDone -> (completeIfIncomplete(habitId, date) is HabitActionResult.Recorded)
+            isDone && !done -> undoCompletion(habitId, date)
             else -> false
         }
     }

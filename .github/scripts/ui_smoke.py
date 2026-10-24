@@ -185,7 +185,7 @@ shot("04-habits-list")
 # Create a medication with the default 08:00 dose (taking a dose of today is allowed before its time).
 tap("Medications", bottom=True)
 tap_fab("New medication")
-fill("Medication name", "Vitamin D")
+fill("Name", "Vitamin D")
 tap("Track stock")
 shot("05-medication-editor")
 tap("Save")

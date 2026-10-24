@@ -77,6 +77,8 @@ Exit criteria and state:
 
 ## 6. Recent completed work
 
+- 2026-10-24 (feedback round 1): fixed blank screen after deleting (double back navigation), permission prompt that opened system settings when permission was already granted, silent notifications (new v2 channels with sound/vibration), long-lived snackbars (short, closable, swipeable). Added package-size presets, clearer habit types (radio list with examples; "Quit a habit" with "Slip"), swipe/long-press list actions, "Take all" for doses at the same time, compact widget check controls, medications widget grouped by time with "mark all", new Progress / Calendar / Streak widgets, per-widget settings and picker previews. CI run 40113713487 (commit ddfa7e7): unit tests passed, debug APK built (SHA-256 `501fa40e828077226bbd7ded26980f20771abc456337f8e9bb950de8837b6ccf`), emulator instrumented tests 2/2 and smoke test passed. Widgets, sound and swipe gestures are **not verified on a device**; the emulator smoke test does not place widgets.
+
 - 2026-10-24: Implemented the full 0.1.0 MVP (domain rules, Room data layer, repositories, Compose UI, reminders, notifications, Glance widgets, statistics, export/import, EN/RU strings), CI pipeline with APK publishing. Decisions ADR-011 … ADR-022.
 
 ## 7. Next tasks

@@ -33,11 +33,20 @@ LAST_DUMP = {"raw": ""}
 
 
 def dump():
-    for _ in range(3):
+    for _ in range(5):
         LAST_DUMP["raw"] = adb("shell", "uiautomator", "dump", "/sdcard/ui.xml", check=False)
         xml = adb("shell", "cat", "/sdcard/ui.xml", check=False)
         LAST_DUMP["raw"] += "\n" + xml
         if xml.strip().startswith("<?xml"):
+            if "isn't responding" in xml and 'text="Wait"' in xml:
+                # Emulator system ANR dialog, unrelated to the app: dismiss it and dump again.
+                m = re.search(r'text="Wait"[^>]*bounds="\[(\d+),(\d+)\]\[(\d+),(\d+)\]"', xml)
+                if m:
+                    x1, y1, x2, y2 = map(int, m.groups())
+                    adb("shell", "input", "tap", str((x1 + x2) // 2), str((y1 + y2) // 2))
+                    say("dismissed system ANR dialog")
+                    time.sleep(2)
+                    continue
             try:
                 return ET.fromstring(xml[xml.index("<hierarchy"):])
             except (ET.ParseError, ValueError):

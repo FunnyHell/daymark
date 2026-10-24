@@ -9,6 +9,7 @@ import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -45,7 +46,7 @@ class HabitFlowInstrumentedTest {
         rule.onAllNodesWithText("New habit").onFirst().performClick()
         rule.waitUntil(10_000) { rule.onAllNodes(hasSetTextAction() and hasText("Name")).fetchSemanticsNodes().isNotEmpty() }
         rule.onAllNodes(hasSetTextAction() and hasText("Name")).onFirst().performTextInput(name)
-        rule.onAllNodesWithText("Save").onFirst().performClick()
+        rule.onNodeWithTag("save_action").performClick()
         // The editor closes after the save completes; then the tab bar is visible again.
         rule.waitUntil(10_000) { rule.onAllNodes(tab("Today")).fetchSemanticsNodes().isNotEmpty() }
         waitForText(name)

@@ -40,6 +40,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -189,7 +190,7 @@ fun HabitEditScreen(
                 navigationIcon = {
                     IconButton(onClick = onDone) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back)) }
                 },
-                actions = { TextButton(onClick = vm::save, enabled = vm.loaded) { Text(stringResource(R.string.save)) } },
+                actions = { TextButton(onClick = vm::save, enabled = vm.loaded, modifier = Modifier.testTag("save_action")) { Text(stringResource(R.string.save)) } },
             )
         },
     ) { padding ->

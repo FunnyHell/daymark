@@ -478,6 +478,233 @@ Report automated test results and physical-device verification separately.
 
 
 
+## ADR-011 — Application identity and SDK levels
+
+**Status:** Accepted
+
+#### Context
+
+The spec leaves the package ID and SDK levels open. The primary device is a Samsung Galaxy A52 (Android 12–14).
+
+#### Decision
+
+- Product name: Daymark (working name).
+- `applicationId` / namespace: `io.github.funnyhell.daymark`. Debug builds add the suffix `.debug`, so the test APK is `io.github.funnyhell.daymark.debug` and can later live next to a release build.
+- `minSdk` 26 (Android 8.0), `targetSdk` 35, `compileSdk` 35.
+- Version 0.1.0 (versionCode 1).
+
+#### Rationale
+
+API 26 is the first level with notification channels and adaptive icons and keeps java.time available without desugaring, while still covering almost all phones in use. Target 35 is the current Play requirement level supported by the chosen AGP. Android 12+ features (exact-alarm permission, dynamic colour) are handled with runtime checks.
+
+#### Consequences
+
+- Upgrading the debug APK in place requires the same debug signing key; see README.
+- Behaviour below Android 12 is implemented but not a verification priority.
+
+#### Date
+
+2026-10-24
+
+---
+
+## ADR-012 — Build toolchain and CI-produced APK
+
+**Status:** Accepted
+
+#### Context
+
+The cloud development sandbox used for the initial implementation cannot reach `dl.google.com` / Google Maven, so AGP, AndroidX and the Android SDK cannot be downloaded there.
+
+#### Decision
+
+- Gradle 8.14.3 wrapper, AGP 8.10.1, Kotlin 2.1.21 (Compose compiler plugin), KSP 2.1.21-2.0.1, JDK 17 bytecode. Compose BOM 2025.05.00, Room 2.7.1, WorkManager 2.10.1, Glance 1.1.1, DataStore 1.1.7, kotlinx-serialization 1.8.1.
+- GitHub Actions (`.github/workflows/android.yml`) is the reference build: unit + Robolectric tests, `assembleDebug`, APK inspection with `aapt2`, and an API 34 emulator job with instrumented tests and an adb-driven smoke test.
+- Each push publishes the debug APK to the orphan branch `ci-apk` and emulator screenshots to `ci-screens` (force-pushed, one commit each).
+
+#### Consequences
+
+- Local builds work normally in Android Studio or any machine with the Android SDK.
+- Binary build outputs live only on the two CI branches, never on development branches.
+
+#### Date
+
+2026-10-24
+
+---
+
+## ADR-013 — Habit recurrence, day states, streaks and rates
+
+**Status:** Accepted
+
+#### Decision
+
+- Supported recurrences for CHECK, MULTI and QUANTITY habits: every day; selected weekdays; every N days (2–365) counted from the schedule version's start. Anything else is not offered.
+- WEEKLY_GOAL habits count completions per calendar week. The week start is a setting (Monday default; Sunday and Saturday offered).
+- ABSTINENCE habits: every day after the start date is clean unless an active LAPSE event exists on that day.
+- Schedules are versioned (`effectiveFrom` inclusive, `effectiveUntil` exclusive). Changing recurrence or target ends the current version before today and starts a new one today; if there is no history yet the version is replaced. The habit type cannot change after creation, and the start date is locked once any event exists.
+- Pause and archive both open a pause interval starting today (inclusive); resume/unarchive closes it with end = today (exclusive). An interval that never covered a day is removed.
+- Day states: FUTURE, BEFORE_START, PAUSED, NOT_SCHEDULED, DONE, PARTIAL, SKIPPED, PENDING (today, not done), MISSED, LAPSED.
+- Streaks: DONE is a success; MISSED, PARTIAL and LAPSED are failures; everything else (paused, unscheduled, skipped, today not yet done) is neutral and neither extends nor breaks a streak. Weekly goals use weeks as units. A week is a success when the goal is met; a finished week that missed the goal is a failure unless it contained paused days or days before the start (then neutral); the current week is in progress.
+- Completion rate = successes ÷ (successes + failures) over the period. Corrections void events (`voided_at`) instead of deleting them; voided events never count.
+
+#### Date
+
+2026-10-24
+
+---
+
+## ADR-014 — Time-zone semantics
+
+**Status:** Accepted
+
+#### Decision
+
+- Medication dose times and habit reminder times are floating local times: 08:00 means 08:00 in whatever zone the device is in on that date. A time that does not exist because of a DST gap is moved forward by java.time (02:30 → 03:30).
+- Habit events store the local calendar date on which the user recorded them plus an absolute timestamp.
+- Medication events store the occurrence's scheduled local date/time plus an absolute timestamp.
+- Time-zone and clock changes rebuild the reminder alarm (`TIMEZONE_CHANGED`, `TIME_SET`).
+
+#### Consequences
+
+Travelling east or west shifts reminders to local wall-clock times; already recorded events keep their dates. This is the expected behaviour for "take at breakfast" style schedules, but it is not suitable for strict fixed-interval dosing across time zones; that limitation is documented in README.
+
+#### Date
+
+2026-10-24
+
+---
+
+## ADR-015 — Medication occurrences, missed rule and action idempotency
+
+**Status:** Accepted
+
+#### Decision
+
+- Occurrences are generated on demand from schedule versions, never stored. The stable occurrence key is `<doseId>@<ISO date>`; notifications, widgets and events refer to it.
+- States: UPCOMING, DUE, SNOOZED, TAKEN, SKIPPED, MISSED. TAKEN/SKIPPED come only from explicit user actions. An unresolved occurrence becomes MISSED 3 hours after its due time, or 3 hours after the end of an active snooze if later. MISSED is derived, never stored, and a missed dose can still be recorded later.
+- Every action (`recordDose`, `snooze`) runs validation and writes inside one Room transaction: an occurrence with an active TAKEN/SKIPPED returns `AlreadyResolved` and writes nothing; an occurrence that is not in the current schedule (edited, paused, archived, unknown) or lies in the future is rejected. A second snooze for the same occurrence within 60 s is treated as a duplicate delivery.
+- Schedule edits take effect today, unless a dose of today has already been recorded under the current version; then they take effect tomorrow.
+- Pausing creates no occurrences for paused days, so no false missed doses.
+- Corrections void the event; a voided TAKEN reverses its inventory effect exactly once.
+
+#### Date
+
+2026-10-24
+
+---
+
+## ADR-016 — Inventory ledger
+
+**Status:** Accepted
+
+#### Decision
+
+- Inventory is optional per medication, with a user-defined unit and a per-dose "uses from stock" quantity (fractions allowed).
+- Stock is never stored as a total; it is the sum of `inventory_adjustments` rows: INITIAL, PACKAGE_ADDED, MANUAL_CORRECTION (counted stock − computed stock), INTAKE, INTAKE_REVERSAL.
+- A unique index on (`event_id`, `type`) guarantees at most one INTAKE and one INTAKE_REVERSAL per taken event.
+- An intake is always recorded; if stock is insufficient the INTAKE adjustment is clamped to the available amount and the UI asks the user to recount. Its reversal restores exactly what was consumed.
+- Low stock: stock ≤ threshold. A low-stock notification is sent only when an action makes the stock cross the threshold.
+
+#### Date
+
+2026-10-24
+
+---
+
+## ADR-017 — Backup format and import behaviour
+
+**Status:** Accepted
+
+#### Decision
+
+- Export: a single UTF-8 JSON file (`format: "daymark-backup"`, `formatVersion: 1`) with all tables and the relevant settings, written through the Storage Access Framework. Files are not encrypted; the UI says so.
+- Import: the file is parsed and fully validated first (format/version, unique IDs, references, enums, dates, numbers, at most one active resolution per occurrence, no duplicate intake adjustments). Only a valid file can be applied. Applying it replaces all current data in one transaction after explicit confirmation; the dialog offers "Export first". There is no merge.
+- Android auto-backup and device-transfer are disabled for app data (`allowBackup=false`, data extraction rules), because the data is sensitive and the explicit backup is the supported path.
+
+#### Date
+
+2026-10-24
+
+---
+
+## ADR-018 — Reminder scheduling
+
+**Status:** Accepted
+
+#### Decision
+
+- One component (`ReminderEngine`) recomputes reminders from the database and keeps a single AlarmManager alarm for the earliest of: the next reminder, or just after the next local midnight (widget day rollover).
+- `setExactAndAllowWhileIdle` when exact alarms are allowed, otherwise `setAndAllowWhileIdle` (may be late). The app requests `SCHEDULE_EXACT_ALARM` through the system settings screen and explains the effect; it does not use `USE_EXACT_ALARM`.
+- When the alarm fires, reminders that came due since the last check are posted (at most 2 hours back, to avoid a flood after the phone was off). Snoozed doses are reminded at the end of the snooze.
+- The alarm is rebuilt on app start, after every data change, on boot, app update, time and time-zone changes, exact-alarm permission changes, and every 6 hours by a WorkManager job (deferrable safety net, not used for timing).
+- Notifications are only posted when POST_NOTIFICATIONS is granted; the permission is requested when the user turns on a reminder or adds a dose, and from banners/settings.
+
+#### Date
+
+2026-10-24
+
+---
+
+## ADR-019 — Widgets with Jetpack Glance
+
+**Status:** Accepted
+
+#### Decision
+
+- Two Glance (1.1.1) widgets: habits due today (with a Done/+1 button) and today's doses (with a Taken button). Rows open the app.
+- Buttons call `ActionCallback`s that use the same repository methods as notifications: `HabitRepository.completeIfIncomplete` (records only while below target, one completion per day for weekly goals) and `MedicationRepository.recordDose`. Quantity and abstinence habits show progress only; amounts and lapses are recorded in the app.
+- Widgets observe Room flows while their session is active and are refreshed after every data change, by the midnight alarm, the 6-hour maintenance job and the system's 30-minute update period.
+
+#### Date
+
+2026-10-24
+
+---
+
+## ADR-020 — Notification privacy
+
+**Status:** Accepted
+
+#### Decision
+
+"Hide names on the lock screen" is on by default: notifications are `VISIBILITY_PRIVATE` with a public version that says only "Medication reminder" / "Habit reminder". Channels are also created with private lock-screen visibility.
+
+#### Date
+
+2026-10-24
+
+---
+
+## ADR-021 — Deleting records
+
+**Status:** Accepted
+
+#### Decision
+
+Archive is the normal way to remove an item from daily use and keeps all history. A separate "Delete permanently" action exists for user-initiated removal of mistaken or unwanted items; it requires an explicit confirmation that explains data loss and suggests archiving instead.
+
+#### Date
+
+2026-10-24
+
+---
+
+## ADR-022 — Localization, synchronization and Wear OS
+
+**Status:** Accepted
+
+#### Decision
+
+- All user-facing text is in Android string resources. The first release ships English (default) and Russian.
+- Phone/tablet synchronization and the Wear OS companion are not implemented in 0.1.0. Stable string IDs, explicit events and timestamps are kept so they can be added later.
+
+#### Date
+
+2026-10-24
+
+---
+
 \## Future decisions
 
 

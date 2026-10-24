@@ -2,9 +2,9 @@
 
 
 
-\*\*Status:\*\* Initial architecture proposal  
+\*\*Status:\*\* Implemented in 0.1.0 (see section 16 for the as-built structure)  
 
-\*\*Last updated:\*\* Initial project setup
+\*\*Last updated:\*\* 2026-10-24
 
 
 
@@ -814,3 +814,44 @@ If a different architecture or library would materially improve the implementati
 
 Do not rewrite the architecture based on speculation. Prefer evidence from implementation, tests, platform documentation, and actual device behavior.
 
+
+
+## 16. As-built structure (0.1.0)
+
+A single Android application module (`:app`), package `io.github.funnyhell.daymark`. Packages by responsibility:
+
+```text
+app/src/main/java/io/github/funnyhell/daymark/
+  DaymarkApplication.kt   process start: container, channels, maintenance work, first reminder check
+  AppContainer.kt         manual DI; also the DataChangeListener that refreshes reminders, notifications, widgets
+  MainActivity.kt         single activity, Compose content
+  domain/                 pure Kotlin (java.time only, no Android imports) — unit-tested on the JVM
+    common/               LifecycleStatus, PauseInterval, TimeSource, IdGenerator, quantity rounding
+    habit/                models, HabitEvaluator (day states, weeks, streaks, rates, clean runs), draft validation
+    medication/           models, OccurrenceRules, ActionRules, InventoryRules, draft validation
+    reminder/             ReminderPlanner (which reminders exist, catch-up window)
+    stats/                HabitStatistics, MedicationStatistics
+  data/
+    db/                   Room entities, DAOs, converters, mappers, DaymarkDatabase (schema v1, exported to app/schemas)
+    repo/                 HabitRepository, MedicationRepository (transactions, idempotency), SettingsRepository (DataStore)
+    backup/               versioned JSON format, BackupCodec (validation), BackupRepository (replace-all import)
+  platform/
+    notifications/        Notifier (channels, private lock-screen versions), NotificationActionReceiver
+    reminders/            ReminderEngine (single alarm), ReminderAlarmReceiver, SystemEventReceiver
+    work/                 MaintenanceWorker (6-hourly WorkManager safety net)
+    widgets/              Glance HabitWidget / MedicationWidget, ActionCallbacks, WidgetUpdater
+  ui/                     Compose screens and ViewModels: today, habits, medications, history, settings, onboarding
+```
+
+### Data flow
+
+1. Screens observe repository `Flow`s (Room is the single source of truth) through ViewModels; derived state is computed with the domain classes on `Dispatchers.Default`.
+2. Every write goes through a repository method. Multi-row writes (dose + inventory, schedule versions, import) run in `withTransaction`.
+3. After a committed write the repository calls `DataChangeListener` (the `AppContainer`), which cancels notifications that no longer apply, posts a low-stock notification if a threshold was crossed, re-arms the reminder alarm and updates widgets.
+4. Notifications and widget buttons call the same repository methods with `ActionSource.NOTIFICATION` / `WIDGET`.
+
+### Database tables (version 1)
+
+`habits`, `habit_schedules` (versioned), `habit_events` (voidable), `pauses` (habit and medication pause/archive intervals), `medications`, `medication_schedules` (versioned), `scheduled_doses`, `medication_events` (voidable; TAKEN, SKIPPED, SNOOZED), `inventory_adjustments` (ledger; unique `event_id`+`type`). IDs are random UUID strings. Dates are ISO text, times `HH:mm`, instants epoch milliseconds.
+
+The exact rules are recorded in `docs/DECISIONS.md` ADR-011 to ADR-022.

@@ -70,8 +70,9 @@ class HabitWidget : GlanceAppWidget() {
         val c = context.container
         val initialHabits = c.habits.all()
         val initialSettings = c.settings.current()
+        val habitsFlow = c.habits.observeAll()
         provideContent {
-            val habits by c.habits.observeAll().collectAsState(initialHabits)
+            val habits by habitsFlow.collectAsState(initialHabits)
             val settings by c.settings.settings.collectAsState(initialSettings)
             val rows = WidgetContent.habitRows(context, habits, c.time.today(), settings.firstDayOfWeek)
             GlanceTheme {
@@ -100,8 +101,9 @@ class MedicationWidget : GlanceAppWidget() {
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val c = context.container
         val initial = c.medications.all()
+        val medsFlow = c.medications.observeAll()
         provideContent {
-            val meds by c.medications.observeAll().collectAsState(initial)
+            val meds by medsFlow.collectAsState(initial)
             val rows = WidgetContent.medicationRows(context, meds, c.time.today(), c.time.now(), c.time.zone())
             GlanceTheme {
                 WidgetFrame(title = context.getString(R.string.widget_meds_title), empty = context.getString(R.string.widget_meds_empty), isEmpty = rows.isEmpty()) {

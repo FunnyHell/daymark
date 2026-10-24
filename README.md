@@ -2,142 +2,100 @@
 
 Daymark is a local-first Android application for habit tracking and medication management.
 
-The goal is to combine flexible habit tracking, reliable medication reminders, intake history, inventory management, useful statistics, and interactive home-screen widgets in one application.
+It combines flexible habit tracking, medication reminders with actionable notifications, intake history, inventory tracking, statistics and home-screen widgets. It works without an account, a subscription, advertisements, or any network connection.
 
-The app should remain useful without an account, a subscription, advertisements, or a mandatory cloud service.
+> **Project status:** 0.1.0 MVP, debug build. Automated tests pass in CI; behaviour on a physical Samsung phone has **not** been verified yet. See [`docs/DEVELOPMENT_STATUS.md`](docs/DEVELOPMENT_STATUS.md).
 
-> **Project status:** Early development. See [`docs/DEVELOPMENT_STATUS.md`](docs/DEVELOPMENT_STATUS.md) for verified progress.
+Daymark records what you enter and reminds you at the times you choose. It does not give medical advice and is not a substitute for a doctor or pharmacist.
 
-## Product goals
+## Features (0.1.0)
 
-- Track daily routines and flexible habits.
-- Schedule medication reminders and record intake.
-- Track medication stock and warn about low supplies.
-- Use interactive notifications and home-screen widgets.
-- Review streaks, calendars, history, and statistics.
-- Pause and resume habits or medication schedules without destroying history.
-- Keep personal data stored locally by default.
-- Support data export and import.
-- Leave room for future phone/tablet synchronization and Wear OS support.
+**Habits**
+- Types: daily check, several times a day, amount with a unit (e.g. 2000 ml), weekly goal (N times per week), abstinence with lapse records.
+- Schedules: every day, selected weekdays, every N days. Optional daily reminder time.
+- Create, edit, pause, resume, archive, restore, delete (with confirmation).
+- Record completions, amounts, skips and lapses for today or for past days; correct any entry (corrections are kept in history).
+- Schedule changes create a new schedule version from today; past days keep their original rules.
 
-## Target platform
+**Medications**
+- Name, strength/form, notes, colour; one or more dose times per day on chosen weekdays; a free-text dose description and a "uses from stock" amount per dose.
+- Taken / Skip / Snooze 30 min from the app, the notification and (Taken) the widget. Every action is validated and idempotent: repeated taps or duplicated notification actions record once.
+- Missed doses are derived (nothing recorded within 3 hours), never invented; late doses can still be recorded.
+- Pause/resume a schedule without false missed doses; corrections with exact inventory reconciliation.
 
-Initial target:
-- Android 12–14.
-- Samsung Galaxy A52 with One UI 5–6 as the primary physical test device.
-- Samsung Galaxy Tab S6 Lite as a potential tablet target.
-- Samsung Galaxy Watch 6 Classic as a potential future Wear OS companion.
+**Inventory**
+- Optional per medication, user-defined unit, initial stock, add packages, set a counted stock, low-stock threshold and notification, full change log.
 
-Other Android devices should be supported where practical.
+**Reminders and widgets**
+- Exact alarms where permitted (falls back to inexact), rebuilt after reboot, app update, time and time-zone changes, plus a 6-hourly safety net.
+- Lock-screen privacy: medication and habit names hidden on the lock screen by default.
+- Two home-screen widgets (Jetpack Glance): today's habits with a Done button, and today's doses with a Taken button.
 
-The actual `minSdk`, `targetSdk`, and dependency versions must be documented once the project configuration is established. Compatibility and notification behavior must be verified rather than assumed.
+**History and statistics**
+- Per-habit calendar heatmap with day details, current/best streaks, 30-day completion rate, weekly results, clean-streak history for abstinence habits.
+- Overall activity heatmap, this/last week and month summaries, per-habit table, 14-day charts for amount habits.
+- Medication adherence counts (taken/skipped/missed) for 7 and 30 days and a full event log.
 
-## Technology stack
+**Data**
+- Export everything to a JSON file; import validates the whole file first and replaces data in one transaction only after confirmation.
+- English and Russian UI.
 
-Planned baseline:
+## Install the debug APK on a phone (Samsung Galaxy A52)
 
-- Kotlin
-- Jetpack Compose
-- Material 3
-- Room
-- Kotlin Coroutines and Flow
-- WorkManager
-- AlarmManager when justified by scheduling requirements
-- DataStore
-- Android widget APIs
-- Android Studio and Gradle
+The debug APK is built by GitHub Actions on every push and published to the branch **`ci-apk`** of this repository (file `app-debug.apk`, with `SHA256SUMS.txt`, `BADGING.txt` and `BUILD_INFO.txt`). It is also attached to each workflow run as the artifact `daymark-debug-apk`.
 
-See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for architectural constraints and [`docs/DECISIONS.md`](docs/DECISIONS.md) for accepted technical decisions.
+1. Download `app-debug.apk` (GitHub → branch `ci-apk` → `app-debug.apk` → Download raw file, or the workflow artifact).
+2. Copy it to the phone (USB, Quick Share, cloud drive) or download it on the phone directly.
+3. Open it with **My Files**. When asked, allow "Install unknown apps" for that app (Settings → Apps → Special access → Install unknown apps).
+4. With USB debugging enabled you can instead run `adb install -r app-debug.apk`.
+
+Package ID: `io.github.funnyhell.daymark.debug` · version `0.1.0-debug` (versionCode 1) · minSdk 26 · targetSdk 35.
+
+Debug builds are signed with the CI runner's debug key; a later debug build from a different machine may need the old one uninstalled first (Android refuses updates with a different signature). Export a backup before uninstalling.
+
+### Recommended phone settings for reliable reminders
+
+- Allow notifications when Daymark asks (or Settings → Notifications in the app).
+- Allow **Alarms & reminders** (exact alarms) from Daymark's settings; without it Android may delay reminders.
+- Samsung: Settings → Apps → Daymark → Battery → **Unrestricted**, and make sure Daymark is not in "Sleeping apps" / "Deep sleeping apps".
+
+## Build from source
+
+Prerequisites: JDK 17 or newer, Android SDK with platform 35 (Android Studio Ladybug or newer, or command-line tools), network access to Google Maven and Maven Central.
+
+```bash
+./gradlew testDebugUnitTest      # JVM unit tests + Robolectric database tests
+./gradlew assembleDebug          # app/build/outputs/apk/debug/app-debug.apk
+./gradlew connectedDebugAndroidTest   # instrumented tests, needs a device or emulator
+```
+
+On Windows use `gradlew.bat`. Versions: Gradle 8.14.3, AGP 8.10.1, Kotlin 2.1.21, Compose BOM 2025.05.00, Room 2.7.1 (schema exported to `app/schemas`).
+
+CI (`.github/workflows/android.yml`) runs the unit tests, builds and inspects the APK, then boots an API 34 emulator to run the instrumented tests and an adb-driven UI smoke test (`.github/scripts/ui_smoke.py`), publishing screenshots to the `ci-screens` branch.
+
+## Known limitations
+
+- Not yet verified on a physical Samsung device: notification delivery and actions, exact alarm timing, behaviour after reboot or with battery optimisation, widgets.
+- Reminder times are local wall-clock times; after travelling to another time zone a 08:00 dose is reminded at 08:00 local time.
+- Snooze is fixed at 30 minutes; the missed window is fixed at 3 hours.
+- Widget buttons record only simple actions (habit done / +1, dose taken). Amounts, lapses, skips and snoozes are recorded in the app or the notification.
+- Backups are plain JSON (not encrypted). Import replaces all data; there is no merge.
+- No synchronization between devices and no Wear OS app yet.
 
 ## Documentation
 
 | File | Purpose |
 |---|---|
-| `CLAUDE.md` | Instructions for Claude Code |
+| `CLAUDE.md` | Development rules |
 | `docs/SPEC.md` | Product requirements and acceptance criteria |
-| `docs/ARCHITECTURE.md` | Application architecture |
+| `docs/ARCHITECTURE.md` | Architecture, including the as-built structure |
 | `docs/DEVELOPMENT_STATUS.md` | Current progress and verification state |
-| `docs/DECISIONS.md` | Important technical decisions |
-| `README.md` | Project overview and setup |
-
-## Development prerequisites
-
-Install and configure:
-
-1. Android Studio with a compatible Android SDK.
-2. A compatible JDK for the selected Gradle version.
-3. Git.
-4. An Android emulator or a physical Android device for testing.
-
-Use the JDK version required by the project's Android Gradle Plugin and Gradle wrapper. Do not assume the latest JDK is automatically compatible.
-
-For physical-device testing, enable Android developer options and USB debugging as appropriate.
-
-## Build and test
-
-Once the Android project and Gradle wrapper exist, run the following commands from the repository root.
-
-On Windows:
-
-```powershell
-.\gradlew.bat projects
-.\gradlew.bat assembleDebug
-.\gradlew.bat test
-```
-
-On Linux or macOS:
-
-```bash
-./gradlew projects
-./gradlew assembleDebug
-./gradlew test
-```
-
-These are the intended baseline checks, not a claim that they currently pass. Some projects may require additional module-specific tasks, SDK components, device tests, or configuration.
-
-For a particular module, use its actual Gradle task names. Record failed commands and environmental blockers in `docs/DEVELOPMENT_STATUS.md`.
-
-A successful build does not prove that exact alarms, interactive notifications, widget refreshes, or Samsung background behavior work correctly on a physical device.
-
-## Development workflow
-
-1. Read `CLAUDE.md` and the relevant documentation.
-2. Check the current milestone in `docs/DEVELOPMENT_STATUS.md`.
-3. Implement one small, well-defined task.
-4. Add or update tests.
-5. Run relevant checks.
-6. Review the changes.
-7. Update the development status and technical decisions if needed.
-
-The repository should remain the source of truth for the project's code and documentation.
+| `docs/DECISIONS.md` | Technical decisions (ADR-001 … ADR-022) |
 
 ## Data and privacy
 
-The application is designed to be local-first. No account or cloud backend is required for core functionality.
-
-Medication and habit data should not be sent to external services without explicit product approval and a clear user-facing explanation.
-
-Exported backups may contain sensitive information and should be treated accordingly.
+All data is stored locally in a Room database on the device. Nothing is sent anywhere; the app requests no internet permission. Android cloud backup of app data is disabled because the data is sensitive; use Export to keep a copy. Exported files contain medication and routine history — store them privately.
 
 ## Product name
 
-**Daymark** is a working name only. Verify trademark, package-name, and app-store availability before public release.
-
-## Roadmap
-
-The planned order is:
-
-1. Project foundation and build verification.
-2. Local data model and persistence.
-3. Habit creation and completion.
-4. Medication schedules and intake history.
-5. Reliable reminders and actionable notifications.
-6. Inventory tracking.
-7. Statistics and history.
-8. Interactive widgets.
-9. Export and import.
-10. Physical-device testing and reliability fixes.
-11. Tablet adaptation.
-12. Optional synchronization and Wear OS companion.
-
-The order may be refined as implementation reveals dependencies. The detailed requirements are in `docs/SPEC.md`.
+**Daymark** is a working name. Verify trademark, package-name and app-store availability before a public release.

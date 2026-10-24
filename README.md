@@ -82,6 +82,19 @@ CI (`.github/workflows/android.yml`) runs the unit tests, builds and inspects th
 - Backups are plain JSON (not encrypted). Import replaces all data; there is no merge.
 - No synchronization between devices and no Wear OS app yet.
 
+## Next steps: what to test on the Galaxy A52
+
+1. Install, open, finish onboarding, create one habit with a reminder a few minutes ahead and one medication with a dose a few minutes ahead and stock tracking on.
+2. Allow notifications; in Settings → Daymark → Reminders, open "Alarms & reminders" and allow it.
+3. Lock the phone and wait: does the medication reminder arrive on time, with names hidden on the lock screen?
+4. Press **Taken** in the notification; then open the app: one "Taken" record, stock reduced by exactly one. Repeat with **Skip** and **Snooze 30 min** on other doses (snooze must bring the reminder back ~30 min later).
+5. Add both widgets to the home screen; press Done / Taken on the widget; check the app shows the same state and the widget updates after changes made in the app.
+6. Reboot the phone with a dose scheduled after the reboot; check the reminder still arrives.
+7. Set Daymark's battery usage to "Unrestricted" if reminders are late; note whether it was needed.
+8. Export a backup, delete something, import the backup, confirm everything is back.
+
+Please report the results (or anything odd) so they can be recorded in `docs/DEVELOPMENT_STATUS.md`.
+
 ## Documentation
 
 | File | Purpose |

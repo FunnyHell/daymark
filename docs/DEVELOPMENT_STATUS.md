@@ -2,7 +2,7 @@
 
 **Last updated:** 2026-10-24
 **Current milestone:** M1 — Core local MVP (0.1.0 debug)
-**Overall state:** Implemented; verified by automated tests and CI build; **not verified on a physical device**
+**Overall state:** Implemented; verified by automated tests, CI build and an emulator smoke test; **not verified on a physical device**
 
 ## 1. Current milestone
 
@@ -13,7 +13,7 @@ Goal: an installable debug APK with persistent habits, medications, inventory, r
 Exit criteria and state:
 - Debug APK builds in CI — **done** (see §4).
 - Unit and database tests pass — **done** (84 tests).
-- Instrumented tests and emulator smoke test — see §4 for the latest result.
+- Instrumented tests and emulator smoke test — **done** on an API 34 emulator (see §4).
 - Physical Samsung Galaxy A52 verification — **not started** (requires the user's device).
 
 ## 2. Verified environment
@@ -61,8 +61,8 @@ Exit criteria and state:
 | `./gradlew testDebugUnitTest` (CI run 6, commit fe9118b) | **Passed: 84 tests, 0 failures** | HabitRules 22, MedicationRules 21, ReminderPlanner 6, Statistics 5, MedicationRepository 16, HabitRepository 10, BackupRepository 4 (Robolectric SDK 34 for DB tests) |
 | `./gradlew assembleDebug` (CI run 6) | **Passed** | `app/build/outputs/apk/debug/app-debug.apk`, 14,479,867 bytes, SHA-256 `9502456d67b6955e004c5ce662bc36e9d0c614325b078d131d3f60b93270df64` |
 | APK badging (aapt2) | Passed | package `io.github.funnyhell.daymark.debug`, versionCode 1, versionName `0.1.0-debug`, targetSdk 35, compileSdk 35, launchable `MainActivity` |
-| Instrumented tests (emulator API 34) | See latest CI run | Run 6 could not boot the emulator (runner out of disk); fixed in commit 788bdc6 |
-| Emulator UI smoke test | See latest CI run | `.github/scripts/ui_smoke.py`, screenshots on branch `ci-screens` |
+| Instrumented tests (emulator API 34, Pixel 6 profile) | **Passed: 2/2** | `NotificationActionInstrumentedTest` (duplicate TAKEN broadcast to the real receiver → one event, stock 10→9; late snooze ignored) and `HabitFlowInstrumentedTest` (onboarding → create habit → Done on Today → completion persisted) |
+| Emulator UI smoke test | **Passed** | `.github/scripts/ui_smoke.py`: onboarding, two habits, one medication, Taken (with Undo snackbar), Done, History, Settings; no crash in logcat. Screenshots on branch `ci-screens` |
 | Physical-device smoke test | Not run | |
 
 ## 5. Known issues and blockers
@@ -70,6 +70,8 @@ Exit criteria and state:
 - **No local Android build in the cloud sandbox.** Impact: builds only through CI. Evidence: `dl.google.com` and `maven.google.com` (redirects to `dl.google.com`) are denied by the sandbox proxy. Next action: allow these hosts in the environment, or keep using CI.
 - **Not verified on a physical Samsung device**: notification delivery/actions, exact alarm timing, reboot behaviour, battery restrictions, widget interactions and refresh.
 - Snooze length (30 min) and missed window (3 h) are fixed constants.
+- A medication created during the day shows its earlier doses of that day (e.g. 08:00 when created at 15:00) as "Missed" until recorded; this follows the documented rule but may surprise users.
+- In the emulator, `uiautomator dump` did not list the Extended FAB ("New habit") on the Habits screen although it is drawn and works (Compose tests can click it). TalkBack reachability of the FAB must be checked on the device; the same action is also available from the empty state and the Today screen.
 - Backups are not encrypted.
 
 ## 6. Recent completed work

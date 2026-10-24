@@ -23,6 +23,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import io.github.funnyhell.daymark.domain.common.startOfWeek
 import io.github.funnyhell.daymark.ui.format.Formats
 import java.time.DayOfWeek
@@ -59,8 +60,16 @@ fun Heatmap(
         Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
             for (i in 0 until 7) {
                 val day = firstDayOfWeek.plus(i.toLong())
-                Box(Modifier.size(width = 22.dp, height = 16.dp), contentAlignment = Alignment.CenterStart) {
-                    if (i % 2 == 0) Text(Formats.dayShort(context, day).take(2), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Box(Modifier.size(width = 28.dp, height = 16.dp), contentAlignment = Alignment.CenterStart) {
+                    if (i % 2 == 0) {
+                        Text(
+                            Formats.dayShort(context, day).take(2),
+                            style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, lineHeight = 12.sp),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 1,
+                            softWrap = false,
+                        )
+                    }
                 }
             }
         }

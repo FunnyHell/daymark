@@ -2,7 +2,7 @@
 
 **Last updated:** 2026-10-24
 **Current milestone:** M1 — Core local MVP (0.1.0 debug)
-**Overall state:** Implemented; verified by automated tests, CI build and an emulator smoke test; **not verified on a physical device**
+**Overall state:** Implemented (feedback round 2 applied); verified by automated tests, CI build and an emulator smoke test; **not verified on a physical device**
 
 ## 1. Current milestone
 
@@ -79,7 +79,7 @@ Exit criteria and state:
 
 ## 6. Recent completed work
 
-- 2026-10-24 (feedback round 2): `USE_EXACT_ALARM` so reminders are not deferred with the screen off (ADR-025); multi-select with bulk actions in habit and medication lists; press ripple clipped to the rounded card; tap-to-toggle marks on Today (habit ring, dose circle) and in widgets with an explicit target state (ADR-026); widget settings observed (Streak widget no longer stuck on "choose a habit"); new week/month progress rule, rings sized to the widget, calendar with a sector ring per day, per-widget accent colour and background opacity (ADR-027). New tests: `setDone`/`undoCompletion`, `undoTaken`, `periodProgress` (the reported 2-habit case → 50%), `dayFractions` for past days. CI run 40118132792 (commit a585df1): in progress at the time of writing.
+- 2026-10-24 (feedback round 2): `USE_EXACT_ALARM` so reminders are not deferred with the screen off (ADR-025); multi-select with bulk actions in habit and medication lists; press ripple clipped to the rounded card; tap-to-toggle marks on Today (habit ring, dose circle) and in widgets with an explicit target state (ADR-026); widget settings observed (Streak widget no longer stuck on "choose a habit"); new week/month progress rule, rings sized to the widget, calendar with a sector ring per day, per-widget accent colour and background opacity (ADR-027). New tests: `setDone`/`undoCompletion`, `undoTaken`, `periodProgress` (the reported 2-habit case → 50%), `dayFractions` for past days. CI run 40118132792 (commit a585df1) failed to compile (when-branch parse error); fixed in b083453. CI run 40120588398 (commit b083453): 92 unit/DB tests passed, debug APK built (SHA-256 `aa1a2bedac45e64bd2bf0e5e54853b340193b2b95a648a503fefa7c2cd07b660`, 14,645,178 bytes), emulator instrumented tests 2/2 passed, smoke test passed including marking a dose and a habit by tapping the circle/ring and unmarking the habit. Widgets, colours/opacity, multi-select and screen-off reminders are **not verified on a device**.
 
 - 2026-10-24 (feedback round 1): fixed blank screen after deleting (double back navigation), permission prompt that opened system settings when permission was already granted, silent notifications (new v2 channels with sound/vibration), long-lived snackbars (short, closable, swipeable). Added package-size presets, clearer habit types (radio list with examples; "Quit a habit" with "Slip"), swipe/long-press list actions, "Take all" for doses at the same time, compact widget check controls, medications widget grouped by time with "mark all", new Progress / Calendar / Streak widgets, per-widget settings and picker previews. CI run 40113713487 (commit ddfa7e7): unit tests passed, debug APK built (SHA-256 `501fa40e828077226bbd7ded26980f20771abc456337f8e9bb950de8837b6ccf`), emulator instrumented tests 2/2 and smoke test passed. Widgets, sound and swipe gestures are **not verified on a device**; the emulator smoke test does not place widgets.
 

@@ -301,7 +301,6 @@ fun HabitEditScreen(
                         label = { Text(stringResource(R.string.field_interval_days)) },
                         singleLine = true,
                         isError = vm.recurrenceInvalid,
-                        supportingText = { Text(stringResource(R.string.interval_help)) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp).fillMaxWidth(),
                     )

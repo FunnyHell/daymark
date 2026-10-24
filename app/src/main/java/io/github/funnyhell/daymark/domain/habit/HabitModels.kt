@@ -20,7 +20,7 @@ enum class HabitType {
     /** A number of completions per week, on any days. */
     WEEKLY_GOAL,
 
-    /** Avoiding a behaviour; lapses are recorded explicitly. */
+    /** Avoiding a behavior; lapses are recorded explicitly. */
     ABSTINENCE,
 }
 

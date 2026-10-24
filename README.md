@@ -4,7 +4,7 @@ Daymark is a local-first Android application for habit tracking and medication m
 
 It combines flexible habit tracking, medication reminders with actionable notifications, intake history, inventory tracking, statistics and home-screen widgets. It works without an account, a subscription, advertisements, or any network connection.
 
-> **Project status:** 0.1.0 MVP, debug build. Automated tests pass in CI; behaviour on a physical Samsung phone has **not** been verified yet. See [`docs/DEVELOPMENT_STATUS.md`](docs/DEVELOPMENT_STATUS.md).
+> **Project status:** 0.1.0 MVP, debug build. Automated tests pass in CI; behavior on a physical Samsung phone has **not** been verified yet. See [`docs/DEVELOPMENT_STATUS.md`](docs/DEVELOPMENT_STATUS.md).
 
 Daymark records what you enter and reminds you at the times you choose. It does not give medical advice and is not a substitute for a doctor or pharmacist.
 
@@ -19,7 +19,7 @@ Daymark records what you enter and reminds you at the times you choose. It does 
 - Schedule changes create a new schedule version from today; past days keep their original rules.
 
 **Medications**
-- Name, strength/form, notes, colour; one or more dose times per day on chosen weekdays; a free-text dose description and a "uses from stock" amount per dose.
+- Name, strength/form, notes, color; one or more dose times per day on chosen weekdays; a free-text dose description and a "uses from stock" amount per dose.
 - Tap the circle on the left of a dose to mark it taken, tap again to unmark it (stock is restored). Skip / Snooze 30 min from the app and the notification; Taken also from the notification and the widget (where it can be unmarked too); "Take all" for doses due at the same time. Every action is validated and idempotent: repeated taps or duplicated notification actions record once.
 - Missed doses are derived (nothing recorded within 3 hours), never invented; late doses can still be recorded.
 - Pause/resume a schedule without false missed doses; corrections with exact inventory reconciliation.
@@ -30,7 +30,7 @@ Daymark records what you enter and reminds you at the times you choose. It does 
 **Reminders and widgets**
 - Exact alarms (`USE_EXACT_ALARM` on Android 13+, the "Alarms & reminders" permission on Android 12; falls back to inexact), rebuilt after reboot, app update, time and time-zone changes, plus a 6-hourly safety net. Reminders play the default notification sound and vibrate (change it in Settings → Reminders → Sound and vibration).
 - Lock-screen privacy: medication and habit names hidden on the lock screen by default.
-- Five home-screen widgets (Jetpack Glance), each with its own settings including accent colour (system or fixed) and background opacity (long-press the widget → Settings on Android 12+):
+- Five home-screen widgets (Jetpack Glance), each with its own settings including accent color (system or fixed) and background opacity (long-press the widget → Settings on Android 12+):
   - **Habits** — today's habits with a compact tick or radio button that marks and unmarks;
   - **Medications** — today's doses grouped by time, tap to mark/unmark, "mark all" for a time group;
   - **Progress** — rings for today (one sector per habit, done/due count), this week and this month (average progress per habit, unfinished weekly goals included); rings scale with the widget;
@@ -81,7 +81,7 @@ CI (`.github/workflows/android.yml`) runs the unit tests, builds and inspects th
 
 ## Known limitations
 
-- Not yet verified on a physical Samsung device: notification delivery and actions, exact alarm timing, behaviour after reboot or with battery optimisation, widgets.
+- Not yet verified on a physical Samsung device: notification delivery and actions, exact alarm timing, behavior after reboot or with battery optimisation, widgets.
 - Reminder times are local wall-clock times; after travelling to another time zone a 08:00 dose is reminded at 08:00 local time.
 - Snooze is fixed at 30 minutes; the missed window is fixed at 3 hours.
 - Widget buttons record only simple actions (habit done / +1 and unmark, dose taken and unmark, all doses of a time taken). Amounts, slips, skips and snoozes are recorded in the app or the notification.
@@ -94,7 +94,7 @@ CI (`.github/workflows/android.yml`) runs the unit tests, builds and inspects th
 2. Allow notifications; in Settings → Daymark → Reminders, open "Alarms & reminders" and allow it.
 3. Lock the phone and wait: does the medication reminder arrive on time, with names hidden on the lock screen?
 4. Press **Taken** in the notification; then open the app: one "Taken" record, stock reduced by exactly one. Repeat with **Skip** and **Snooze 30 min** on other doses (snooze must bring the reminder back ~30 min later).
-5. Add the widgets to the home screen; tap a tick on the widget, then tap it again to unmark; check the app shows the same state and the widget updates after changes made in the app. Change a widget's colour and opacity in its settings.
+5. Add the widgets to the home screen; tap a tick on the widget, then tap it again to unmark; check the app shows the same state and the widget updates after changes made in the app. Change a widget's color and opacity in its settings.
 6. Reboot the phone with a dose scheduled after the reboot; check the reminder still arrives.
 7. Set Daymark's battery usage to "Unrestricted" if reminders are late; note whether it was needed.
 8. Export a backup, delete something, import the backup, confirm everything is back.

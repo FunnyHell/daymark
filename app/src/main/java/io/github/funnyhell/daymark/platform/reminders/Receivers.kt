@@ -10,12 +10,15 @@ import io.github.funnyhell.daymark.platform.widgets.WidgetUpdater
 /** Fired by the single reminder alarm. */
 class ReminderAlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        if (intent.action != ACTION_ALARM) return
-        goAsyncWork { context.container.reminders.onAlarm() }
+        when (intent.action) {
+            ACTION_ALARM -> goAsyncWork { context.container.reminders.onAlarm() }
+            ACTION_TEST -> context.container.notifier.showTest()
+        }
     }
 
     companion object {
         const val ACTION_ALARM = "io.github.funnyhell.daymark.action.REMINDER_ALARM"
+        const val ACTION_TEST = "io.github.funnyhell.daymark.action.TEST_REMINDER"
     }
 }
 

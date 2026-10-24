@@ -256,12 +256,6 @@ fun HabitDetailScreen(
                     StatTile(state.rate30?.let { "${(it * 100).toInt()}%" } ?: "—", stringResource(R.string.stat_rate_30), Modifier.weight(1f))
                     StatTile(state.totalText, stringResource(if (habit.type == HabitType.ABSTINENCE) R.string.stat_lapses else R.string.stat_total), Modifier.weight(1f))
                 }
-                Text(
-                    stringResource(R.string.stats_rules_note),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp),
-                )
             }
             item { SectionHeader(stringResource(R.string.section_calendar)) }
             item {

@@ -142,15 +142,6 @@ fun MedicationsScreen(
             if (selection.isNotEmpty()) {
                 // Room for the selection bar drawn over the list.
                 item(key = "selection") { Spacer(Modifier.height(64.dp)) }
-            } else if (state.items.isNotEmpty()) {
-                item(key = "hint") {
-                    Text(
-                        stringResource(R.string.list_actions_hint),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp),
-                    )
-                }
             }
             for ((status, title) in listOf(LifecycleStatus.ACTIVE to R.string.status_active, LifecycleStatus.PAUSED to R.string.status_paused)) {
                 val list = state.items.filter { it.status == status }
@@ -168,16 +159,6 @@ fun MedicationsScreen(
                     }
                 }
                 if (showArchived) items(archived, key = { it.id }) { MedicationRow(it, vm.actionsFor(it), selection, toggle, onOpen) }
-            }
-            if (state.items.isNotEmpty()) {
-                item {
-                    Text(
-                        stringResource(R.string.medical_disclaimer),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(20.dp),
-                    )
-                }
             }
         }
         if (selection.isNotEmpty()) {

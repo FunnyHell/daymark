@@ -63,7 +63,7 @@ import io.github.funnyhell.daymark.ui.common.SectionHeader
 import io.github.funnyhell.daymark.ui.theme.DaymarkTheme
 import kotlinx.coroutines.launch
 
-private enum class WidgetKind { HABITS, MEDICATIONS, PROGRESS, CALENDAR, STREAK }
+private enum class WidgetKind { HABITS, MEDICATIONS, TODAY, PROGRESS, CALENDAR, STREAK }
 
 /**
  * Settings for one placed widget. Opened when a widget is added (on Android 12+ it is optional and can be reopened
@@ -74,7 +74,7 @@ class WidgetConfigActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val appWidgetId = intent?.extras?.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
             ?: AppWidgetManager.INVALID_APPWIDGET_ID
-        // Until the user saves, adding the widget counts as cancelled.
+        // Until the user saves, adding the widget counts as canceled.
         setResult(RESULT_CANCELED, Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId))
         if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
             finish()
@@ -82,6 +82,7 @@ class WidgetConfigActivity : ComponentActivity() {
         }
         val kind = when (AppWidgetManager.getInstance(this).getAppWidgetInfo(appWidgetId)?.provider?.className) {
             MedicationWidgetReceiver::class.java.name -> WidgetKind.MEDICATIONS
+            TodayWidgetReceiver::class.java.name -> WidgetKind.TODAY
             ProgressWidgetReceiver::class.java.name -> WidgetKind.PROGRESS
             CalendarWidgetReceiver::class.java.name -> WidgetKind.CALENDAR
             StreakWidgetReceiver::class.java.name -> WidgetKind.STREAK
@@ -159,15 +160,6 @@ private fun ConfigScreen(
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(horizontal = 20.dp),
                     )
-                }
-            }
-            if (kind == WidgetKind.PROGRESS) {
-                SectionHeader(stringResource(R.string.widget_rings))
-                Column(Modifier.selectableGroup()) {
-                    Choice(stringResource(R.string.widget_rings_today), prefs.progressRange == ProgressRange.TODAY) { prefs = prefs.copy(progressRange = ProgressRange.TODAY) }
-                    Choice(stringResource(R.string.widget_rings_all), prefs.progressRange == ProgressRange.TODAY_WEEK_MONTH) {
-                        prefs = prefs.copy(progressRange = ProgressRange.TODAY_WEEK_MONTH)
-                    }
                 }
             }
             if (kind == WidgetKind.CALENDAR || kind == WidgetKind.STREAK) {

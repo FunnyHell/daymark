@@ -21,28 +21,20 @@
     <string name="more_actions">More actions</string>
     <string name="pick_time">Choose time</string>
     <string name="note_optional">Note (optional)</string>
-    <string name="cd_color">Colour %1$d</string>
+    <string name="cd_color">Color %1$d</string>
     <string name="cd_selected">selected</string>
 
     <!-- Onboarding -->
-    <string name="onboarding_title">Welcome to Daymark</string>
-    <string name="onboarding_subtitle">Habits, medication reminders and stock in one calm place.</string>
-    <string name="onboarding_habits_title">Habits your way</string>
-    <string name="onboarding_habits_body">Daily, several times a day, weekly goals, custom days, amounts with units, and abstinence streaks.</string>
-    <string name="onboarding_meds_title">Medication schedules and stock</string>
-    <string name="onboarding_meds_body">Record taken or skipped doses, correct mistakes, and see when a package runs low.</string>
-    <string name="onboarding_reminders_title">Reminders you can act on</string>
-    <string name="onboarding_reminders_body">Mark doses taken, skip or snooze from the notification or a home-screen widget. Permissions are asked only when you set up a reminder.</string>
-    <string name="onboarding_privacy_title">Private by default</string>
-    <string name="onboarding_privacy_body">No account, no ads, no tracking. Your data stays on this phone unless you export it.</string>
+    <string name="onboarding_title">Daymark</string>
+    <string name="onboarding_subtitle">Habits, medications and reminders. Private and offline.</string>
     <string name="onboarding_start">Get started</string>
-    <string name="medical_disclaimer">Daymark records what you enter and reminds you at the times you choose. It does not give medical advice and is not a substitute for your doctor or pharmacist.</string>
+    <string name="medical_disclaimer">Daymark only reminds and records. It is not medical advice.</string>
 
     <!-- Today -->
-    <string name="today_progress">%1$d of %2$d done today</string>
+    <string name="today_progress">%1$d of %2$d done</string>
     <string name="today_empty_title">Nothing here yet</string>
-    <string name="today_empty_body">Add a habit or a medication to see what is due today.</string>
-    <string name="today_no_habits">No habits are scheduled for today.</string>
+    <string name="today_empty_body">Add a habit or medication to get started.</string>
+    <string name="today_no_habits">No habits today.</string>
     <string name="section_medications">Medications</string>
     <string name="section_habits">Habits</string>
     <string name="low_stock_banner">Low stock: %1$s — %2$s</string>
@@ -50,10 +42,10 @@
     <string name="new_medication">New medication</string>
 
     <!-- Permissions -->
-    <string name="perm_notifications_title">Reminders are switched off</string>
-    <string name="perm_notifications_body">Allow notifications so Daymark can remind you about doses and habits. Nothing is recorded automatically.</string>
-    <string name="perm_exact_title">Reminders may arrive late</string>
-    <string name="perm_exact_body">Without the “Alarms &amp; reminders” permission Android may delay reminders by several minutes.</string>
+    <string name="perm_notifications_title">Notifications are off</string>
+    <string name="perm_notifications_body">Allow them to get reminders.</string>
+    <string name="perm_exact_title">Reminders may be late</string>
+    <string name="perm_exact_body">Allow “Alarms &amp; reminders” for on-time reminders.</string>
     <string name="perm_allow">Allow</string>
     <string name="perm_open_settings">Open settings</string>
 
@@ -66,9 +58,9 @@
     <string name="type_check_help">Read, stretch, journal</string>
     <string name="type_multi_help">3 stretching breaks</string>
     <string name="type_quantity_help">2000 ml of water, 30 min of study</string>
-    <string name="type_weekly_help">Gym 3 times a week, any days</string>
-    <string name="type_abstinence_help">Every day counts as clean; mark only a slip</string>
-    <string name="type_locked">type can\'t be changed after creation</string>
+    <string name="type_weekly_help">Gym 3 times a week</string>
+    <string name="type_abstinence_help">Mark only slips</string>
+    <string name="type_locked">can\'t be changed</string>
     <string name="recurrence_daily">Every day</string>
     <string name="recurrence_weekdays">Specific days</string>
     <string name="recurrence_interval">Every N days</string>
@@ -77,9 +69,8 @@
     <string name="schedule_abstinence">Since %1$s</string>
     <string name="schedule_with_target">%1$s · %2$s</string>
     <string name="times_per_day">%1$s times a day</string>
-    <string name="interval_help">Counted from the start date.</string>
-    <string name="schedule_change_note">Changes apply from today; past days keep the old schedule.</string>
-    <string name="start_locked">The start date can\'t be changed once something has been recorded.</string>
+    <string name="schedule_change_note">Applies from today.</string>
+    <string name="start_locked">Can\'t be changed after the first entry.</string>
 
     <!-- Habit editor -->
     <string name="edit_habit">Edit habit</string>
@@ -94,25 +85,25 @@
     <string name="field_interval_days">Repeat every (days)</string>
     <string name="field_start_date">Start date</string>
     <string name="field_reminder">Reminder</string>
-    <string name="field_widget">Home-screen widget</string>
+    <string name="field_widget">Widget</string>
     <string name="reminder_off">No reminder</string>
-    <string name="show_on_widget">Show on the habit widget</string>
+    <string name="show_on_widget">Show on the habits widget</string>
     <string name="error_name_required">Enter a name</string>
     <string name="error_unit_required">Enter a unit</string>
     <string name="error_target_multi">Enter a whole number from 2 to 50</string>
     <string name="error_target_weekly">Enter a whole number of at least 1</string>
     <string name="error_target_quantity">Enter a number greater than 0</string>
-    <string name="error_recurrence">Choose at least one day, or an interval from 2 to 365 days</string>
+    <string name="error_recurrence">Choose a day, or an interval of 2–365 days</string>
     <string name="error_number">Enter a valid number</string>
 
     <!-- Habit states -->
     <string name="state_done">Done</string>
-    <string name="state_not_done">Not done yet</string>
+    <string name="state_not_done">Not done</string>
     <string name="state_skipped">Skipped</string>
     <string name="progress_count">%1$s of %2$s</string>
     <string name="progress_amount">%1$s / %2$s %3$s</string>
     <string name="progress_week">%1$s of %2$s this week</string>
-    <string name="abstinence_lapsed_today">Slip marked today</string>
+    <string name="abstinence_lapsed_today">Slip today</string>
     <string name="best_streak_days">Best: %1$d days</string>
     <string name="action_done">Done</string>
     <string name="action_plus_one">+1</string>
@@ -123,16 +114,16 @@
     <string name="add_amount">Add amount</string>
     <string name="add_completion">Add completion</string>
     <string name="lapse_title">Mark a slip for %1$s?</string>
-    <string name="lapse_body">The streak starts again tomorrow. Earlier streaks stay in history.</string>
+    <string name="lapse_body">Your streak restarts tomorrow.</string>
 
     <string name="day_future">Future</string>
-    <string name="day_before_start">Before the start date</string>
+    <string name="day_before_start">Before start</string>
     <string name="day_paused">Paused</string>
     <string name="day_not_scheduled">Not scheduled</string>
     <string name="day_done">Done</string>
     <string name="day_partial">Partly done</string>
     <string name="day_skipped">Skipped</string>
-    <string name="day_pending">Not done yet</string>
+    <string name="day_pending">Not done</string>
     <string name="day_missed">Missed</string>
     <string name="day_lapsed">Slip</string>
 
@@ -144,12 +135,12 @@
     <string name="corrected">corrected</string>
     <string name="correct">Correct</string>
     <string name="correct_title">Correct this entry?</string>
-    <string name="correct_habit_body">The entry stays in the history, marked as corrected, and no longer counts towards progress or streaks.</string>
-    <string name="correct_med_body">The record stays in the history, marked as corrected. If it was a taken dose, the stock it used is added back once.</string>
+    <string name="correct_habit_body">It stays in history as corrected and no longer counts.</string>
+    <string name="correct_med_body">It stays in history as corrected. A taken dose returns its stock.</string>
 
     <!-- Habit list and detail -->
     <string name="habits_empty_title">No habits yet</string>
-    <string name="habits_empty_body">Create your first habit. You can pause or archive it later without losing its history.</string>
+    <string name="habits_empty_body">Create your first habit.</string>
     <string name="status_active">Active</string>
     <string name="status_paused">Paused</string>
     <string name="status_archived">Archived</string>
@@ -157,23 +148,22 @@
     <string name="pause">Pause</string>
     <string name="resume">Resume</string>
     <string name="archive">Archive</string>
-    <string name="unarchive">Restore from archive</string>
+    <string name="unarchive">Restore</string>
     <string name="delete_permanently">Delete permanently</string>
     <string name="archive_title">Archive?</string>
-    <string name="archive_body">The habit leaves your daily list and stops reminding you. Its history stays available and you can restore it.</string>
-    <string name="archive_med_body">The medication leaves your daily list and its reminders stop. History and stock records are kept.</string>
+    <string name="archive_body">It leaves Today and stops reminding. History is kept.</string>
+    <string name="archive_med_body">It leaves Today and stops reminding. History is kept.</string>
     <string name="delete_title">Delete permanently?</string>
-    <string name="delete_habit_body">This removes the habit and its entire history from this phone. Consider archiving instead. This can\'t be undone.</string>
-    <string name="delete_med_body">This removes the medication, its dose history and stock records from this phone. Consider archiving instead. This can\'t be undone.</string>
-    <string name="habit_paused_note">Paused — paused days are not counted as missed.</string>
-    <string name="habit_archived_note">Archived — history is kept.</string>
+    <string name="delete_habit_body">The habit and its history will be deleted. This can\'t be undone.</string>
+    <string name="delete_med_body">The medication, its history and stock will be deleted. This can\'t be undone.</string>
+    <string name="habit_paused_note">Paused</string>
+    <string name="habit_archived_note">Archived</string>
     <string name="stat_current_streak">Current streak</string>
-    <string name="stat_clean_streak">Current clean streak</string>
+    <string name="stat_clean_streak">Clean streak</string>
     <string name="stat_best_streak">Best streak</string>
-    <string name="stat_rate_30">Completion, last 30 days</string>
-    <string name="stat_total">Total recorded</string>
+    <string name="stat_rate_30">Last 30 days</string>
+    <string name="stat_total">Total</string>
     <string name="stat_lapses">Slips</string>
-    <string name="stats_rules_note">Only scheduled days count. Paused and skipped days don\'t break a streak.</string>
     <string name="section_calendar">Calendar</string>
     <string name="section_weeks">Weeks</string>
     <string name="section_clean_runs">Clean streaks</string>
@@ -188,30 +178,29 @@
 
     <!-- Medications -->
     <string name="meds_empty_title">No medications yet</string>
-    <string name="meds_empty_body">Add a medication with the dose times and amounts you were given. Daymark only reminds and records.</string>
+    <string name="meds_empty_body">Add your first medication.</string>
     <string name="edit_medication">Edit medication</string>
-    <string name="field_med_name">Medication name</string>
-    <string name="field_strength">Strength or form (optional)</string>
+    <string name="field_med_name">Name</string>
+    <string name="field_strength">Strength (optional)</string>
     <string name="field_notes">Notes (optional)</string>
     <string name="field_dose_times">Dose times</string>
-    <string name="field_dose_label">Dose description</string>
-    <string name="field_quantity">Uses from stock</string>
+    <string name="field_dose_label">Dose</string>
+    <string name="field_quantity">From stock</string>
     <string name="field_days">Days</string>
     <string name="add_dose_time">Add a dose time</string>
-    <string name="remove_dose">Remove this dose time</string>
-    <string name="dose_help">Description is shown in the reminder. “Uses from stock” is how much one dose removes.</string>
-    <string name="dose_default">Scheduled dose</string>
+    <string name="remove_dose">Remove</string>
+    <string name="dose_default">Dose</string>
     <string name="error_duplicate_time">Two doses have the same time</string>
-    <string name="error_dose_quantity">Each dose needs a valid amount (0 or more)</string>
+    <string name="error_dose_quantity">Enter an amount of 0 or more</string>
     <string name="error_days_required">Choose at least one day</string>
-    <string name="med_edit_tomorrow_note">A dose was already recorded today, so schedule changes will apply from tomorrow.</string>
+    <string name="med_edit_tomorrow_note">A dose was recorded today, so changes apply from tomorrow.</string>
     <string name="med_no_schedule">No scheduled doses</string>
-    <string name="schedule_since">Current schedule since %1$s</string>
-    <string name="med_paused_note">Paused — no reminders, and paused days are not counted as missed.</string>
-    <string name="med_archived_note">Archived — history and stock records are kept.</string>
+    <string name="schedule_since">Since %1$s</string>
+    <string name="med_paused_note">Paused</string>
+    <string name="med_archived_note">Archived</string>
     <string name="pause_reminders">Pause schedule</string>
     <string name="section_recent_doses">Last 7 days</string>
-    <string name="no_recent_doses">No scheduled doses in the last 7 days.</string>
+    <string name="no_recent_doses">No doses in the last 7 days.</string>
     <string name="section_event_log">Event log</string>
     <string name="snoozed_until">Snoozed until %1$s</string>
 
@@ -233,33 +222,32 @@
     <string name="section_inventory">Inventory</string>
     <string name="section_inventory_log">Stock changes</string>
     <string name="track_inventory">Track stock</string>
-    <string name="field_inventory_unit">Stock unit (e.g. tablets, ml)</string>
+    <string name="field_inventory_unit">Unit (tablets, ml…)</string>
     <string name="default_unit">tablets</string>
     <string name="field_current_stock">Current stock</string>
-    <string name="field_counted_stock">Counted stock (optional)</string>
-    <string name="current_stock_hint">Recorded now: %1$s %2$s. Leave empty to keep it.</string>
-    <string name="field_threshold">Low-stock warning at (optional)</string>
-    <string name="low_stock_alerts">Notify me when stock is low</string>
+    <string name="field_counted_stock">Counted stock</string>
+    <string name="current_stock_hint">Now %1$s %2$s</string>
+    <string name="field_threshold">Warn at (optional)</string>
+    <string name="low_stock_alerts">Low-stock notification</string>
     <string name="stock_left">%1$s %2$s left</string>
     <string name="low_stock_label">Low: %1$s</string>
-    <string name="low_stock_reached">At or below your low-stock threshold</string>
+    <string name="low_stock_reached">Running low</string>
     <string name="threshold_is">Warning at %1$s %2$s</string>
-    <string name="stock_estimate_note">Based on your records.</string>
     <string name="add_package">Add package</string>
-    <string name="set_stock">Set counted stock</string>
-    <string name="package_quantity">Quantity in package (%1$s)</string>
-    <string name="counted_quantity">Counted quantity (%1$s)</string>
+    <string name="set_stock">Set stock</string>
+    <string name="package_quantity">In package (%1$s)</string>
+    <string name="counted_quantity">Counted (%1$s)</string>
     <string name="adj_initial">Initial stock</string>
     <string name="adj_package">Package added</string>
-    <string name="adj_correction">Stock count correction</string>
+    <string name="adj_correction">Count correction</string>
     <string name="adj_intake">Dose taken</string>
-    <string name="adj_reversal">Taken dose corrected</string>
+    <string name="adj_reversal">Dose corrected</string>
 
     <!-- History -->
     <string name="section_activity">Activity</string>
     <string name="section_summaries">Summaries</string>
     <string name="section_per_habit">Per habit</string>
-    <string name="section_quantities">Amounts, last 14 days</string>
+    <string name="section_quantities">Amounts, 14 days</string>
     <string name="section_adherence">Recorded doses</string>
     <string name="heat_nothing_due">nothing due</string>
     <string name="heat_done_of">%1$d of %2$d done</string>
@@ -267,22 +255,20 @@
     <string name="last_week">Last week</string>
     <string name="this_month">This month</string>
     <string name="last_month">Last month</string>
-    <string name="summary_rules_note">Share of scheduled habits done. Paused and skipped days are not counted.</string>
     <string name="current_best">Now %1$s, best %2$d</string>
     <string name="rate_30_short">%1$d%% in 30 days</string>
     <string name="lapses_count">%1$d slips</string>
     <string name="total_amount">total %1$s %2$s</string>
     <string name="quantity_chart_caption">Line shows the daily target of %1$s %2$s</string>
     <string name="history_no_habits_title">No habit history yet</string>
-    <string name="history_no_habits_body">Statistics appear once you track a habit.</string>
+    <string name="history_no_habits_body">Track a habit to see stats.</string>
     <string name="history_no_meds_title">No medication history yet</string>
-    <string name="history_no_meds_body">Recorded doses will appear here.</string>
+    <string name="history_no_meds_body">Recorded doses appear here.</string>
     <string name="last_7_days">Last 7 days</string>
     <string name="last_30_days">Last 30 days</string>
     <string name="adherence_counts">Taken %1$d · Skipped %2$d · Missed %3$d</string>
-    <string name="adherence_rate">%1$d%% of past doses recorded as taken</string>
-    <string name="not_enough_data">No past doses in this period</string>
-    <string name="adherence_note">“Missed” means nothing was recorded within 3 hours. Paused days have no doses.</string>
+    <string name="adherence_rate">%1$d%% taken</string>
+    <string name="not_enough_data">No past doses</string>
 
     <!-- Settings -->
     <string name="settings_appearance">Appearance</string>
@@ -290,42 +276,40 @@
     <string name="theme_system">System</string>
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>
-    <string name="settings_dynamic_color">Colours from wallpaper</string>
-    <string name="settings_dynamic_color_desc">Use the system colour palette (Android 12+)</string>
+    <string name="settings_dynamic_color">Wallpaper colors</string>
+    <string name="settings_dynamic_color_desc">Android 12+</string>
     <string name="settings_calendar">Calendar</string>
     <string name="settings_week_start">Week starts on</string>
     <string name="settings_reminders">Reminders</string>
     <string name="settings_med_reminders">Medication reminders</string>
     <string name="settings_habit_reminders">Habit reminders</string>
     <string name="settings_notifications">Notifications</string>
-    <string name="settings_exact_alarms">Alarms &amp; reminders (exact timing)</string>
+    <string name="settings_exact_alarms">Alarms &amp; reminders</string>
     <string name="status_allowed">Allowed</string>
-    <string name="status_not_allowed">Not allowed — no reminders will be shown</string>
-    <string name="status_not_allowed_exact">Not allowed — reminders can be delayed</string>
-    <string name="settings_battery_note">Samsung and some other phones can stop background apps. If reminders arrive late or not at all, set Daymark\'s battery usage to “Unrestricted” in App info → Battery, and don\'t put it in “Sleeping apps”.</string>
-    <string name="settings_open_app_info">Open App info</string>
+    <string name="status_not_allowed">Off — no reminders</string>
+    <string name="status_not_allowed_exact">Off — reminders may be late</string>
     <string name="settings_privacy">Privacy</string>
-    <string name="settings_hide_names">Hide names on the lock screen</string>
-    <string name="settings_hide_names_desc">Notifications show “Reminder” on a locked screen instead of medication or habit names.</string>
+    <string name="settings_hide_names">Hide names on lock screen</string>
+    <string name="settings_hide_names_desc">Shows “Reminder” instead</string>
     <string name="settings_data">Your data</string>
     <string name="settings_export">Export backup</string>
-    <string name="settings_export_desc">Saves all habits, medications, history, stock and settings to a JSON file. The file is not encrypted; keep it private.</string>
+    <string name="settings_export_desc">JSON file, not encrypted</string>
     <string name="settings_import">Import backup</string>
-    <string name="settings_import_desc">Checks the file first. If it is valid, it replaces all current data after you confirm.</string>
+    <string name="settings_import_desc">Replaces all data after a check</string>
     <string name="settings_about">About</string>
     <string name="about_version">Version %1$s (%2$s)</string>
-    <string name="about_privacy">Works offline. No account, no ads, no analytics. Nothing leaves this phone unless you export it.</string>
+    <string name="about_privacy">Offline. No account, ads or analytics.</string>
     <string name="import_confirm_title">Replace all data?</string>
-    <string name="import_confirm_body">The backup is valid and contains %1$d records (exported %2$s). Importing replaces everything currently in Daymark. You can export your current data first.</string>
+    <string name="import_confirm_body">%1$d records (exported %2$s). This replaces all current data.</string>
     <string name="import_replace">Replace</string>
     <string name="import_export_first">Export first</string>
     <string name="import_invalid_title">Backup not imported</string>
-    <string name="import_invalid_body">The file was checked and nothing was changed:</string>
+    <string name="import_invalid_body">Nothing was changed:</string>
 
     <!-- Messages -->
     <string name="msg_taken">%1$s recorded as taken</string>
     <string name="msg_skipped">%1$s recorded as skipped</string>
-    <string name="msg_insufficient_stock">Stock was lower than the dose — please update the count.</string>
+    <string name="msg_insufficient_stock">Stock was lower than the dose. Update the count.</string>
     <string name="msg_already_recorded">This dose was already recorded</string>
     <string name="msg_stale_dose">This dose is no longer part of the schedule</string>
     <string name="msg_future_dose">Future doses can\'t be recorded yet</string>
@@ -336,7 +320,7 @@
     <string name="msg_recorded">Recorded</string>
     <string name="msg_already_done">Already done</string>
     <string name="msg_future_day">Future days can\'t be recorded</string>
-    <string name="msg_before_start">That day is before the habit\'s start date</string>
+    <string name="msg_before_start">Before the habit\'s start date</string>
     <string name="msg_paused_day">That day is paused</string>
     <string name="msg_archived">Archived items can\'t be recorded</string>
     <string name="msg_paused">Paused</string>
@@ -353,32 +337,31 @@
 
     <!-- Notifications -->
     <string name="channel_medication">Medication reminders</string>
-    <string name="channel_medication_desc">Scheduled dose reminders with Taken, Skip and Snooze actions</string>
+    <string name="channel_medication_desc">Dose reminders</string>
     <string name="channel_habit">Habit reminders</string>
-    <string name="channel_habit_desc">Reminders for habits that are not done yet</string>
+    <string name="channel_habit_desc">Habit reminders</string>
     <string name="channel_stock">Low stock</string>
-    <string name="channel_stock_desc">Warnings when a medication reaches your low-stock threshold</string>
+    <string name="channel_stock_desc">Low-stock warnings</string>
     <string name="notif_med_title">Time for %1$s</string>
-    <string name="notif_med_text">%1$s · scheduled %2$s</string>
+    <string name="notif_med_text">%1$s · %2$s</string>
     <string name="notif_med_public_title">Medication reminder</string>
     <string name="notif_habit_title">%1$s</string>
-    <string name="notif_habit_text">Still to do today</string>
+    <string name="notif_habit_text">Not done yet</string>
     <string name="notif_habit_public_title">Habit reminder</string>
     <string name="notif_stock_title">Low stock: %1$s</string>
     <string name="notif_stock_text">%1$s %2$s left</string>
     <string name="notif_stock_public_title">Low stock reminder</string>
-    <string name="notif_public_text">Unlock to see details</string>
+    <string name="notif_public_text">Unlock to see</string>
 
     <!-- Widgets -->
     <string name="widget_habits_name">Daymark habits</string>
     <string name="widget_meds_name">Daymark medications</string>
-    <string name="widget_habit_description">Today\'s habits with a Done button</string>
-    <string name="widget_medication_description">Today\'s doses with a Taken button</string>
+    <string name="widget_habit_description">Today\'s habits</string>
+    <string name="widget_medication_description">Today\'s doses</string>
     <string name="widget_habits_title">Habits today</string>
     <string name="widget_meds_title">Doses today</string>
-    <string name="widget_habits_empty">Nothing scheduled today. Tap to open Daymark.</string>
-    <string name="widget_meds_empty">No doses today. Tap to open Daymark.</string>
-    <string name="widget_done">Done</string>
+    <string name="widget_habits_empty">Nothing today</string>
+    <string name="widget_meds_empty">No doses today</string>
     <string name="widget_done_cd">Mark %1$s done</string>
     <string name="widget_take_cd">Mark %1$s taken</string>
 
@@ -387,8 +370,8 @@
         <item quantity="other">%1$d days clean</item>
     </plurals>
     <plurals name="days_of_supply">
-        <item quantity="one">About %1$d day of supply at the current schedule</item>
-        <item quantity="other">About %1$d days of supply at the current schedule</item>
+        <item quantity="one">About %1$d day left</item>
+        <item quantity="other">About %1$d days left</item>
     </plurals>
     <plurals name="streak_days">
         <item quantity="one">%1$d-day streak</item>
@@ -407,18 +390,17 @@
         <item quantity="other">%1$d weeks</item>
     </plurals>
     <string name="settings_sound">Sound and vibration</string>
-    <string name="settings_sound_desc">Medication reminders play the default notification sound and vibrate. Change the sound in the system settings.</string>
+    <string name="settings_sound_desc">Choose the reminder sound</string>
     <string name="msg_deleted">Deleted</string>
-    <string name="list_actions_hint">Swipe right to pause, left to archive; long-press to select several.</string>
     <string name="dose_group">%1$s · %2$d doses</string>
     <string name="take_all">Take all</string>
     <string name="msg_taken_all">%1$d doses recorded as taken</string>
     <string name="widget_progress_name">Daymark progress</string>
     <string name="widget_calendar_name">Daymark calendar</string>
     <string name="widget_streak_name">Daymark streak</string>
-    <string name="widget_progress_description">Rings for today, this week and this month</string>
-    <string name="widget_calendar_description">This month as dots: fuller dots mean more done</string>
-    <string name="widget_streak_description">The streak of one habit, big</string>
+    <string name="widget_progress_description">Today, week and month</string>
+    <string name="widget_calendar_description">The month with a ring for each day</string>
+    <string name="widget_streak_description">One habit\'s streak</string>
     <string name="widget_today">Today</string>
     <string name="widget_week">Week</string>
     <string name="widget_month">Month</string>
@@ -427,14 +409,11 @@
     <string name="widget_calendar_cd">Calendar: %1$s</string>
     <string name="widget_take_all_cd">Mark all doses at %1$s taken</string>
     <string name="widget_settings_title">Widget settings</string>
-    <string name="widget_check_style">Check button</string>
-    <string name="widget_check_circle">Circle with a tick</string>
+    <string name="widget_check_style">Check</string>
+    <string name="widget_check_circle">Circle</string>
     <string name="widget_check_radio">Radio button</string>
     <string name="widget_hide_completed">Hide completed</string>
-    <string name="widget_habits_choice_hint">Which habits appear is set per habit: “Show on the habit widget” in its settings.</string>
-    <string name="widget_rings">Rings</string>
-    <string name="widget_rings_today">Today only (the ring fills the widget; resize it as you like)</string>
-    <string name="widget_rings_all">Today, week and month</string>
+    <string name="widget_habits_choice_hint">Pick habits in each habit\'s settings.</string>
     <string name="widget_habit">Habit</string>
     <string name="widget_all_habits">All habits</string>
     <string name="widget_no_habits">Create a habit first.</string>
@@ -450,13 +429,25 @@
     <string name="selected_count">%1$d selected</string>
     <string name="cd_unmark">Unmark %1$s</string>
     <string name="widget_today_count">Today %1$d/%2$d</string>
-    <string name="widget_color">Colour</string>
-    <string name="widget_color_system">System (wallpaper colours)</string>
+    <string name="widget_color">Color</string>
+    <string name="widget_color_system">System</string>
     <string name="widget_color_blue">Blue</string>
     <string name="widget_color_green">Green</string>
     <string name="widget_color_orange">Orange</string>
     <string name="widget_color_purple">Purple</string>
     <string name="widget_color_red">Red</string>
     <string name="widget_color_mono">Monochrome</string>
-    <string name="widget_bg_opacity">Background opacity: %1$d%%</string>
+    <string name="widget_bg_opacity">Background: %1$d%%</string>
+    <string name="perm_battery_title">Reminders may be late</string>
+    <string name="perm_battery_body">Let Daymark run without battery restrictions.</string>
+    <string name="settings_battery">Battery</string>
+    <string name="status_unrestricted">Unrestricted</string>
+    <string name="status_optimized">Optimized — reminders may be late</string>
+    <string name="settings_test_reminder">Test reminder</string>
+    <string name="settings_test_reminder_desc">Arrives in 1 minute. Lock the phone to check the sound.</string>
+    <string name="msg_test_scheduled">Test reminder in 1 minute</string>
+    <string name="notif_test_title">Test reminder</string>
+    <string name="notif_test_text">Reminders work</string>
+    <string name="widget_today_name">Daymark today</string>
+    <string name="widget_today_description">Today\'s progress ring</string>
 </resources>

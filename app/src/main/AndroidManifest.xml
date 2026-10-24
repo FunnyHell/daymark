@@ -10,6 +10,8 @@
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- Lets the user exempt Daymark from battery optimization from a system dialog (Settings → Battery). -->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
@@ -76,6 +78,18 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/medication_widget_info" />
+        </receiver>
+
+        <receiver
+            android:name=".platform.widgets.TodayWidgetReceiver"
+            android:exported="true"
+            android:label="@string/widget_today_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/today_widget_info" />
         </receiver>
 
         <receiver

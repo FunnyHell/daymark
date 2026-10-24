@@ -140,15 +140,6 @@ fun HabitsScreen(
             if (selection.isNotEmpty()) {
                 // Room for the selection bar drawn over the list.
                 item(key = "selection") { Spacer(Modifier.height(64.dp)) }
-            } else if (state.items.isNotEmpty()) {
-                item(key = "hint") {
-                    Text(
-                        stringResource(R.string.list_actions_hint),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp),
-                    )
-                }
             }
             val groups = listOf(
                 LifecycleStatus.ACTIVE to R.string.status_active,

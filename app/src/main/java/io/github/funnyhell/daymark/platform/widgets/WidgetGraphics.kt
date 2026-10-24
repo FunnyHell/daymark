@@ -70,7 +70,7 @@ object WidgetGraphics {
     /**
      * A month calendar where every day is a small sector ring around its day number: one sector per habit due
      * that day, each filled by its progress, so "2 of 3 done" reads as two full sectors out of three. Days with
-     * nothing due show only the number; future days are muted; today is drawn in the accent colour.
+     * nothing due show only the number; future days are muted; today is drawn in the accent color.
      */
     fun monthRings(
         month: LocalDate,

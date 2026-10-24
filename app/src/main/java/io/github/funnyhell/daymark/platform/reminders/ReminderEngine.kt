@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
+import io.github.funnyhell.daymark.MainActivity
 import io.github.funnyhell.daymark.data.repo.HabitRepository
 import io.github.funnyhell.daymark.data.repo.MedicationRepository
 import io.github.funnyhell.daymark.data.repo.SettingsRepository
@@ -90,18 +91,34 @@ class ReminderEngine(
         val nextMidnight = time.today().plusDays(1).atStartOfDay(time.zone()).toInstant().plusSeconds(60)
         // A reminder that is already due but not yet processed (late alarm) fires almost immediately.
         val target = listOfNotNull(nextReminder, nextMidnight).min().let { if (it.isBefore(now)) now.plusSeconds(1) else it }
-        val pi = alarmIntent(context)
+        val isReminder = nextReminder != null && !nextReminder.isAfter(target)
+        schedule(alarmIntent(context), target, userVisible = isReminder)
+        Log.i(TAG, "Next alarm at $target (in ${Duration.between(now, target).toMinutes()} min, reminder=$isReminder)")
+    }
+
+    /**
+     * Reminders use an alarm-clock alarm: Android and Samsung's battery management do not defer it while the
+     * screen is off or the phone is in Doze (other exact alarms can be held back). The status bar shows the alarm
+     * icon while one is set. The midnight refresh uses an ordinary exact alarm.
+     */
+    private fun schedule(pi: PendingIntent, target: Instant, userVisible: Boolean) {
+        val at = target.toEpochMilli()
         try {
-            if (canScheduleExact()) {
-                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, target.toEpochMilli(), pi)
-            } else {
+            when {
+                canScheduleExact() && userVisible ->
+                    alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(at, showAppIntent(context)), pi)
+                canScheduleExact() -> alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, at, pi)
                 // Without the exact-alarm permission Android may deliver the alarm several minutes late.
-                alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, target.toEpochMilli(), pi)
+                else -> alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, at, pi)
             }
-            Log.i(TAG, "Next alarm at $target (in ${Duration.between(now, target).toMinutes()} min)")
         } catch (e: SecurityException) {
-            alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, target.toEpochMilli(), pi)
+            alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, at, pi)
         }
+    }
+
+    /** Posts a test reminder after [delay] through the same alarm path as real reminders. */
+    fun scheduleTest(delay: Duration = Duration.ofMinutes(1)) {
+        schedule(testIntent(context), time.now().plus(delay), userVisible = true)
     }
 
     /** Called by the alarm: show due reminders and refresh widgets (states and day rollover). */
@@ -117,6 +134,20 @@ class ReminderEngine(
             context,
             0,
             Intent(context, ReminderAlarmReceiver::class.java).setAction(ReminderAlarmReceiver.ACTION_ALARM),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+        )
+
+        private fun testIntent(context: Context): PendingIntent = PendingIntent.getBroadcast(
+            context,
+            1,
+            Intent(context, ReminderAlarmReceiver::class.java).setAction(ReminderAlarmReceiver.ACTION_TEST),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+        )
+
+        private fun showAppIntent(context: Context): PendingIntent = PendingIntent.getActivity(
+            context,
+            2,
+            Intent(context, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP),
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
         )
     }

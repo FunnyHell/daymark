@@ -220,12 +220,6 @@ private fun HabitHistory(state: HistoryState, padding: PaddingValues) {
                 StatTile(rateText(state.thisMonth), stringResource(R.string.this_month), Modifier.weight(1f))
                 StatTile(rateText(state.lastMonth), stringResource(R.string.last_month), Modifier.weight(1f))
             }
-            Text(
-                stringResource(R.string.summary_rules_note),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp),
-            )
         }
         item { SectionHeader(stringResource(R.string.section_per_habit)) }
         items(state.habitRows, key = { it.id }) { row ->
@@ -297,12 +291,6 @@ private fun MedicationHistory(state: HistoryState, padding: PaddingValues) {
         item {
             AdherenceCard(stringResource(R.string.last_7_days), state.adherence7)
             AdherenceCard(stringResource(R.string.last_30_days), state.adherence30)
-            Text(
-                stringResource(R.string.adherence_note),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp),
-            )
         }
         item { SectionHeader(stringResource(R.string.section_event_log)) }
         if (state.events.isEmpty()) {

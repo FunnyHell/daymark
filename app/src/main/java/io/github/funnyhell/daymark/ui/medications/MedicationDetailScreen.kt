@@ -222,7 +222,6 @@ fun MedicationDetailScreen(
                         med.lowStockThreshold?.let {
                             Text(stringResource(R.string.threshold_is, it.formatQuantity(), med.inventoryUnit), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
-                        Text(stringResource(R.string.stock_estimate_note), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         Row(Modifier.fillMaxWidth().padding(top = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End)) {
                             OutlinedButton(onClick = { stockDialog = true }) { Text(stringResource(R.string.set_stock)) }
                             FilledTonalButton(onClick = { packageDialog = true }) { Text(stringResource(R.string.add_package)) }
@@ -274,14 +273,6 @@ fun MedicationDetailScreen(
                         Text((if (adj.delta > 0) "+" else "") + adj.delta.formatQuantity(), style = MaterialTheme.typography.bodyMedium)
                     }
                 }
-            }
-            item {
-                Text(
-                    stringResource(R.string.medical_disclaimer),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(20.dp),
-                )
             }
         }
     }

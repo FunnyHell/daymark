@@ -37,7 +37,7 @@ data class HeatCell(val date: LocalDate, val level: Int?, val description: Strin
 
 /**
  * GitHub-style calendar heatmap: one column per week, one row per weekday. Each cell has a text description, so
- * meaning is not carried by colour alone; selected and marked (for example paused or lapse) days get an outline.
+ * meaning is not carried by color alone; selected and marked (for example paused or lapse) days get an outline.
  */
 @Composable
 fun Heatmap(

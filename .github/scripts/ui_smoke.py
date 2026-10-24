@@ -153,13 +153,16 @@ def type_text(text):
     time.sleep(1)
 
 
-adb("shell", "pm", "grant", PKG, "android.permission.POST_NOTIFICATIONS", check=False)
 adb("logcat", "-c", check=False)
 adb("shell", "am", "start", "-W", "-n", f"{PKG}/{ACTIVITY}")
 time.sleep(4)
 say(f"launched, pid {alive()}")
 shot("01-onboarding")
 tap("Get started")
+# First launch asks for notification permission (Android 13+).
+if wait_for("Allow", timeout=8):
+    shot("01b-notification-permission")
+    tap("Allow")
 shot("02-today-empty")
 
 # Create a daily habit.
@@ -208,6 +211,26 @@ tap("Settings", bottom=True)
 time.sleep(1)
 shot("11-settings")
 alive()
+
+# Test reminder through the real alarm path with the screen off: it must be posted about a minute later.
+tap("Test reminder")
+adb("shell", "input", "keyevent", "KEYCODE_SLEEP")
+say("screen off, waiting for the test reminder")
+posted = False
+for _ in range(30):
+    time.sleep(5)
+    if "Test reminder" in adb("shell", "dumpsys", "notification", "--noredact", check=False):
+        posted = True
+        break
+adb("shell", "input", "keyevent", "KEYCODE_WAKEUP")
+time.sleep(2)
+adb("shell", "wm", "dismiss-keyguard", check=False)
+time.sleep(1)
+shot("12-after-test-reminder")
+if not posted:
+    say("FAIL: test reminder was not posted within 150 s with the screen off")
+    raise SystemExit(1)
+say("test reminder posted with the screen off")
 
 say("Smoke test passed")
 crashes = adb("logcat", "-d", "AndroidRuntime:E", "*:S", check=False)

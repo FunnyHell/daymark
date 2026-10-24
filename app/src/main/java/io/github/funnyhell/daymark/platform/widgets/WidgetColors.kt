@@ -7,11 +7,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.glance.color.ColorProvider as dayNightColor
 import androidx.glance.unit.ColorProvider
 
-/** Concrete colours for bitmaps drawn into widgets (Glance colour providers cannot be used on a Canvas). */
+/** Concrete colors for bitmaps drawn into widgets (Glance color providers cannot be used on a Canvas). */
 data class WidgetPalette(val accent: Int, val track: Int, val text: Int, val muted: Int)
 
 /**
- * Colours of one widget, derived from its settings (accent and background opacity). The Glance providers switch
+ * Colors of one widget, derived from its settings (accent and background opacity). The Glance providers switch
  * with the system light/dark theme; the [palette] for bitmaps uses the theme active when the widget is drawn.
  */
 class WidgetColors(
@@ -44,7 +44,7 @@ class WidgetColors(
             )
         }
 
-        /** Day and night colour of an accent choice. */
+        /** Day and night color of an accent choice. */
         fun accent(context: Context, accent: WidgetAccent): Pair<Int, Int> = when (accent) {
             WidgetAccent.SYSTEM -> pair(context, android.R.color.system_accent1_600, android.R.color.system_accent1_200, 0xFF2F5FD0, 0xFFB4C5FF)
             WidgetAccent.BLUE -> 0xFF2F5FD0.toInt() to 0xFFB4C5FF.toInt()

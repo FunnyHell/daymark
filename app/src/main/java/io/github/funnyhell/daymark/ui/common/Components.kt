@@ -120,7 +120,7 @@ fun ColorPicker(colors: List<Long>, selected: Long, onSelect: (Long) -> Unit) {
     }
 }
 
-/** Circular progress with a text label in the middle; the label carries the meaning, not the colour. */
+/** Circular progress with a text label in the middle; the label carries the meaning, not the color. */
 @Composable
 fun ProgressRing(fraction: Float, label: String, color: Color, modifier: Modifier = Modifier, done: Boolean = false) {
     Box(modifier.size(48.dp), contentAlignment = Alignment.Center) {

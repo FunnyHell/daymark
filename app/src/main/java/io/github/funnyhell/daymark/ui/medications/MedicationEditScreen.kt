@@ -246,12 +246,6 @@ fun MedicationEditScreen(
                 Icon(Icons.Filled.Add, contentDescription = null)
                 Text(stringResource(R.string.add_dose_time))
             }
-            Text(
-                stringResource(R.string.dose_help),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(horizontal = 20.dp),
-            )
 
             SectionHeader(stringResource(R.string.field_days))
             FlowRow(Modifier.padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -305,13 +299,7 @@ fun MedicationEditScreen(
                     }
                 }
             }
-            Text(
-                stringResource(R.string.medical_disclaimer),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(20.dp),
-            )
-            Button(onClick = vm::save, modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()) { Text(stringResource(R.string.save)) }
+            Button(onClick = vm::save, modifier = Modifier.padding(16.dp).fillMaxWidth()) { Text(stringResource(R.string.save)) }
         }
     }
 

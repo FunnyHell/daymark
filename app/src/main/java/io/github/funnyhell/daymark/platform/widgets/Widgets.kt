@@ -75,7 +75,7 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 
 object WidgetUpdater {
-    private val all: List<() -> GlanceAppWidget> = listOf(::HabitWidget, ::MedicationWidget, ::ProgressWidget, ::CalendarWidget, ::StreakWidget)
+    private val all: List<() -> GlanceAppWidget> = listOf(::HabitWidget, ::MedicationWidget, ::TodayWidget, ::ProgressWidget, ::CalendarWidget, ::StreakWidget)
 
     suspend fun updateAll(context: Context) {
         for (create in all) {
@@ -90,6 +90,7 @@ object WidgetUpdater {
         val provider = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId)?.provider?.className ?: return
         val widget = when (provider) {
             MedicationWidgetReceiver::class.java.name -> MedicationWidget()
+            TodayWidgetReceiver::class.java.name -> TodayWidget()
             ProgressWidgetReceiver::class.java.name -> ProgressWidget()
             CalendarWidgetReceiver::class.java.name -> CalendarWidget()
             StreakWidgetReceiver::class.java.name -> StreakWidget()
@@ -255,9 +256,59 @@ class MedicationWidget : GlanceAppWidget() {
 // ---------------------------------------------------------------------------------------------------------------
 // Progress rings
 
+/** Today's progress of all habits for [today]: one sector per due habit, and the done/due label. */
+private class TodayProgress(val fractions: List<Double>, val label: String) {
+    val value: Double? get() = if (fractions.isEmpty()) null else fractions.average()
+}
+
+private fun todayProgress(context: Context, habits: List<HabitData>, today: LocalDate, firstDayOfWeek: DayOfWeek): TodayProgress {
+    val day = HabitStatistics.dayFractions(habits, today, firstDayOfWeek)
+    val label = if (day.isEmpty()) {
+        context.getString(R.string.widget_today)
+    } else {
+        context.getString(R.string.widget_today_count, day.count { it >= 1.0 }, day.size)
+    }
+    return TodayProgress(day, label)
+}
+
+/** Space reserved under a ring for its label, in dp. */
+private const val RING_LABEL_DP = 22f
+
+/** One ring for today (one sector per due habit; a full ring = everything due today is done), sized to the widget. */
+class TodayWidget : GlanceAppWidget() {
+    override val sizeMode: SizeMode = SizeMode.Exact
+
+    override suspend fun provideGlance(context: Context, id: GlanceId) {
+        val c = context.container
+        val source = prefsSource(context, id)
+        val initialHabits = c.habits.all()
+        val initialSettings = c.settings.current()
+        val habitsFlow = c.habits.observeAll()
+        provideContent {
+            val prefs = source.collect()
+            val colors = WidgetColors.from(context, prefs)
+            val habits by habitsFlow.collectAsState(initialHabits)
+            val settings by c.settings.settings.collectAsState(initialSettings)
+            val size = LocalSize.current
+            val today = todayProgress(context, habits, c.time.today(), settings.firstDayOfWeek)
+            val ring = minOf(size.width.value - 16f, size.height.value - 16f - RING_LABEL_DP).coerceIn(32f, 240f)
+            GlanceTheme {
+                Column(
+                    modifier = frameModifier(colors, padding = 8).clickable(actionStartActivity<MainActivity>()),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    RingWithLabel(colors, WidgetGraphics.sectorRing(today.fractions, px(context, ring), colors.palette), today.value, today.label, ring)
+                }
+            }
+        }
+    }
+}
+
 /**
- * Rings: today (one sector per due habit, a full ring = everything due today is done), plus this week and this
- * month (average progress per habit, see [HabitStatistics.periodProgress]). The rings scale with the widget.
+ * Rings for today, this week and this month (average progress per habit, see [HabitStatistics.periodProgress]).
+ * The layout follows the widget's shape: three rings in a row, or today large with week and month stacked
+ * beside it, whichever keeps the smallest ring larger.
  */
 class ProgressWidget : GlanceAppWidget() {
     override val sizeMode: SizeMode = SizeMode.Exact
@@ -276,30 +327,35 @@ class ProgressWidget : GlanceAppWidget() {
             val size = LocalSize.current
             val today = c.time.today()
             val wk = settings.firstDayOfWeek
-            val day = HabitStatistics.dayFractions(habits, today, wk)
-            val dayValue = if (day.isEmpty()) null else day.average()
-            val dayLabel = if (day.isEmpty()) {
-                context.getString(R.string.widget_today)
-            } else {
-                context.getString(R.string.widget_today_count, day.count { it >= 1.0 }, day.size)
-            }
-            val labelSpace = 22f
+            val day = todayProgress(context, habits, today, wk)
+            val week = HabitStatistics.periodProgress(habits, today.startOfWeek(wk), today, wk)
+            val month = HabitStatistics.periodProgress(habits, today.withDayOfMonth(1), today, wk)
+            val w = size.width.value - 16f
+            val h = size.height.value - 16f
+            val rowRing = minOf(w / 3f - 6f, h - RING_LABEL_DP)
+            val bigRing = minOf(w / 2f - 6f, h - RING_LABEL_DP)
+            val smallRing = minOf(w / 2f - 6f, h / 2f - RING_LABEL_DP)
+            val stacked = smallRing > rowRing
             GlanceTheme {
-                Column(
+                Box(
                     modifier = frameModifier(colors, padding = 8).clickable(actionStartActivity<MainActivity>()),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalAlignment = Alignment.CenterVertically,
+                    contentAlignment = Alignment.Center,
                 ) {
-                    if (prefs.progressRange == ProgressRange.TODAY) {
-                        val ring = minOf(size.width.value - 16f, size.height.value - 16f - labelSpace).coerceIn(36f, 220f)
-                        RingWithLabel(colors, WidgetGraphics.sectorRing(day, px(context, ring), colors.palette), dayValue, dayLabel, ring)
+                    if (stacked) {
+                        val big = bigRing.coerceIn(28f, 200f)
+                        val small = smallRing.coerceIn(24f, 120f)
+                        Row(modifier = GlanceModifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                            RingWithLabel(colors, WidgetGraphics.sectorRing(day.fractions, px(context, big), colors.palette), day.value, day.label, big, GlanceModifier.defaultWeight())
+                            Column(modifier = GlanceModifier.defaultWeight(), horizontalAlignment = Alignment.CenterHorizontally) {
+                                RingWithLabel(colors, WidgetGraphics.progressRing(week ?: 0.0, px(context, small), colors.palette), week, context.getString(R.string.widget_week), small)
+                                RingWithLabel(colors, WidgetGraphics.progressRing(month ?: 0.0, px(context, small), colors.palette), month, context.getString(R.string.widget_month), small)
+                            }
+                        }
                     } else {
-                        val week = HabitStatistics.periodProgress(habits, today.startOfWeek(wk), today, wk)
-                        val month = HabitStatistics.periodProgress(habits, today.withDayOfMonth(1), today, wk)
-                        val ring = minOf((size.width.value - 16f) / 3f - 6f, size.height.value - 16f - labelSpace).coerceIn(28f, 150f)
+                        val ring = rowRing.coerceIn(28f, 150f)
                         val ringPx = px(context, ring)
                         Row(modifier = GlanceModifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalAlignment = Alignment.CenterVertically) {
-                            RingWithLabel(colors, WidgetGraphics.sectorRing(day, ringPx, colors.palette), dayValue, dayLabel, ring, GlanceModifier.defaultWeight())
+                            RingWithLabel(colors, WidgetGraphics.sectorRing(day.fractions, ringPx, colors.palette), day.value, day.label, ring, GlanceModifier.defaultWeight())
                             RingWithLabel(colors, WidgetGraphics.progressRing(week ?: 0.0, ringPx, colors.palette), week, context.getString(R.string.widget_week), ring, GlanceModifier.defaultWeight())
                             RingWithLabel(colors, WidgetGraphics.progressRing(month ?: 0.0, ringPx, colors.palette), month, context.getString(R.string.widget_month), ring, GlanceModifier.defaultWeight())
                         }
@@ -641,6 +697,10 @@ class HabitWidgetReceiver : DaymarkWidgetReceiver() {
 
 class MedicationWidgetReceiver : DaymarkWidgetReceiver() {
     override val glanceAppWidget: GlanceAppWidget = MedicationWidget()
+}
+
+class TodayWidgetReceiver : DaymarkWidgetReceiver() {
+    override val glanceAppWidget: GlanceAppWidget = TodayWidget()
 }
 
 class ProgressWidgetReceiver : DaymarkWidgetReceiver() {

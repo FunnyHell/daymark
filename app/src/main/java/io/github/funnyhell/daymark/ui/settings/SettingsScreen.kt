@@ -84,6 +84,11 @@ class SettingsViewModel(application: Application) : AppViewModel(application) {
     }
     fun setHideNames(on: Boolean) = launchSafely { container.settings.setHideNamesOnLockScreen(on) }
 
+    fun sendTestReminder() {
+        container.reminders.scheduleTest()
+        say(string(R.string.msg_test_scheduled))
+    }
+
     fun suggestedFileName(): String = "daymark-backup-${LocalDate.now()}.json"
 
     fun export(uri: Uri) = launchSafely {
@@ -210,14 +215,16 @@ fun SettingsScreen(
                 onAction = { SystemSettings.openExactAlarmSettings(context) },
             )
         }
-        Text(
-            stringResource(R.string.settings_battery_note),
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp),
+        StatusRow(
+            title = stringResource(R.string.settings_battery),
+            status = stringResource(if (permissions.unrestrictedBattery) R.string.status_unrestricted else R.string.status_optimized),
+            action = stringResource(if (permissions.unrestrictedBattery) R.string.perm_open_settings else R.string.perm_allow),
+            onAction = {
+                if (permissions.unrestrictedBattery) SystemSettings.openAppDetails(context) else SystemSettings.requestUnrestrictedBattery(context)
+            },
         )
-        TextButton(onClick = { SystemSettings.openAppDetails(context) }, modifier = Modifier.padding(horizontal = 8.dp)) {
-            Text(stringResource(R.string.settings_open_app_info))
+        ActionRow(stringResource(R.string.settings_test_reminder), stringResource(R.string.settings_test_reminder_desc), enabled = true) {
+            vm.sendTestReminder()
         }
 
         SectionHeader(stringResource(R.string.settings_privacy))

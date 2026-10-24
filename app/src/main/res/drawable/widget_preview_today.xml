@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Preview shown in the launcher's widget picker. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="110dp"
+    android:height="110dp"
+    android:viewportWidth="110"
+    android:viewportHeight="110">
+    <path android:fillColor="#FFF3F4FA" android:pathData="M14,0h82a14,14 0,0 1,14,14v82a14,14 0,0 1,-14,14h-82a14,14 0,0 1,-14,-14v-82a14,14 0,0 1,14,-14z"/>
+    <path android:strokeColor="#FFDCE1F0" android:strokeWidth="8" android:fillColor="#00000000" android:pathData="M25,50a30,30 0,1 0,60,0a30,30 0,1 0,-60,0z"/>
+    <path android:strokeColor="#FF2F5FD0" android:strokeWidth="8" android:strokeLineCap="round" android:fillColor="#00000000" android:pathData="M59.27,21.47A30,30 0,0,1 83.53,45.73"/>
+    <path android:strokeColor="#FF2F5FD0" android:strokeWidth="8" android:strokeLineCap="round" android:fillColor="#00000000" android:pathData="M83.53,54.27A30,30 0,0,1 59.27,78.53"/>
+    <path android:fillColor="#FFB9BCC8" android:pathData="M43,92h24a3,3 0,0 1,3,3v0a3,3 0,0 1,-3,3h-24a3,3 0,0 1,-3,-3v0a3,3 0,0 1,3,-3z"/>
+</vector>

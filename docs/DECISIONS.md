@@ -495,12 +495,12 @@ The spec leaves the package ID and SDK levels open. The primary device is a Sams
 
 #### Rationale
 
-API 26 is the first level with notification channels and adaptive icons and keeps java.time available without desugaring, while still covering almost all phones in use. Target 35 is the current Play requirement level supported by the chosen AGP. Android 12+ features (exact-alarm permission, dynamic colour) are handled with runtime checks.
+API 26 is the first level with notification channels and adaptive icons and keeps java.time available without desugaring, while still covering almost all phones in use. Target 35 is the current Play requirement level supported by the chosen AGP. Android 12+ features (exact-alarm permission, dynamic color) are handled with runtime checks.
 
 #### Consequences
 
 - Upgrading the debug APK in place requires the same debug signing key; see README.
-- Behaviour below Android 12 is implemented but not a verification priority.
+- Behavior below Android 12 is implemented but not a verification priority.
 
 #### Date
 
@@ -567,7 +567,7 @@ The cloud development sandbox used for the initial implementation cannot reach `
 
 #### Consequences
 
-Travelling east or west shifts reminders to local wall-clock times; already recorded events keep their dates. This is the expected behaviour for "take at breakfast" style schedules, but it is not suitable for strict fixed-interval dosing across time zones; that limitation is documented in README.
+Travelling east or west shifts reminders to local wall-clock times; already recorded events keep their dates. This is the expected behavior for "take at breakfast" style schedules, but it is not suitable for strict fixed-interval dosing across time zones; that limitation is documented in README.
 
 #### Date
 
@@ -612,7 +612,7 @@ Travelling east or west shifts reminders to local wall-clock times; already reco
 
 ---
 
-## ADR-017 — Backup format and import behaviour
+## ADR-017 — Backup format and import behavior
 
 **Status:** Accepted
 
@@ -792,20 +792,20 @@ Marks could be added from widgets but not removed, and the app used separate but
 
 ---
 
-## ADR-027 — Widget progress, calendar rings and colours (refines ADR-023)
+## ADR-027 — Widget progress, calendar rings and colors (refines ADR-023)
 
 **Status:** Accepted
 
 #### Context
 
-The week and month rings used the History completion rate, which leaves out a weekly goal that is still in progress. With one daily habit done and a 3×/week habit not started, the widget showed 50% today but 100% for the week and month. The month-of-dots calendar did not show how many habits were done. Widgets used one fixed colour scheme.
+The week and month rings used the History completion rate, which leaves out a weekly goal that is still in progress. With one daily habit done and a 3×/week habit not started, the widget showed 50% today but 100% for the week and month. The month-of-dots calendar did not show how many habits were done. Widgets used one fixed color scheme.
 
 #### Decision
 
 - `HabitStatistics.periodProgress`: each habit contributes one value (mean day progress over due days including today; for weekly goals the mean of `min(1, completions / goal)` over the weeks touching the period, the current week included; share of clean days for abstinence), and the result is the mean over habits. The History statistics keep their completion-rate rules.
 - The calendar widget draws a sector ring around every day number (one sector per due habit, filled by its progress) using `dayFractions` evaluated for that day; the header shows today's done/due count.
 - Ring and calendar bitmaps are sized from the widget's actual size (`SizeMode.Exact`).
-- Per-widget accent (system wallpaper colours or a fixed palette) and background opacity (0–100%) are stored with the widget settings; settings are observed, so changes apply without re-adding the widget.
+- Per-widget accent (system wallpaper colors or a fixed palette) and background opacity (0–100%) are stored with the widget settings; settings are observed, so changes apply without re-adding the widget.
 
 #### Date
 

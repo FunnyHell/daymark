@@ -16,17 +16,13 @@ import kotlinx.coroutines.flow.map
 /** How the completion control is drawn in list widgets. */
 enum class CheckStyle { CIRCLE, RADIO }
 
-/** Which rings the progress widget shows. */
-enum class ProgressRange { TODAY, TODAY_WEEK_MONTH }
-
-/** Accent colour of a widget; [SYSTEM] follows the wallpaper colours on Android 12+. */
+/** Accent color of a widget; [SYSTEM] follows the wallpaper colors on Android 12+. */
 enum class WidgetAccent { SYSTEM, BLUE, GREEN, ORANGE, PURPLE, RED, MONO }
 
 /** Per-widget settings, chosen in [WidgetConfigActivity] and stored by app widget id. */
 data class WidgetPrefs(
     val checkStyle: CheckStyle = CheckStyle.CIRCLE,
     val hideCompleted: Boolean = false,
-    val progressRange: ProgressRange = ProgressRange.TODAY_WEEK_MONTH,
     /** Habit shown by the streak and calendar widgets; null = all habits (calendar) or none chosen (streak). */
     val habitId: String? = null,
     val accent: WidgetAccent = WidgetAccent.SYSTEM,
@@ -49,7 +45,6 @@ class WidgetPrefsStore(private val context: Context) {
         return WidgetPrefs(
             checkStyle = p[stringPreferencesKey(key(appWidgetId, "check"))]?.let { runCatching { CheckStyle.valueOf(it) }.getOrNull() } ?: d.checkStyle,
             hideCompleted = p[booleanPreferencesKey(key(appWidgetId, "hide_done"))] ?: d.hideCompleted,
-            progressRange = p[stringPreferencesKey(key(appWidgetId, "range"))]?.let { runCatching { ProgressRange.valueOf(it) }.getOrNull() } ?: d.progressRange,
             habitId = p[stringPreferencesKey(key(appWidgetId, "habit"))],
             accent = p[stringPreferencesKey(key(appWidgetId, "accent"))]?.let { runCatching { WidgetAccent.valueOf(it) }.getOrNull() } ?: d.accent,
             backgroundAlpha = (p[intPreferencesKey(key(appWidgetId, "bg_alpha"))] ?: d.backgroundAlpha).coerceIn(0, 100),
@@ -60,7 +55,6 @@ class WidgetPrefsStore(private val context: Context) {
         context.widgetStore.edit { p ->
             p[stringPreferencesKey(key(appWidgetId, "check"))] = prefs.checkStyle.name
             p[booleanPreferencesKey(key(appWidgetId, "hide_done"))] = prefs.hideCompleted
-            p[stringPreferencesKey(key(appWidgetId, "range"))] = prefs.progressRange.name
             p[stringPreferencesKey(key(appWidgetId, "accent"))] = prefs.accent.name
             p[intPreferencesKey(key(appWidgetId, "bg_alpha"))] = prefs.backgroundAlpha.coerceIn(0, 100)
             val habitKey = stringPreferencesKey(key(appWidgetId, "habit"))

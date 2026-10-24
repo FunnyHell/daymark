@@ -1,11 +1,13 @@
 package io.github.funnyhell.daymark.ui.common
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.os.PowerManager
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -33,7 +35,7 @@ import io.github.funnyhell.daymark.container
 import kotlinx.coroutines.flow.Flow
 
 /** Current notification / exact-alarm status, refreshed whenever the screen resumes. */
-data class ReminderPermissions(val notifications: Boolean, val exactAlarms: Boolean)
+data class ReminderPermissions(val notifications: Boolean, val exactAlarms: Boolean, val unrestrictedBattery: Boolean)
 
 @Composable
 fun rememberReminderPermissions(): ReminderPermissions {
@@ -47,6 +49,7 @@ fun rememberReminderPermissions(): ReminderPermissions {
         ReminderPermissions(
             notifications = context.container.notifier.notificationsEnabled(),
             exactAlarms = context.container.reminders.canScheduleExact(),
+            unrestrictedBattery = SystemSettings.isIgnoringBatteryOptimizations(context),
         )
     }
 }
@@ -106,6 +109,13 @@ fun PermissionBanners(needed: Boolean) {
             action = stringResource(R.string.perm_open_settings),
             onAction = { SystemSettings.openExactAlarmSettings(context) },
         )
+    } else if (!permissions.unrestrictedBattery) {
+        Banner(
+            title = stringResource(R.string.perm_battery_title),
+            body = stringResource(R.string.perm_battery_body),
+            action = stringResource(R.string.perm_allow),
+            onAction = { SystemSettings.requestUnrestrictedBattery(context) },
+        )
     }
 }
 
@@ -150,6 +160,14 @@ object SystemSettings {
     }
 
     fun openAppDetails(context: Context) = start(context, appDetails(context))
+
+    fun isIgnoringBatteryOptimizations(context: Context): Boolean =
+        context.getSystemService(PowerManager::class.java)?.isIgnoringBatteryOptimizations(context.packageName) ?: true
+
+    /** System dialog that lets the app run without battery optimization, so reminders are not held back. */
+    @SuppressLint("BatteryLife")
+    fun requestUnrestrictedBattery(context: Context) =
+        start(context, Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, Uri.parse("package:${context.packageName}")))
 
     private fun appDetails(context: Context) =
         Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:${context.packageName}"))

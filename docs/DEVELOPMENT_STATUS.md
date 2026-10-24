@@ -44,11 +44,11 @@ Exit criteria and state:
 | Reboot/time changes | Implemented, not verified | Receivers rebuild the single alarm; planner catch-up unit-tested |
 | Habit widget | Implemented, not verified | Glance; mark/unmark via `setDone` (tested in repository tests) |
 | Medication widget | Implemented, not verified | Glance; `recordDose` / `undoTaken` (tested in repository tests) |
-| Progress / Calendar / Streak widgets | Implemented, not verified | Period progress and per-day fractions unit-tested; colours, opacity and sizing not verified on a device |
+| Progress / Calendar / Streak widgets | Implemented, not verified | Period progress and per-day fractions unit-tested; colors, opacity and sizing not verified on a device |
 | Multi-select in lists | Implemented, not verified | Bulk pause/resume/archive/delete; no automated UI test |
 | Statistics and calendar | Verified by automated tests (rules) | UI heatmaps/charts not visually verified on device |
 | Export/import | Verified by automated tests | Round trip, invalid files, rollback on failure |
-| Accessibility/theme | Implemented, not verified | Light/dark/dynamic colour, content descriptions, text labels for states |
+| Accessibility/theme | Implemented, not verified | Light/dark/dynamic color, content descriptions, text labels for states |
 | Localization | Implemented | English (default) and Russian |
 | Samsung phone verification | Not started | |
 | Tablet adaptation | Not started | Later milestone |
@@ -70,7 +70,7 @@ Exit criteria and state:
 ## 5. Known issues and blockers
 
 - **No local Android build in the cloud sandbox.** Impact: builds only through CI. Evidence: `dl.google.com` and `maven.google.com` (redirects to `dl.google.com`) are denied by the sandbox proxy. Next action: allow these hosts in the environment, or keep using CI.
-- **Not verified on a physical Samsung device**: notification delivery/actions, exact alarm timing, reboot behaviour, battery restrictions, widget interactions and refresh.
+- **Not verified on a physical Samsung device**: notification delivery/actions, exact alarm timing, reboot behavior, battery restrictions, widget interactions and refresh.
 - Snooze length (30 min) and missed window (3 h) are fixed constants.
 - A medication created during the day shows its earlier doses of that day (e.g. 08:00 when created at 15:00) as "Missed" until recorded; this follows the documented rule but may surprise users.
 - In the emulator, `uiautomator dump` did not list the Extended FAB ("New habit") on the Habits screen although it is drawn and works (Compose tests can click it). TalkBack reachability of the FAB must be checked on the device; the same action is also available from the empty state and the Today screen.
@@ -79,7 +79,7 @@ Exit criteria and state:
 
 ## 6. Recent completed work
 
-- 2026-10-24 (feedback round 2): `USE_EXACT_ALARM` so reminders are not deferred with the screen off (ADR-025); multi-select with bulk actions in habit and medication lists; press ripple clipped to the rounded card; tap-to-toggle marks on Today (habit ring, dose circle) and in widgets with an explicit target state (ADR-026); widget settings observed (Streak widget no longer stuck on "choose a habit"); new week/month progress rule, rings sized to the widget, calendar with a sector ring per day, per-widget accent colour and background opacity (ADR-027). New tests: `setDone`/`undoCompletion`, `undoTaken`, `periodProgress` (the reported 2-habit case → 50%), `dayFractions` for past days. CI run 40118132792 (commit a585df1) failed to compile (when-branch parse error); fixed in b083453. CI run 40120588398 (commit b083453): 92 unit/DB tests passed, debug APK built (SHA-256 `aa1a2bedac45e64bd2bf0e5e54853b340193b2b95a648a503fefa7c2cd07b660`, 14,645,178 bytes), emulator instrumented tests 2/2 passed, smoke test passed including marking a dose and a habit by tapping the circle/ring and unmarking the habit. Widgets, colours/opacity, multi-select and screen-off reminders are **not verified on a device**.
+- 2026-10-24 (feedback round 2): `USE_EXACT_ALARM` so reminders are not deferred with the screen off (ADR-025); multi-select with bulk actions in habit and medication lists; press ripple clipped to the rounded card; tap-to-toggle marks on Today (habit ring, dose circle) and in widgets with an explicit target state (ADR-026); widget settings observed (Streak widget no longer stuck on "choose a habit"); new week/month progress rule, rings sized to the widget, calendar with a sector ring per day, per-widget accent color and background opacity (ADR-027). New tests: `setDone`/`undoCompletion`, `undoTaken`, `periodProgress` (the reported 2-habit case → 50%), `dayFractions` for past days. CI run 40118132792 (commit a585df1) failed to compile (when-branch parse error); fixed in b083453. CI run 40120588398 (commit b083453): 92 unit/DB tests passed, debug APK built (SHA-256 `aa1a2bedac45e64bd2bf0e5e54853b340193b2b95a648a503fefa7c2cd07b660`, 14,645,178 bytes), emulator instrumented tests 2/2 passed, smoke test passed including marking a dose and a habit by tapping the circle/ring and unmarking the habit. Widgets, colors/opacity, multi-select and screen-off reminders are **not verified on a device**.
 
 - 2026-10-24 (feedback round 1): fixed blank screen after deleting (double back navigation), permission prompt that opened system settings when permission was already granted, silent notifications (new v2 channels with sound/vibration), long-lived snackbars (short, closable, swipeable). Added package-size presets, clearer habit types (radio list with examples; "Quit a habit" with "Slip"), swipe/long-press list actions, "Take all" for doses at the same time, compact widget check controls, medications widget grouped by time with "mark all", new Progress / Calendar / Streak widgets, per-widget settings and picker previews. CI run 40113713487 (commit ddfa7e7): unit tests passed, debug APK built (SHA-256 `501fa40e828077226bbd7ded26980f20771abc456337f8e9bb950de8837b6ccf`), emulator instrumented tests 2/2 and smoke test passed. Widgets, sound and swipe gestures are **not verified on a device**; the emulator smoke test does not place widgets.
 

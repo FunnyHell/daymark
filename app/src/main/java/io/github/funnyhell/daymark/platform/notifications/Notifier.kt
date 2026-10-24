@@ -91,6 +91,21 @@ class Notifier(private val context: Context, private val settings: SettingsRepos
         post(TAG_MED + occurrence.key, builder)
     }
 
+    /** A sample medication-channel notification to check sound and delivery with the screen off. */
+    fun showTest() {
+        if (!notificationsEnabled()) return
+        val builder = NotificationCompat.Builder(context, CHANNEL_MEDICATION)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentTitle(context.getString(R.string.notif_test_title))
+            .setContentText(context.getString(R.string.notif_test_text))
+            .setCategory(NotificationCompat.CATEGORY_REMINDER)
+            .setDefaults(NotificationCompat.DEFAULT_ALL)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setContentIntent(openAppIntent())
+            .setAutoCancel(true)
+        post(TAG_TEST, builder)
+    }
+
     suspend fun showHabit(data: HabitData, date: LocalDate) {
         if (!notificationsEnabled()) return
         val habit = data.habit
@@ -198,6 +213,7 @@ class Notifier(private val context: Context, private val settings: SettingsRepos
         private const val TAG_MED = "med:"
         private const val TAG_HABIT = "habit:"
         private const val TAG_STOCK = "stock:"
+        private const val TAG_TEST = "test"
         private const val PI_FLAGS = PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
 
         fun habitTag(habitId: String, date: LocalDate) = "$TAG_HABIT$habitId@$date"

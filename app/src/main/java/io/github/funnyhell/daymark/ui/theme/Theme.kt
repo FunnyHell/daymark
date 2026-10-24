@@ -76,7 +76,7 @@ fun DaymarkTheme(themeMode: ThemeMode = ThemeMode.SYSTEM, dynamicColor: Boolean 
     MaterialTheme(colorScheme = colors, shapes = AppShapes, content = content)
 }
 
-/** Palette offered for habits and medications. Colour is decorative; every state also has text or an icon. */
+/** Palette offered for habits and medications. Color is decorative; every state also has text or an icon. */
 val ItemColors: List<Long> = listOf(
     0xFF2F5FD0, 0xFF3E7C5A, 0xFFB0602A, 0xFF8E44AD, 0xFFC0392B, 0xFF16A085, 0xFFD4A017, 0xFF5D6D7E,
 )

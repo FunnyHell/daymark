@@ -1,5 +1,7 @@
 package io.github.funnyhell.daymark
 
+import android.Manifest
+import android.os.Build
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
@@ -14,6 +16,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.rule.GrantPermissionRule
 import io.github.funnyhell.daymark.domain.habit.HabitEventType
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -24,7 +27,15 @@ import org.junit.runner.RunWith
 /** Drives the real UI: onboarding → create a habit → complete it on Today → the completion is persisted. */
 @RunWith(AndroidJUnit4::class)
 class HabitFlowInstrumentedTest {
-    @get:Rule
+    @get:Rule(order = 0)
+    val notifications: GrantPermissionRule = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        // Onboarding asks for this permission; granted up front so no system dialog covers the app.
+        GrantPermissionRule.grant(Manifest.permission.POST_NOTIFICATIONS)
+    } else {
+        GrantPermissionRule.grant()
+    }
+
+    @get:Rule(order = 1)
     val rule = createAndroidComposeRule<MainActivity>()
 
     private fun tab(label: String) = hasText(label) and hasClickAction() and SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.Tab)

@@ -136,6 +136,18 @@ def tap_fab(label):
     time.sleep(1.5)
 
 
+def fill(label, value):
+    """Focus a text field by its label (tapping twice, so focus really moves) and type a value."""
+    tap(label, exact=False)
+    pos = find(label, exact=False)
+    if pos:
+        adb("shell", "input", "tap", str(pos[0]), str(pos[1]))
+        time.sleep(1)
+    type_text(value)
+    adb("shell", "input", "keyevent", "111")
+    time.sleep(1)
+
+
 def type_text(text):
     adb("shell", "input", "text", text.replace(" ", "%s"))
     time.sleep(1)
@@ -152,9 +164,7 @@ shot("02-today-empty")
 
 # Create a daily habit.
 tap("New habit")
-tap("Name", exact=False)
-type_text("Morning stretch")
-adb("shell", "input", "keyevent", "111")  # escape: hide keyboard
+fill("Name", "Morning stretch")
 time.sleep(1)
 shot("03-habit-editor")
 tap("Save")
@@ -163,15 +173,10 @@ alive()
 # Create a quantity habit.
 tap("Habits", bottom=True)
 tap_fab("New habit")
-tap("Name", exact=False)
-type_text("Water")
-adb("shell", "input", "keyevent", "111")
+fill("Name", "Water")
 tap("Amount")
-tap("Daily target", exact=False)
-type_text("2000")
-tap("Unit", exact=False)
-type_text("ml")
-adb("shell", "input", "keyevent", "111")
+fill("Daily target", "2000")
+fill("Unit", "ml")
 tap("Save")
 alive()
 shot("04-habits-list")
@@ -179,13 +184,9 @@ shot("04-habits-list")
 # Create a medication with the default 08:00 dose (taking a dose of today is allowed before its time).
 tap("Medications", bottom=True)
 tap_fab("New medication")
-tap("Medication name", exact=False)
-type_text("Vitamin D")
-adb("shell", "input", "keyevent", "111")
+fill("Medication name", "Vitamin D")
 tap("Track stock")
-tap("Current stock", exact=False)
-type_text("30")
-adb("shell", "input", "keyevent", "111")
+fill("Current stock", "30")
 shot("05-medication-editor")
 tap("Save")
 alive()

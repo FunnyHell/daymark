@@ -6,6 +6,23 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Slider
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import kotlin.math.roundToInt
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -169,6 +186,45 @@ private fun ConfigScreen(
                     )
                 }
             }
+            SectionHeader(stringResource(R.string.widget_color))
+            val context = LocalContext.current
+            val dark = isSystemInDarkTheme()
+            Row(
+                Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = 16.dp, vertical = 4.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                WidgetAccent.entries.forEach { accent ->
+                    val (day, night) = WidgetColors.accent(context, accent)
+                    val selected = prefs.accent == accent
+                    val label = stringResource(accentLabel(accent))
+                    Box(
+                        Modifier
+                            .size(44.dp)
+                            .clip(CircleShape)
+                            .background(Color(if (dark) night else day))
+                            .border(if (selected) 3.dp else 0.dp, MaterialTheme.colorScheme.onSurface, CircleShape)
+                            .selectable(selected = selected, onClick = { prefs = prefs.copy(accent = accent) }, role = Role.RadioButton)
+                            .semantics { contentDescription = label },
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        if (selected) Icon(Icons.Filled.Check, contentDescription = null, tint = Color(if (dark) day else night))
+                    }
+                }
+            }
+            Text(
+                stringResource(accentLabel(prefs.accent)),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(horizontal = 20.dp),
+            )
+            SectionHeader(stringResource(R.string.widget_bg_opacity, prefs.backgroundAlpha))
+            Slider(
+                value = prefs.backgroundAlpha.toFloat(),
+                onValueChange = { prefs = prefs.copy(backgroundAlpha = (it / 10f).roundToInt() * 10) },
+                valueRange = 0f..100f,
+                steps = 9,
+                modifier = Modifier.padding(horizontal = 20.dp),
+            )
             Button(
                 onClick = { scope.launch { onSave(prefs) } },
                 enabled = !needsHabit,
@@ -176,6 +232,16 @@ private fun ConfigScreen(
             ) { Text(stringResource(R.string.save)) }
         }
     }
+}
+
+private fun accentLabel(accent: WidgetAccent): Int = when (accent) {
+    WidgetAccent.SYSTEM -> R.string.widget_color_system
+    WidgetAccent.BLUE -> R.string.widget_color_blue
+    WidgetAccent.GREEN -> R.string.widget_color_green
+    WidgetAccent.ORANGE -> R.string.widget_color_orange
+    WidgetAccent.PURPLE -> R.string.widget_color_purple
+    WidgetAccent.RED -> R.string.widget_color_red
+    WidgetAccent.MONO -> R.string.widget_color_mono
 }
 
 @Composable

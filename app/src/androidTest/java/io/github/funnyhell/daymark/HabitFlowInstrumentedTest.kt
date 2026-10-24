@@ -9,6 +9,7 @@ import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
+import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
@@ -53,7 +54,8 @@ class HabitFlowInstrumentedTest {
 
         rule.onAllNodes(tab("Today")).onFirst().performClick()
         waitForText(name)
-        rule.onAllNodesWithText("Done").onFirst().performClick()
+        // Tapping the ring on the left marks the habit done.
+        rule.onAllNodesWithContentDescription("Mark $name done").onFirst().performClick()
 
         rule.waitUntil(10_000) {
             runBlocking {

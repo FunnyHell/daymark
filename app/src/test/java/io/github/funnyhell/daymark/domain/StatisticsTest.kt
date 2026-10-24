@@ -1,5 +1,6 @@
 package io.github.funnyhell.daymark.domain
 
+import io.github.funnyhell.daymark.domain.habit.HabitEventType
 import io.github.funnyhell.daymark.domain.habit.HabitType
 import io.github.funnyhell.daymark.domain.habit.Recurrence
 import io.github.funnyhell.daymark.domain.medication.MedicationEventType
@@ -77,5 +78,45 @@ class StatisticsTest {
         val paused = habitData(pauses = listOf(pause(MONDAY, null)))
         val fractions = HabitStatistics.dayFractions(listOf(check, multi, weekly, quit, paused), MONDAY, DayOfWeek.MONDAY)
         assertEquals(listOf(1.0, 0.25, 0.5, 1.0), fractions)
+    }
+
+    @Test
+    fun periodProgress_countsWeeklyGoalInProgress() {
+        // A daily habit done today and a 3-times-a-week habit not done yet, both created today (Wednesday).
+        val today = MONDAY.plusDays(2)
+        val daily = habitData(habit = habit(start = today), events = listOf(event(today)))
+        val weekly = habitData(habit = habit(type = HabitType.WEEKLY_GOAL, start = today), schedules = listOf(schedule(from = today, target = 3.0)))
+        val habits = listOf(daily, weekly)
+        assertEquals(0.5, HabitStatistics.periodProgress(habits, MONDAY, today, DayOfWeek.MONDAY)!!, 1e-9)
+        assertEquals(0.5, HabitStatistics.periodProgress(habits, today.withDayOfMonth(1), today, DayOfWeek.MONDAY)!!, 1e-9)
+        assertEquals(listOf(1.0, 0.0), HabitStatistics.dayFractions(habits, today, DayOfWeek.MONDAY))
+    }
+
+    @Test
+    fun periodProgress_averagesDaysPerHabitWithPartialCredit() {
+        val today = MONDAY.plusDays(3)
+        // Done Monday, nothing Tuesday, half Wednesday (2 of 4 → multi), pending today.
+        val check = habitData(events = listOf(event(MONDAY), event(MONDAY.plusDays(2))))
+        val multi = habitData(
+            habit = habit(type = HabitType.MULTI),
+            schedules = listOf(schedule(target = 4.0)),
+            events = listOf(event(MONDAY), event(MONDAY)),
+        )
+        val quit = habitData(habit = habit(type = HabitType.ABSTINENCE), events = listOf(event(MONDAY.plusDays(1), HabitEventType.LAPSE, 0.0)))
+        val p = HabitStatistics.periodProgress(listOf(check, multi, quit), MONDAY, today, DayOfWeek.MONDAY)!!
+        // check: (1 + 0 + 1 + 0) / 4; multi: (0.5 + 0 + 0 + 0) / 4; quit: 3 clean of 4 days.
+        assertEquals((0.5 + 0.125 + 0.75) / 3, p, 1e-9)
+        assertNull(HabitStatistics.periodProgress(emptyList(), MONDAY, today, DayOfWeek.MONDAY))
+    }
+
+    @Test
+    fun dayFractions_forPastDaysUseThatDay() {
+        val today = MONDAY.plusDays(2)
+        val check = habitData(events = listOf(event(MONDAY)))
+        val weekly = habitData(habit = habit(type = HabitType.WEEKLY_GOAL), schedules = listOf(schedule(target = 2.0)), events = listOf(event(MONDAY.plusDays(1))))
+        val habits = listOf(check, weekly)
+        assertEquals(listOf(1.0, 0.0), HabitStatistics.dayFractions(habits, MONDAY, DayOfWeek.MONDAY, today))
+        assertEquals(listOf(0.0, 0.5), HabitStatistics.dayFractions(habits, MONDAY.plusDays(1), DayOfWeek.MONDAY, today))
+        assertEquals(emptyList<Double>(), HabitStatistics.dayFractions(habits, today.plusDays(1), DayOfWeek.MONDAY, today))
     }
 }

@@ -111,7 +111,6 @@
     <string name="action_plus_one">+1</string>
     <string name="action_lapse">Срыв</string>
     <string name="skip_today">Пропустить сегодня</string>
-    <string name="cd_add_one">Добавить выполнение: %1$s</string>
     <string name="cd_add_amount">Добавить количество: %1$s</string>
     <string name="add_progress_title">Добавить: %1$s</string>
     <string name="add_amount">Добавить количество</string>
@@ -431,7 +430,7 @@
     <string name="widget_hide_completed">Скрывать выполненное</string>
     <string name="widget_habits_choice_hint">Какие привычки показывать, задаётся в настройках каждой привычки: «Показывать в виджете привычек».</string>
     <string name="widget_rings">Кольца</string>
-    <string name="widget_rings_today">Только сегодня (крупно)</string>
+    <string name="widget_rings_today">Только сегодня (кольцо подстраивается под размер виджета)</string>
     <string name="widget_rings_all">Сегодня, неделя и месяц</string>
     <string name="widget_habit">Привычка</string>
     <string name="widget_all_habits">Все привычки</string>
@@ -450,4 +449,15 @@
     </plurals>
     <string name="select">Выбрать</string>
     <string name="selected_count">Выбрано: %1$d</string>
+    <string name="cd_unmark">Снять отметку: %1$s</string>
+    <string name="widget_today_count">Сегодня %1$d/%2$d</string>
+    <string name="widget_color">Цвет</string>
+    <string name="widget_color_system">Системный (цвета обоев)</string>
+    <string name="widget_color_blue">Синий</string>
+    <string name="widget_color_green">Зелёный</string>
+    <string name="widget_color_orange">Оранжевый</string>
+    <string name="widget_color_purple">Фиолетовый</string>
+    <string name="widget_color_red">Красный</string>
+    <string name="widget_color_mono">Монохромный</string>
+    <string name="widget_bg_opacity">Непрозрачность фона: %1$d%%</string>
 </resources>

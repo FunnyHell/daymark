@@ -6,6 +6,7 @@ import io.github.funnyhell.daymark.domain.habit.DayState
 import io.github.funnyhell.daymark.domain.habit.HabitData
 import io.github.funnyhell.daymark.domain.habit.HabitEvaluator
 import io.github.funnyhell.daymark.domain.habit.HabitType
+import io.github.funnyhell.daymark.domain.habit.PeriodOutcome
 import io.github.funnyhell.daymark.domain.habit.RateSummary
 import io.github.funnyhell.daymark.domain.medication.MedicationData
 import io.github.funnyhell.daymark.domain.medication.OccurrenceRules
@@ -55,23 +56,55 @@ object HabitStatistics {
     }
 
     /**
-     * Progress of each habit that is due on [date], in 0..1, for the "today" ring: one sector per habit.
-     * Day-based habits use their day progress; weekly goals use the week's progress; abstinence habits count as
-     * complete unless a slip is recorded that day. Paused, archived and unscheduled habits are left out.
+     * Progress of each habit that is due on [date], in 0..1: one sector per habit in the "today" ring and in the
+     * calendar widget. Day-based habits use their day progress; weekly goals use the week's progress up to [date];
+     * abstinence habits count as complete unless a slip is recorded that day. Paused and unscheduled days are left
+     * out; for today only active habits are shown.
      */
-    fun dayFractions(habits: List<HabitData>, date: LocalDate, firstDayOfWeek: DayOfWeek): List<Double> =
-        habits.filter { it.habit.status == LifecycleStatus.ACTIVE }.mapNotNull { data ->
+    fun dayFractions(habits: List<HabitData>, date: LocalDate, firstDayOfWeek: DayOfWeek, today: LocalDate = date): List<Double> =
+        habits.filter { date != today || it.habit.status == LifecycleStatus.ACTIVE }.mapNotNull { data ->
             val e = HabitEvaluator(data, firstDayOfWeek)
-            if (!e.isScheduled(date)) return@mapNotNull null
+            if (date.isAfter(today) || !e.isScheduled(date)) return@mapNotNull null
             when (data.habit.type) {
-                HabitType.ABSTINENCE -> if (e.dayResult(date, date).state == DayState.LAPSED) 0.0 else 1.0
+                HabitType.ABSTINENCE -> if (e.dayResult(date, today).state == DayState.LAPSED) 0.0 else 1.0
                 HabitType.WEEKLY_GOAL -> {
                     val week = e.weekResult(date.startOfWeek(firstDayOfWeek), date)
                     if (week.goal <= 0.0) null else (week.completions / week.goal).coerceIn(0.0, 1.0)
                 }
-                else -> e.dayResult(date, date).fraction
+                else -> {
+                    val day = e.dayResult(date, today)
+                    if (day.state == DayState.SKIPPED) null else day.fraction
+                }
             }
         }
+
+    /**
+     * Average progress of the habits over [from]..[today] (inclusive), in 0..1, or null when nothing was due.
+     * Each habit contributes one value so that a frequent habit does not outweigh a weekly one:
+     * - day-based habits: mean day progress over their due days, today included (partial days count partly);
+     * - weekly goals: mean of min(1, completions / goal) over the weeks touching the period, the current week
+     *   included, so a goal not yet reached this week lowers the value;
+     * - abstinence: share of clean days.
+     * Paused, skipped and unscheduled days are not counted; archived habits are excluded.
+     */
+    fun periodProgress(habits: List<HabitData>, from: LocalDate, today: LocalDate, firstDayOfWeek: DayOfWeek): Double? {
+        val perHabit = habits.filter { it.habit.status != LifecycleStatus.ARCHIVED }.mapNotNull { data ->
+            val e = HabitEvaluator(data, firstDayOfWeek)
+            val values: List<Double> = when (data.habit.type) {
+                HabitType.WEEKLY_GOAL -> e.weeks(from, today)
+                    .filter { it.outcome != PeriodOutcome.NEUTRAL && it.goal > 0.0 }
+                    .map { (it.completions / it.goal).coerceIn(0.0, 1.0) }
+                HabitType.ABSTINENCE -> e.days(maxOf(from, data.habit.startDate), today, today)
+                    .filter { it.state == DayState.DONE || it.state == DayState.LAPSED }
+                    .map { if (it.state == DayState.DONE) 1.0 else 0.0 }
+                else -> e.days(maxOf(from, data.habit.startDate), today, today)
+                    .filter { it.state in setOf(DayState.DONE, DayState.PARTIAL, DayState.MISSED, DayState.PENDING) }
+                    .map { it.fraction }
+            }
+            values.takeIf { it.isNotEmpty() }?.average()
+        }
+        return perHabit.takeIf { it.isNotEmpty() }?.average()
+    }
 
     /** Daily summed amounts of a quantitative habit, oldest first. */
     fun quantitySeries(data: HabitData, from: LocalDate, to: LocalDate): List<Pair<LocalDate, Double>> {

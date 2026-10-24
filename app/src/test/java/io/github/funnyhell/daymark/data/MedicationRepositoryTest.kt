@@ -67,6 +67,22 @@ class MedicationRepositoryTest {
     }
 
     @Test
+    fun undoTaken_restoresStockOnceAndAllowsTakingAgain() = runBlocking {
+        val id = repo.create(medDraft())
+        val key = todaysKey(id)
+        repo.recordDose(id, key, MedicationEventType.TAKEN, ActionSource.WIDGET)
+        assertEquals(9.0, stock(id), 0.0)
+        assertTrue(repo.undoTaken(id, key))
+        assertFalse(repo.undoTaken(id, key))
+        assertEquals(10.0, stock(id), 0.0)
+        assertTrue(repo.recordDose(id, key, MedicationEventType.TAKEN, ActionSource.WIDGET) is MedicationActionResult.Recorded)
+        assertEquals(9.0, stock(id), 0.0)
+        // Both events stay in history; only the second one counts.
+        assertEquals(1, repo.get(id)!!.events.count { it.isActive })
+        assertEquals(2, repo.get(id)!!.events.size)
+    }
+
+    @Test
     fun concurrentDuplicateDeliveries_recordExactlyOnce() = runBlocking {
         val id = repo.create(medDraft())
         val key = todaysKey(id)

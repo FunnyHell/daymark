@@ -291,6 +291,17 @@ class MedicationRepository(
     }
 
     /**
+     * Unmarks a taken dose: the active TAKEN event of the occurrence is voided and its stock use reversed once
+     * (see [voidEvent]), so the dose is pending again. Returns false when the dose is not marked as taken.
+     */
+    suspend fun undoTaken(medicationId: String, occurrenceKey: String): Boolean {
+        val taken = dao.eventsFor(medicationId).lastOrNull {
+            it.occurrenceKey == occurrenceKey && it.voidedAt == null && it.type == MedicationEventType.TAKEN.name
+        } ?: return false
+        return voidEvent(taken.id)
+    }
+
+    /**
      * Corrects (voids) an event. For a TAKEN event the INTAKE adjustment is reversed exactly once, so the stock
      * is reconciled with the corrected history. Repeating the correction changes nothing.
      */

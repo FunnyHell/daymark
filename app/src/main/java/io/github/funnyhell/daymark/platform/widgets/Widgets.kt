@@ -11,6 +11,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.glance.ColorFilter
+import androidx.glance.appwidget.SizeMode
+import androidx.glance.LocalSize
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
@@ -67,6 +69,8 @@ import io.github.funnyhell.daymark.domain.medication.MedicationEventType
 import io.github.funnyhell.daymark.domain.stats.HabitStatistics
 import io.github.funnyhell.daymark.platform.goAsyncWork
 import io.github.funnyhell.daymark.ui.format.Formats
+import kotlinx.coroutines.flow.Flow
+import kotlin.math.roundToInt
 import java.time.DayOfWeek
 import java.time.LocalDate
 
@@ -99,10 +103,21 @@ private val HabitIdKey = Key<String>("habit_id")
 private val MedicationIdKey = Key<String>("medication_id")
 private val OccurrenceKeyKey = Key<String>("occurrence_key")
 private val DoseListKey = Key<String>("doses")
+private val DoneKey = Key<Boolean>("done")
 
-private suspend fun prefsFor(context: Context, id: GlanceId): Pair<Int, WidgetPrefs> {
+/** The settings of one placed widget, read once for the first frame and then observed for changes. */
+private class PrefsSource(val appWidgetId: Int, val initial: WidgetPrefs, val updates: Flow<WidgetPrefs>)
+
+private suspend fun prefsSource(context: Context, id: GlanceId): PrefsSource {
     val appWidgetId = GlanceAppWidgetManager(context).getAppWidgetId(id)
-    return appWidgetId to WidgetPrefsStore(context).get(appWidgetId)
+    val store = WidgetPrefsStore(context)
+    return PrefsSource(appWidgetId, store.get(appWidgetId), store.observe(appWidgetId))
+}
+
+@Composable
+private fun PrefsSource.collect(): WidgetPrefs {
+    val prefs by updates.collectAsState(initial)
+    return prefs
 }
 
 private fun configIntent(context: Context, appWidgetId: Int): Intent =
@@ -110,48 +125,63 @@ private fun configIntent(context: Context, appWidgetId: Int): Intent =
         .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
+private fun frameModifier(colors: WidgetColors, padding: Int = 12): GlanceModifier =
+    GlanceModifier.fillMaxSize().background(colors.background).cornerRadius(20.dp).padding(padding.dp)
+
+/** Bitmap size in pixels for a size in dp, capped to keep widget bitmaps small. */
+private fun px(context: Context, dp: Float, max: Int = 1000): Int =
+    (dp * context.resources.displayMetrics.density).toInt().coerceIn(16, max)
+
 // ---------------------------------------------------------------------------------------------------------------
 // Habits list
 
-/** Habits due today (marked "show on widget") with a compact check control. */
+/** Habits due today (marked "show on widget") with a compact tap-to-toggle check control. */
 class HabitWidget : GlanceAppWidget() {
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val c = context.container
-        val (_, prefs) = prefsFor(context, id)
+        val source = prefsSource(context, id)
         val initialHabits = c.habits.all()
         val initialSettings = c.settings.current()
         val habitsFlow = c.habits.observeAll()
         provideContent {
+            val prefs = source.collect()
+            val colors = WidgetColors.from(context, prefs)
             val habits by habitsFlow.collectAsState(initialHabits)
             val settings by c.settings.settings.collectAsState(initialSettings)
             val rows = WidgetContent.habitRows(context, habits, c.time.today(), settings.firstDayOfWeek)
                 .filter { !prefs.hideCompleted || !it.done }
             GlanceTheme {
-                WidgetFrame(context.getString(R.string.widget_habits_title), context.getString(R.string.widget_habits_empty), rows.isEmpty()) {
+                WidgetFrame(colors, context.getString(R.string.widget_habits_title), context.getString(R.string.widget_habits_empty), rows.isEmpty()) {
                     LazyColumn {
                         items(rows, itemId = { it.habitId.hashCode().toLong() }) { row ->
                             WidgetRow(
+                                colors = colors,
                                 title = row.name,
                                 subtitle = row.progressText,
                                 accent = row.colorArgb,
                                 done = row.done,
-                                check = if (row.canComplete || row.done) {
-                                    CheckSpec(
-                                        style = prefs.checkStyle,
-                                        done = row.done,
-                                        enabled = row.canComplete,
-                                        description = context.getString(R.string.widget_done_cd, row.name),
-                                        action = actionRunCallback<CompleteHabitAction>(actionParametersOf(HabitIdKey to row.habitId)),
-                                    )
-                                } else {
-                                    null
-                                },
+                                check = habitCheck(context, prefs, row, row.name, row.habitId),
                             )
                         }
                     }
                 }
             }
         }
+    }
+}
+
+private fun habitCheck(context: Context, prefs: WidgetPrefs, row: HabitWidgetRow, name: String, habitId: String): CheckSpec? {
+    val checked = row.checked
+    return when {
+        checked != null -> CheckSpec(
+            style = prefs.checkStyle,
+            done = checked,
+            enabled = true,
+            description = context.getString(if (checked) R.string.cd_unmark else R.string.widget_done_cd, name),
+            action = actionRunCallback<CompleteHabitAction>(actionParametersOf(HabitIdKey to habitId, DoneKey to !checked)),
+        )
+        row.done -> CheckSpec(prefs.checkStyle, done = true, enabled = false, description = context.getString(R.string.state_done), action = null)
+        else -> null
     }
 }
 
@@ -162,21 +192,24 @@ class HabitWidget : GlanceAppWidget() {
 class MedicationWidget : GlanceAppWidget() {
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val c = context.container
-        val (_, prefs) = prefsFor(context, id)
+        val source = prefsSource(context, id)
         val initial = c.medications.all()
         val medsFlow = c.medications.observeAll()
         provideContent {
+            val prefs = source.collect()
+            val colors = WidgetColors.from(context, prefs)
             val meds by medsFlow.collectAsState(initial)
             val rows = WidgetContent.medicationRows(context, meds, c.time.today(), c.time.now(), c.time.zone())
                 .filter { !prefs.hideCompleted || it.canTake }
             val groups = rows.groupBy { it.time }.toList()
             GlanceTheme {
-                WidgetFrame(context.getString(R.string.widget_meds_title), context.getString(R.string.widget_meds_empty), rows.isEmpty()) {
+                WidgetFrame(colors, context.getString(R.string.widget_meds_title), context.getString(R.string.widget_meds_empty), rows.isEmpty()) {
                     LazyColumn {
                         groups.forEach { (time, group) ->
                             val open = group.filter { it.canTake }
                             item(itemId = time.toSecondOfDay().toLong() * -1 - 1) {
                                 GroupHeader(
+                                    colors = colors,
                                     text = Formats.time(context, time),
                                     allAction = if (open.size > 1) {
                                         actionRunCallback<TakeAllDosesAction>(
@@ -190,6 +223,7 @@ class MedicationWidget : GlanceAppWidget() {
                             }
                             items(group, itemId = { it.occurrenceKey.hashCode().toLong() }) { row ->
                                 WidgetRow(
+                                    colors = colors,
                                     title = row.title,
                                     subtitle = row.subtitle,
                                     accent = row.colorArgb,
@@ -197,10 +231,15 @@ class MedicationWidget : GlanceAppWidget() {
                                     check = CheckSpec(
                                         style = prefs.checkStyle,
                                         done = !row.canTake,
-                                        enabled = row.canTake,
-                                        description = context.getString(R.string.widget_take_cd, row.title),
+                                        // Taken doses can be unmarked; skipped ones are corrected in the app.
+                                        enabled = row.canTake || row.taken,
+                                        description = context.getString(if (row.taken) R.string.cd_unmark else R.string.widget_take_cd, row.title),
                                         action = actionRunCallback<TakeDoseAction>(
-                                            actionParametersOf(MedicationIdKey to row.medicationId, OccurrenceKeyKey to row.occurrenceKey),
+                                            actionParametersOf(
+                                                MedicationIdKey to row.medicationId,
+                                                OccurrenceKeyKey to row.occurrenceKey,
+                                                DoneKey to !row.taken,
+                                            ),
                                         ),
                                     ),
                                 )
@@ -218,39 +257,51 @@ class MedicationWidget : GlanceAppWidget() {
 
 /**
  * Rings: today (one sector per due habit, a full ring = everything due today is done), plus this week and this
- * month (share of scheduled habit days/weeks done).
+ * month (average progress per habit, see [HabitStatistics.periodProgress]). The rings scale with the widget.
  */
 class ProgressWidget : GlanceAppWidget() {
+    override val sizeMode: SizeMode = SizeMode.Exact
+
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val c = context.container
-        val (_, prefs) = prefsFor(context, id)
+        val source = prefsSource(context, id)
         val initialHabits = c.habits.all()
         val initialSettings = c.settings.current()
         val habitsFlow = c.habits.observeAll()
-        val palette = WidgetPalette.from(context)
         provideContent {
+            val prefs = source.collect()
+            val colors = WidgetColors.from(context, prefs)
             val habits by habitsFlow.collectAsState(initialHabits)
             val settings by c.settings.settings.collectAsState(initialSettings)
+            val size = LocalSize.current
             val today = c.time.today()
             val wk = settings.firstDayOfWeek
             val day = HabitStatistics.dayFractions(habits, today, wk)
-            val week = HabitStatistics.summary(habits, today.startOfWeek(wk), today, today, wk).rate
-            val month = HabitStatistics.summary(habits, today.withDayOfMonth(1), today, today, wk).rate
-            val dayPercent = if (day.isEmpty()) null else day.average()
+            val dayValue = if (day.isEmpty()) null else day.average()
+            val dayLabel = if (day.isEmpty()) {
+                context.getString(R.string.widget_today)
+            } else {
+                context.getString(R.string.widget_today_count, day.count { it >= 1.0 }, day.size)
+            }
+            val labelSpace = 22f
             GlanceTheme {
                 Column(
-                    modifier = GlanceModifier.fillMaxSize().background(GlanceTheme.colors.widgetBackground).cornerRadius(20.dp)
-                        .padding(10.dp).clickable(actionStartActivity<MainActivity>()),
+                    modifier = frameModifier(colors, padding = 8).clickable(actionStartActivity<MainActivity>()),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     if (prefs.progressRange == ProgressRange.TODAY) {
-                        RingWithLabel(WidgetGraphics.sectorRing(day, 360, palette), dayPercent, context.getString(R.string.widget_today), 96)
+                        val ring = minOf(size.width.value - 16f, size.height.value - 16f - labelSpace).coerceIn(36f, 220f)
+                        RingWithLabel(colors, WidgetGraphics.sectorRing(day, px(context, ring), colors.palette), dayValue, dayLabel, ring)
                     } else {
-                        Row(modifier = GlanceModifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                            RingWithLabel(WidgetGraphics.sectorRing(day, 240, palette), dayPercent, context.getString(R.string.widget_today), 64, GlanceModifier.defaultWeight())
-                            RingWithLabel(WidgetGraphics.progressRing(week ?: 0.0, 240, palette), week, context.getString(R.string.widget_week), 64, GlanceModifier.defaultWeight())
-                            RingWithLabel(WidgetGraphics.progressRing(month ?: 0.0, 240, palette), month, context.getString(R.string.widget_month), 64, GlanceModifier.defaultWeight())
+                        val week = HabitStatistics.periodProgress(habits, today.startOfWeek(wk), today, wk)
+                        val month = HabitStatistics.periodProgress(habits, today.withDayOfMonth(1), today, wk)
+                        val ring = minOf((size.width.value - 16f) / 3f - 6f, size.height.value - 16f - labelSpace).coerceIn(28f, 150f)
+                        val ringPx = px(context, ring)
+                        Row(modifier = GlanceModifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalAlignment = Alignment.CenterVertically) {
+                            RingWithLabel(colors, WidgetGraphics.sectorRing(day, ringPx, colors.palette), dayValue, dayLabel, ring, GlanceModifier.defaultWeight())
+                            RingWithLabel(colors, WidgetGraphics.progressRing(week ?: 0.0, ringPx, colors.palette), week, context.getString(R.string.widget_week), ring, GlanceModifier.defaultWeight())
+                            RingWithLabel(colors, WidgetGraphics.progressRing(month ?: 0.0, ringPx, colors.palette), month, context.getString(R.string.widget_month), ring, GlanceModifier.defaultWeight())
                         }
                     }
                 }
@@ -260,8 +311,15 @@ class ProgressWidget : GlanceAppWidget() {
 }
 
 @Composable
-private fun RingWithLabel(bitmap: android.graphics.Bitmap, fraction: Double?, label: String, sizeDp: Int, modifier: GlanceModifier = GlanceModifier) {
-    val percent = fraction?.let { "${(it * 100).toInt()}%" } ?: "—"
+private fun RingWithLabel(
+    colors: WidgetColors,
+    bitmap: android.graphics.Bitmap,
+    fraction: Double?,
+    label: String,
+    sizeDp: Float,
+    modifier: GlanceModifier = GlanceModifier,
+) {
+    val percent = fraction?.let { "${(it * 100).roundToInt()}%" } ?: "—"
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         Box(modifier = GlanceModifier.size(sizeDp.dp), contentAlignment = Alignment.Center) {
             Image(
@@ -272,57 +330,68 @@ private fun RingWithLabel(bitmap: android.graphics.Bitmap, fraction: Double?, la
             )
             Text(
                 text = percent,
-                style = TextStyle(color = GlanceTheme.colors.onSurface, fontSize = (sizeDp / 5).sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center),
+                style = TextStyle(color = colors.onSurface, fontSize = (sizeDp / 4.6f).coerceIn(10f, 40f).sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center),
             )
         }
-        Text(text = label, style = TextStyle(color = GlanceTheme.colors.onSurfaceVariant, fontSize = 12.sp, textAlign = TextAlign.Center))
+        Text(text = label, style = TextStyle(color = colors.onSurfaceVariant, fontSize = 12.sp, textAlign = TextAlign.Center), maxLines = 1)
     }
 }
 
 // ---------------------------------------------------------------------------------------------------------------
-// Calendar of dots
+// Calendar of day rings
 
-/** This month as dots: the fuller the dot, the larger the share of due habits done that day. */
+/**
+ * This month with a sector ring around every day number: one sector per habit due that day, filled by its
+ * progress, so the ring shows how many of the due habits were done. All habits, or one chosen habit.
+ */
 class CalendarWidget : GlanceAppWidget() {
+    override val sizeMode: SizeMode = SizeMode.Exact
+
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val c = context.container
-        val (_, prefs) = prefsFor(context, id)
+        val source = prefsSource(context, id)
         val initialHabits = c.habits.all()
         val initialSettings = c.settings.current()
         val habitsFlow = c.habits.observeAll()
-        val palette = WidgetPalette.from(context)
         provideContent {
+            val prefs = source.collect()
+            val colors = WidgetColors.from(context, prefs)
             val habits by habitsFlow.collectAsState(initialHabits)
             val settings by c.settings.settings.collectAsState(initialSettings)
+            val size = LocalSize.current
             val today = c.time.today()
+            val wk = settings.firstDayOfWeek
             val first = today.withDayOfMonth(1)
             val selected = prefs.habitId?.let { hid -> habits.firstOrNull { it.habit.id == hid } }
-            val levels: Map<LocalDate, Double?> = if (selected != null) {
-                val e = HabitEvaluator(selected, settings.firstDayOfWeek)
-                e.days(first, today, today).associate { d ->
-                    d.date to when (d.state) {
-                        DayState.DONE -> 1.0
-                        DayState.PARTIAL, DayState.PENDING -> d.fraction
-                        DayState.MISSED, DayState.LAPSED -> 0.0
-                        else -> null
-                    }
-                }
-            } else {
-                HabitStatistics.dailyActivity(habits, first, today, today, settings.firstDayOfWeek)
-                    .mapValues { (_, a) -> if (a.due == 0) null else a.done.toDouble() / a.due }
-            }
-            val bitmap = WidgetGraphics.monthDots(first, today, levels, settings.firstDayOfWeek, 560, palette, Formats.locale(context))
+            val subject = if (selected != null) listOf(selected) else habits
+            val fractions = generateSequence(first) { it.plusDays(1) }.takeWhile { !it.isAfter(today) }
+                .associateWith { date -> HabitStatistics.dayFractions(subject, date, wk, today) }
+            val todays = fractions[today].orEmpty()
             val title = listOfNotNull(Formats.monthYear(context, today), selected?.habit?.name).joinToString(" · ")
+            val todayText = if (todays.isEmpty()) null else context.getString(R.string.widget_today_count, todays.count { it >= 1.0 }, todays.size)
+            val gridWidth = size.width.value - 20f
+            val gridHeight = size.height.value - 20f - 24f
+            val bitmap = WidgetGraphics.monthRings(
+                first, today, fractions, wk,
+                px(context, gridWidth), px(context, gridHeight), colors.palette, Formats.locale(context),
+            )
             GlanceTheme {
-                Column(
-                    modifier = GlanceModifier.fillMaxSize().background(GlanceTheme.colors.widgetBackground).cornerRadius(20.dp)
-                        .padding(12.dp).clickable(actionStartActivity<MainActivity>()),
-                ) {
-                    Text(title, style = TextStyle(color = GlanceTheme.colors.onSurface, fontSize = 14.sp, fontWeight = FontWeight.Bold), maxLines = 1)
-                    Spacer(GlanceModifier.height(6.dp))
+                Column(modifier = frameModifier(colors, padding = 10).clickable(actionStartActivity<MainActivity>())) {
+                    Row(modifier = GlanceModifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            title,
+                            style = TextStyle(color = colors.onSurface, fontSize = 14.sp, fontWeight = FontWeight.Bold),
+                            maxLines = 1,
+                            modifier = GlanceModifier.defaultWeight(),
+                        )
+                        if (todayText != null) {
+                            Text(todayText, style = TextStyle(color = colors.accent, fontSize = 12.sp, fontWeight = FontWeight.Bold), maxLines = 1)
+                        }
+                    }
+                    Spacer(GlanceModifier.height(4.dp))
                     Image(
                         provider = ImageProvider(bitmap),
-                        contentDescription = context.getString(R.string.widget_calendar_cd, title),
+                        contentDescription = context.getString(R.string.widget_calendar_cd, listOfNotNull(title, todayText).joinToString(", ")),
                         modifier = GlanceModifier.fillMaxWidth().defaultWeight(),
                         contentScale = ContentScale.Fit,
                     )
@@ -339,25 +408,27 @@ class CalendarWidget : GlanceAppWidget() {
 class StreakWidget : GlanceAppWidget() {
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val c = context.container
-        val (appWidgetId, prefs) = prefsFor(context, id)
+        val source = prefsSource(context, id)
         val initialHabits = c.habits.all()
         val initialSettings = c.settings.current()
         val habitsFlow = c.habits.observeAll()
         provideContent {
+            val prefs = source.collect()
+            val colors = WidgetColors.from(context, prefs)
             val habits by habitsFlow.collectAsState(initialHabits)
             val settings by c.settings.settings.collectAsState(initialSettings)
             val data = prefs.habitId?.let { hid -> habits.firstOrNull { it.habit.id == hid } }
             GlanceTheme {
-                val frame = GlanceModifier.fillMaxSize().background(GlanceTheme.colors.widgetBackground).cornerRadius(20.dp).padding(12.dp)
+                val frame = frameModifier(colors)
                 if (data == null) {
-                    Box(modifier = frame.clickable(actionStartActivity(configIntent(context, appWidgetId))), contentAlignment = Alignment.Center) {
+                    Box(modifier = frame.clickable(actionStartActivity(configIntent(context, source.appWidgetId))), contentAlignment = Alignment.Center) {
                         Text(
                             context.getString(R.string.widget_streak_choose),
-                            style = TextStyle(color = GlanceTheme.colors.onSurfaceVariant, fontSize = 13.sp, textAlign = TextAlign.Center),
+                            style = TextStyle(color = colors.onSurfaceVariant, fontSize = 13.sp, textAlign = TextAlign.Center),
                         )
                     }
                 } else {
-                    StreakContent(context, data, frame, prefs, settings.firstDayOfWeek, c.time.today())
+                    StreakContent(context, colors, data, frame, prefs, settings.firstDayOfWeek, c.time.today())
                 }
             }
         }
@@ -367,6 +438,7 @@ class StreakWidget : GlanceAppWidget() {
 @Composable
 private fun StreakContent(
     context: Context,
+    colors: WidgetColors,
     data: HabitData,
     frame: GlanceModifier,
     prefs: WidgetPrefs,
@@ -379,42 +451,34 @@ private fun StreakContent(
     val unit = context.resources.getQuantityString(if (weeks) R.plurals.unit_weeks_short else R.plurals.unit_days_short, streak.current)
     val row = WidgetContent.habitRows(context, listOf(data), today, firstDayOfWeek).firstOrNull()
     val last7 = e.days(today.minusDays(6), today, today)
+    val color = Color(data.habit.colorArgb)
     Column(modifier = frame.clickable(actionStartActivity<MainActivity>())) {
         Row(modifier = GlanceModifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text(
                 data.habit.name,
-                style = TextStyle(color = GlanceTheme.colors.onSurface, fontSize = 14.sp, fontWeight = FontWeight.Bold),
+                style = TextStyle(color = colors.onSurface, fontSize = 14.sp, fontWeight = FontWeight.Bold),
                 maxLines = 1,
                 modifier = GlanceModifier.defaultWeight(),
             )
-            if (row != null && data.habit.status == LifecycleStatus.ACTIVE && (row.canComplete || row.done)) {
-                CheckControl(
-                    CheckSpec(
-                        style = prefs.checkStyle,
-                        done = row.done,
-                        enabled = row.canComplete,
-                        description = context.getString(R.string.widget_done_cd, data.habit.name),
-                        action = actionRunCallback<CompleteHabitAction>(actionParametersOf(HabitIdKey to data.habit.id)),
-                    ),
-                )
+            if (row != null && data.habit.status == LifecycleStatus.ACTIVE) {
+                habitCheck(context, prefs, row, data.habit.name, data.habit.id)?.let { CheckControl(colors, it) }
             }
         }
         Row(verticalAlignment = Alignment.Bottom) {
             Text(
                 streak.current.toString(),
-                style = TextStyle(color = ColorProvider(Color(data.habit.colorArgb), Color(data.habit.colorArgb)), fontSize = 44.sp, fontWeight = FontWeight.Bold),
+                style = TextStyle(color = ColorProvider(color, color), fontSize = 44.sp, fontWeight = FontWeight.Bold),
             )
             Spacer(GlanceModifier.width(6.dp))
-            Text(unit, style = TextStyle(color = GlanceTheme.colors.onSurfaceVariant, fontSize = 14.sp), modifier = GlanceModifier.padding(bottom = 8.dp))
+            Text(unit, style = TextStyle(color = colors.onSurfaceVariant, fontSize = 14.sp), modifier = GlanceModifier.padding(bottom = 8.dp))
         }
         Text(
             context.getString(R.string.widget_best, streak.best),
-            style = TextStyle(color = GlanceTheme.colors.onSurfaceVariant, fontSize = 12.sp),
+            style = TextStyle(color = colors.onSurfaceVariant, fontSize = 12.sp),
         )
         Spacer(GlanceModifier.height(6.dp))
         Row {
             last7.forEach { d ->
-                val color = Color(data.habit.colorArgb)
                 val filled = d.state == DayState.DONE
                 val faint = d.state in setOf(DayState.NOT_SCHEDULED, DayState.PAUSED, DayState.BEFORE_START, DayState.SKIPPED)
                 Box(
@@ -440,39 +504,38 @@ private class CheckSpec(
     val done: Boolean,
     val enabled: Boolean,
     val description: String,
-    val action: Action,
+    val action: Action?,
 )
 
 @Composable
-private fun CheckControl(spec: CheckSpec) {
+private fun CheckControl(colors: WidgetColors, spec: CheckSpec) {
     val icon = when (spec.style) {
         CheckStyle.CIRCLE -> if (spec.done) R.drawable.ic_widget_check_filled else R.drawable.ic_widget_circle
         CheckStyle.RADIO -> if (spec.done) R.drawable.ic_widget_radio_on else R.drawable.ic_widget_radio_off
     }
     var modifier = GlanceModifier.size(40.dp).padding(6.dp).semantics { contentDescription = spec.description }
-    if (spec.enabled) modifier = modifier.clickable(spec.action)
+    val action = spec.action
+    if (spec.enabled && action != null) modifier = modifier.clickable(action)
     Image(
         provider = ImageProvider(icon),
         contentDescription = spec.description,
-        colorFilter = ColorFilter.tint(GlanceTheme.colors.primary),
+        colorFilter = ColorFilter.tint(if (spec.enabled) colors.accent else colors.onSurfaceVariant),
         modifier = modifier,
     )
 }
 
 @Composable
-private fun WidgetFrame(title: String, empty: String, isEmpty: Boolean, content: @Composable () -> Unit) {
-    Column(
-        modifier = GlanceModifier.fillMaxSize().background(GlanceTheme.colors.widgetBackground).cornerRadius(20.dp).padding(12.dp),
-    ) {
+private fun WidgetFrame(colors: WidgetColors, title: String, empty: String, isEmpty: Boolean, content: @Composable () -> Unit) {
+    Column(modifier = frameModifier(colors)) {
         Text(
             text = title,
-            style = TextStyle(color = GlanceTheme.colors.onSurface, fontSize = 15.sp, fontWeight = FontWeight.Bold),
+            style = TextStyle(color = colors.onSurface, fontSize = 15.sp, fontWeight = FontWeight.Bold),
             modifier = GlanceModifier.fillMaxWidth().clickable(actionStartActivity<MainActivity>()).padding(bottom = 4.dp),
         )
         if (isEmpty) {
             Text(
                 text = empty,
-                style = TextStyle(color = GlanceTheme.colors.onSurfaceVariant, fontSize = 13.sp),
+                style = TextStyle(color = colors.onSurfaceVariant, fontSize = 13.sp),
                 modifier = GlanceModifier.clickable(actionStartActivity<MainActivity>()),
             )
         } else {
@@ -482,18 +545,18 @@ private fun WidgetFrame(title: String, empty: String, isEmpty: Boolean, content:
 }
 
 @Composable
-private fun GroupHeader(text: String, allAction: Action?, allDescription: String) {
+private fun GroupHeader(colors: WidgetColors, text: String, allAction: Action?, allDescription: String) {
     Row(modifier = GlanceModifier.fillMaxWidth().padding(top = 4.dp), verticalAlignment = Alignment.CenterVertically) {
         Text(
             text = text,
-            style = TextStyle(color = GlanceTheme.colors.primary, fontSize = 12.sp, fontWeight = FontWeight.Bold),
+            style = TextStyle(color = colors.accent, fontSize = 12.sp, fontWeight = FontWeight.Bold),
             modifier = GlanceModifier.defaultWeight(),
         )
         if (allAction != null) {
             Image(
                 provider = ImageProvider(R.drawable.ic_widget_done_all),
                 contentDescription = allDescription,
-                colorFilter = ColorFilter.tint(GlanceTheme.colors.primary),
+                colorFilter = ColorFilter.tint(colors.accent),
                 modifier = GlanceModifier.size(36.dp).padding(6.dp).clickable(allAction),
             )
         }
@@ -501,7 +564,7 @@ private fun GroupHeader(text: String, allAction: Action?, allDescription: String
 }
 
 @Composable
-private fun WidgetRow(title: String, subtitle: String, accent: Long, done: Boolean, check: CheckSpec?) {
+private fun WidgetRow(colors: WidgetColors, title: String, subtitle: String, accent: Long, done: Boolean, check: CheckSpec?) {
     Row(
         modifier = GlanceModifier.fillMaxWidth().padding(vertical = 3.dp).clickable(actionStartActivity<MainActivity>()),
         verticalAlignment = Alignment.CenterVertically,
@@ -512,35 +575,45 @@ private fun WidgetRow(title: String, subtitle: String, accent: Long, done: Boole
             Text(
                 text = title,
                 style = TextStyle(
-                    color = if (done) GlanceTheme.colors.onSurfaceVariant else GlanceTheme.colors.onSurface,
+                    color = if (done) colors.onSurfaceVariant else colors.onSurface,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium,
                 ),
                 maxLines = 1,
             )
-            Text(text = subtitle, style = TextStyle(color = GlanceTheme.colors.onSurfaceVariant, fontSize = 12.sp), maxLines = 1)
+            Text(text = subtitle, style = TextStyle(color = colors.onSurfaceVariant, fontSize = 12.sp), maxLines = 1)
         }
-        if (check != null) CheckControl(check)
+        if (check != null) CheckControl(colors, check)
     }
 }
 
 // ---------------------------------------------------------------------------------------------------------------
 // Actions and receivers
 
-/** Records a completion through the same idempotent repository method used by notifications. */
+/**
+ * Marks or unmarks today for a habit. The widget passes the state it wants ([DoneKey]), so a stale widget or a
+ * repeated tap cannot flip the result back (see HabitRepository.setDone). Without the key it marks the habit done.
+ */
 class CompleteHabitAction : ActionCallback {
     override suspend fun onAction(context: Context, glanceId: GlanceId, parameters: ActionParameters) {
         val habitId = parameters[HabitIdKey] ?: return
-        context.container.habits.completeIfIncomplete(habitId)
+        context.container.habits.setDone(habitId, done = parameters[DoneKey] ?: true)
     }
 }
 
-/** Records TAKEN through the shared, validated and idempotent repository method. */
+/**
+ * Records TAKEN through the shared, validated and idempotent repository method, or removes a taken mark when
+ * [DoneKey] is false (the stock use is reversed once).
+ */
 class TakeDoseAction : ActionCallback {
     override suspend fun onAction(context: Context, glanceId: GlanceId, parameters: ActionParameters) {
         val medId = parameters[MedicationIdKey] ?: return
         val key = parameters[OccurrenceKeyKey] ?: return
-        context.container.medications.recordDose(medId, key, MedicationEventType.TAKEN, ActionSource.WIDGET)
+        if (parameters[DoneKey] ?: true) {
+            context.container.medications.recordDose(medId, key, MedicationEventType.TAKEN, ActionSource.WIDGET)
+        } else {
+            context.container.medications.undoTaken(medId, key)
+        }
     }
 }
 

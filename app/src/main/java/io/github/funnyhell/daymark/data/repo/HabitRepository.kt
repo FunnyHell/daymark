@@ -238,6 +238,41 @@ class HabitRepository(
         return result
     }
 
+    /**
+     * Removes the latest mark of [date]: the most recent active completion is voided (kept in history as
+     * corrected). Returns false when the day has no completion to remove.
+     */
+    suspend fun undoCompletion(habitId: String, date: LocalDate = time.today()): Boolean {
+        val changed = db.withTransaction {
+            val latest = dao.eventsFor(habitId)
+                .filter { it.date == date && it.voidedAt == null && it.type == HabitEventType.COMPLETION.name }
+                .maxByOrNull { it.recordedAt } ?: return@withTransaction false
+            dao.voidEvent(latest.id, time.now()) > 0
+        }
+        if (changed) listener.onDataChanged(DataChange.Habits)
+        return changed
+    }
+
+    /**
+     * Brings a day to the requested state, used by toggles in the app and in widgets. The caller passes the
+     * state it wants rather than "toggle", so a stale widget or a repeated tap cannot flip the result back:
+     * marking a done day or unmarking an empty one changes nothing.
+     */
+    suspend fun setDone(habitId: String, done: Boolean, date: LocalDate = time.today()): Boolean {
+        val data = get(habitId) ?: return false
+        val evaluator = HabitEvaluator(data)
+        val isDone = if (data.habit.type == HabitType.WEEKLY_GOAL) {
+            evaluator.progressOn(date) > 0.0
+        } else {
+            evaluator.progressOn(date) >= evaluator.targetOn(date)
+        }
+        return when {
+            done && !isDone -> completeIfIncomplete(habitId, date) is HabitActionResult.Recorded
+            !done && isDone -> undoCompletion(habitId, date)
+            else -> false
+        }
+    }
+
     /** Marks an event as corrected. The event stays in history but no longer counts. Idempotent. */
     suspend fun voidEvent(eventId: String): Boolean {
         val changed = dao.voidEvent(eventId, time.now()) > 0

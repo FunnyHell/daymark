@@ -205,7 +205,7 @@ fun TodayScreen(
             HabitTodayRow(
                 item = habit,
                 onOpen = { onOpenHabit(habit.habitId) },
-                onComplete = { vm.completeHabit(habit.habitId) },
+                onSetDone = { done -> vm.setHabitDone(habit.habitId, done) },
                 onAddAmount = { vm.addHabitProgress(habit.habitId, it) },
                 onSkip = { vm.skipHabit(habit.habitId) },
                 onLapse = { note -> vm.recordLapse(habit.habitId, note = note) },

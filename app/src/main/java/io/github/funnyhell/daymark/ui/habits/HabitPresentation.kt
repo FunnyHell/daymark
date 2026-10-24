@@ -32,6 +32,8 @@ data class HabitTodayItem(
     /** Latest active event of today that "undo" would correct. */
     val undoEventId: String?,
     val skipped: Boolean,
+    /** State of the tap-to-toggle ring: tapping sets the opposite. Null when the ring is not a toggle. */
+    val checked: Boolean? = null,
 )
 
 object HabitPresentation {
@@ -55,6 +57,7 @@ object HabitPresentation {
                     streakText = streak.current.takeIf { it > 0 }?.let { context.resources.getQuantityString(R.plurals.streak_weeks, it, it) },
                     undoEventId = todays.lastOrNull { it.type == HabitEventType.COMPLETION }?.id,
                     skipped = false,
+                    checked = e.progressOn(today) > 0.0,
                 )
             }
             HabitType.ABSTINENCE -> {
@@ -92,6 +95,7 @@ object HabitPresentation {
                     streakText = streak.current.takeIf { it > 0 }?.let { context.resources.getQuantityString(R.plurals.streak_days, it, it) },
                     undoEventId = todays.lastOrNull { it.type == HabitEventType.COMPLETION || it.type == HabitEventType.PROGRESS || it.type == HabitEventType.SKIP }?.id,
                     skipped = day.state == DayState.SKIPPED,
+                    checked = done.takeIf { habit.type != HabitType.QUANTITY && day.state != DayState.SKIPPED },
                 )
             }
         }

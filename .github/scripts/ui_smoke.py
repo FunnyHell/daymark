@@ -192,12 +192,13 @@ shot("06-medications-list")
 tap("Today", bottom=True)
 time.sleep(2)
 shot("07-today-with-items")
-if wait_for("Taken", timeout=5):
-    tap("Taken")
-    shot("08-today-after-taken")
-if wait_for("Done", timeout=5):
-    tap("Done")
-    shot("09-today-after-done")
+# The circle / ring on the left of a row marks it; tapping again removes the mark.
+tap("Mark Vitamin D taken")
+shot("08-today-after-taken")
+tap("Mark Morning stretch done")
+shot("09-today-after-done")
+tap("Unmark Morning stretch")
+shot("09b-today-after-unmark")
 alive()
 
 tap("History", bottom=True)

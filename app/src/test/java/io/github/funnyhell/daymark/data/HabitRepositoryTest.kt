@@ -70,6 +70,33 @@ class HabitRepositoryTest {
     }
 
     @Test
+    fun setDone_togglesByTargetStateAndIgnoresRepeats() = runBlocking {
+        val id = repo.create(draft())
+        assertTrue(repo.setDone(id, done = true))
+        assertFalse(repo.setDone(id, done = true))
+        assertEquals(DayState.DONE, HabitEvaluator(repo.get(id)!!).dayResult(DAY1, DAY1).state)
+        assertTrue(repo.setDone(id, done = false))
+        assertFalse(repo.setDone(id, done = false))
+        val data = repo.get(id)!!
+        assertEquals(DayState.PENDING, HabitEvaluator(data).dayResult(DAY1, DAY1).state)
+        // The unmarked completion stays in history as a correction.
+        assertEquals(1, data.events.size)
+        assertTrue(data.events.single().voidedAt != null)
+    }
+
+    @Test
+    fun undoCompletion_removesOneStepOfMultiHabit() = runBlocking {
+        val id = repo.create(draft(type = HabitType.MULTI, target = 2.0))
+        repo.completeIfIncomplete(id)
+        repo.completeIfIncomplete(id)
+        assertTrue(repo.setDone(id, done = false))
+        assertEquals(1.0, HabitEvaluator(repo.get(id)!!).progressOn(DAY1), 0.0)
+        assertTrue(repo.undoCompletion(id))
+        assertFalse(repo.undoCompletion(id))
+        assertEquals(0.0, HabitEvaluator(repo.get(id)!!).progressOn(DAY1), 0.0)
+    }
+
+    @Test
     fun invalidInputIsRejected() = runBlocking {
         val q = repo.create(draft(type = HabitType.QUANTITY, target = 2000.0, unit = "ml"))
         assertEquals(HabitActionResult.Rejected(HabitRejectReason.INVALID_AMOUNT), repo.addProgress(q, -5.0))

@@ -1,17 +1,17 @@
 package io.github.funnyhell.daymark.ui.habits
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.selection.toggleable
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -25,6 +25,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -40,7 +44,7 @@ import io.github.funnyhell.daymark.ui.common.ProgressRing
 fun HabitTodayRow(
     item: HabitTodayItem,
     onOpen: () -> Unit,
-    onComplete: () -> Unit,
+    onSetDone: (Boolean) -> Unit,
     onAddAmount: (Double) -> Unit,
     onSkip: () -> Unit,
     onLapse: (String?) -> Unit,
@@ -50,9 +54,22 @@ fun HabitTodayRow(
     var lapseDialog by remember { mutableStateOf(false) }
     var menu by remember { mutableStateOf(false) }
     val color = Color(item.colorArgb)
+    val markLabel = stringResource(R.string.widget_done_cd, item.name)
+    val unmarkLabel = stringResource(R.string.cd_unmark, item.name)
     AppCard(onClick = onOpen) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            ProgressRing(item.fraction, item.ringLabel, color, done = item.done && item.type != HabitType.ABSTINENCE)
+            val checked = item.checked
+            val ringModifier = if (checked != null) {
+                Modifier
+                    .clip(CircleShape)
+                    .toggleable(value = checked, role = Role.Checkbox, onValueChange = { onSetDone(it) })
+                    .semantics {
+                        contentDescription = if (checked) unmarkLabel else markLabel
+                    }
+            } else {
+                Modifier
+            }
+            ProgressRing(item.fraction, item.ringLabel, color, modifier = ringModifier, done = item.done && item.type != HabitType.ABSTINENCE)
             Spacer(Modifier.width(14.dp))
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 Text(item.name, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
@@ -60,20 +77,11 @@ fun HabitTodayRow(
                 item.streakText?.let { Text(it, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary) }
             }
             when (item.type) {
-                HabitType.CHECK -> if (!item.done && !item.skipped) {
-                    FilledTonalButton(onClick = onComplete) {
-                        Icon(Icons.Filled.Check, contentDescription = null)
-                        Spacer(Modifier.width(4.dp))
-                        Text(stringResource(R.string.action_done))
-                    }
-                }
-                HabitType.MULTI, HabitType.WEEKLY_GOAL -> FilledTonalIconButton(onClick = onComplete) {
-                    Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.cd_add_one, item.name))
-                }
                 HabitType.QUANTITY -> FilledTonalIconButton(onClick = { amountDialog = true }) {
                     Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.cd_add_amount, item.name))
                 }
                 HabitType.ABSTINENCE -> OutlinedButton(onClick = { lapseDialog = true }) { Text(stringResource(R.string.action_lapse)) }
+                HabitType.CHECK, HabitType.MULTI, HabitType.WEEKLY_GOAL -> Unit
             }
             if (item.undoEventId != null || item.type in setOf(HabitType.CHECK, HabitType.MULTI, HabitType.QUANTITY)) {
                 IconButton(onClick = { menu = true }) { Icon(Icons.Filled.MoreVert, contentDescription = stringResource(R.string.more_actions)) }

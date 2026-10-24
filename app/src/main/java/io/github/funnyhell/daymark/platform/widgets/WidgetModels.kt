@@ -25,8 +25,12 @@ data class HabitWidgetRow(
     val name: String,
     val progressText: String,
     val done: Boolean,
-    /** True if the widget may record a completion directly (see [io.github.funnyhell.daymark.data.repo.HabitRepository.completeIfIncomplete]). */
-    val canComplete: Boolean,
+    /**
+     * State of the tap-to-toggle control (today marked or not); tapping requests the opposite through
+     * [io.github.funnyhell.daymark.data.repo.HabitRepository.setDone]. Null when the widget cannot toggle the habit
+     * (amounts, slips, skipped days).
+     */
+    val checked: Boolean?,
     val colorArgb: Long,
 )
 
@@ -37,6 +41,7 @@ data class MedicationWidgetRow(
     val subtitle: String,
     val state: OccurrenceState,
     val canTake: Boolean,
+    val taken: Boolean,
     val colorArgb: Long,
     val time: LocalTime,
 )
@@ -54,14 +59,14 @@ object WidgetContent {
                     HabitWidgetRow(
                         habit.id, habit.name,
                         context.getString(R.string.progress_week, week.completions.formatQuantity(), week.goal.formatQuantity()),
-                        done = week.completions >= week.goal, canComplete = !doneToday, colorArgb = habit.colorArgb,
+                        done = week.completions >= week.goal, checked = doneToday, colorArgb = habit.colorArgb,
                     )
                 }
                 HabitType.ABSTINENCE -> {
                     val streak = e.streaks(today).current
                     HabitWidgetRow(
                         habit.id, habit.name, context.resources.getQuantityString(R.plurals.days_clean, streak, streak),
-                        done = e.dayResult(today, today).state == DayState.DONE, canComplete = false, colorArgb = habit.colorArgb,
+                        done = e.dayResult(today, today).state == DayState.DONE, checked = null, colorArgb = habit.colorArgb,
                     )
                 }
                 else -> {
@@ -73,7 +78,7 @@ object WidgetContent {
                     }
                     HabitWidgetRow(
                         habit.id, habit.name, text, done = day.state == DayState.DONE,
-                        canComplete = habit.type != HabitType.QUANTITY && day.state != DayState.DONE && day.state != DayState.SKIPPED,
+                        checked = (day.state == DayState.DONE).takeIf { habit.type != HabitType.QUANTITY && day.state != DayState.SKIPPED },
                         colorArgb = habit.colorArgb,
                     )
                 }
@@ -92,6 +97,7 @@ object WidgetContent {
                     subtitle = "${Formats.time(context, occ.time)} · ${occ.doseLabel.ifBlank { context.getString(R.string.dose_default) }} · $stateText",
                     state = status.state,
                     canTake = status.state != OccurrenceState.TAKEN && status.state != OccurrenceState.SKIPPED,
+                    taken = status.state == OccurrenceState.TAKEN,
                     colorArgb = data.medication.colorArgb,
                     time = occ.time,
                 )

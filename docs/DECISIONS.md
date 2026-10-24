@@ -705,6 +705,50 @@ Archive is the normal way to remove an item from daily use and keeps all history
 
 ---
 
+## ADR-023 — Widget set and per-widget settings (supersedes parts of ADR-019)
+
+**Status:** Accepted
+
+#### Context
+
+Feedback from first use: text buttons in widgets were too large, doses due at the same time needed a "mark all" action, and more visual widgets were wanted (streaks, calendar, completion rings), with previews in the widget picker and per-widget settings.
+
+#### Decision
+
+- Five Glance widgets: Habits, Medications, Progress (rings), Calendar (month of dots), Streak (one habit).
+- List widgets use a compact check icon (round tick or radio button, chosen per widget). Medications are grouped by time; a group with several open doses has a "mark all" control (`TakeAllDosesAction`), which records each dose separately through `recordDose`.
+- Progress rings are drawn as bitmaps: today's ring has one sector per due habit (filled by its progress); week and month rings use the same completion-rate rules as History.
+- Per-widget settings (check style, hide completed, ring range, habit for calendar/streak) are stored in a separate DataStore keyed by app widget id and edited in `WidgetConfigActivity`. On Android 12+ configuration is optional at placement and available later via the widget's long-press menu ("reconfigurable"); on older Android the settings screen opens when the widget is added. Settings are deleted with the widget.
+- Static vector previews (`previewImage`) are shown in the picker.
+
+#### Date
+
+2026-10-24
+
+---
+
+## ADR-024 — Notification channels v2
+
+**Status:** Accepted
+
+#### Context
+
+On the test phone reminders arrived without sound. Version 1 channels relied on implicit defaults and the medication notification used `setOnlyAlertOnce`, which also silences a reminder re-posted after a snooze.
+
+#### Decision
+
+Channels are recreated with new ids (`*_v2`) that set the default notification sound, vibration pattern and lights explicitly; habit reminders use high importance as well. The v1 channels are deleted. `setOnlyAlertOnce` is no longer used. Settings → Reminders links to the channel's system settings to change the sound.
+
+#### Consequences
+
+Any per-channel customisation the user made to v1 channels is lost once; Android does not allow changing a channel's sound programmatically after creation.
+
+#### Date
+
+2026-10-24
+
+---
+
 \## Future decisions
 
 

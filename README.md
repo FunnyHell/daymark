@@ -13,23 +13,28 @@ Daymark records what you enter and reminds you at the times you choose. It does 
 **Habits**
 - Types: daily check, several times a day, amount with a unit (e.g. 2000 ml), weekly goal (N times per week), abstinence with lapse records.
 - Schedules: every day, selected weekdays, every N days. Optional daily reminder time.
-- Create, edit, pause, resume, archive, restore, delete (with confirmation).
+- Create, edit, pause, resume, archive, restore, delete (with confirmation). In lists: swipe right = pause/resume, swipe left = archive, long press = menu.
 - Record completions, amounts, skips and lapses for today or for past days; correct any entry (corrections are kept in history).
 - Schedule changes create a new schedule version from today; past days keep their original rules.
 
 **Medications**
 - Name, strength/form, notes, colour; one or more dose times per day on chosen weekdays; a free-text dose description and a "uses from stock" amount per dose.
-- Taken / Skip / Snooze 30 min from the app, the notification and (Taken) the widget. Every action is validated and idempotent: repeated taps or duplicated notification actions record once.
+- Taken / Skip / Snooze 30 min from the app, the notification and (Taken) the widget; "Take all" for doses due at the same time. Every action is validated and idempotent: repeated taps or duplicated notification actions record once.
 - Missed doses are derived (nothing recorded within 3 hours), never invented; late doses can still be recorded.
 - Pause/resume a schedule without false missed doses; corrections with exact inventory reconciliation.
 
 **Inventory**
-- Optional per medication, user-defined unit, initial stock, add packages, set a counted stock, low-stock threshold and notification, full change log.
+- Optional per medication, user-defined unit, initial stock, add packages (previous package sizes offered as one-tap choices), set a counted stock, low-stock threshold and notification, full change log.
 
 **Reminders and widgets**
-- Exact alarms where permitted (falls back to inexact), rebuilt after reboot, app update, time and time-zone changes, plus a 6-hourly safety net.
+- Exact alarms where permitted (falls back to inexact), rebuilt after reboot, app update, time and time-zone changes, plus a 6-hourly safety net. Reminders play the default notification sound and vibrate (change it in Settings → Reminders → Sound and vibration).
 - Lock-screen privacy: medication and habit names hidden on the lock screen by default.
-- Two home-screen widgets (Jetpack Glance): today's habits with a Done button, and today's doses with a Taken button.
+- Five home-screen widgets (Jetpack Glance), each with its own settings (long-press the widget → Settings on Android 12+):
+  - **Habits** — today's habits with a compact tick or radio button;
+  - **Medications** — today's doses grouped by time, with "mark all" for a time group;
+  - **Progress** — rings for today (one sector per habit), this week and this month;
+  - **Calendar** — the month as dots, fuller dots = more done (all habits or one);
+  - **Streak** — one habit's current streak in large type, best streak and the last 7 days.
 
 **History and statistics**
 - Per-habit calendar heatmap with day details, current/best streaks, 30-day completion rate, weekly results, clean-streak history for abstinence habits.
@@ -78,7 +83,7 @@ CI (`.github/workflows/android.yml`) runs the unit tests, builds and inspects th
 - Not yet verified on a physical Samsung device: notification delivery and actions, exact alarm timing, behaviour after reboot or with battery optimisation, widgets.
 - Reminder times are local wall-clock times; after travelling to another time zone a 08:00 dose is reminded at 08:00 local time.
 - Snooze is fixed at 30 minutes; the missed window is fixed at 3 hours.
-- Widget buttons record only simple actions (habit done / +1, dose taken). Amounts, lapses, skips and snoozes are recorded in the app or the notification.
+- Widget buttons record only simple actions (habit done / +1, dose taken, all doses of a time taken). Amounts, slips, skips and snoozes are recorded in the app or the notification.
 - Backups are plain JSON (not encrypted). Import replaces all data; there is no merge.
 - No synchronization between devices and no Wear OS app yet.
 

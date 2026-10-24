@@ -12,7 +12,7 @@ Goal: an installable debug APK with persistent habits, medications, inventory, r
 
 Exit criteria and state:
 - Debug APK builds in CI — **done** (see §4).
-- Unit and database tests pass — **done** (84 tests).
+- Unit and database tests pass — **done** (see §4).
 - Instrumented tests and emulator smoke test — **done** on an API 34 emulator (see §4).
 - Physical Samsung Galaxy A52 verification — **not started** (requires the user's device).
 
@@ -42,8 +42,10 @@ Exit criteria and state:
 | Inventory tracking | Verified by automated tests | Ledger, packages, counts, insufficient stock, reversal once, low-stock crossing |
 | Notifications | Implemented, not verified on device | Action broadcast idempotency covered by an instrumented test |
 | Reboot/time changes | Implemented, not verified | Receivers rebuild the single alarm; planner catch-up unit-tested |
-| Habit widget | Implemented, not verified | Glance; uses `completeIfIncomplete` (tested in repository tests) |
-| Medication widget | Implemented, not verified | Glance; uses `recordDose` |
+| Habit widget | Implemented, not verified | Glance; mark/unmark via `setDone` (tested in repository tests) |
+| Medication widget | Implemented, not verified | Glance; `recordDose` / `undoTaken` (tested in repository tests) |
+| Progress / Calendar / Streak widgets | Implemented, not verified | Period progress and per-day fractions unit-tested; colours, opacity and sizing not verified on a device |
+| Multi-select in lists | Implemented, not verified | Bulk pause/resume/archive/delete; no automated UI test |
 | Statistics and calendar | Verified by automated tests (rules) | UI heatmaps/charts not visually verified on device |
 | Export/import | Verified by automated tests | Round trip, invalid files, rollback on failure |
 | Accessibility/theme | Implemented, not verified | Light/dark/dynamic colour, content descriptions, text labels for states |
@@ -76,6 +78,8 @@ Exit criteria and state:
 - Each CI run signs with that runner's own debug key, so installing a newer CI build over an older one may fail with a signature conflict; export a backup, uninstall, reinstall, import.
 
 ## 6. Recent completed work
+
+- 2026-10-24 (feedback round 2): `USE_EXACT_ALARM` so reminders are not deferred with the screen off (ADR-025); multi-select with bulk actions in habit and medication lists; press ripple clipped to the rounded card; tap-to-toggle marks on Today (habit ring, dose circle) and in widgets with an explicit target state (ADR-026); widget settings observed (Streak widget no longer stuck on "choose a habit"); new week/month progress rule, rings sized to the widget, calendar with a sector ring per day, per-widget accent colour and background opacity (ADR-027). New tests: `setDone`/`undoCompletion`, `undoTaken`, `periodProgress` (the reported 2-habit case → 50%), `dayFractions` for past days. CI run 40118132792 (commit a585df1): in progress at the time of writing.
 
 - 2026-10-24 (feedback round 1): fixed blank screen after deleting (double back navigation), permission prompt that opened system settings when permission was already granted, silent notifications (new v2 channels with sound/vibration), long-lived snackbars (short, closable, swipeable). Added package-size presets, clearer habit types (radio list with examples; "Quit a habit" with "Slip"), swipe/long-press list actions, "Take all" for doses at the same time, compact widget check controls, medications widget grouped by time with "mark all", new Progress / Calendar / Streak widgets, per-widget settings and picker previews. CI run 40113713487 (commit ddfa7e7): unit tests passed, debug APK built (SHA-256 `501fa40e828077226bbd7ded26980f20771abc456337f8e9bb950de8837b6ccf`), emulator instrumented tests 2/2 and smoke test passed. Widgets, sound and swipe gestures are **not verified on a device**; the emulator smoke test does not place widgets.
 

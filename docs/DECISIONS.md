@@ -749,6 +749,70 @@ Any per-channel customisation the user made to v1 channels is lost once; Android
 
 ---
 
+## ADR-025 — Exact reminders without a user-granted permission
+
+**Status:** Accepted
+
+#### Context
+
+On the test phone reminders sounded only when the screen was on. Since Android 14, `SCHEDULE_EXACT_ALARM` is no longer pre-granted to new installs, so the app fell back to inexact alarms, which Doze defers until the device wakes.
+
+#### Decision
+
+Declare `USE_EXACT_ALARM` (granted at install on Android 13+ to apps whose core function is reminders; medication reminders qualify) and keep `SCHEDULE_EXACT_ALARM` for Android 12 only (`maxSdkVersion="32"`). The alarm stays `setExactAndAllowWhileIdle`; the inexact fallback remains for the case where neither permission is available.
+
+#### Consequences
+
+A store release must justify `USE_EXACT_ALARM` under Google Play's policy (alarm/reminder apps). Delivery on a Samsung device in deep sleep is not yet verified.
+
+#### Date
+
+2026-10-24
+
+---
+
+## ADR-026 — Tap-to-toggle marks with an explicit target state
+
+**Status:** Accepted
+
+#### Context
+
+Marks could be added from widgets but not removed, and the app used separate buttons. The user asked for one control that marks and unmarks.
+
+#### Decision
+
+- The ring of a habit and the circle of a dose (Today screen) and the check icon in widgets toggle.
+- Every toggle request carries the state the user wants (`done = true/false`), not "flip": `HabitRepository.setDone` marks with `completeIfIncomplete` or unmarks with `undoCompletion` (voids the latest completion of that day); `TakeDoseAction` records TAKEN or calls `MedicationRepository.undoTaken` (voids the TAKEN event, reverses its stock use once). Marking a done item or unmarking an open one changes nothing, so a stale widget or a duplicated tap is harmless.
+- Unmarking never deletes: the event stays in history as corrected (ADR on corrections).
+- For a several-times-a-day habit a tap adds one until the target is reached; a tap on a complete day removes one. Amount habits keep their "+" dialog; abstinence habits keep "Slip". Skipped doses are corrected in the app, not from the widget.
+
+#### Date
+
+2026-10-24
+
+---
+
+## ADR-027 — Widget progress, calendar rings and colours (refines ADR-023)
+
+**Status:** Accepted
+
+#### Context
+
+The week and month rings used the History completion rate, which leaves out a weekly goal that is still in progress. With one daily habit done and a 3×/week habit not started, the widget showed 50% today but 100% for the week and month. The month-of-dots calendar did not show how many habits were done. Widgets used one fixed colour scheme.
+
+#### Decision
+
+- `HabitStatistics.periodProgress`: each habit contributes one value (mean day progress over due days including today; for weekly goals the mean of `min(1, completions / goal)` over the weeks touching the period, the current week included; share of clean days for abstinence), and the result is the mean over habits. The History statistics keep their completion-rate rules.
+- The calendar widget draws a sector ring around every day number (one sector per due habit, filled by its progress) using `dayFractions` evaluated for that day; the header shows today's done/due count.
+- Ring and calendar bitmaps are sized from the widget's actual size (`SizeMode.Exact`).
+- Per-widget accent (system wallpaper colours or a fixed palette) and background opacity (0–100%) are stored with the widget settings; settings are observed, so changes apply without re-adding the widget.
+
+#### Date
+
+2026-10-24
+
+---
+
 \## Future decisions
 
 

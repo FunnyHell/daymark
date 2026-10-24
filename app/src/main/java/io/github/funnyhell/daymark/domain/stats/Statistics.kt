@@ -1,5 +1,7 @@
 package io.github.funnyhell.daymark.domain.stats
 
+import io.github.funnyhell.daymark.domain.common.LifecycleStatus
+import io.github.funnyhell.daymark.domain.common.startOfWeek
 import io.github.funnyhell.daymark.domain.habit.DayState
 import io.github.funnyhell.daymark.domain.habit.HabitData
 import io.github.funnyhell.daymark.domain.habit.HabitEvaluator
@@ -51,6 +53,25 @@ object HabitStatistics {
         }
         return result
     }
+
+    /**
+     * Progress of each habit that is due on [date], in 0..1, for the "today" ring: one sector per habit.
+     * Day-based habits use their day progress; weekly goals use the week's progress; abstinence habits count as
+     * complete unless a slip is recorded that day. Paused, archived and unscheduled habits are left out.
+     */
+    fun dayFractions(habits: List<HabitData>, date: LocalDate, firstDayOfWeek: DayOfWeek): List<Double> =
+        habits.filter { it.habit.status == LifecycleStatus.ACTIVE }.mapNotNull { data ->
+            val e = HabitEvaluator(data, firstDayOfWeek)
+            if (!e.isScheduled(date)) return@mapNotNull null
+            when (data.habit.type) {
+                HabitType.ABSTINENCE -> if (e.dayResult(date, date).state == DayState.LAPSED) 0.0 else 1.0
+                HabitType.WEEKLY_GOAL -> {
+                    val week = e.weekResult(date.startOfWeek(firstDayOfWeek), date)
+                    if (week.goal <= 0.0) null else (week.completions / week.goal).coerceIn(0.0, 1.0)
+                }
+                else -> e.dayResult(date, date).fraction
+            }
+        }
 
     /** Daily summed amounts of a quantitative habit, oldest first. */
     fun quantitySeries(data: HabitData, from: LocalDate, to: LocalDate): List<Pair<LocalDate, Double>> {

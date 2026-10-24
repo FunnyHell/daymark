@@ -414,4 +414,37 @@
     <string name="dose_group">%1$s · %2$d doses</string>
     <string name="take_all">Take all</string>
     <string name="msg_taken_all">%1$d doses recorded as taken</string>
+    <string name="widget_progress_name">Daymark progress</string>
+    <string name="widget_calendar_name">Daymark calendar</string>
+    <string name="widget_streak_name">Daymark streak</string>
+    <string name="widget_progress_description">Rings for today, this week and this month</string>
+    <string name="widget_calendar_description">This month as dots: fuller dots mean more done</string>
+    <string name="widget_streak_description">The streak of one habit, big</string>
+    <string name="widget_today">Today</string>
+    <string name="widget_week">Week</string>
+    <string name="widget_month">Month</string>
+    <string name="widget_best">Best: %1$d</string>
+    <string name="widget_streak_choose">Tap to choose a habit</string>
+    <string name="widget_calendar_cd">Calendar: %1$s</string>
+    <string name="widget_take_all_cd">Mark all doses at %1$s taken</string>
+    <string name="widget_settings_title">Widget settings</string>
+    <string name="widget_check_style">Check button</string>
+    <string name="widget_check_circle">Circle with a tick</string>
+    <string name="widget_check_radio">Radio button</string>
+    <string name="widget_hide_completed">Hide completed</string>
+    <string name="widget_habits_choice_hint">Which habits appear is set per habit: “Show on the habit widget” in its settings.</string>
+    <string name="widget_rings">Rings</string>
+    <string name="widget_rings_today">Today only (large)</string>
+    <string name="widget_rings_all">Today, week and month</string>
+    <string name="widget_habit">Habit</string>
+    <string name="widget_all_habits">All habits</string>
+    <string name="widget_no_habits">Create a habit first.</string>
+    <plurals name="unit_days_short">
+        <item quantity="one">day</item>
+        <item quantity="other">days</item>
+    </plurals>
+    <plurals name="unit_weeks_short">
+        <item quantity="one">week</item>
+        <item quantity="other">weeks</item>
+    </plurals>
 </resources>

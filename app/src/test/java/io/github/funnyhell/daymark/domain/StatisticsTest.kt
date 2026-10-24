@@ -67,4 +67,15 @@ class StatisticsTest {
         assertEquals(1, a.open) // 20:00 on day 2
         assertEquals(1.0 / 3, a.takenRate!!, 1e-9)
     }
+
+    @Test
+    fun dayFractions_oneSectorPerDueHabit() {
+        val check = habitData(events = listOf(event(MONDAY)))
+        val multi = habitData(habit = habit(type = HabitType.MULTI), schedules = listOf(schedule(target = 4.0)), events = listOf(event(MONDAY)))
+        val weekly = habitData(habit = habit(type = HabitType.WEEKLY_GOAL), schedules = listOf(schedule(target = 2.0)), events = listOf(event(MONDAY)))
+        val quit = habitData(habit = habit(type = HabitType.ABSTINENCE))
+        val paused = habitData(pauses = listOf(pause(MONDAY, null)))
+        val fractions = HabitStatistics.dayFractions(listOf(check, multi, weekly, quit, paused), MONDAY, DayOfWeek.MONDAY)
+        assertEquals(listOf(1.0, 0.25, 0.5, 1.0), fractions)
+    }
 }

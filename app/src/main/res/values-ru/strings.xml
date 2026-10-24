@@ -411,4 +411,41 @@
     <string name="dose_group">%1$s · приёмов: %2$d</string>
     <string name="take_all">Принять все</string>
     <string name="msg_taken_all">Отмечено как принятые: %1$d</string>
+    <string name="widget_progress_name">Daymark: прогресс</string>
+    <string name="widget_calendar_name">Daymark: календарь</string>
+    <string name="widget_streak_name">Daymark: серия</string>
+    <string name="widget_progress_description">Кольца за сегодня, неделю и месяц</string>
+    <string name="widget_calendar_description">Месяц точками: чем полнее точка, тем больше сделано</string>
+    <string name="widget_streak_description">Серия одной привычки крупно</string>
+    <string name="widget_today">Сегодня</string>
+    <string name="widget_week">Неделя</string>
+    <string name="widget_month">Месяц</string>
+    <string name="widget_best">Лучшая: %1$d</string>
+    <string name="widget_streak_choose">Нажмите, чтобы выбрать привычку</string>
+    <string name="widget_calendar_cd">Календарь: %1$s</string>
+    <string name="widget_take_all_cd">Отметить все приёмы в %1$s принятыми</string>
+    <string name="widget_settings_title">Настройки виджета</string>
+    <string name="widget_check_style">Кнопка отметки</string>
+    <string name="widget_check_circle">Круг с галочкой</string>
+    <string name="widget_check_radio">Радиокнопка</string>
+    <string name="widget_hide_completed">Скрывать выполненное</string>
+    <string name="widget_habits_choice_hint">Какие привычки показывать, задаётся в настройках каждой привычки: «Показывать в виджете привычек».</string>
+    <string name="widget_rings">Кольца</string>
+    <string name="widget_rings_today">Только сегодня (крупно)</string>
+    <string name="widget_rings_all">Сегодня, неделя и месяц</string>
+    <string name="widget_habit">Привычка</string>
+    <string name="widget_all_habits">Все привычки</string>
+    <string name="widget_no_habits">Сначала создайте привычку.</string>
+    <plurals name="unit_days_short">
+        <item quantity="one">день</item>
+        <item quantity="few">дня</item>
+        <item quantity="many">дней</item>
+        <item quantity="other">дня</item>
+    </plurals>
+    <plurals name="unit_weeks_short">
+        <item quantity="one">неделя</item>
+        <item quantity="few">недели</item>
+        <item quantity="many">недель</item>
+        <item quantity="other">недели</item>
+    </plurals>
 </resources>

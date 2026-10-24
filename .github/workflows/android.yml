@@ -10,6 +10,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,6 +29,23 @@ jobs:
 
       - name: Unit and Robolectric tests
         run: ./gradlew --no-daemon --stacktrace testDebugUnitTest
+
+      - name: Test summary
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import glob, xml.etree.ElementTree as ET
+          total = fail = err = skip = 0
+          for f in sorted(glob.glob('app/build/test-results/testDebugUnitTest/*.xml')):
+              r = ET.parse(f).getroot()
+              t, fl, e, sk = (int(r.get(k, 0)) for k in ('tests', 'failures', 'errors', 'skipped'))
+              total += t; fail += fl; err += e; skip += sk
+              print(f"{r.get('name')}: tests={t} failures={fl} errors={e} skipped={sk}")
+              for case in r.iter('testcase'):
+                  for bad in list(case.findall('failure')) + list(case.findall('error')):
+                      print(f"  FAILED {case.get('name')}: {(bad.get('message') or '')[:300]}")
+          print(f"TOTAL tests={total} failures={fail} errors={err} skipped={skip}")
+          PY
 
       - name: Assemble debug APK
         run: ./gradlew --no-daemon --stacktrace assembleDebug
@@ -48,6 +68,23 @@ jobs:
             app/build/outputs/apk/debug/*.apk
             app/build/outputs/apk/debug/SHA256SUMS.txt
             app/build/outputs/apk/debug/BADGING.txt
+
+      - name: Publish APK to ci-apk branch
+        if: success() && github.event_name == 'push'
+        run: |
+          set -e
+          OUT=$(mktemp -d)
+          cp app/build/outputs/apk/debug/*.apk app/build/outputs/apk/debug/SHA256SUMS.txt app/build/outputs/apk/debug/BADGING.txt "$OUT"/
+          echo "source_branch=${GITHUB_REF_NAME}" > "$OUT/BUILD_INFO.txt"
+          echo "source_commit=${GITHUB_SHA}" >> "$OUT/BUILD_INFO.txt"
+          echo "run_url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" >> "$OUT/BUILD_INFO.txt"
+          cd "$OUT"
+          git init -q -b ci-apk
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f .
+          git commit -qm "Debug APK for ${GITHUB_SHA}"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git" ci-apk
 
       - name: Upload test reports
         if: always()

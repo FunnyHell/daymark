@@ -407,7 +407,7 @@
     <string name="settings_sound">Звук и вибрация</string>
     <string name="settings_sound_desc">Напоминания о лекарствах звучат стандартным звуком уведомления и вибрируют. Звук можно сменить в системных настройках.</string>
     <string name="msg_deleted">Удалено</string>
-    <string name="list_actions_hint">Свайп вправо — пауза, влево — архив; долгое нажатие — меню.</string>
+    <string name="list_actions_hint">Свайп вправо — пауза, влево — архив; долгое нажатие — выбрать несколько.</string>
     <string name="dose_group">%1$s · приёмов: %2$d</string>
     <string name="take_all">Принять все</string>
     <string name="msg_taken_all">Отмечено как принятые: %1$d</string>
@@ -448,4 +448,6 @@
         <item quantity="many">недель</item>
         <item quantity="other">недели</item>
     </plurals>
+    <string name="select">Выбрать</string>
+    <string name="selected_count">Выбрано: %1$d</string>
 </resources>

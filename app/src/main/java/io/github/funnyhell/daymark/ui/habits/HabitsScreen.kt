@@ -1,7 +1,11 @@
 package io.github.funnyhell.daymark.ui.habits
 
 import android.app.Application
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -30,6 +34,8 @@ import io.github.funnyhell.daymark.R
 import io.github.funnyhell.daymark.domain.common.LifecycleStatus
 import io.github.funnyhell.daymark.domain.habit.HabitEvaluator
 import io.github.funnyhell.daymark.ui.common.ActionableListCard
+import io.github.funnyhell.daymark.ui.common.BulkAction
+import io.github.funnyhell.daymark.ui.common.SelectionBar
 import io.github.funnyhell.daymark.ui.common.ItemActions
 import io.github.funnyhell.daymark.ui.common.AppViewModel
 import io.github.funnyhell.daymark.ui.common.ColorDot
@@ -80,8 +86,27 @@ class HabitsViewModel(application: Application) : AppViewModel(application) {
         onPause = { launchSafely { container.habits.pause(item.id); say(string(R.string.msg_paused)) } },
         onResume = { launchSafely { container.habits.resume(item.id); say(string(R.string.msg_resumed)) } },
         onArchive = { launchSafely { container.habits.archive(item.id); say(string(R.string.msg_archived_done), string(R.string.undo)) { launchSafely { container.habits.resume(item.id) } } } },
-        onDelete = { launchSafely { container.habits.delete(item.id); say(string(R.string.msg_deleted)) } },
     )
+
+    /** Applies a lifecycle action to the selected items; items already in the target state are left alone. */
+    fun bulk(ids: Set<String>, action: BulkAction) = launchSafely {
+        val byId = state.value.items.associateBy { it.id }
+        val targets = ids.mapNotNull { byId[it] }
+        for (item in targets) {
+            when (action) {
+                BulkAction.PAUSE -> if (item.status == LifecycleStatus.ACTIVE) container.habits.pause(item.id)
+                BulkAction.RESUME -> if (item.status != LifecycleStatus.ACTIVE) container.habits.resume(item.id)
+                BulkAction.ARCHIVE -> if (item.status != LifecycleStatus.ARCHIVED) container.habits.archive(item.id)
+                BulkAction.DELETE -> container.habits.delete(item.id)
+            }
+        }
+        say(string(when (action) {
+            BulkAction.PAUSE -> R.string.msg_paused
+            BulkAction.RESUME -> R.string.msg_resumed
+            BulkAction.ARCHIVE -> R.string.msg_archived_done
+            BulkAction.DELETE -> R.string.msg_deleted
+        }))
+    }
 
     companion object {
         val Factory = appViewModelFactory { app, _ -> HabitsViewModel(app) }
@@ -97,54 +122,79 @@ fun HabitsScreen(
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
     var showArchived by rememberSaveable { mutableStateOf(false) }
-    LazyColumn(contentPadding = PaddingValues(top = contentPadding.calculateTopPadding(), bottom = contentPadding.calculateBottomPadding() + 88.dp)) {
-        if (!state.loading && state.items.isEmpty()) {
-            item {
-                EmptyState(stringResource(R.string.habits_empty_title), stringResource(R.string.habits_empty_body)) {
-                    Button(onClick = onNew, modifier = Modifier.padding(top = 8.dp)) { Text(stringResource(R.string.new_habit)) }
-                }
-            }
-        }
-        if (state.items.isNotEmpty()) {
-            item(key = "hint") {
-                Text(
-                    stringResource(R.string.list_actions_hint),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp),
-                )
-            }
-        }
-        val groups = listOf(
-            LifecycleStatus.ACTIVE to R.string.status_active,
-            LifecycleStatus.PAUSED to R.string.status_paused,
-        )
-        for ((status, title) in groups) {
-            val list = state.items.filter { it.status == status }
-            if (list.isEmpty()) continue
-            item(key = "h-$status") { SectionHeader(stringResource(title)) }
-            items(list, key = { it.id }) { HabitListRow(it, vm.actionsFor(it), onOpen) }
-        }
-        val archived = state.items.filter { it.status == LifecycleStatus.ARCHIVED }
-        if (archived.isNotEmpty()) {
-            item(key = "h-archived") {
-                SectionHeader(stringResource(R.string.status_archived)) {
-                    TextButton(onClick = { showArchived = !showArchived }) {
-                        Text(stringResource(if (showArchived) R.string.hide else R.string.show_count, archived.size))
+    var selected by rememberSaveable { mutableStateOf(emptyList<String>()) }
+    // Drop selections of items that no longer exist (deleted elsewhere).
+    val selection = selected.filter { id -> state.items.any { it.id == id } }.toSet()
+    val toggle: (String) -> Unit = { id -> selected = if (id in selection) (selection - id).toList() else (selection + id).toList() }
+    val bulk: (BulkAction) -> Unit = { action -> vm.bulk(selection, action); selected = emptyList() }
+    BackHandler(enabled = selection.isNotEmpty()) { selected = emptyList() }
+    Box(Modifier.fillMaxSize()) {
+        LazyColumn(contentPadding = PaddingValues(top = contentPadding.calculateTopPadding(), bottom = contentPadding.calculateBottomPadding() + 88.dp)) {
+            if (!state.loading && state.items.isEmpty()) {
+                item {
+                    EmptyState(stringResource(R.string.habits_empty_title), stringResource(R.string.habits_empty_body)) {
+                        Button(onClick = onNew, modifier = Modifier.padding(top = 8.dp)) { Text(stringResource(R.string.new_habit)) }
                     }
                 }
             }
-            if (showArchived) items(archived, key = { it.id }) { HabitListRow(it, vm.actionsFor(it), onOpen) }
+            if (selection.isNotEmpty()) {
+                // Room for the selection bar drawn over the list.
+                item(key = "selection") { Spacer(Modifier.height(64.dp)) }
+            } else if (state.items.isNotEmpty()) {
+                item(key = "hint") {
+                    Text(
+                        stringResource(R.string.list_actions_hint),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp),
+                    )
+                }
+            }
+            val groups = listOf(
+                LifecycleStatus.ACTIVE to R.string.status_active,
+                LifecycleStatus.PAUSED to R.string.status_paused,
+            )
+            for ((status, title) in groups) {
+                val list = state.items.filter { it.status == status }
+                if (list.isEmpty()) continue
+                item(key = "h-$status") { SectionHeader(stringResource(title)) }
+                items(list, key = { it.id }) { HabitListRow(it, vm.actionsFor(it), selection, toggle, onOpen) }
+            }
+            val archived = state.items.filter { it.status == LifecycleStatus.ARCHIVED }
+            if (archived.isNotEmpty()) {
+                item(key = "h-archived") {
+                    SectionHeader(stringResource(R.string.status_archived)) {
+                        TextButton(onClick = { showArchived = !showArchived }) {
+                            Text(stringResource(if (showArchived) R.string.hide else R.string.show_count, archived.size))
+                        }
+                    }
+                }
+                if (showArchived) items(archived, key = { it.id }) { HabitListRow(it, vm.actionsFor(it), selection, toggle, onOpen) }
+            }
+        }
+        if (selection.isNotEmpty()) {
+            SelectionBar(
+                modifier = Modifier.align(Alignment.TopCenter).padding(top = contentPadding.calculateTopPadding()),
+                count = selection.size,
+                onPause = { bulk(BulkAction.PAUSE) },
+                onResume = { bulk(BulkAction.RESUME) },
+                onArchive = { bulk(BulkAction.ARCHIVE) },
+                onDelete = { bulk(BulkAction.DELETE) },
+                onClear = { selected = emptyList() },
+                deleteTitle = stringResource(R.string.delete_title),
+                deleteBody = stringResource(R.string.delete_habit_body),
+            )
         }
     }
 }
 
 @Composable
-private fun HabitListRow(item: HabitListItem, actions: ItemActions, onOpen: (String) -> Unit) {
+private fun HabitListRow(item: HabitListItem, actions: ItemActions, selection: Set<String>, onToggle: (String) -> Unit, onOpen: (String) -> Unit) {
     ActionableListCard(
         actions = actions,
-        deleteTitle = stringResource(R.string.delete_title),
-        deleteBody = stringResource(R.string.delete_habit_body),
+        selectionMode = selection.isNotEmpty(),
+        selected = item.id in selection,
+        onToggleSelect = { onToggle(item.id) },
         onClick = { onOpen(item.id) },
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {

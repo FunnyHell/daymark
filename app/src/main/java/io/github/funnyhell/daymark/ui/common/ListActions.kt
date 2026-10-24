@@ -12,11 +12,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -31,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.CustomAccessibilityAction
@@ -46,30 +48,29 @@ class ItemActions(
     val onPause: () -> Unit,
     val onResume: () -> Unit,
     val onArchive: () -> Unit,
-    val onDelete: () -> Unit,
 )
 
 /**
  * A list card with quick actions: swipe right to pause/resume, swipe left to archive (or restore from the
- * archive), long press for a menu that also offers permanent deletion (confirmed). The same actions are exposed
- * to accessibility services as custom actions.
+ * archive). A long press starts multi-selection (see [SelectionBar]); while selecting, taps toggle selection and
+ * swipes are off. The same single-item actions are exposed to accessibility services as custom actions.
  */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun ActionableListCard(
     actions: ItemActions,
-    deleteTitle: String,
-    deleteBody: String,
+    selectionMode: Boolean,
+    selected: Boolean,
+    onToggleSelect: () -> Unit,
     onClick: () -> Unit,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    var menu by remember { mutableStateOf(false) }
-    var confirmDelete by remember { mutableStateOf(false) }
     val pauseLabel = stringResource(if (actions.status == LifecycleStatus.ACTIVE) R.string.pause else R.string.resume)
     val archiveLabel = stringResource(if (actions.status == LifecycleStatus.ARCHIVED) R.string.unarchive else R.string.archive)
-    val deleteLabel = stringResource(R.string.delete_permanently)
+    val selectLabel = stringResource(R.string.select)
     val togglePause = { if (actions.status == LifecycleStatus.ACTIVE) actions.onPause() else actions.onResume() }
     val toggleArchive = { if (actions.status == LifecycleStatus.ARCHIVED) actions.onResume() else actions.onArchive() }
+    val shape = MaterialTheme.shapes.large
 
     val state = rememberSwipeToDismissBoxState(
         confirmValueChange = { value ->
@@ -85,59 +86,95 @@ fun ActionableListCard(
     SwipeToDismissBox(
         state = state,
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 5.dp),
+        enableDismissFromStartToEnd = !selectionMode,
+        enableDismissFromEndToStart = !selectionMode,
         backgroundContent = {
             val direction = state.dismissDirection
-            val (label, icon, alignment) = when (direction) {
-                SwipeToDismissBoxValue.StartToEnd -> Triple(
-                    pauseLabel,
-                    if (actions.status == LifecycleStatus.ACTIVE) R.drawable.ic_pause else R.drawable.ic_play,
-                    Alignment.CenterStart,
-                )
-                SwipeToDismissBoxValue.EndToStart -> Triple(
-                    archiveLabel,
-                    if (actions.status == LifecycleStatus.ARCHIVED) R.drawable.ic_play else R.drawable.ic_archive,
-                    Alignment.CenterEnd,
-                )
-                SwipeToDismissBoxValue.Settled -> Triple("", null, Alignment.Center)
-            }
-            Box(
-                Modifier.fillMaxSize().background(MaterialTheme.colorScheme.secondaryContainer, MaterialTheme.shapes.large).padding(horizontal = 20.dp),
-                contentAlignment = alignment,
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    if (icon != null) Icon(painterResource(icon), contentDescription = null, tint = MaterialTheme.colorScheme.onSecondaryContainer)
-                    Text(label, color = MaterialTheme.colorScheme.onSecondaryContainer, style = MaterialTheme.typography.labelLarge)
+            if (direction != SwipeToDismissBoxValue.Settled) {
+                val start = direction == SwipeToDismissBoxValue.StartToEnd
+                val label = if (start) pauseLabel else archiveLabel
+                val icon = when {
+                    start && actions.status == LifecycleStatus.ACTIVE -> R.drawable.ic_pause
+                    start -> R.drawable.ic_play
+                    actions.status == LifecycleStatus.ARCHIVED -> R.drawable.ic_play
+                    else -> R.drawable.ic_archive
+                }
+                Box(
+                    Modifier.fillMaxSize().clip(shape).background(MaterialTheme.colorScheme.secondaryContainer).padding(horizontal = 20.dp),
+                    contentAlignment = if (start) Alignment.CenterStart else Alignment.CenterEnd,
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Icon(painterResource(icon), contentDescription = null, tint = MaterialTheme.colorScheme.onSecondaryContainer)
+                        Text(label, color = MaterialTheme.colorScheme.onSecondaryContainer, style = MaterialTheme.typography.labelLarge)
+                    }
                 }
             }
         },
     ) {
-        Box {
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .combinedClickable(onClick = onClick, onLongClick = { menu = true })
-                    .semantics {
-                        customActions = listOf(
-                            CustomAccessibilityAction(pauseLabel) { togglePause(); true },
-                            CustomAccessibilityAction(archiveLabel) { toggleArchive(); true },
-                            CustomAccessibilityAction(deleteLabel) { confirmDelete = true; true },
-                        )
-                    },
-                shape = MaterialTheme.shapes.large,
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-            ) {
-                Column(Modifier.padding(16.dp), content = content)
-            }
-            DropdownMenu(expanded = menu, onDismissRequest = { menu = false }) {
-                if (actions.status != LifecycleStatus.ARCHIVED) {
-                    DropdownMenuItem(text = { Text(pauseLabel) }, onClick = { menu = false; togglePause() })
-                }
-                DropdownMenuItem(text = { Text(archiveLabel) }, onClick = { menu = false; toggleArchive() })
-                DropdownMenuItem(
-                    text = { Text(deleteLabel, color = MaterialTheme.colorScheme.error) },
-                    leadingIcon = { Icon(Icons.Filled.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.error) },
-                    onClick = { menu = false; confirmDelete = true },
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                // Clip first so the press ripple follows the rounded card instead of a square.
+                .clip(shape)
+                .combinedClickable(
+                    onClick = { if (selectionMode) onToggleSelect() else onClick() },
+                    onLongClick = onToggleSelect,
                 )
+                .semantics {
+                    customActions = listOf(
+                        CustomAccessibilityAction(pauseLabel) { togglePause(); true },
+                        CustomAccessibilityAction(archiveLabel) { toggleArchive(); true },
+                        CustomAccessibilityAction(selectLabel) { onToggleSelect(); true },
+                    )
+                },
+            shape = shape,
+            colors = CardDefaults.cardColors(
+                containerColor = if (selected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainer,
+            ),
+        ) {
+            Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                if (selectionMode) {
+                    Checkbox(checked = selected, onCheckedChange = null, modifier = Modifier.padding(end = 12.dp))
+                }
+                Column(Modifier.weight(1f), content = content)
+            }
+        }
+    }
+}
+
+/** Contextual bar shown while items are selected: bulk pause/resume, archive and delete (confirmed). */
+@Composable
+fun SelectionBar(
+    count: Int,
+    onPause: () -> Unit,
+    onResume: () -> Unit,
+    onArchive: () -> Unit,
+    onDelete: () -> Unit,
+    onClear: () -> Unit,
+    deleteTitle: String,
+    deleteBody: String,
+    modifier: Modifier = Modifier,
+) {
+    var confirmDelete by remember { mutableStateOf(false) }
+    Card(
+        modifier = modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 6.dp),
+        shape = MaterialTheme.shapes.extraLarge,
+        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+    ) {
+        Row(Modifier.padding(horizontal = 4.dp, vertical = 2.dp), verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = onClear) { Icon(Icons.Filled.Close, contentDescription = stringResource(R.string.cancel)) }
+            Text(
+                stringResource(R.string.selected_count, count),
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                modifier = Modifier.weight(1f),
+            )
+            IconButton(onClick = onPause) { Icon(painterResource(R.drawable.ic_pause), contentDescription = stringResource(R.string.pause)) }
+            IconButton(onClick = onResume) { Icon(painterResource(R.drawable.ic_play), contentDescription = stringResource(R.string.resume)) }
+            IconButton(onClick = onArchive) { Icon(painterResource(R.drawable.ic_archive), contentDescription = stringResource(R.string.archive)) }
+            IconButton(onClick = { confirmDelete = true }) {
+                Icon(Icons.Filled.Delete, contentDescription = stringResource(R.string.delete_permanently), tint = MaterialTheme.colorScheme.error)
             }
         }
     }
@@ -145,10 +182,13 @@ fun ActionableListCard(
         ConfirmDialog(
             title = deleteTitle,
             text = deleteBody,
-            confirmLabel = deleteLabel,
-            onConfirm = actions.onDelete,
+            confirmLabel = stringResource(R.string.delete_permanently),
+            onConfirm = onDelete,
             onDismiss = { confirmDelete = false },
             destructive = true,
         )
     }
 }
+
+/** Actions available for a multi-selection in a list. */
+enum class BulkAction { PAUSE, RESUME, ARCHIVE, DELETE }

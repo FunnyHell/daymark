@@ -53,7 +53,7 @@ Exit criteria and state:
 | Samsung phone verification | Not started | |
 | Tablet adaptation | Not started | Later milestone |
 | Wear OS companion | Not started | Future milestone |
-| Device synchronization | Not started | Future milestone |
+| Device synchronization | Implemented, not verified on devices | Local Wi-Fi, manual; merge/protocol/two-database tests pass |
 
 ## 4. Build and test record
 
@@ -79,6 +79,8 @@ Exit criteria and state:
 
 ## 6. Recent completed work
 
+- 2026-10-25 (round 4): widgets are drawn directly with `GlanceAppWidget.compose` instead of waiting for a Glance session (ADR-031; fixes widgets stuck on "Loading" on the test phone — the cause is inferred, not reproduced); live preview in widget settings; device sync over the local Wi-Fi (ADR-030): schema v2 with `deleted_records` and `MIGRATION_1_2`, order-independent merge, AES-GCM exchange keyed by a six-digit code, DNS-SD discovery, Settings → Sync devices. CI run 40180766669 (commit 264325d): **106 unit/DB tests passed** (new: SyncMergerTest 7, SyncProtocolTest 3 over loopback sockets, SyncRepositoryTest 3 with two databases, MigrationTest 1 — its v1 SQL matches Room's generated statements), debug APK built (SHA-256 `f1145a51f61b2064cf6629b4afb07d7c396c2c5e7e99151a9728a6b63ed2ffa8`), emulator: instrumented tests 3/3 (including all six widgets composed and inflated at two sizes), smoke test passed including opening the sync screen and showing a code. **Not verified**: sync between two real devices (discovery, Wi-Fi, firewall/AP isolation), widgets on the Samsung launcher.
+
 - 2026-10-25 (feedback round 3): onboarding reduced to one screen and asks for notification permission; reminders scheduled with `setAlarmClock` (ADR-028), battery-restriction row and banner, test reminder in Settings; Today ring split into its own widget and the progress widget switches between a row and a stacked layout (ADR-029); explanatory notes removed, strings shortened, US spelling. CI run for commit 8697b34: 92 unit/DB tests passed, debug APK built (SHA-256 `db6bd38b056e9e015f3a601ff075062727e49a64d9970ce2f2d604fe3d9b8abe`), emulator instrumented tests 2/2 passed, smoke test passed including the notification-permission dialog and a test reminder posted about a minute later **with the emulator screen off**. Screen-off sound on the Samsung device and the widget layouts are **not verified on a device**. (The first run of this round, commit 41a7fcc, failed the smoke test only because the script still looked for the old "Medication name" label.)
 
 - 2026-10-24 (feedback round 2): `USE_EXACT_ALARM` so reminders are not deferred with the screen off (ADR-025); multi-select with bulk actions in habit and medication lists; press ripple clipped to the rounded card; tap-to-toggle marks on Today (habit ring, dose circle) and in widgets with an explicit target state (ADR-026); widget settings observed (Streak widget no longer stuck on "choose a habit"); new week/month progress rule, rings sized to the widget, calendar with a sector ring per day, per-widget accent color and background opacity (ADR-027). New tests: `setDone`/`undoCompletion`, `undoTaken`, `periodProgress` (the reported 2-habit case → 50%), `dayFractions` for past days. CI run 40118132792 (commit a585df1) failed to compile (when-branch parse error); fixed in b083453. CI run 40120588398 (commit b083453): 92 unit/DB tests passed, debug APK built (SHA-256 `aa1a2bedac45e64bd2bf0e5e54853b340193b2b95a648a503fefa7c2cd07b660`, 14,645,178 bytes), emulator instrumented tests 2/2 passed, smoke test passed including marking a dose and a habit by tapping the circle/ring and unmarking the habit. Widgets, colors/opacity, multi-select and screen-off reminders are **not verified on a device**.
@@ -91,7 +93,7 @@ Exit criteria and state:
 
 1. Install the APK on the Galaxy A52 and run the device checklist in README ("Next steps"): notification actions from the lock screen and shade, exact-alarm permission, reboot, widgets, battery settings.
 2. Record device results here; fix issues found.
-3. Add a migration test harness before the first schema change (schema v1 is exported).
+3. Verify sync between the phone and a tablet on the same Wi-Fi (discovery, wrong code, a dose taken on both).
 4. Consider configurable snooze length and optional encrypted export.
 
 ## 8. Update rules

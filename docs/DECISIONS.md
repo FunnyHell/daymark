@@ -852,6 +852,53 @@ The alarm icon is visible whenever a reminder is pending. A store release must j
 
 ---
 
+## ADR-030 — Device sync over the local network (supersedes the sync part of ADR-022)
+
+**Status:** Accepted
+
+#### Context
+
+The user asked for synchronization between devices (phone and tablet). SPEC §14 and ARCHITECTURE §13 require: no mandatory cloud backend, stable IDs, idempotent processing, handling of duplicates, conflicts and deletions, and no last-write-wins for intake events or inventory.
+
+#### Decision
+
+- Manual sync between two devices on the same Wi-Fi: one shows a six-digit code, the other connects (found via DNS-SD, or by typing IP:port) and enters it. Each side sends its full data set once; both merge with the same deterministic, order-independent function, so they end up identical.
+- Merge rules: a deleted habit/medication stays deleted (tombstones in a new `deleted_records` table, schema v2); a habit/medication aggregate (record, schedule versions, doses, pauses) comes from the device where it was changed last; events and stock adjustments are history and are unioned by id; a void on either device applies to both; duplicate "taken/skipped" records for one dose keep the earliest and a voided "taken" returns its stock exactly once.
+- Transport: TCP, payload = backup JSON (gzip) encrypted with AES-GCM, key from the code via PBKDF2-HMAC-SHA256 (100 000 iterations). The host stops after five wrong codes. Settings are not synced.
+- The app now declares `INTERNET` (needed for any socket, including on the local network) and `ACCESS_NETWORK_STATE`; it still contacts no server.
+
+#### Consequences
+
+- Concurrent edits of the same habit or medication on two devices keep only the later one (history is never lost).
+- A six-digit code protects against casual access on the same network, not against an attacker who records the traffic and brute-forces the code offline; sync is meant for a trusted home network.
+- A stock count ("set stock") is stored as a correction relative to the counting device's history; after merging with doses recorded elsewhere the total can differ from the counted number until the next count.
+- Two habit completions recorded offline on two devices for a several-times-a-day habit both count.
+- No automatic or background sync; Wear OS is still not implemented.
+
+#### Date
+
+2026-10-25
+
+---
+
+## ADR-031 — Draw widgets directly
+
+**Status:** Accepted
+
+#### Context
+
+On the test Samsung phone new widgets stayed on "Loading". Glance renders in a session started through WorkManager, and that work can be deferred; when a configuration activity is declared the launcher also does not always send the first update.
+
+#### Decision
+
+Widgets are composed with `GlanceAppWidget.compose` and pushed with `AppWidgetManager.updateAppWidget` on update, resize, settings save and every data change; Glance sessions still run as before. The widget settings screen uses the same composition as a live preview at the widget's real size; changes are saved as they are made and Cancel restores the previous settings.
+
+#### Date
+
+2026-10-25
+
+---
+
 \## Future decisions
 
 

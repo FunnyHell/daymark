@@ -1,7 +1,9 @@
 package io.github.funnyhell.daymark.data.repo
 
 import androidx.room.withTransaction
+import io.github.funnyhell.daymark.data.db.DELETED_MEDICATION
 import io.github.funnyhell.daymark.data.db.DaymarkDatabase
+import io.github.funnyhell.daymark.data.db.DeletedRecordEntity
 import io.github.funnyhell.daymark.data.db.InventoryAdjustmentEntity
 import io.github.funnyhell.daymark.data.db.MedicationEntity
 import io.github.funnyhell.daymark.data.db.MedicationEventEntity
@@ -191,6 +193,8 @@ class MedicationRepository(
         db.withTransaction {
             pauseDao.deleteFor(id)
             dao.deleteMedication(id)
+            // Remembered so that sync deletes the medication on other devices too.
+            db.deletedRecordDao().insert(DeletedRecordEntity(id, DELETED_MEDICATION, time.now()))
         }
         listener.onDataChanged(DataChange.Medications(clearedOccurrenceKeys = cleared))
     }

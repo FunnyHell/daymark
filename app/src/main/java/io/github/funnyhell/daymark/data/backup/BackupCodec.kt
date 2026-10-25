@@ -1,5 +1,8 @@
 package io.github.funnyhell.daymark.data.backup
 
+import io.github.funnyhell.daymark.data.db.DELETED_HABIT
+import io.github.funnyhell.daymark.data.db.DELETED_MEDICATION
+import io.github.funnyhell.daymark.data.db.DeletedRecordEntity
 import io.github.funnyhell.daymark.data.db.HabitEntity
 import io.github.funnyhell.daymark.data.db.HabitEventEntity
 import io.github.funnyhell.daymark.data.db.HabitScheduleEntity
@@ -40,6 +43,7 @@ data class Snapshot(
     val doses: List<ScheduledDoseEntity>,
     val medicationEvents: List<MedicationEventEntity>,
     val adjustments: List<InventoryAdjustmentEntity>,
+    val deletions: List<DeletedRecordEntity> = emptyList(),
 ) {
     val recordCount: Int
         get() = habits.size + habitSchedules.size + habitEvents.size + pauses.size + medications.size +
@@ -101,6 +105,7 @@ object BackupCodec {
         inventoryAdjustments = s.adjustments.map {
             BackupAdjustment(it.id, it.medicationId, it.delta, it.type, it.note, it.eventId, it.recordedAt.toString())
         },
+        deletedRecords = s.deletions.map { BackupDeletion(it.id, it.kind, it.deletedAt.toString()) },
     )
 
     /** Parses and fully validates a backup. Nothing is written; the caller applies a [DecodeResult.Valid] snapshot. */
@@ -249,11 +254,18 @@ object BackupCodec {
         }
         adjustments.filter { it.eventId != null }.groupBy { it.eventId to it.type }.filterValues { it.size > 1 }.keys
             .forEach { v.fail("event ${it.first}", "has duplicate ${it.second} inventory records") }
+        v.unique(file.deletedRecords.map { it.id }, "deleted record")
+        val deletions = file.deletedRecords.mapNotNull { d ->
+            val ctx = "deleted record ${d.id}"
+            if (d.kind != DELETED_HABIT && d.kind != DELETED_MEDICATION) v.fail(ctx, "unknown kind '${d.kind}'")
+            val at = v.instant(d.deletedAt, ctx)
+            if (at == null) null else DeletedRecordEntity(d.id, d.kind, at)
+        }
 
         if (errors.isNotEmpty()) return DecodeResult.Invalid(errors.take(MAX_REPORTED_ERRORS))
         val exportedAt = runCatching { Instant.parse(file.exportedAt) }.getOrNull()
         return DecodeResult.Valid(
-            Snapshot(habits, habitSchedules, habitEvents, pauses, medications, medicationSchedules, doses, medicationEvents, adjustments),
+            Snapshot(habits, habitSchedules, habitEvents, pauses, medications, medicationSchedules, doses, medicationEvents, adjustments, deletions),
             settings,
             exportedAt,
         )

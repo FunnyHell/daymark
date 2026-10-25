@@ -13,6 +13,9 @@
     <!-- Lets the user exempt Daymark from battery optimization from a system dialog (Settings → Battery). -->
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- Device sync talks directly to another device on the same Wi-Fi (sockets need INTERNET); no servers. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".DaymarkApplication"

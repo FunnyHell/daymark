@@ -450,4 +450,28 @@
     <string name="notif_test_text">Reminders work</string>
     <string name="widget_today_name">Daymark today</string>
     <string name="widget_today_description">Today\'s progress ring</string>
+    <string name="settings_sync">Sync devices</string>
+    <string name="settings_sync_desc">Same Wi-Fi, no account</string>
+    <string name="sync_title">Sync devices</string>
+    <string name="sync_intro">Connect both devices to the same Wi-Fi. Data is merged on both.</string>
+    <string name="sync_this_device">This device</string>
+    <string name="sync_show_code">Show code</string>
+    <string name="sync_code_hint">Enter this code on the other device</string>
+    <string name="sync_nearby">Nearby devices</string>
+    <string name="sync_searching">Searching…</string>
+    <string name="sync_manual">Enter address</string>
+    <string name="sync_address">Address (IP:port)</string>
+    <string name="sync_code">Code</string>
+    <string name="sync_connect">Connect</string>
+    <string name="sync_working">Syncing…</string>
+    <string name="sync_done">Synced with %1$s</string>
+    <string name="sync_no_changes">Already up to date</string>
+    <string name="sync_error_wrong_code">Wrong code</string>
+    <string name="sync_error_version">Update Daymark on both devices</string>
+    <string name="sync_error_network">Connection failed. Check that both devices are on the same Wi-Fi.</string>
+    <string name="sync_error_data">The other device sent invalid data. Nothing was changed.</string>
+    <plurals name="sync_changes">
+        <item quantity="one">%1$d change</item>
+        <item quantity="other">%1$d changes</item>
+    </plurals>
 </resources>

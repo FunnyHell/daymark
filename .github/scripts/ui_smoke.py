@@ -232,6 +232,16 @@ if not posted:
     raise SystemExit(1)
 say("test reminder posted with the screen off")
 
+# Device sync screen: showing a code starts waiting for another device; cancel stops it.
+tap("Sync devices")
+time.sleep(2)
+shot("13-sync")
+tap("Show code")
+time.sleep(2)
+shot("14-sync-code")
+tap("Cancel")
+alive()
+
 say("Smoke test passed")
 crashes = adb("logcat", "-d", "AndroidRuntime:E", "*:S", check=False)
 with open(os.path.join(OUT, "crash-log.txt"), "w") as f:

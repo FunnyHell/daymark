@@ -2,6 +2,7 @@ package io.github.funnyhell.daymark
 
 import android.content.Context
 import io.github.funnyhell.daymark.data.backup.BackupRepository
+import io.github.funnyhell.daymark.data.sync.SyncRepository
 import io.github.funnyhell.daymark.data.db.DaymarkDatabase
 import io.github.funnyhell.daymark.data.repo.DataChange
 import io.github.funnyhell.daymark.data.repo.DataChangeListener
@@ -31,6 +32,14 @@ class AppContainer(context: Context) : DataChangeListener {
         appVersion = BuildConfig.VERSION_NAME,
         readSettings = { settings.current() },
         applySettings = { settings.apply(it) },
+        listener = this,
+    )
+    val sync = SyncRepository(
+        db = database,
+        backup = backup,
+        time = time,
+        appVersion = BuildConfig.VERSION_NAME,
+        readSettings = { settings.current() },
         listener = this,
     )
     val notifier = Notifier(appContext, settings)

@@ -32,7 +32,7 @@ class BackupRepository(
         Snapshot(
             habits = h.habits(), habitSchedules = h.schedules(), habitEvents = h.events(), pauses = db.pauseDao().pauses(),
             medications = m.medications(), medicationSchedules = m.schedules(), doses = m.doses(),
-            medicationEvents = m.events(), adjustments = m.adjustments(),
+            medicationEvents = m.events(), adjustments = m.adjustments(), deletions = db.deletedRecordDao().all(),
         )
     }
 
@@ -70,6 +70,8 @@ class BackupRepository(
             m.insertDoses(snapshot.doses)
             m.insertEvents(snapshot.medicationEvents)
             m.insertAdjustments(snapshot.adjustments)
+            db.deletedRecordDao().deleteAll()
+            db.deletedRecordDao().insertAll(snapshot.deletions)
         }
     }
 }

@@ -154,3 +154,18 @@ data class InventoryAdjustmentEntity(
     @ColumnInfo(name = "event_id") val eventId: String?,
     @ColumnInfo(name = "recorded_at") val recordedAt: Instant,
 )
+
+/**
+ * A habit or medication deleted on this device. Kept so that device sync can delete the same record on
+ * other devices instead of bringing it back (see docs/DECISIONS.md, ADR-030).
+ */
+@Entity(tableName = "deleted_records")
+data class DeletedRecordEntity(
+    @PrimaryKey val id: String,
+    /** [DELETED_HABIT] or [DELETED_MEDICATION]. */
+    val kind: String,
+    @ColumnInfo(name = "deleted_at") val deletedAt: Instant,
+)
+
+const val DELETED_HABIT = "HABIT"
+const val DELETED_MEDICATION = "MEDICATION"

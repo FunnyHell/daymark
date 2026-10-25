@@ -63,6 +63,7 @@ import io.github.funnyhell.daymark.ui.medications.MedicationEditScreen
 import io.github.funnyhell.daymark.ui.medications.MedicationsScreen
 import io.github.funnyhell.daymark.ui.onboarding.OnboardingScreen
 import io.github.funnyhell.daymark.ui.settings.SettingsScreen
+import io.github.funnyhell.daymark.ui.sync.SyncScreen
 import io.github.funnyhell.daymark.ui.today.TodayScreen
 import kotlinx.coroutines.launch
 
@@ -79,6 +80,7 @@ private object Routes {
     const val HABIT_DETAIL = "habit/{id}"
     const val MED_EDIT = "medication/edit?id={id}"
     const val MED_DETAIL = "medication/{id}"
+    const val SYNC = "sync"
     fun habitEdit(id: String? = null) = "habit/edit?id=${id.orEmpty()}"
     fun habitDetail(id: String) = "habit/$id"
     fun medEdit(id: String? = null) = "medication/edit?id=${id.orEmpty()}"
@@ -117,6 +119,7 @@ fun DaymarkRoot(onboardingDone: Boolean) {
             composable(Routes.MED_EDIT, arguments = listOf(optionalId())) { entry ->
                 MedicationEditScreen(onDone = { nav.popFrom(entry) }, showMessage = showMessage)
             }
+            composable(Routes.SYNC) { entry -> SyncScreen(onBack = { nav.popFrom(entry) }) }
             composable(Routes.MED_DETAIL) { entry ->
                 MedicationDetailScreen(onBack = { nav.popFrom(entry) }, onEdit = { nav.navigate(Routes.medEdit(it)) }, showMessage = showMessage)
             }
@@ -222,7 +225,7 @@ private fun MainTabs(rootNav: NavHostController, showMessage: suspend (UiMessage
                 MedicationsScreen(padding, onOpen = { rootNav.navigate(Routes.medDetail(it)) }, onNew = { rootNav.navigate(Routes.medEdit()) })
             }
             composable(Tab.HISTORY.route) { HistoryScreen(padding) }
-            composable(Tab.SETTINGS.route) { SettingsScreen(padding, showMessage) }
+            composable(Tab.SETTINGS.route) { SettingsScreen(padding, showMessage, onOpenSync = { rootNav.navigate(Routes.SYNC) }) }
         }
     }
 }

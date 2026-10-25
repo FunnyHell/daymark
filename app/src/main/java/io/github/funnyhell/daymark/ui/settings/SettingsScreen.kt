@@ -157,6 +157,7 @@ class SettingsViewModel(application: Application) : AppViewModel(application) {
 fun SettingsScreen(
     contentPadding: PaddingValues,
     showMessage: suspend (UiMessage) -> Unit,
+    onOpenSync: () -> Unit,
     vm: SettingsViewModel = viewModel(factory = SettingsViewModel.Factory),
 ) {
     val s by vm.settings.collectAsStateWithLifecycle()
@@ -231,6 +232,7 @@ fun SettingsScreen(
         SwitchRow(stringResource(R.string.settings_hide_names), stringResource(R.string.settings_hide_names_desc), s.hideNamesOnLockScreen, vm::setHideNames)
 
         SectionHeader(stringResource(R.string.settings_data))
+        ActionRow(stringResource(R.string.settings_sync), stringResource(R.string.settings_sync_desc), enabled = !vm.busy, onClick = onOpenSync)
         ActionRow(stringResource(R.string.settings_export), stringResource(R.string.settings_export_desc), enabled = !vm.busy) {
             exportLauncher.launch(vm.suggestedFileName())
         }

@@ -451,4 +451,30 @@
     <string name="notif_test_text">Напоминания работают</string>
     <string name="widget_today_name">Daymark: сегодня</string>
     <string name="widget_today_description">Кольцо прогресса за сегодня</string>
+    <string name="settings_sync">Синхронизация устройств</string>
+    <string name="settings_sync_desc">Одна сеть Wi-Fi, без аккаунта</string>
+    <string name="sync_title">Синхронизация</string>
+    <string name="sync_intro">Подключите оба устройства к одной сети Wi-Fi. Данные объединяются на обоих.</string>
+    <string name="sync_this_device">Это устройство</string>
+    <string name="sync_show_code">Показать код</string>
+    <string name="sync_code_hint">Введите этот код на другом устройстве</string>
+    <string name="sync_nearby">Устройства рядом</string>
+    <string name="sync_searching">Поиск…</string>
+    <string name="sync_manual">Ввести адрес</string>
+    <string name="sync_address">Адрес (IP:порт)</string>
+    <string name="sync_code">Код</string>
+    <string name="sync_connect">Подключить</string>
+    <string name="sync_working">Синхронизация…</string>
+    <string name="sync_done">Синхронизировано с %1$s</string>
+    <string name="sync_no_changes">Изменений нет</string>
+    <string name="sync_error_wrong_code">Неверный код</string>
+    <string name="sync_error_version">Обновите Daymark на обоих устройствах</string>
+    <string name="sync_error_network">Не удалось подключиться. Проверьте, что устройства в одной сети Wi-Fi.</string>
+    <string name="sync_error_data">Другое устройство прислало некорректные данные. Ничего не изменено.</string>
+    <plurals name="sync_changes">
+        <item quantity="one">%1$d изменение</item>
+        <item quantity="few">%1$d изменения</item>
+        <item quantity="many">%1$d изменений</item>
+        <item quantity="other">%1$d изменения</item>
+    </plurals>
 </resources>

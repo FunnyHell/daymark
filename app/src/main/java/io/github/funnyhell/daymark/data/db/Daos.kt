@@ -209,3 +209,18 @@ interface MedicationDao {
     @Query("DELETE FROM medications")
     suspend fun deleteAllMedications()
 }
+
+@Dao
+interface DeletedRecordDao {
+    @Query("SELECT * FROM deleted_records ORDER BY deleted_at")
+    suspend fun all(): List<DeletedRecordEntity>
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insert(record: DeletedRecordEntity)
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertAll(records: List<DeletedRecordEntity>)
+
+    @Query("DELETE FROM deleted_records")
+    suspend fun deleteAll()
+}

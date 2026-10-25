@@ -43,6 +43,10 @@ Daymark records what you enter and reminds you at the times you choose. It does 
 - Overall activity heatmap, this/last week and month summaries, per-habit table, 14-day charts for amount habits.
 - Medication adherence counts (taken/skipped/missed) for 7 and 30 days and a full event log.
 
+**Sync between devices**
+- Settings → Sync devices: on one device tap Show code, on the other pick it under Nearby devices (or enter its IP:port) and type the code. Both devices must be on the same Wi-Fi. Data is merged on both; settings stay per device.
+- Merge rules: the later edit of a habit or medication wins, history from both devices is kept, deletions are applied on both, and a dose marked on both devices counts once (stock too).
+
 **Data**
 - Export everything to a JSON file; import validates the whole file first and replaces data in one transaction only after confirmation.
 - English and Russian UI.
@@ -87,7 +91,7 @@ CI (`.github/workflows/android.yml`) runs the unit tests, builds and inspects th
 - Snooze is fixed at 30 minutes; the missed window is fixed at 3 hours.
 - Widget buttons record only simple actions (habit done / +1 and unmark, dose taken and unmark, all doses of a time taken). Amounts, slips, skips and snoozes are recorded in the app or the notification.
 - Backups are plain JSON (not encrypted). Import replaces all data; there is no merge.
-- No synchronization between devices and no Wear OS app yet.
+- Sync is manual, needs both devices on the same Wi-Fi and is protected by a six-digit code (meant for a trusted home network). Concurrent edits of the same habit or medication keep the later one. No Wear OS app yet.
 
 ## Next steps: what to test on the Galaxy A52
 
@@ -110,11 +114,11 @@ Please report the results (or anything odd) so they can be recorded in `docs/DEV
 | `docs/SPEC.md` | Product requirements and acceptance criteria |
 | `docs/ARCHITECTURE.md` | Architecture, including the as-built structure |
 | `docs/DEVELOPMENT_STATUS.md` | Current progress and verification state |
-| `docs/DECISIONS.md` | Technical decisions (ADR-001 … ADR-029) |
+| `docs/DECISIONS.md` | Technical decisions (ADR-001 … ADR-031) |
 
 ## Data and privacy
 
-All data is stored locally in a Room database on the device. Nothing is sent anywhere; the app requests no internet permission. Android cloud backup of app data is disabled because the data is sensitive; use Export to keep a copy. Exported files contain medication and routine history — store them privately.
+All data is stored locally in a Room database on the device. Nothing is sent to any server. The only network use is device sync, which talks directly to your other device on the same Wi-Fi (this is why Android lists the network permission). Android cloud backup of app data is disabled because the data is sensitive; use Export to keep a copy. Exported files contain medication and routine history — store them privately.
 
 ## Product name
 

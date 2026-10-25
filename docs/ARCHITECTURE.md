@@ -746,6 +746,16 @@ For phone-to-tablet synchronization, evaluate direct local-network or nearby-dev
 
 
 
+### 13.1 As built: phone/tablet sync over the local network (ADR-030)
+
+- `data/sync/SyncMerger` — pure, order-independent merge of two snapshots (unit-tested for symmetry and idempotency). Habits and medications with their schedule versions, doses and pause intervals are taken from the device that changed them last (`updatedAt`); events and inventory adjustments are unioned by stable id, voids propagate, and two "taken/skipped" records for one dose keep the earliest (the later "taken" gets one stock reversal with a deterministic id). Deletions are recorded in `deleted_records` (schema v2) and win.
+- `data/sync/SyncProtocol` — one TCP exchange; each side sends its whole data set (backup JSON, gzip) encrypted with AES-GCM under a key derived from a six-digit code (PBKDF2). Wrong code → rejected, nothing applied.
+- `data/sync/SyncRepository` — payload = backup encoding; apply = validate with the backup codec, then merge and replace inside one transaction. Settings are not synced.
+- `platform/sync/LocalSyncNetwork` — DNS-SD announce/discover (`_daymark-sync._tcp`), local IPv4 address for manual entry.
+- UI: Settings → Sync devices. One device shows a code; the other picks it from "Nearby devices" (or types IP:port) and enters the code. Both devices merge.
+
+There is no background or automatic sync, and no cloud component.
+
 \## 14. Testing architecture
 
 

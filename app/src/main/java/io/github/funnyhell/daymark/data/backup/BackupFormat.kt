@@ -22,6 +22,8 @@ data class BackupFile(
     val scheduledDoses: List<BackupDose> = emptyList(),
     val medicationEvents: List<BackupMedicationEvent> = emptyList(),
     val inventoryAdjustments: List<BackupAdjustment> = emptyList(),
+    /** Habits and medications deleted on the exporting device (used by sync; absent in older files). */
+    val deletedRecords: List<BackupDeletion> = emptyList(),
 ) {
     companion object {
         const val FORMAT_ID = "daymark-backup"
@@ -150,4 +152,11 @@ data class BackupAdjustment(
     val note: String? = null,
     val eventId: String? = null,
     val recordedAt: String,
+)
+
+@Serializable
+data class BackupDeletion(
+    val id: String,
+    val kind: String,
+    val deletedAt: String,
 )

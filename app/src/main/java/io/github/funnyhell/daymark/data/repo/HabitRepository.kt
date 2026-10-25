@@ -1,7 +1,9 @@
 package io.github.funnyhell.daymark.data.repo
 
 import androidx.room.withTransaction
+import io.github.funnyhell.daymark.data.db.DELETED_HABIT
 import io.github.funnyhell.daymark.data.db.DaymarkDatabase
+import io.github.funnyhell.daymark.data.db.DeletedRecordEntity
 import io.github.funnyhell.daymark.data.db.HabitEntity
 import io.github.funnyhell.daymark.data.db.HabitEventEntity
 import io.github.funnyhell.daymark.data.db.OWNER_HABIT
@@ -166,6 +168,8 @@ class HabitRepository(
         db.withTransaction {
             pauseDao.deleteFor(id)
             dao.deleteHabit(id)
+            // Remembered so that sync deletes the habit on other devices too.
+            db.deletedRecordDao().insert(DeletedRecordEntity(id, DELETED_HABIT, time.now()))
         }
         listener.onDataChanged(DataChange.Habits)
     }

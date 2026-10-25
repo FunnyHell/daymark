@@ -3,6 +3,11 @@ package io.github.funnyhell.daymark.platform.widgets
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
+import android.widget.FrameLayout
+import android.widget.RemoteViews
+import androidx.activity.compose.BackHandler
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -100,11 +105,22 @@ class WidgetConfigActivity : ComponentActivity() {
                 }
                 val current = prefs
                 if (current != null) {
+                    // Settings are saved as they change so the preview (and the placed widget) shows them;
+                    // Cancel puts the previous settings back.
+                    val restore = {
+                        lifecycleScope.launch {
+                            store.set(appWidgetId, current)
+                            WidgetUpdater.update(this@WidgetConfigActivity, appWidgetId)
+                            finish()
+                        }
+                    }
+                    BackHandler { restore() }
                     ConfigScreen(
                         kind = kind,
                         initial = current,
                         habits = habits,
-                        onCancel = { finish() },
+                        preview = { chosen -> WidgetPreview(appWidgetId, chosen, store) },
+                        onCancel = { restore() },
                         onSave = { chosen ->
                             lifecycleScope.launch {
                                 store.set(appWidgetId, chosen)
@@ -120,12 +136,48 @@ class WidgetConfigActivity : ComponentActivity() {
     }
 }
 
+/** The widget drawn with [prefs] at its real size, on a backdrop so background opacity is visible. */
+@Composable
+private fun WidgetPreview(appWidgetId: Int, prefs: WidgetPrefs, store: WidgetPrefsStore) {
+    val context = LocalContext.current
+    var views by remember { mutableStateOf<RemoteViews?>(null) }
+    LaunchedEffect(prefs) {
+        store.set(appWidgetId, prefs)
+        views = runCatching { WidgetRenderer.compose(context, appWidgetId) }.getOrNull()
+    }
+    val size = remember { WidgetRenderer.sizeOf(context, appWidgetId) }
+    Box(
+        Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .clip(MaterialTheme.shapes.large)
+            .background(Brush.linearGradient(listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.tertiary)))
+            .padding(16.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        val current = views
+        Box(Modifier.size(size.width, size.height)) {
+            if (current != null) {
+                AndroidView(
+                    factory = { FrameLayout(it) },
+                    update = { frame ->
+                        frame.removeAllViews()
+                        runCatching { current.apply(frame.context, frame) }.getOrNull()?.let(frame::addView)
+                    },
+                    modifier = Modifier.fillMaxSize(),
+                )
+            }
+        }
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ConfigScreen(
     kind: WidgetKind,
     initial: WidgetPrefs,
     habits: List<Habit>,
+    preview: @Composable (WidgetPrefs) -> Unit,
     onCancel: () -> Unit,
     onSave: (WidgetPrefs) -> Unit,
 ) {
@@ -140,7 +192,9 @@ private fun ConfigScreen(
             )
         },
     ) { padding ->
-        Column(Modifier.fillMaxSize().padding(padding).verticalScroll(rememberScrollState()).padding(bottom = 24.dp)) {
+        Column(Modifier.fillMaxSize().padding(padding)) {
+        preview(prefs)
+        Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(bottom = 24.dp)) {
             if (kind == WidgetKind.HABITS || kind == WidgetKind.MEDICATIONS || kind == WidgetKind.STREAK) {
                 SectionHeader(stringResource(R.string.widget_check_style))
                 Column(Modifier.selectableGroup()) {
@@ -222,6 +276,7 @@ private fun ConfigScreen(
                 enabled = !needsHabit,
                 modifier = Modifier.padding(16.dp).fillMaxWidth(),
             ) { Text(stringResource(R.string.save)) }
+        }
         }
     }
 }

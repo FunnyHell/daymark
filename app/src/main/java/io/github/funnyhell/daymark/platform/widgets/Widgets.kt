@@ -2,15 +2,20 @@ package io.github.funnyhell.daymark.platform.widgets
 
 import android.appwidget.AppWidgetManager
 import android.content.Context
+import android.content.ComponentName
 import android.content.Intent
 import android.util.Log
+import android.widget.RemoteViews
+import android.os.Bundle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.glance.ColorFilter
+import androidx.glance.appwidget.compose
 import androidx.glance.appwidget.SizeMode
 import androidx.glance.LocalSize
 import androidx.glance.GlanceId
@@ -69,34 +74,93 @@ import io.github.funnyhell.daymark.domain.medication.MedicationEventType
 import io.github.funnyhell.daymark.domain.stats.HabitStatistics
 import io.github.funnyhell.daymark.platform.goAsyncWork
 import io.github.funnyhell.daymark.ui.format.Formats
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 import java.time.DayOfWeek
 import java.time.LocalDate
 
 object WidgetUpdater {
-    private val all: List<() -> GlanceAppWidget> = listOf(::HabitWidget, ::MedicationWidget, ::TodayWidget, ::ProgressWidget, ::CalendarWidget, ::StreakWidget)
+    private val receivers: List<Class<out DaymarkWidgetReceiver>> = listOf(
+        HabitWidgetReceiver::class.java, MedicationWidgetReceiver::class.java, TodayWidgetReceiver::class.java,
+        ProgressWidgetReceiver::class.java, CalendarWidgetReceiver::class.java, StreakWidgetReceiver::class.java,
+    )
 
+    /** Redraws every placed widget, immediately, and refreshes running Glance sessions. */
     suspend fun updateAll(context: Context) {
-        for (create in all) {
-            runCatching { create().updateAll(context) }.onFailure { Log.w("DaymarkWidgets", "Widget update failed", it) }
+        val manager = AppWidgetManager.getInstance(context)
+        for (receiver in receivers) {
+            manager.getAppWidgetIds(ComponentName(context, receiver)).forEach { WidgetRenderer.renderSafely(context, it) }
+        }
+        for (create in WidgetRenderer.all) {
+            runCatching { create().updateAll(context) }.onFailure { Log.w(TAG, "Widget update failed", it) }
         }
     }
 
     /** Redraws one widget after its settings changed. */
     suspend fun update(context: Context, appWidgetId: Int) {
-        val manager = GlanceAppWidgetManager(context)
-        val glanceId = runCatching { manager.getGlanceIdBy(appWidgetId) }.getOrNull() ?: return
+        WidgetRenderer.renderSafely(context, appWidgetId)
+        val glanceId = runCatching { GlanceAppWidgetManager(context).getGlanceIdBy(appWidgetId) }.getOrNull() ?: return
         val provider = AppWidgetManager.getInstance(context).getAppWidgetInfo(appWidgetId)?.provider?.className ?: return
-        val widget = when (provider) {
-            MedicationWidgetReceiver::class.java.name -> MedicationWidget()
-            TodayWidgetReceiver::class.java.name -> TodayWidget()
-            ProgressWidgetReceiver::class.java.name -> ProgressWidget()
-            CalendarWidgetReceiver::class.java.name -> CalendarWidget()
-            StreakWidgetReceiver::class.java.name -> StreakWidget()
-            else -> HabitWidget()
+        runCatching { WidgetRenderer.widgetFor(provider).update(context, glanceId) }.onFailure { Log.w(TAG, "Widget update failed", it) }
+    }
+}
+
+private const val TAG = "DaymarkWidgets"
+
+/**
+ * Draws widgets directly into the launcher. Glance normally renders in a session run by WorkManager; on some
+ * phones that work is deferred, which leaves a new widget showing "Loading" until it runs. Composing the
+ * RemoteViews here and handing them to [AppWidgetManager] makes the widget appear at once; the Glance session
+ * still takes over when it starts.
+ */
+object WidgetRenderer {
+    val all: List<() -> GlanceAppWidget> = listOf(::HabitWidget, ::MedicationWidget, ::TodayWidget, ::ProgressWidget, ::CalendarWidget, ::StreakWidget)
+
+    fun widgetFor(providerClassName: String?): GlanceAppWidget = when (providerClassName) {
+        MedicationWidgetReceiver::class.java.name -> MedicationWidget()
+        TodayWidgetReceiver::class.java.name -> TodayWidget()
+        ProgressWidgetReceiver::class.java.name -> ProgressWidget()
+        CalendarWidgetReceiver::class.java.name -> CalendarWidget()
+        StreakWidgetReceiver::class.java.name -> StreakWidget()
+        else -> HabitWidget()
+    }
+
+    /** The widget's current size in dp (portrait), or its minimum size before the launcher reports one. */
+    fun sizeOf(context: Context, appWidgetId: Int): DpSize {
+        val manager = AppWidgetManager.getInstance(context)
+        val options = manager.getAppWidgetOptions(appWidgetId)
+        val width = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)
+        val height = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT)
+        if (width > 0 && height > 0) return DpSize(width.dp, height.dp)
+        val info = manager.getAppWidgetInfo(appWidgetId)
+        val density = context.resources.displayMetrics.density
+        return if (info != null) DpSize((info.minWidth / density).dp, (info.minHeight / density).dp) else DpSize(180.dp, 110.dp)
+    }
+
+    /** Composes the widget as it would look now; used for drawing it and for the preview in its settings. */
+    suspend fun compose(context: Context, appWidgetId: Int): RemoteViews? {
+        val manager = AppWidgetManager.getInstance(context)
+        val info = manager.getAppWidgetInfo(appWidgetId) ?: return null
+        val glanceId = GlanceAppWidgetManager(context).getGlanceIdBy(appWidgetId)
+        return widgetFor(info.provider.className).compose(
+            context = context,
+            id = glanceId,
+            options = manager.getAppWidgetOptions(appWidgetId),
+            size = sizeOf(context, appWidgetId),
+        )
+    }
+
+    suspend fun renderSafely(context: Context, appWidgetId: Int) {
+        try {
+            val views = compose(context, appWidgetId) ?: return
+            AppWidgetManager.getInstance(context).updateAppWidget(appWidgetId, views)
+        } catch (e: Exception) {
+            Log.w(TAG, "Direct widget render failed for $appWidgetId", e)
         }
-        widget.update(context, glanceId)
     }
 }
 
@@ -685,11 +749,29 @@ class TakeAllDosesAction : ActionCallback {
 
 /** Removes the per-widget settings when widgets are deleted from the home screen. */
 abstract class DaymarkWidgetReceiver : GlanceAppWidgetReceiver() {
+    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
+        super.onUpdate(context, appWidgetManager, appWidgetIds)
+        renderNow(context, appWidgetIds)
+    }
+
+    override fun onAppWidgetOptionsChanged(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int, newOptions: Bundle) {
+        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
+        renderNow(context, intArrayOf(appWidgetId))
+    }
+
+    /** Draws at once instead of waiting for the Glance session (see [WidgetRenderer]). */
+    private fun renderNow(context: Context, appWidgetIds: IntArray) {
+        val appContext = context.applicationContext
+        renderScope.launch { appWidgetIds.forEach { WidgetRenderer.renderSafely(appContext, it) } }
+    }
+
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
         super.onDeleted(context, appWidgetIds)
         goAsyncWork { WidgetPrefsStore(context).delete(appWidgetIds) }
     }
 }
+
+private val renderScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
 class HabitWidgetReceiver : DaymarkWidgetReceiver() {
     override val glanceAppWidget: GlanceAppWidget = HabitWidget()

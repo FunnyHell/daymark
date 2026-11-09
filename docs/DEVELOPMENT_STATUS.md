@@ -53,7 +53,7 @@ Exit criteria and state:
 | Samsung phone verification | Not started | |
 | Tablet adaptation | Not started | Later milestone |
 | Wear OS companion | Not started | Future milestone |
-| Device synchronization | Implemented, not verified on devices | Local Wi-Fi, manual; merge/protocol/two-database tests pass |
+| Device synchronization | Implemented, not verified on devices | Local Wi-Fi; pairing once, then Sync or automatic when open on both; merge/protocol/two-database tests pass |
 
 ## 4. Build and test record
 
@@ -78,6 +78,8 @@ Exit criteria and state:
 - Each CI run signs with that runner's own debug key, so installing a newer CI build over an older one may fail with a signature conflict; export a backup, uninstall, reinstall, import.
 
 ## 6. Recent completed work
+
+- 2026-11-09 (round 5): snoozed reminders come back when the snooze ends (bug: planner used the original dose time); same-minute reminders grouped into one notification with Taken all / Snooze all (Done all for habits); widgets redrawn in parallel before reminders are rescheduled; Settings split into a short main screen plus Reminders and Backups; Today/History decluttered; automatic daily backups into a chosen folder (last 7 kept), restore/import with merge or replace (ADR-034); paired sync without a code and automatic sync when Daymark is open on both devices (protocol v2, ADR-033). A crash found on the emulator (NSD callback delivered to a shut-down executor when the app went to the background) was fixed before delivery. CI run for commit 26a7107: unit/DB tests passed (new: snooze-end planner test, protocol v2 pairing/key/unknown-device tests), debug APK built (SHA-256 `6d669e28a6f1168980ba048058e6eb0cb7c729f4dc33f3c8da9c48055919cfe1`, before the final import-text fix), emulator: instrumented tests 4/4 (new: group notification shrinks and disappears), smoke test passed (settings sub-screens, test reminder with the screen off, sync code). **Not verified on devices**: snooze and grouped notifications on the Samsung phone, widget speed, automatic backups into a real folder, paired/automatic sync between two devices.
 
 - 2026-10-25 (round 4): widgets are drawn directly with `GlanceAppWidget.compose` instead of waiting for a Glance session (ADR-031; fixes widgets stuck on "Loading" on the test phone — the cause is inferred, not reproduced); live preview in widget settings; device sync over the local Wi-Fi (ADR-030): schema v2 with `deleted_records` and `MIGRATION_1_2`, order-independent merge, AES-GCM exchange keyed by a six-digit code, DNS-SD discovery, Settings → Sync devices. CI run 40180766669 (commit 264325d): **106 unit/DB tests passed** (new: SyncMergerTest 7, SyncProtocolTest 3 over loopback sockets, SyncRepositoryTest 3 with two databases, MigrationTest 1 — its v1 SQL matches Room's generated statements), debug APK built (SHA-256 `f1145a51f61b2064cf6629b4afb07d7c396c2c5e7e99151a9728a6b63ed2ffa8`), emulator: instrumented tests 3/3 (including all six widgets composed and inflated at two sizes), smoke test passed including opening the sync screen and showing a code. **Not verified**: sync between two real devices (discovery, Wi-Fi, firewall/AP isolation), widgets on the Samsung launcher.
 

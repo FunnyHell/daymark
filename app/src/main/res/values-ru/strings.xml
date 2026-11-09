@@ -272,7 +272,7 @@
     <string name="settings_export">Экспорт резервной копии</string>
     <string name="settings_export_desc">JSON-файл, без шифрования</string>
     <string name="settings_import">Импорт резервной копии</string>
-    <string name="settings_import_desc">После проверки заменяет все данные</string>
+    <string name="settings_import_desc">Объединить с данными телефона или заменить их</string>
     <string name="settings_about">О приложении</string>
     <string name="about_version">Версия %1$s (%2$s)</string>
     <string name="about_privacy">Без интернета, аккаунта, рекламы и аналитики.</string>

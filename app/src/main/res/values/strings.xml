@@ -284,7 +284,7 @@
     <string name="settings_export">Export backup</string>
     <string name="settings_export_desc">JSON file, not encrypted</string>
     <string name="settings_import">Import backup</string>
-    <string name="settings_import_desc">Replaces all data after a check</string>
+    <string name="settings_import_desc">Merge with this phone\'s data or replace it</string>
     <string name="settings_about">About</string>
     <string name="about_version">Version %1$s (%2$s)</string>
     <string name="about_privacy">Offline. No account, ads or analytics.</string>

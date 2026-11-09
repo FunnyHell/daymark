@@ -16,6 +16,7 @@ import java.net.ServerSocket
 import java.net.Socket
 import java.time.Duration
 import java.time.Instant
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -78,9 +79,15 @@ class SyncCoordinator(
         startListener()
         if (discovery?.isActive != true) {
             discovery = scope.launch {
-                network.peers(settings.deviceId()).collect { peers ->
-                    _nearby.value = peers
-                    autoSync(peers)
+                try {
+                    network.peers(settings.deviceId()).collect { peers ->
+                        _nearby.value = peers
+                        autoSync(peers)
+                    }
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    Log.w(TAG, "Discovery stopped", e)
                 }
             }
         }

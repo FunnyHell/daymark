@@ -40,7 +40,8 @@ class LocalSyncNetwork(private val context: Context) {
     fun advertise(name: String, port: Int, deviceId: String): AutoCloseable {
         val manager = nsd ?: return AutoCloseable { }
         val info = NsdServiceInfo().apply {
-            serviceName = name
+            // DNS-SD names are limited to 63 bytes.
+            serviceName = name.take(MAX_NAME_CHARS)
             serviceType = SERVICE_TYPE
             setPort(port)
             setAttribute(ATTRIBUTE_ID, deviceId)
@@ -53,8 +54,10 @@ class LocalSyncNetwork(private val context: Context) {
             }
             override fun onUnregistrationFailed(info: NsdServiceInfo, errorCode: Int) = Unit
         }
-        manager.registerService(info, NsdManager.PROTOCOL_DNS_SD, listener)
-        return AutoCloseable { runCatching { manager.unregisterService(listener) } }
+        val registered = runCatching { manager.registerService(info, NsdManager.PROTOCOL_DNS_SD, listener) }
+            .onFailure { Log.w(TAG, "Announcing failed", it) }
+            .isSuccess
+        return AutoCloseable { if (registered) runCatching { manager.unregisterService(listener) } }
     }
 
     /** Devices currently offering sync (not this one), updated as they appear and disappear. */
@@ -93,8 +96,11 @@ class LocalSyncNetwork(private val context: Context) {
             override fun onStopDiscoveryFailed(serviceType: String, errorCode: Int) = Unit
         }
         trySend(emptyList())
-        manager.discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, discovery)
+        val started = runCatching { manager.discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, discovery) }
+            .onFailure { Log.w(TAG, "Discovery failed", it) }
+            .isSuccess
         awaitClose {
+            if (!started) return@awaitClose
             runCatching { manager.stopServiceDiscovery(discovery) }
             resolver.close()
         }
@@ -170,6 +176,7 @@ class LocalSyncNetwork(private val context: Context) {
     companion object {
         const val SERVICE_TYPE = "_daymark-sync._tcp"
         private const val ATTRIBUTE_ID = "id"
+        private const val MAX_NAME_CHARS = 30
 
         private fun idOf(info: NsdServiceInfo): String? = info.attributes[ATTRIBUTE_ID]?.toString(Charsets.UTF_8)
         private const val TAG = "DaymarkSync"

@@ -9,7 +9,7 @@ import android.provider.Settings
 import android.util.Log
 import java.net.Inet4Address
 import java.net.InetAddress
-import java.util.concurrent.Executors
+import java.util.concurrent.Executor
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -105,7 +105,9 @@ class LocalSyncNetwork(private val context: Context) {
      * older versions `resolveService` handles one request at a time, so requests are queued.
      */
     private class Resolver(private val manager: NsdManager, private val onResolved: (SyncPeer) -> Unit) : AutoCloseable {
-        private val executor = Executors.newSingleThreadExecutor()
+        // Runs callbacks on NsdManager's own thread. NsdManager may still deliver a callback after it was
+        // unregistered; an executor that could be shut down would then reject it and crash the process.
+        private val executor = Executor { it.run() }
         private val queue = ArrayDeque<NsdServiceInfo>()
         private var busy = false
         private val callbacks = mutableListOf<NsdManager.ServiceInfoCallback>()
@@ -162,7 +164,6 @@ class LocalSyncNetwork(private val context: Context) {
                     callbacks.clear()
                 }
             }
-            executor.shutdown()
         }
     }
 

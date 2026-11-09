@@ -23,7 +23,8 @@ APP_PID=$(adb shell pidof "$PKG" | tr -d '\r')
 if [ -n "$APP_PID" ]; then adb logcat -d -v brief --pid="$APP_PID" '*:E' | tail -n 80; fi
 echo "---- app process ----"
 adb shell pidof "$PKG" || echo "(not running)"
-if grep -q "FATAL EXCEPTION" startup-crash.txt; then
+# Only a crash of this app counts; the emulator's own launcher or system apps sometimes crash on start too.
+if grep -qE "Process: ${PKG}(,|\s|$)" startup-crash.txt; then
   echo "FAIL: the app crashed"
   exit 1
 fi

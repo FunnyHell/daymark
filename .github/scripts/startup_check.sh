@@ -18,6 +18,9 @@ sleep 5
 adb logcat -d -v brief AndroidRuntime:E '*:S' > startup-crash.txt
 echo "---- AndroidRuntime errors ----"
 cat startup-crash.txt
+echo "---- errors from the app process ----"
+APP_PID=$(adb shell pidof "$PKG" | tr -d '\r')
+if [ -n "$APP_PID" ]; then adb logcat -d -v brief --pid="$APP_PID" '*:E' | tail -n 80; fi
 echo "---- app process ----"
 adb shell pidof "$PKG" || echo "(not running)"
 if grep -q "FATAL EXCEPTION" startup-crash.txt; then

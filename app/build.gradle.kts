@@ -14,7 +14,8 @@ android {
         applicationId = "io.github.funnyhell.daymark"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
+        // CI numbers every build, so a newer APK installs as an update over an older one.
+        versionCode = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 1
         versionName = "0.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

@@ -21,6 +21,14 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    lint {
+        // Fails the build on any Android API that does not exist on minSdk (for example Java 9+ java.time methods,
+        // which are only in Android 14); such calls crash on older devices.
+        checkOnly += "NewApi"
+        abortOnError = true
+        checkDependencies = false
+    }
+
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"

@@ -49,7 +49,7 @@ object ReminderPlanner {
         habitRemindersEnabled: Boolean = true,
         horizonDays: Long = 2,
     ): List<PlannedReminder> {
-        val today = LocalDate.ofInstant(now, zone)
+        val today = now.atZone(zone).toLocalDate()
         val dates = (0 until horizonDays).map { today.plusDays(it) }
         val result = mutableListOf<PlannedReminder>()
         if (medicationRemindersEnabled) {

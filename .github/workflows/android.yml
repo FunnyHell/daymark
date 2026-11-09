@@ -76,6 +76,9 @@ jobs:
           print(f"TOTAL tests={total} failures={fail} errors={err} skipped={skip}")
           PY
 
+      - name: Lint (APIs missing on older Android versions)
+        run: ./gradlew --no-daemon lintDebug
+
       - name: Assemble debug APK
         run: ./gradlew --no-daemon assembleDebug
 

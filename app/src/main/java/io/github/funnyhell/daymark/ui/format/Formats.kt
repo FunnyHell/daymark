@@ -20,7 +20,7 @@ object Formats {
     }
 
     fun time(context: Context, instant: Instant, zone: ZoneId = ZoneId.systemDefault()): String =
-        time(context, LocalTime.ofInstant(instant, zone))
+        time(context, instant.atZone(zone).toLocalTime())
 
     fun dateMedium(context: Context, date: LocalDate): String =
         date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(locale(context)))

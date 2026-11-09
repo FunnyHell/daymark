@@ -8,7 +8,7 @@ import java.time.ZoneId
 interface TimeSource {
     fun now(): Instant
     fun zone(): ZoneId
-    fun today(): LocalDate = LocalDate.ofInstant(now(), zone())
+    fun today(): LocalDate = now().atZone(zone()).toLocalDate()
 
     object System : TimeSource {
         override fun now(): Instant = Instant.now()

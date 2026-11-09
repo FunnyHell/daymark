@@ -61,9 +61,19 @@ The debug APK is built by GitHub Actions on every push and published to the bran
 3. Open it with **My Files**. When asked, allow "Install unknown apps" for that app (Settings → Apps → Special access → Install unknown apps).
 4. With USB debugging enabled you can instead run `adb install -r app-debug.apk`.
 
-Package ID: `io.github.funnyhell.daymark.debug` · version `0.1.0-debug` (versionCode 1) · minSdk 26 · targetSdk 35.
+Package ID: `io.github.funnyhell.daymark.debug` · version `0.1.0-debug` · versionCode = CI run number · minSdk 26 (Android 8.0) · targetSdk 35.
 
-Debug builds are signed with the CI runner's temporary debug key, so a later CI build usually cannot be installed over an earlier one ("App not installed" / signature conflict). Export a backup, uninstall, install the new APK, then import the backup.
+**Updating:** CI signs every build with the same key and numbers builds increasingly, so a newer APK installs over the old one and keeps the data. Builds made before this change (up to CI run 35) used a throwaway key per build: replace such an install once (export a backup or sync with another device, uninstall, install, import).
+
+The key is kept in the GitHub Actions cache (`daymark-debug-keystore-v1`). Caches unused for 7 days are deleted, and then a new key is made, which needs one more reinstall. To make the key permanent, create a keystore once and store it as the repository secret `DEBUG_KEYSTORE_BASE64`:
+
+```bash
+keytool -genkeypair -keystore daymark-debug.keystore -storepass android -alias androiddebugkey -keypass android \
+  -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+base64 -w0 daymark-debug.keystore   # paste the output into Settings → Secrets and variables → Actions
+```
+
+Changing to a new key (including from the cached key to the secret) needs one reinstall. Keep the keystore file private and out of the repository.
 
 ### Recommended phone settings for reliable reminders
 
@@ -115,7 +125,7 @@ Please report the results (or anything odd) so they can be recorded in `docs/DEV
 | `docs/SPEC.md` | Product requirements and acceptance criteria |
 | `docs/ARCHITECTURE.md` | Architecture, including the as-built structure |
 | `docs/DEVELOPMENT_STATUS.md` | Current progress and verification state |
-| `docs/DECISIONS.md` | Technical decisions (ADR-001 … ADR-034) |
+| `docs/DECISIONS.md` | Technical decisions (ADR-001 … ADR-035) |
 
 ## Data and privacy
 

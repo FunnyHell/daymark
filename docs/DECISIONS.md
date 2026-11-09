@@ -959,6 +959,30 @@ Anyone with the pairing key (stored on both devices) can sync; "Forget" removes 
 
 ---
 
+## ADR-035 — Stable signing for updates; API-level checks
+
+**Status:** Accepted
+
+#### Context
+
+Every CI build was signed with that runner's throwaway debug key and had versionCode 1, so each new APK had to replace the old install (uninstall, losing data unless exported). The app also crashed at start on Android 13 and older: `LocalDate.ofInstant` / `LocalTime.ofInstant` exist on Android only from API 34, and the only emulator tests ran on API 34.
+
+#### Decision
+
+- CI signs the debug APK with one persistent key: the repository secret `DEBUG_KEYSTORE_BASE64` if present, otherwise a key kept in the Actions cache (`daymark-debug-keystore-v1`). The key fingerprint is recorded in `BUILD_INFO.txt` on the `ci-apk` branch. The key is never committed.
+- `versionCode` is the CI run number (1 for local builds), so newer builds install as updates.
+- The calls were replaced with `Instant.atZone(zone).toLocalDate()/toLocalTime()`. Android Lint runs in CI with `NewApi` breaking the build. A startup job installs and starts the app on API 26, 28, 30, 31, 33 and 34 emulators (tablet profile), backgrounds and resumes it, and fails on any crash.
+
+#### Consequences
+
+The cached key expires after 7 days without builds; then a new key is created and one reinstall is needed. A repository secret removes that limitation (README, "Updating").
+
+#### Date
+
+2026-11-09
+
+---
+
 \## Future decisions
 
 

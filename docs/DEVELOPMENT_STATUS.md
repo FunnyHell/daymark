@@ -75,7 +75,7 @@ Exit criteria and state:
 - A medication created during the day shows its earlier doses of that day (e.g. 08:00 when created at 15:00) as "Missed" until recorded; this follows the documented rule but may surprise users.
 - In the emulator, `uiautomator dump` did not list the Extended FAB ("New habit") on the Habits screen although it is drawn and works (Compose tests can click it). TalkBack reachability of the FAB must be checked on the device; the same action is also available from the empty state and the Today screen.
 - Backups are not encrypted.
-- Each CI run signs with that runner's own debug key, so installing a newer CI build over an older one may fail with a signature conflict; export a backup, uninstall, reinstall, import.
+- CI signs with a persistent key (Actions cache, or the `DEBUG_KEYSTORE_BASE64` secret if set); builds before run 36 used throwaway keys and need one reinstall. The cached key expires after 7 days without builds (see README, "Updating").
 
 ## 6. Recent completed work
 

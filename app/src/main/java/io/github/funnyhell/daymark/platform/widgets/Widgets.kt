@@ -39,7 +39,6 @@ import androidx.glance.appwidget.cornerRadius
 import androidx.glance.appwidget.lazy.LazyColumn
 import androidx.glance.appwidget.lazy.items
 import androidx.glance.appwidget.provideContent
-import androidx.glance.appwidget.updateAll
 import androidx.glance.background
 import androidx.glance.color.ColorProvider
 import androidx.glance.layout.Alignment
@@ -75,6 +74,9 @@ import io.github.funnyhell.daymark.domain.stats.HabitStatistics
 import io.github.funnyhell.daymark.platform.goAsyncWork
 import io.github.funnyhell.daymark.ui.format.Formats
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
@@ -89,15 +91,16 @@ object WidgetUpdater {
         ProgressWidgetReceiver::class.java, CalendarWidgetReceiver::class.java, StreakWidgetReceiver::class.java,
     )
 
-    /** Redraws every placed widget, immediately, and refreshes running Glance sessions. */
-    suspend fun updateAll(context: Context) {
+    /**
+     * Redraws every placed widget at once, all in parallel. Running Glance sessions observe the same data and
+     * update themselves, so they are not restarted here (that would draw every widget a second time).
+     */
+    suspend fun updateAll(context: Context) = coroutineScope {
         val manager = AppWidgetManager.getInstance(context)
-        for (receiver in receivers) {
-            manager.getAppWidgetIds(ComponentName(context, receiver)).forEach { WidgetRenderer.renderSafely(context, it) }
-        }
-        for (create in WidgetRenderer.all) {
-            runCatching { create().updateAll(context) }.onFailure { Log.w(TAG, "Widget update failed", it) }
-        }
+        receivers.flatMap { manager.getAppWidgetIds(ComponentName(context, it)).toList() }
+            .map { id -> async(Dispatchers.Default) { WidgetRenderer.renderSafely(context, id) } }
+            .awaitAll()
+        Unit
     }
 
     /** Redraws one widget after its settings changed. */

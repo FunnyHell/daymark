@@ -474,4 +474,15 @@
         <item quantity="one">%1$d change</item>
         <item quantity="other">%1$d changes</item>
     </plurals>
+    <plurals name="notif_med_group_title">
+        <item quantity="one">%1$d dose · %2$s</item>
+        <item quantity="other">%1$d doses · %2$s</item>
+    </plurals>
+    <plurals name="notif_habit_group_title">
+        <item quantity="one">%1$d habit to do</item>
+        <item quantity="other">%1$d habits to do</item>
+    </plurals>
+    <string name="action_taken_all">Taken all</string>
+    <string name="action_snooze_all">Snooze all 30 min</string>
+    <string name="action_done_all">Done all</string>
 </resources>

@@ -59,8 +59,7 @@ object ReminderPlanner {
                     for (status in OccurrenceRules.statusesOn(data, date, now, zone)) {
                         val at = when (status.state) {
                             OccurrenceState.TAKEN, OccurrenceState.SKIPPED, OccurrenceState.MISSED -> continue
-                            OccurrenceState.SNOOZED -> status.snoozedUntil ?: continue
-                            else -> status.occurrence.dueAt(zone)
+                            else -> OccurrenceRules.reminderAt(status.occurrence, data.events, zone)
                         }
                         result += PlannedReminder(ReminderKind.MEDICATION, at, date, data.medication.id, status.occurrence.key)
                     }

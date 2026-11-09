@@ -477,4 +477,19 @@
         <item quantity="many">%1$d изменений</item>
         <item quantity="other">%1$d изменения</item>
     </plurals>
+    <plurals name="notif_med_group_title">
+        <item quantity="one">%1$d приём · %2$s</item>
+        <item quantity="few">%1$d приёма · %2$s</item>
+        <item quantity="many">%1$d приёмов · %2$s</item>
+        <item quantity="other">%1$d приёма · %2$s</item>
+    </plurals>
+    <plurals name="notif_habit_group_title">
+        <item quantity="one">%1$d привычка на сейчас</item>
+        <item quantity="few">%1$d привычки на сейчас</item>
+        <item quantity="many">%1$d привычек на сейчас</item>
+        <item quantity="other">%1$d привычки на сейчас</item>
+    </plurals>
+    <string name="action_taken_all">Принять все</string>
+    <string name="action_snooze_all">Отложить все на 30 мин</string>
+    <string name="action_done_all">Выполнить все</string>
 </resources>

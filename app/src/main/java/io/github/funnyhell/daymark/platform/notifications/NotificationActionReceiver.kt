@@ -40,6 +40,28 @@ class NotificationActionReceiver : BroadcastReceiver() {
                     c.notifier.cancelMedication(key)
                 }
             }
+            ACTION_TAKE_ALL, ACTION_SNOOZE_ALL -> {
+                val items = intent.getStringArrayExtra(EXTRA_ITEMS)?.toList().orEmpty()
+                for (item in items) {
+                    val medId = item.substringBefore('|')
+                    val key = item.substringAfter('|')
+                    val result = if (action == ACTION_TAKE_ALL) {
+                        c.medications.recordDose(medId, key, MedicationEventType.TAKEN, ActionSource.NOTIFICATION)
+                    } else {
+                        c.medications.snooze(medId, key, ActionSource.NOTIFICATION)
+                    }
+                    Log.i(TAG, "Group action $action for $key: $result")
+                }
+                intent.getStringExtra(EXTRA_TAG)?.let(c.notifier::cancelTag)
+            }
+            ACTION_HABITS_DONE -> {
+                val items = intent.getStringArrayExtra(EXTRA_ITEMS)?.toList().orEmpty()
+                for (item in items) {
+                    val date = runCatching { LocalDate.parse(item.substringAfter('|')) }.getOrNull() ?: continue
+                    c.habits.completeIfIncomplete(item.substringBefore('|'), date)
+                }
+                intent.getStringExtra(EXTRA_TAG)?.let(c.notifier::cancelTag)
+            }
             ACTION_HABIT_DONE -> {
                 val habitId = intent.getStringExtra(EXTRA_HABIT_ID) ?: return
                 val date = intent.getStringExtra(EXTRA_DATE)?.let { runCatching { LocalDate.parse(it) }.getOrNull() } ?: return
@@ -56,6 +78,11 @@ class NotificationActionReceiver : BroadcastReceiver() {
         const val ACTION_SKIP = "io.github.funnyhell.daymark.action.MED_SKIP"
         const val ACTION_SNOOZE = "io.github.funnyhell.daymark.action.MED_SNOOZE"
         const val ACTION_HABIT_DONE = "io.github.funnyhell.daymark.action.HABIT_DONE"
+        const val ACTION_TAKE_ALL = "io.github.funnyhell.daymark.action.MED_TAKE_ALL"
+        const val ACTION_SNOOZE_ALL = "io.github.funnyhell.daymark.action.MED_SNOOZE_ALL"
+        const val ACTION_HABITS_DONE = "io.github.funnyhell.daymark.action.HABITS_DONE"
+        const val EXTRA_ITEMS = "items"
+        const val EXTRA_TAG = "tag"
         const val EXTRA_MEDICATION_ID = "medication_id"
         const val EXTRA_OCCURRENCE_KEY = "occurrence_key"
         const val EXTRA_HABIT_ID = "habit_id"

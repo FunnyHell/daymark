@@ -42,6 +42,21 @@ class ReminderPlannerTest {
     }
 
     @Test
+    fun snoozedReminderComesBackWhenTheSnoozeEnds() {
+        // Snoozed at 08:05 until 08:35; the alarm fires at 08:35 and the last check was at 08:05.
+        val snooze = medEvent(Occurrence.occurrenceKey("d1", MONDAY), MedicationEventType.SNOOZED, at(MONDAY, 8, 5), at(MONDAY, 8, 35))
+        val data = medData(events = listOf(snooze))
+        val due = ReminderPlanner.dueBetween(plan(meds = listOf(data), now = at(MONDAY, 8, 35)), at(MONDAY, 8, 5), at(MONDAY, 8, 35))
+        assertEquals(listOf("d1@2024-03-04"), due.map { it.occurrenceKey })
+        // A snooze that runs past the dose's missed window still reminds when it ends.
+        val late = medEvent(Occurrence.occurrenceKey("d1", MONDAY), MedicationEventType.SNOOZED, at(MONDAY, 10, 50), at(MONDAY, 11, 20))
+        val lateDue = ReminderPlanner.dueBetween(
+            plan(meds = listOf(medData(events = listOf(late))), now = at(MONDAY, 11, 20)), at(MONDAY, 10, 50), at(MONDAY, 11, 20),
+        )
+        assertEquals(listOf("d1@2024-03-04"), lateDue.map { it.occurrenceKey })
+    }
+
+    @Test
     fun pausedMedicationHasNoReminders() {
         val data = medData(pauses = listOf(pause(MONDAY, null)), medication = medication(status = LifecycleStatus.PAUSED))
         assertTrue(plan(meds = listOf(data), now = at(MONDAY, 7)).isEmpty())

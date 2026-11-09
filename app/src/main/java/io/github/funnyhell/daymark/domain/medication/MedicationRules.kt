@@ -79,10 +79,7 @@ object OccurrenceRules {
             return OccurrenceStatus(occurrence, state, resolution, null)
         }
         val due = occurrence.dueAt(zone)
-        val lastSnooze = events
-            .filter { it.occurrenceKey == occurrence.key && it.isActive && it.type == MedicationEventType.SNOOZED }
-            .maxByOrNull { it.recordedAt }
-        val snoozedUntil = lastSnooze?.snoozedUntil
+        val snoozedUntil = latestSnoozeEnd(occurrence, events)
         val state = when {
             snoozedUntil != null && now.isBefore(snoozedUntil) -> OccurrenceState.SNOOZED
             now.isBefore(due) -> OccurrenceState.UPCOMING
@@ -91,6 +88,22 @@ object OccurrenceRules {
         }
         return OccurrenceStatus(occurrence, state, null, snoozedUntil?.takeIf { now.isBefore(it) })
     }
+
+    /**
+     * When the reminder of an open occurrence should be shown: the dose time, or the end of its latest snooze.
+     * Unlike [OccurrenceStatus.snoozedUntil] this stays set after the snooze has ended, which is the moment the
+     * reminder has to come back.
+     */
+    fun reminderAt(occurrence: Occurrence, events: List<MedicationEvent>, zone: ZoneId): Instant {
+        val due = occurrence.dueAt(zone)
+        val until = latestSnoozeEnd(occurrence, events)
+        return if (until != null && until.isAfter(due)) until else due
+    }
+
+    private fun latestSnoozeEnd(occurrence: Occurrence, events: List<MedicationEvent>): Instant? = events
+        .filter { it.occurrenceKey == occurrence.key && it.isActive && it.type == MedicationEventType.SNOOZED }
+        .maxByOrNull { it.recordedAt }
+        ?.snoozedUntil
 
     fun statusesOn(data: MedicationData, date: LocalDate, now: Instant, zone: ZoneId): List<OccurrenceStatus> =
         occurrencesOn(data, date).map { status(it, data.events, now, zone) }

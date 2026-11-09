@@ -46,6 +46,8 @@ class AppContainer(context: Context) : DataChangeListener {
     val reminders = ReminderEngine(appContext, habits, medications, settings, notifier, time)
 
     override suspend fun onDataChanged(change: DataChange) {
+        // Widgets first: a tap on a widget should show its result before reminders are recalculated.
+        WidgetUpdater.updateAll(appContext)
         when (change) {
             is DataChange.Medications -> {
                 change.clearedOccurrenceKeys.forEach { notifier.cancelMedication(it) }
@@ -55,6 +57,5 @@ class AppContainer(context: Context) : DataChangeListener {
             DataChange.Everything -> notifier.cancelAll()
         }
         reminders.reschedule()
-        WidgetUpdater.updateAll(appContext)
     }
 }

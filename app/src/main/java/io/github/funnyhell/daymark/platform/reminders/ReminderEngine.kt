@@ -58,9 +58,7 @@ class ReminderEngine(
         val now = time.now()
         val last = settings.lastReminderCheck()
         val plan = plan(now)
-        if (last != null) {
-            for (reminder in ReminderPlanner.dueBetween(plan, last, now)) post(reminder)
-        }
+        if (last != null) postAll(ReminderPlanner.dueBetween(plan, last, now))
         settings.setLastReminderCheck(now)
         arm(plan, now, now)
     }
@@ -72,16 +70,24 @@ class ReminderEngine(
         arm(plan(now), now, last)
     }
 
-    private suspend fun post(reminder: PlannedReminder) {
-        when (reminder.kind) {
-            ReminderKind.MEDICATION -> {
-                val data = medications.get(reminder.ownerId) ?: return
-                val occurrence = reminder.occurrenceKey?.let { OccurrenceRules.findOccurrence(data, it) } ?: return
-                notifier.showMedication(data, occurrence)
+    /** Reminders due in the same minute are shown as one notification per kind. */
+    private suspend fun postAll(due: List<PlannedReminder>) {
+        for ((_, sameMinute) in due.groupBy { it.at.epochSecond / 60 }) {
+            val meds = sameMinute.filter { it.kind == ReminderKind.MEDICATION }.mapNotNull { r ->
+                val data = medications.get(r.ownerId) ?: return@mapNotNull null
+                val occurrence = r.occurrenceKey?.let { OccurrenceRules.findOccurrence(data, it) } ?: return@mapNotNull null
+                data to occurrence
             }
-            ReminderKind.HABIT -> {
-                val data = habits.get(reminder.ownerId) ?: return
-                notifier.showHabit(data, reminder.date)
+            when {
+                meds.size > 1 -> notifier.showMedicationGroup(meds, sameMinute.first().at)
+                meds.size == 1 -> notifier.showMedication(meds[0].first, meds[0].second)
+            }
+            val habitItems = sameMinute.filter { it.kind == ReminderKind.HABIT }.mapNotNull { r ->
+                habits.get(r.ownerId)?.let { it to r.date }
+            }
+            when {
+                habitItems.size > 1 -> notifier.showHabitGroup(habitItems, sameMinute.first().at)
+                habitItems.size == 1 -> notifier.showHabit(habitItems[0].first, habitItems[0].second)
             }
         }
     }

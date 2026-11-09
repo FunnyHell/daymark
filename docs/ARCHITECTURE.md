@@ -754,7 +754,9 @@ For phone-to-tablet synchronization, evaluate direct local-network or nearby-dev
 - `platform/sync/LocalSyncNetwork` — DNS-SD announce/discover (`_daymark-sync._tcp`), local IPv4 address for manual entry.
 - UI: Settings → Sync devices. One device shows a code; the other picks it from "Nearby devices" (or types IP:port) and enters the code. Both devices merge.
 
-There is no background or automatic sync, and no cloud component.
+Pairing (ADR-033): the first exchange uses the code and hands out a shared 256-bit key; later exchanges use it. `platform/sync/SyncCoordinator` listens and discovers while the app is in the foreground and syncs with paired devices automatically when both are open; nothing runs in the background, and there is no cloud component.
+
+Backups (ADR-034): `platform/backup/AutoBackup` writes a daily file into a user-chosen folder (document tree) and keeps the newest seven; importing can merge (via `SyncRepository.applyRemote`) or replace.
 
 \## 14. Testing architecture
 

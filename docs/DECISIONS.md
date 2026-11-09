@@ -899,6 +899,66 @@ Widgets are composed with `GlanceAppWidget.compose` and pushed with `AppWidgetMa
 
 ---
 
+## ADR-032 — Snooze end and grouped reminders
+
+**Status:** Accepted
+
+#### Context
+
+"Snooze 30 min" never brought the reminder back: when the snooze ended the dose was "due" again and the planner used its original time, which lay before the last check, so nothing was posted. Several reminders at the same minute arrived as separate notifications.
+
+#### Decision
+
+- The reminder time of an open dose is the end of its latest snooze if that is later than the dose time (`OccurrenceRules.reminderAt`), also after the snooze has ended. Unit test reproduces the bug (snooze 08:05→08:35, alarm at 08:35) and a snooze that runs past the missed window.
+- Reminders due in the same minute are posted as one notification per kind. Doses: "Taken all" and "Snooze all", each dose still recorded separately through `recordDose`/`snooze`. Habits: "Done all" for types that can be completed from a notification. When a dose of a group is recorded elsewhere it is removed from the group notification (rebuilt from the notification's own extras, without ringing again); an empty group disappears.
+
+#### Date
+
+2026-11-09
+
+---
+
+## ADR-033 — Paired devices and automatic sync (extends ADR-030)
+
+**Status:** Accepted
+
+#### Context
+
+Entering a code for every sync is tedious; the user asked for sync settings between devices over the local network without cloud storage.
+
+#### Decision
+
+- Sync protocol version 2: the first exchange uses the six-digit code as before and the host hands out a random 256-bit key inside that encrypted exchange; both devices store it with the other's random device id (`sync_peers` DataStore). Later exchanges use the key directly; an unknown device or a wrong key is refused.
+- While Daymark is in the foreground it listens on a TCP port and announces itself with DNS-SD (TXT attribute `id`). It also discovers other devices; with "Sync automatically" on (default), it syncs with each paired device it finds, at most every 2 minutes. When both devices are open, only the one with the smaller id starts the exchange.
+- Nothing listens while the app is closed (no background service), so automatic sync happens when Daymark is open on both devices; "Sync" on a paired device does it on demand.
+- Version 1 devices cannot sync with version 2 ("Update Daymark on both devices").
+
+#### Consequences
+
+Anyone with the pairing key (stored on both devices) can sync; "Forget" removes it on this device only. The threat model of ADR-030 (trusted home network) still applies to the pairing step.
+
+#### Date
+
+2026-11-09
+
+---
+
+## ADR-034 — Automatic backups and merging imports
+
+**Status:** Accepted
+
+#### Decision
+
+- Backups screen: the user picks a folder through the system folder picker (persisted permission). A daily WorkManager job (battery not low) writes `daymark-backup-YYYY-MM-DD.json` there, replacing today's file if it exists, and deletes all but the newest 7. "Back up now" does the same immediately. Backups in the folder are listed for restoring.
+- Restoring or importing a file offers **Merge** (the device-sync merge of ADR-030: nothing on the phone is lost) or **Replace** (the previous "replace all").
+- No cloud component: the folder is whatever the user chooses; if another app syncs that folder, that is the user's choice.
+
+#### Date
+
+2026-11-09
+
+---
+
 \## Future decisions
 
 

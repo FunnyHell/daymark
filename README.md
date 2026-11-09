@@ -20,7 +20,7 @@ Daymark records what you enter and reminds you at the times you choose. It does 
 
 **Medications**
 - Name, strength/form, notes, color; one or more dose times per day on chosen weekdays; a free-text dose description and a "uses from stock" amount per dose.
-- Tap the circle on the left of a dose to mark it taken, tap again to unmark it (stock is restored). Skip / Snooze 30 min from the app and the notification; Taken also from the notification and the widget (where it can be unmarked too); "Take all" for doses due at the same time. Every action is validated and idempotent: repeated taps or duplicated notification actions record once.
+- Tap the circle on the left of a dose to mark it taken, tap again to unmark it (stock is restored). Skip / Snooze 30 min from the dose's menu (⋮) and the notification; Taken also from the notification and the widget (where it can be unmarked too); "Take all" for doses due at the same time; several doses (or habits) due at the same minute arrive as one notification with "Taken all" / "Snooze all" ("Done all" for habits). Every action is validated and idempotent: repeated taps or duplicated notification actions record once.
 - Missed doses are derived (nothing recorded within 3 hours), never invented; late doses can still be recorded.
 - Pause/resume a schedule without false missed doses; corrections with exact inventory reconciliation.
 
@@ -44,10 +44,11 @@ Daymark records what you enter and reminds you at the times you choose. It does 
 - Medication adherence counts (taken/skipped/missed) for 7 and 30 days and a full event log.
 
 **Sync between devices**
-- Settings → Sync devices: on one device tap Show code, on the other pick it under Nearby devices (or enter its IP:port) and type the code. Both devices must be on the same Wi-Fi. Data is merged on both; settings stay per device.
+- Settings → Sync devices. First time: on one device tap Show code, on the other pick it under the nearby devices (or enter its IP:port) and type the code. After that the devices are paired: tap Sync, or leave "Sync automatically" on and they sync whenever Daymark is open on both. Both devices must be on the same Wi-Fi. Data is merged on both; settings stay per device.
 - Merge rules: the later edit of a habit or medication wins, history from both devices is kept, deletions are applied on both, and a dose marked on both devices counts once (stock too).
 
 **Data**
+- Settings → Backups: automatic daily backups into a folder you choose (the last 7 are kept), back up now, restore from the list. Restoring or importing can merge with the phone's data or replace it.
 - Export everything to a JSON file; import validates the whole file first and replaces data in one transaction only after confirmation.
 - English and Russian UI.
 
@@ -114,7 +115,7 @@ Please report the results (or anything odd) so they can be recorded in `docs/DEV
 | `docs/SPEC.md` | Product requirements and acceptance criteria |
 | `docs/ARCHITECTURE.md` | Architecture, including the as-built structure |
 | `docs/DEVELOPMENT_STATUS.md` | Current progress and verification state |
-| `docs/DECISIONS.md` | Technical decisions (ADR-001 … ADR-031) |
+| `docs/DECISIONS.md` | Technical decisions (ADR-001 … ADR-034) |
 
 ## Data and privacy
 

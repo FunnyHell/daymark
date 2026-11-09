@@ -2,7 +2,10 @@ package io.github.funnyhell.daymark
 
 import android.content.Context
 import io.github.funnyhell.daymark.data.backup.BackupRepository
+import io.github.funnyhell.daymark.data.sync.PairedDevices
 import io.github.funnyhell.daymark.data.sync.SyncRepository
+import io.github.funnyhell.daymark.platform.sync.SyncCoordinator
+import kotlinx.coroutines.CoroutineScope
 import io.github.funnyhell.daymark.data.db.DaymarkDatabase
 import io.github.funnyhell.daymark.data.repo.DataChange
 import io.github.funnyhell.daymark.data.repo.DataChangeListener
@@ -18,7 +21,7 @@ import io.github.funnyhell.daymark.platform.widgets.WidgetUpdater
  * Manual dependency container. One instance per process, owned by [DaymarkApplication].
  * It is also the [DataChangeListener] that keeps reminders, notifications and widgets in sync with the database.
  */
-class AppContainer(context: Context) : DataChangeListener {
+class AppContainer(context: Context, scope: CoroutineScope) : DataChangeListener {
     private val appContext = context.applicationContext
 
     val time: TimeSource = TimeSource.System
@@ -42,6 +45,7 @@ class AppContainer(context: Context) : DataChangeListener {
         readSettings = { settings.current() },
         listener = this,
     )
+    val syncCoordinator = SyncCoordinator(appContext, settings, sync, PairedDevices(appContext), time, scope)
     val notifier = Notifier(appContext, settings)
     val reminders = ReminderEngine(appContext, habits, medications, settings, notifier, time)
 

@@ -14,6 +14,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.IconButton
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Icon
@@ -90,25 +98,16 @@ fun DoseRow(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
-            StateChip(item)
-        }
-        if (item.state == OccurrenceState.SNOOZED && item.snoozedUntilText != null) {
-            Text(
-                stringResource(R.string.snoozed_until, item.snoozedUntilText),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(top = 6.dp),
-            )
-        }
-        if (!item.resolved) {
-            Row(
-                Modifier.fillMaxWidth().padding(top = 6.dp),
-                horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.End),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                TextButton(onClick = onSkip) { Text(stringResource(R.string.action_skip)) }
-                if (onSnooze != null) {
-                    TextButton(onClick = onSnooze) { Text(stringResource(R.string.action_snooze)) }
+            // The circle already shows taken and skipped; the chip only adds what it does not show.
+            if (item.state in setOf(OccurrenceState.DUE, OccurrenceState.MISSED, OccurrenceState.SNOOZED)) StateChip(item)
+            if (!item.resolved) {
+                var menu by remember { mutableStateOf(false) }
+                IconButton(onClick = { menu = true }) { Icon(Icons.Filled.MoreVert, contentDescription = stringResource(R.string.more_actions)) }
+                DropdownMenu(expanded = menu, onDismissRequest = { menu = false }) {
+                    DropdownMenuItem(text = { Text(stringResource(R.string.action_skip)) }, onClick = { menu = false; onSkip() })
+                    if (onSnooze != null) {
+                        DropdownMenuItem(text = { Text(stringResource(R.string.action_snooze)) }, onClick = { menu = false; onSnooze() })
+                    }
                 }
             }
         }
@@ -118,6 +117,7 @@ fun DoseRow(
 @Composable
 private fun StateChip(item: DoseItem) {
     val scheme = MaterialTheme.colorScheme
+    val text = if (item.state == OccurrenceState.SNOOZED && item.snoozedUntilText != null) item.snoozedUntilText else item.stateText
     val (icon, container, content) = when (item.state) {
         OccurrenceState.TAKEN -> Triple(Icons.Filled.Check, scheme.secondaryContainer, scheme.onSecondaryContainer)
         OccurrenceState.SKIPPED -> Triple(Icons.Filled.Close, scheme.surfaceContainerHigh, scheme.onSurfaceVariant)
@@ -126,5 +126,5 @@ private fun StateChip(item: DoseItem) {
         OccurrenceState.SNOOZED -> Triple(Icons.Filled.Notifications, scheme.tertiaryContainer, scheme.onTertiaryContainer)
         OccurrenceState.UPCOMING -> Triple(null, scheme.surfaceContainerHigh, scheme.onSurfaceVariant)
     }
-    StatusChip(item.stateText, icon, container, content)
+    StatusChip(text, icon, container, content)
 }

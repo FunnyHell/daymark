@@ -213,6 +213,9 @@ shot("11-settings")
 alive()
 
 # Test reminder through the real alarm path with the screen off: it must be posted about a minute later.
+tap("Reminders")
+time.sleep(1)
+shot("11b-settings-reminders")
 tap("Test reminder")
 adb("shell", "input", "keyevent", "KEYCODE_SLEEP")
 say("screen off, waiting for the test reminder")
@@ -231,6 +234,14 @@ if not posted:
     say("FAIL: test reminder was not posted within 150 s with the screen off")
     raise SystemExit(1)
 say("test reminder posted with the screen off")
+
+adb("shell", "input", "keyevent", "KEYCODE_BACK")
+time.sleep(1)
+tap("Backups")
+time.sleep(1)
+shot("12b-settings-backups")
+adb("shell", "input", "keyevent", "KEYCODE_BACK")
+time.sleep(1)
 
 # Device sync screen: showing a code starts waiting for another device; cancel stops it.
 tap("Sync devices")

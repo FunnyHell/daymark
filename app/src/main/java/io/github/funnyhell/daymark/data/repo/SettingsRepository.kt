@@ -25,6 +25,11 @@ data class Settings(
     /** Lock-screen notifications show a generic text instead of medication and habit names. */
     val hideNamesOnLockScreen: Boolean = true,
     val onboardingDone: Boolean = false,
+    /** Sync with paired devices whenever Daymark is open on both (device-local, not exported). */
+    val autoSync: Boolean = true,
+    /** Folder (a document tree URI) for automatic daily backups, or null when they are off. */
+    val backupFolder: String? = null,
+    val lastBackupAt: Instant? = null,
 )
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -39,6 +44,10 @@ class SettingsRepository(private val context: Context) {
         val hideNames = booleanPreferencesKey("hide_names_lock_screen")
         val onboarding = booleanPreferencesKey("onboarding_done")
         val lastReminderCheck = longPreferencesKey("last_reminder_check")
+        val autoSync = booleanPreferencesKey("auto_sync")
+        val backupFolder = stringPreferencesKey("backup_folder")
+        val lastBackup = longPreferencesKey("last_backup")
+        val deviceId = stringPreferencesKey("device_id")
     }
 
     val settings: Flow<Settings> = context.dataStore.data.map { p ->
@@ -51,6 +60,9 @@ class SettingsRepository(private val context: Context) {
             habitReminders = p[Keys.habitReminders] ?: defaults.habitReminders,
             hideNamesOnLockScreen = p[Keys.hideNames] ?: defaults.hideNamesOnLockScreen,
             onboardingDone = p[Keys.onboarding] ?: defaults.onboardingDone,
+            autoSync = p[Keys.autoSync] ?: defaults.autoSync,
+            backupFolder = p[Keys.backupFolder],
+            lastBackupAt = p[Keys.lastBackup]?.let(Instant::ofEpochMilli),
         )
     }
 
@@ -63,6 +75,21 @@ class SettingsRepository(private val context: Context) {
     suspend fun setHabitReminders(enabled: Boolean) = context.dataStore.edit { it[Keys.habitReminders] = enabled }
     suspend fun setHideNamesOnLockScreen(enabled: Boolean) = context.dataStore.edit { it[Keys.hideNames] = enabled }
     suspend fun setOnboardingDone() = context.dataStore.edit { it[Keys.onboarding] = true }
+    suspend fun setAutoSync(enabled: Boolean) = context.dataStore.edit { it[Keys.autoSync] = enabled }
+    suspend fun setBackupFolder(uri: String?) = context.dataStore.edit {
+        if (uri == null) it.remove(Keys.backupFolder) else it[Keys.backupFolder] = uri
+    }
+    suspend fun setLastBackupAt(at: Instant) = context.dataStore.edit { it[Keys.lastBackup] = at.toEpochMilli() }
+
+    /** A random id for this installation, created on first use; other devices recognise it when syncing. */
+    suspend fun deviceId(): String {
+        context.dataStore.data.first()[Keys.deviceId]?.let { return it }
+        var id = ""
+        context.dataStore.edit { p ->
+            id = p[Keys.deviceId] ?: java.util.UUID.randomUUID().toString().also { p[Keys.deviceId] = it }
+        }
+        return id
+    }
 
     /** Applies imported settings in one edit. */
     suspend fun apply(settings: Settings) = context.dataStore.edit {

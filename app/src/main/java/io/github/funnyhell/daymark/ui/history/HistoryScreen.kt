@@ -22,6 +22,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
@@ -210,34 +211,34 @@ private fun HabitHistory(state: HistoryState, padding: PaddingValues) {
                 )
             }
         }
-        item { SectionHeader(stringResource(R.string.section_summaries)) }
         item {
-            Row(Modifier.padding(horizontal = 16.dp, vertical = 4.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                StatTile(rateText(state.thisWeek), stringResource(R.string.this_week), Modifier.weight(1f))
-                StatTile(rateText(state.lastWeek), stringResource(R.string.last_week), Modifier.weight(1f))
-            }
-            Row(Modifier.padding(horizontal = 16.dp, vertical = 4.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                StatTile(rateText(state.thisMonth), stringResource(R.string.this_month), Modifier.weight(1f))
-                StatTile(rateText(state.lastMonth), stringResource(R.string.last_month), Modifier.weight(1f))
+            Row(Modifier.padding(horizontal = 16.dp, vertical = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                StatTile(rateText(state.thisWeek), stringResource(R.string.this_week_vs, rateText(state.lastWeek)), Modifier.weight(1f))
+                StatTile(rateText(state.thisMonth), stringResource(R.string.this_month_vs, rateText(state.lastMonth)), Modifier.weight(1f))
             }
         }
         item { SectionHeader(stringResource(R.string.section_per_habit)) }
         items(state.habitRows, key = { it.id }) { row ->
-            AppCard {
-                Row {
-                    ColorDot(row.colorArgb, Modifier.padding(top = 6.dp, end = 10.dp))
-                    Column(Modifier.weight(1f)) {
-                        Text(row.name, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold)
-                        Text(
-                            listOfNotNull(
-                                stringResource(R.string.current_best, context.resources.getQuantityString(row.unitPlural, row.current, row.current), row.best),
-                                row.rate30?.let { stringResource(R.string.rate_30_short, (it * 100).toInt()) },
-                                row.extra,
-                            ).joinToString(" · "),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
+            Row(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+                ColorDot(row.colorArgb, Modifier.padding(end = 12.dp))
+                Column(Modifier.weight(1f)) {
+                    Text(row.name, style = MaterialTheme.typography.bodyLarge)
+                    row.extra?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant) }
+                }
+                Column(horizontalAlignment = Alignment.End) {
+                    Text(
+                        context.resources.getQuantityString(row.unitPlural, row.current, row.current),
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.SemiBold,
+                    )
+                    Text(
+                        listOfNotNull(
+                            stringResource(R.string.best_short, row.best),
+                            row.rate30?.let { stringResource(R.string.rate_30_short, (it * 100).toInt()) },
+                        ).joinToString(" · "),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
                 }
             }
         }
@@ -336,4 +337,4 @@ private fun AdherenceCard(title: String, a: Adherence) {
 }
 
 @Composable
-private fun rateText(r: RateSummary): String = r.rate?.let { "${(it * 100).toInt()}% (${r.successes}/${r.evaluated})" } ?: "—"
+private fun rateText(r: RateSummary): String = r.rate?.let { "${(it * 100).toInt()}%" } ?: "—"

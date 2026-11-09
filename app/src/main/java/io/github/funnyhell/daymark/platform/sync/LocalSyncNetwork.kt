@@ -14,8 +14,8 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-/** Another device offering sync on the local network. */
-data class SyncPeer(val name: String, val address: String, val port: Int)
+/** Another device offering sync on the local network; [id] is its stable device id (null if it did not say). */
+data class SyncPeer(val name: String, val address: String, val port: Int, val id: String?)
 
 /**
  * Finds and announces devices on the same Wi-Fi with DNS-SD (Android's NsdManager). Discovery only helps to
@@ -37,12 +37,13 @@ class LocalSyncNetwork(private val context: Context) {
     }
 
     /** Announces this device until the returned handle is closed. */
-    fun advertise(name: String, port: Int): AutoCloseable {
+    fun advertise(name: String, port: Int, deviceId: String): AutoCloseable {
         val manager = nsd ?: return AutoCloseable { }
         val info = NsdServiceInfo().apply {
             serviceName = name
             serviceType = SERVICE_TYPE
             setPort(port)
+            setAttribute(ATTRIBUTE_ID, deviceId)
         }
         val listener = object : NsdManager.RegistrationListener {
             override fun onServiceRegistered(info: NsdServiceInfo) = Unit
@@ -56,8 +57,8 @@ class LocalSyncNetwork(private val context: Context) {
         return AutoCloseable { runCatching { manager.unregisterService(listener) } }
     }
 
-    /** Devices currently offering sync, updated as they appear and disappear. */
-    fun peers(ownName: String): Flow<List<SyncPeer>> = callbackFlow {
+    /** Devices currently offering sync (not this one), updated as they appear and disappear. */
+    fun peers(ownId: String): Flow<List<SyncPeer>> = callbackFlow {
         val manager = nsd
         if (manager == null) {
             trySend(emptyList())
@@ -66,6 +67,7 @@ class LocalSyncNetwork(private val context: Context) {
         }
         val found = LinkedHashMap<String, SyncPeer>()
         val resolver = Resolver(manager) { peer ->
+            if (peer.id == ownId) return@Resolver
             synchronized(found) {
                 found[peer.name] = peer
                 trySend(found.values.toList())
@@ -73,7 +75,7 @@ class LocalSyncNetwork(private val context: Context) {
         }
         val discovery = object : NsdManager.DiscoveryListener {
             override fun onServiceFound(info: NsdServiceInfo) {
-                if (info.serviceName != ownName) resolver.resolve(info)
+                resolver.resolve(info)
             }
 
             override fun onServiceLost(info: NsdServiceInfo) {
@@ -114,7 +116,7 @@ class LocalSyncNetwork(private val context: Context) {
                     override fun onServiceInfoCallbackRegistrationFailed(errorCode: Int) = Unit
                     override fun onServiceUpdated(info: NsdServiceInfo) {
                         val address = info.hostAddresses.firstOrNull { it is Inet4Address } ?: info.hostAddresses.firstOrNull()
-                        if (address != null) onResolved(SyncPeer(info.serviceName, address.hostAddress.orEmpty(), info.port))
+                        if (address != null) onResolved(SyncPeer(info.serviceName, address.hostAddress.orEmpty(), info.port, idOf(info)))
                     }
                     override fun onServiceLost() = Unit
                     override fun onServiceInfoCallbackUnregistered() = Unit
@@ -142,7 +144,7 @@ class LocalSyncNetwork(private val context: Context) {
                 object : NsdManager.ResolveListener {
                     override fun onServiceResolved(info: NsdServiceInfo) {
                         val host: InetAddress? = info.host
-                        if (host != null) onResolved(SyncPeer(info.serviceName, host.hostAddress.orEmpty(), info.port))
+                        if (host != null) onResolved(SyncPeer(info.serviceName, host.hostAddress.orEmpty(), info.port, idOf(info)))
                         synchronized(queue) { next() }
                     }
 
@@ -166,6 +168,9 @@ class LocalSyncNetwork(private val context: Context) {
 
     companion object {
         const val SERVICE_TYPE = "_daymark-sync._tcp"
+        private const val ATTRIBUTE_ID = "id"
+
+        private fun idOf(info: NsdServiceInfo): String? = info.attributes[ATTRIBUTE_ID]?.toString(Charsets.UTF_8)
         private const val TAG = "DaymarkSync"
     }
 }

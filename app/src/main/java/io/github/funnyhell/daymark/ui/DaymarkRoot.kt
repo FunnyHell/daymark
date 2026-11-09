@@ -62,6 +62,8 @@ import io.github.funnyhell.daymark.ui.medications.MedicationDetailScreen
 import io.github.funnyhell.daymark.ui.medications.MedicationEditScreen
 import io.github.funnyhell.daymark.ui.medications.MedicationsScreen
 import io.github.funnyhell.daymark.ui.onboarding.OnboardingScreen
+import io.github.funnyhell.daymark.ui.settings.BackupSettingsScreen
+import io.github.funnyhell.daymark.ui.settings.RemindersSettingsScreen
 import io.github.funnyhell.daymark.ui.settings.SettingsScreen
 import io.github.funnyhell.daymark.ui.sync.SyncScreen
 import io.github.funnyhell.daymark.ui.today.TodayScreen
@@ -81,6 +83,8 @@ private object Routes {
     const val MED_EDIT = "medication/edit?id={id}"
     const val MED_DETAIL = "medication/{id}"
     const val SYNC = "sync"
+    const val REMINDERS = "settings/reminders"
+    const val BACKUP = "settings/backup"
     fun habitEdit(id: String? = null) = "habit/edit?id=${id.orEmpty()}"
     fun habitDetail(id: String) = "habit/$id"
     fun medEdit(id: String? = null) = "medication/edit?id=${id.orEmpty()}"
@@ -120,6 +124,8 @@ fun DaymarkRoot(onboardingDone: Boolean) {
                 MedicationEditScreen(onDone = { nav.popFrom(entry) }, showMessage = showMessage)
             }
             composable(Routes.SYNC) { entry -> SyncScreen(onBack = { nav.popFrom(entry) }) }
+            composable(Routes.REMINDERS) { entry -> RemindersSettingsScreen(onBack = { nav.popFrom(entry) }, showMessage = showMessage) }
+            composable(Routes.BACKUP) { entry -> BackupSettingsScreen(onBack = { nav.popFrom(entry) }, showMessage = showMessage) }
             composable(Routes.MED_DETAIL) { entry ->
                 MedicationDetailScreen(onBack = { nav.popFrom(entry) }, onEdit = { nav.navigate(Routes.medEdit(it)) }, showMessage = showMessage)
             }
@@ -225,7 +231,15 @@ private fun MainTabs(rootNav: NavHostController, showMessage: suspend (UiMessage
                 MedicationsScreen(padding, onOpen = { rootNav.navigate(Routes.medDetail(it)) }, onNew = { rootNav.navigate(Routes.medEdit()) })
             }
             composable(Tab.HISTORY.route) { HistoryScreen(padding) }
-            composable(Tab.SETTINGS.route) { SettingsScreen(padding, showMessage, onOpenSync = { rootNav.navigate(Routes.SYNC) }) }
+            composable(Tab.SETTINGS.route) {
+                SettingsScreen(
+                    padding,
+                    showMessage,
+                    onOpenReminders = { rootNav.navigate(Routes.REMINDERS) },
+                    onOpenBackup = { rootNav.navigate(Routes.BACKUP) },
+                    onOpenSync = { rootNav.navigate(Routes.SYNC) },
+                )
+            }
         }
     }
 }

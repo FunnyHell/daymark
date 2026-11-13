@@ -512,4 +512,6 @@
     <string name="sync_working_with">Синхронизация с %1$s…</string>
     <string name="sync_error_not_paired">Другое устройство не знает это. Выполните сопряжение с кодом заново.</string>
     <string name="sync_error_not_found">Устройство не найдено. Откройте на нём Daymark в той же сети Wi-Fi.</string>
+    <string name="widget_week_name">Daymark: неделя</string>
+    <string name="widget_week_description">Последние 7 дней каждой привычки; нажмите на день, чтобы отметить</string>
 </resources>

@@ -19,6 +19,8 @@ class WidgetColors(
     val onSurface: ColorProvider,
     val onSurfaceVariant: ColorProvider,
     val accent: ColorProvider,
+    /** A weak neutral for tracks and inactive marks. */
+    val faint: ColorProvider,
     val palette: WidgetPalette,
 ) {
     companion object {
@@ -35,6 +37,7 @@ class WidgetColors(
                 onSurface = provider(text.first, text.second),
                 onSurfaceVariant = provider(muted.first, muted.second),
                 accent = provider(accent.first, accent.second),
+                faint = provider(withAlpha(muted.first, 0x47), withAlpha(muted.second, 0x47)),
                 palette = WidgetPalette(
                     accent = currentAccent,
                     track = withAlpha(currentAccent, 0x47),

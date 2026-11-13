@@ -28,7 +28,7 @@ data class HabitWidgetRow(
     /**
      * State of the tap-to-toggle control (today marked or not); tapping requests the opposite through
      * [io.github.funnyhell.daymark.data.repo.HabitRepository.setDone]. Null when the widget cannot toggle the habit
-     * (amounts, slips, skipped days).
+     * (amounts, skipped days).
      */
     val checked: Boolean?,
     val colorArgb: Long,
@@ -46,7 +46,43 @@ data class MedicationWidgetRow(
     val time: LocalTime,
 )
 
+/** How one day of a habit is drawn in the week widget. */
+enum class WeekMark { DONE, PARTIAL, OPEN, SLIP, OFF }
+
+data class WeekCell(
+    val date: LocalDate,
+    val mark: WeekMark,
+    /** The state a tap asks for through HabitRepository.setDone; null when the day cannot be changed. */
+    val toggleTo: Boolean?,
+)
+
+data class WeekGridRow(val habitId: String, val name: String, val colorArgb: Long, val streak: Int, val cells: List<WeekCell>)
+
 object WidgetContent {
+    /** The last [days] days (today last) of every active habit shown on widgets. */
+    fun weekGrid(habits: List<HabitData>, today: LocalDate, firstDayOfWeek: DayOfWeek, days: Int = 7): List<WeekGridRow> =
+        habits.filter { it.habit.status == LifecycleStatus.ACTIVE && it.habit.showOnWidget }.map { data ->
+            val e = HabitEvaluator(data, firstDayOfWeek)
+            val cells = (days - 1 downTo 0).map { back ->
+                val date = today.minusDays(back.toLong())
+                val day = e.dayResult(date, today)
+                when (day.state) {
+                    DayState.DONE -> WeekCell(date, WeekMark.DONE, toggleTo = false)
+                    DayState.LAPSED -> WeekCell(date, WeekMark.SLIP, toggleTo = true)
+                    DayState.PARTIAL -> WeekCell(date, WeekMark.PARTIAL, toggleTo = true)
+                    DayState.PENDING, DayState.MISSED ->
+                        WeekCell(date, if (day.progress > 0.0) WeekMark.PARTIAL else WeekMark.OPEN, toggleTo = true)
+                    DayState.SKIPPED -> WeekCell(date, WeekMark.OFF, toggleTo = true)
+                    // A weekly goal can be done on any day of its schedule; other habits only on their own days.
+                    DayState.NOT_SCHEDULED ->
+                        if (data.habit.type == HabitType.WEEKLY_GOAL && e.isScheduled(date)) WeekCell(date, WeekMark.OPEN, toggleTo = true)
+                        else WeekCell(date, WeekMark.OFF, toggleTo = null)
+                    DayState.FUTURE, DayState.BEFORE_START, DayState.PAUSED -> WeekCell(date, WeekMark.OFF, toggleTo = null)
+                }
+            }
+            WeekGridRow(data.habit.id, data.habit.name, data.habit.colorArgb, e.streaks(today).current, cells)
+        }
+
     fun habitRows(context: Context, habits: List<HabitData>, today: LocalDate, firstDayOfWeek: DayOfWeek): List<HabitWidgetRow> =
         habits.filter { it.habit.status == LifecycleStatus.ACTIVE && it.habit.showOnWidget }.mapNotNull { data ->
             val habit = data.habit
@@ -66,7 +102,9 @@ object WidgetContent {
                     val streak = e.streaks(today).current
                     HabitWidgetRow(
                         habit.id, habit.name, context.resources.getQuantityString(R.plurals.days_clean, streak, streak),
-                        done = e.dayResult(today, today).state == DayState.DONE, checked = null, colorArgb = habit.colorArgb,
+                        // A day without a slip counts as done; unchecking records a slip, checking again removes it.
+                        done = e.dayResult(today, today).state == DayState.DONE,
+                        checked = e.dayResult(today, today).state == DayState.DONE, colorArgb = habit.colorArgb,
                     )
                 }
                 else -> {

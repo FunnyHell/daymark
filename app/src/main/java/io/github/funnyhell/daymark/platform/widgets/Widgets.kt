@@ -62,6 +62,7 @@ import androidx.glance.text.TextStyle
 import io.github.funnyhell.daymark.MainActivity
 import io.github.funnyhell.daymark.R
 import io.github.funnyhell.daymark.container
+import io.github.funnyhell.daymark.data.repo.DoseRef
 import io.github.funnyhell.daymark.domain.common.LifecycleStatus
 import io.github.funnyhell.daymark.domain.common.startOfWeek
 import io.github.funnyhell.daymark.domain.habit.DayState
@@ -89,6 +90,7 @@ object WidgetUpdater {
     private val receivers: List<Class<out DaymarkWidgetReceiver>> = listOf(
         HabitWidgetReceiver::class.java, MedicationWidgetReceiver::class.java, TodayWidgetReceiver::class.java,
         ProgressWidgetReceiver::class.java, CalendarWidgetReceiver::class.java, StreakWidgetReceiver::class.java,
+        WeekWidgetReceiver::class.java,
     )
 
     /**
@@ -121,7 +123,7 @@ private const val TAG = "DaymarkWidgets"
  * still takes over when it starts.
  */
 object WidgetRenderer {
-    val all: List<() -> GlanceAppWidget> = listOf(::HabitWidget, ::MedicationWidget, ::TodayWidget, ::ProgressWidget, ::CalendarWidget, ::StreakWidget)
+    val all: List<() -> GlanceAppWidget> = listOf(::HabitWidget, ::MedicationWidget, ::TodayWidget, ::ProgressWidget, ::CalendarWidget, ::StreakWidget, ::WeekWidget)
 
     fun widgetFor(providerClassName: String?): GlanceAppWidget = when (providerClassName) {
         MedicationWidgetReceiver::class.java.name -> MedicationWidget()
@@ -129,6 +131,7 @@ object WidgetRenderer {
         ProgressWidgetReceiver::class.java.name -> ProgressWidget()
         CalendarWidgetReceiver::class.java.name -> CalendarWidget()
         StreakWidgetReceiver::class.java.name -> StreakWidget()
+        WeekWidgetReceiver::class.java.name -> WeekWidget()
         else -> HabitWidget()
     }
 
@@ -172,6 +175,7 @@ private val MedicationIdKey = Key<String>("medication_id")
 private val OccurrenceKeyKey = Key<String>("occurrence_key")
 private val DoseListKey = Key<String>("doses")
 private val DoneKey = Key<Boolean>("done")
+private val DateKey = Key<String>("date")
 
 /** The settings of one placed widget, read once for the first frame and then observed for changes. */
 private class PrefsSource(val appWidgetId: Int, val initial: WidgetPrefs, val updates: Flow<WidgetPrefs>)
@@ -620,6 +624,153 @@ private fun StreakContent(
 }
 
 // ---------------------------------------------------------------------------------------------------------------
+// Week grid
+
+/**
+ * The last seven days of every habit as a grid: a filled square for a done day, a cross for a slip, a dot for a
+ * day still open. Tapping a day marks it or removes the mark; today's overall progress is shown in the corner.
+ */
+class WeekWidget : GlanceAppWidget() {
+    override val sizeMode: SizeMode = SizeMode.Exact
+
+    override suspend fun provideGlance(context: Context, id: GlanceId) {
+        val c = context.container
+        val source = prefsSource(context, id)
+        val initialHabits = c.habits.all()
+        val initialSettings = c.settings.current()
+        val habitsFlow = c.habits.observeAll()
+        provideContent {
+            val prefs = source.collect()
+            val colors = WidgetColors.from(context, prefs)
+            val habits by habitsFlow.collectAsState(initialHabits)
+            val settings by c.settings.settings.collectAsState(initialSettings)
+            val today = c.time.today()
+            val rows = WidgetContent.weekGrid(habits, today, settings.firstDayOfWeek)
+            val progress = HabitStatistics.dayFractions(habits, today, settings.firstDayOfWeek).takeIf { it.isNotEmpty() }?.average()
+            // The seven day columns take about 60% of the width; the habit names get the rest.
+            val slot = ((LocalSize.current.width.value - 24f) * 0.6f / 7f).coerceIn(16f, 34f)
+            val locale = Formats.locale(context)
+            GlanceTheme {
+                Column(modifier = frameModifier(colors)) {
+                    Row(modifier = GlanceModifier.fillMaxWidth().padding(bottom = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Row(
+                            modifier = GlanceModifier.defaultWeight().clickable(actionStartActivity<MainActivity>()),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Text(
+                                progress?.let { "${(it * 100).roundToInt()}%" } ?: "—",
+                                style = TextStyle(color = colors.onSurface, fontSize = 13.sp, fontWeight = FontWeight.Medium),
+                                maxLines = 1,
+                            )
+                            Spacer(GlanceModifier.width(6.dp))
+                            Box(modifier = GlanceModifier.size(width = 36.dp, height = 4.dp).cornerRadius(2.dp).background(colors.faint)) {
+                                val filled = (36f * (progress ?: 0.0)).toFloat()
+                                if (filled >= 1f) Box(modifier = GlanceModifier.size(width = filled.dp, height = 4.dp).cornerRadius(2.dp).background(colors.accent)) {}
+                            }
+                        }
+                        (6 downTo 0).forEach { back ->
+                            val date = today.minusDays(back.toLong())
+                            Text(
+                                date.dayOfWeek.getDisplayName(java.time.format.TextStyle.NARROW, locale),
+                                style = TextStyle(
+                                    color = if (back == 0) colors.accent else colors.onSurfaceVariant,
+                                    fontSize = 12.sp,
+                                    fontWeight = if (back == 0) FontWeight.Bold else FontWeight.Medium,
+                                    textAlign = TextAlign.Center,
+                                ),
+                                maxLines = 1,
+                                modifier = GlanceModifier.width(slot.dp),
+                            )
+                        }
+                    }
+                    if (rows.isEmpty()) {
+                        Text(
+                            context.getString(R.string.widget_habits_choice_hint),
+                            style = TextStyle(color = colors.onSurfaceVariant, fontSize = 13.sp),
+                            modifier = GlanceModifier.clickable(actionStartActivity<MainActivity>()),
+                        )
+                    } else {
+                        LazyColumn {
+                            items(rows, itemId = { it.habitId.hashCode().toLong() }) { row -> WeekRow(context, colors, row, slot) }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun WeekRow(context: Context, colors: WidgetColors, row: WeekGridRow, slot: Float) {
+    val color = Color(row.colorArgb)
+    Row(modifier = GlanceModifier.fillMaxWidth().padding(vertical = 1.dp), verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            modifier = GlanceModifier.defaultWeight().height(slot.dp).clickable(actionStartActivity<MainActivity>()),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                row.name,
+                style = TextStyle(color = colors.onSurface, fontSize = 13.sp),
+                maxLines = 1,
+                modifier = GlanceModifier.defaultWeight(),
+            )
+            if (row.streak >= 2) {
+                Image(
+                    provider = ImageProvider(R.drawable.ic_widget_flame),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(ColorProvider(color, color)),
+                    modifier = GlanceModifier.size(12.dp),
+                )
+                Text(
+                    row.streak.toString(),
+                    style = TextStyle(color = colors.onSurface, fontSize = 11.sp, fontWeight = FontWeight.Medium),
+                    maxLines = 1,
+                    modifier = GlanceModifier.padding(start = 1.dp, end = 4.dp),
+                )
+            }
+        }
+        row.cells.forEach { cell ->
+            val state = context.getString(
+                when (cell.mark) {
+                    WeekMark.DONE -> R.string.state_done
+                    WeekMark.SLIP -> R.string.day_lapsed
+                    else -> R.string.state_not_done
+                },
+            )
+            val description = "${row.name}, ${Formats.dateMedium(context, cell.date)}: $state"
+            var modifier = GlanceModifier.size(slot.dp).semantics { contentDescription = description }
+            cell.toggleTo?.let { target ->
+                modifier = modifier.clickable(
+                    actionRunCallback<ToggleHabitDayAction>(
+                        actionParametersOf(HabitIdKey to row.habitId, DateKey to cell.date.toString(), DoneKey to target),
+                    ),
+                )
+            }
+            Box(modifier = modifier, contentAlignment = Alignment.Center) {
+                when (cell.mark) {
+                    WeekMark.DONE -> Box(modifier = GlanceModifier.size((slot * 0.7f).dp).cornerRadius(5.dp).background(ColorProvider(color, color))) {}
+                    WeekMark.PARTIAL -> Box(
+                        modifier = GlanceModifier.size((slot * 0.7f).dp).cornerRadius(5.dp)
+                            .background(ColorProvider(color.copy(alpha = 0.38f), color.copy(alpha = 0.45f))),
+                    ) {}
+                    WeekMark.OPEN -> Box(
+                        modifier = GlanceModifier.size((slot * 0.28f).dp).cornerRadius((slot * 0.14f).dp)
+                            .background(ColorProvider(color.copy(alpha = 0.5f), color.copy(alpha = 0.6f))),
+                    ) {}
+                    WeekMark.OFF -> Box(
+                        modifier = GlanceModifier.size((slot * 0.2f).dp).cornerRadius((slot * 0.1f).dp).background(colors.faint),
+                    ) {}
+                    WeekMark.SLIP -> Text(
+                        "✕",
+                        style = TextStyle(color = colors.onSurface, fontSize = (slot * 0.5f).sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center),
+                    )
+                }
+            }
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------
 // Shared pieces
 
 private class CheckSpec(
@@ -724,6 +875,16 @@ class CompleteHabitAction : ActionCallback {
     }
 }
 
+/** Marks or unmarks one day of a habit from the week widget; the wanted state is passed, as in [CompleteHabitAction]. */
+class ToggleHabitDayAction : ActionCallback {
+    override suspend fun onAction(context: Context, glanceId: GlanceId, parameters: ActionParameters) {
+        val habitId = parameters[HabitIdKey] ?: return
+        val date = parameters[DateKey]?.let { runCatching { LocalDate.parse(it) }.getOrNull() } ?: return
+        val done = parameters[DoneKey] ?: return
+        context.container.habits.setDone(habitId, done, date)
+    }
+}
+
 /**
  * Records TAKEN through the shared, validated and idempotent repository method, or removes a taken mark when
  * [DoneKey] is false (the stock use is reversed once).
@@ -744,9 +905,8 @@ class TakeDoseAction : ActionCallback {
 class TakeAllDosesAction : ActionCallback {
     override suspend fun onAction(context: Context, glanceId: GlanceId, parameters: ActionParameters) {
         val list = parameters[DoseListKey] ?: return
-        list.split(';').mapNotNull { pair -> pair.split('|').takeIf { it.size == 2 } }.forEach { (medId, key) ->
-            context.container.medications.recordDose(medId, key, MedicationEventType.TAKEN, ActionSource.WIDGET)
-        }
+        val doses = list.split(';').mapNotNull { pair -> pair.split('|').takeIf { it.size == 2 } }.map { (medId, key) -> DoseRef(medId, key) }
+        context.container.medications.recordDoses(doses, MedicationEventType.TAKEN, ActionSource.WIDGET)
     }
 }
 
@@ -798,4 +958,8 @@ class CalendarWidgetReceiver : DaymarkWidgetReceiver() {
 
 class StreakWidgetReceiver : DaymarkWidgetReceiver() {
     override val glanceAppWidget: GlanceAppWidget = StreakWidget()
+}
+
+class WeekWidgetReceiver : DaymarkWidgetReceiver() {
+    override val glanceAppWidget: GlanceAppWidget = WeekWidget()
 }

@@ -55,6 +55,9 @@ sealed interface MedicationActionResult {
     data object NotFound : MedicationActionResult
 }
 
+/** One scheduled dose of one medication, as addressed by notification and widget actions. */
+data class DoseRef(val medicationId: String, val occurrenceKey: String)
+
 class MedicationDraftException(val errors: List<MedicationDraftError>) : IllegalArgumentException(errors.joinToString())
 
 class MedicationRepository(
@@ -209,47 +212,56 @@ class MedicationRepository(
         occurrenceKey: String,
         type: MedicationEventType,
         source: ActionSource,
-    ): MedicationActionResult {
+    ): MedicationActionResult = recordDoses(listOf(DoseRef(medicationId, occurrenceKey)), type, source).single()
+
+    /**
+     * Records TAKEN or SKIPPED for several occurrences (a group notification or a widget's "mark all"). Each dose
+     * is validated on its own exactly as in [recordDose]; reminders and widgets are refreshed once for all of them.
+     */
+    suspend fun recordDoses(doses: List<DoseRef>, type: MedicationEventType, source: ActionSource): List<MedicationActionResult> {
         require(type == MedicationEventType.TAKEN || type == MedicationEventType.SKIPPED) { "Use snooze() for SNOOZED" }
-        var becameLow = false
-        val result = db.withTransaction {
-            val data = get(medicationId) ?: return@withTransaction MedicationActionResult.NotFound
-            when (val decision = ActionRules.decide(data, occurrenceKey, time.today())) {
-                is ActionDecision.AlreadyResolved -> MedicationActionResult.AlreadyResolved(decision.existing.type)
-                is ActionDecision.Rejected -> MedicationActionResult.Rejected(decision.reason)
-                is ActionDecision.Apply -> {
-                    val occ = decision.occurrence
-                    val eventId = ids.newId()
-                    val quantity = if (type == MedicationEventType.TAKEN) occ.quantity else 0.0
-                    dao.insertEvent(
-                        MedicationEventEntity(
-                            id = eventId, medicationId = medicationId, occurrenceKey = occ.key, doseId = occ.doseId,
-                            scheduledDate = occ.date, scheduledTime = occ.time, doseLabel = occ.doseLabel, type = type.name,
-                            quantity = quantity, snoozedUntil = null, source = source.name, recordedAt = time.now(), voidedAt = null,
-                        ),
-                    )
-                    var insufficient = false
-                    if (type == MedicationEventType.TAKEN && data.medication.inventoryEnabled) {
-                        val before = InventoryRules.stock(data.adjustments)
-                        val consumption = InventoryRules.consumption(before, quantity)
-                        insufficient = consumption.insufficient
-                        insertAdjustment(medicationId, consumption.delta, AdjustmentType.INTAKE, null, eventId)
-                        becameLow = data.medication.lowStockAlerts &&
-                            InventoryRules.crossedLowThreshold(before, before + consumption.delta, data.medication.lowStockThreshold)
+        val lowStock = mutableListOf<String>()
+        val results = doses.map { dose ->
+            var becameLow = false
+            val result = db.withTransaction {
+                val data = get(dose.medicationId) ?: return@withTransaction MedicationActionResult.NotFound
+                when (val decision = ActionRules.decide(data, dose.occurrenceKey, time.today())) {
+                    is ActionDecision.AlreadyResolved -> MedicationActionResult.AlreadyResolved(decision.existing.type)
+                    is ActionDecision.Rejected -> MedicationActionResult.Rejected(decision.reason)
+                    is ActionDecision.Apply -> {
+                        val occ = decision.occurrence
+                        val eventId = ids.newId()
+                        val quantity = if (type == MedicationEventType.TAKEN) occ.quantity else 0.0
+                        dao.insertEvent(
+                            MedicationEventEntity(
+                                id = eventId, medicationId = dose.medicationId, occurrenceKey = occ.key, doseId = occ.doseId,
+                                scheduledDate = occ.date, scheduledTime = occ.time, doseLabel = occ.doseLabel, type = type.name,
+                                quantity = quantity, snoozedUntil = null, source = source.name, recordedAt = time.now(), voidedAt = null,
+                            ),
+                        )
+                        var insufficient = false
+                        if (type == MedicationEventType.TAKEN && data.medication.inventoryEnabled) {
+                            val before = InventoryRules.stock(data.adjustments)
+                            val consumption = InventoryRules.consumption(before, quantity)
+                            insufficient = consumption.insufficient
+                            insertAdjustment(dose.medicationId, consumption.delta, AdjustmentType.INTAKE, null, eventId)
+                            becameLow = data.medication.lowStockAlerts &&
+                                InventoryRules.crossedLowThreshold(before, before + consumption.delta, data.medication.lowStockThreshold)
+                        }
+                        MedicationActionResult.Recorded(eventId, insufficient, becameLow)
                     }
-                    MedicationActionResult.Recorded(eventId, insufficient, becameLow)
                 }
             }
+            if (becameLow) lowStock += dose.medicationId
+            result
         }
-        if (result is MedicationActionResult.Recorded || result is MedicationActionResult.AlreadyResolved) {
-            listener.onDataChanged(
-                DataChange.Medications(
-                    clearedOccurrenceKeys = listOf(occurrenceKey),
-                    lowStockMedicationId = medicationId.takeIf { becameLow },
-                ),
-            )
+        val cleared = doses.zip(results)
+            .filter { (_, r) -> r is MedicationActionResult.Recorded || r is MedicationActionResult.AlreadyResolved }
+            .map { (dose, _) -> dose.occurrenceKey }
+        if (cleared.isNotEmpty()) {
+            listener.onDataChanged(DataChange.Medications(clearedOccurrenceKeys = cleared, lowStockMedicationIds = lowStock.distinct()))
         }
-        return result
+        return results
     }
 
     /** Defers the reminder; never records intake and never touches inventory. */
@@ -258,40 +270,47 @@ class MedicationRepository(
         occurrenceKey: String,
         source: ActionSource,
         duration: Duration = SNOOZE_DURATION,
-    ): MedicationActionResult {
-        val result = db.withTransaction {
-            val data = get(medicationId) ?: return@withTransaction MedicationActionResult.NotFound
-            when (val decision = ActionRules.decide(data, occurrenceKey, time.today())) {
-                is ActionDecision.AlreadyResolved -> MedicationActionResult.AlreadyResolved(decision.existing.type)
-                is ActionDecision.Rejected -> MedicationActionResult.Rejected(decision.reason)
-                is ActionDecision.Apply -> {
-                    val now = time.now()
-                    val recent = data.events.any {
-                        it.occurrenceKey == occurrenceKey && it.isActive && it.type == MedicationEventType.SNOOZED &&
-                            Duration.between(it.recordedAt, now).abs() < DUPLICATE_SNOOZE_WINDOW
-                    }
-                    if (recent) {
-                        MedicationActionResult.AlreadySnoozed
-                    } else {
-                        val occ = decision.occurrence
-                        val eventId = ids.newId()
-                        dao.insertEvent(
-                            MedicationEventEntity(
-                                id = eventId, medicationId = medicationId, occurrenceKey = occ.key, doseId = occ.doseId,
-                                scheduledDate = occ.date, scheduledTime = occ.time, doseLabel = occ.doseLabel,
-                                type = MedicationEventType.SNOOZED.name, quantity = 0.0, snoozedUntil = now.plus(duration),
-                                source = source.name, recordedAt = now, voidedAt = null,
-                            ),
-                        )
-                        MedicationActionResult.Recorded(eventId)
+    ): MedicationActionResult = snoozeAll(listOf(DoseRef(medicationId, occurrenceKey)), source, duration).single()
+
+    /**
+     * Defers the reminders of several doses to the same moment, so they come back together as one notification.
+     * Reminders and widgets are refreshed once for all of them.
+     */
+    suspend fun snoozeAll(doses: List<DoseRef>, source: ActionSource, duration: Duration = SNOOZE_DURATION): List<MedicationActionResult> {
+        val now = time.now()
+        val results = doses.map { dose ->
+            db.withTransaction {
+                val data = get(dose.medicationId) ?: return@withTransaction MedicationActionResult.NotFound
+                when (val decision = ActionRules.decide(data, dose.occurrenceKey, time.today())) {
+                    is ActionDecision.AlreadyResolved -> MedicationActionResult.AlreadyResolved(decision.existing.type)
+                    is ActionDecision.Rejected -> MedicationActionResult.Rejected(decision.reason)
+                    is ActionDecision.Apply -> {
+                        val recent = data.events.any {
+                            it.occurrenceKey == dose.occurrenceKey && it.isActive && it.type == MedicationEventType.SNOOZED &&
+                                Duration.between(it.recordedAt, now).abs() < DUPLICATE_SNOOZE_WINDOW
+                        }
+                        if (recent) {
+                            MedicationActionResult.AlreadySnoozed
+                        } else {
+                            val occ = decision.occurrence
+                            val eventId = ids.newId()
+                            dao.insertEvent(
+                                MedicationEventEntity(
+                                    id = eventId, medicationId = dose.medicationId, occurrenceKey = occ.key, doseId = occ.doseId,
+                                    scheduledDate = occ.date, scheduledTime = occ.time, doseLabel = occ.doseLabel,
+                                    type = MedicationEventType.SNOOZED.name, quantity = 0.0, snoozedUntil = now.plus(duration),
+                                    source = source.name, recordedAt = now, voidedAt = null,
+                                ),
+                            )
+                            MedicationActionResult.Recorded(eventId)
+                        }
                     }
                 }
             }
         }
-        if (result !is MedicationActionResult.NotFound) {
-            listener.onDataChanged(DataChange.Medications(clearedOccurrenceKeys = listOf(occurrenceKey)))
-        }
-        return result
+        val cleared = doses.zip(results).filter { (_, r) -> r !is MedicationActionResult.NotFound }.map { (dose, _) -> dose.occurrenceKey }
+        if (cleared.isNotEmpty()) listener.onDataChanged(DataChange.Medications(clearedOccurrenceKeys = cleared))
+        return results
     }
 
     /**
@@ -350,7 +369,7 @@ class MedicationRepository(
             becameLow = data.medication.lowStockAlerts &&
                 InventoryRules.crossedLowThreshold(before, counted, data.medication.lowStockThreshold)
         }
-        listener.onDataChanged(DataChange.Medications(lowStockMedicationId = medicationId.takeIf { becameLow }))
+        listener.onDataChanged(DataChange.Medications(lowStockMedicationIds = listOfNotNull(medicationId.takeIf { becameLow })))
         return true
     }
 

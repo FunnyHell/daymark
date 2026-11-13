@@ -338,7 +338,7 @@ class Notifier(private val context: Context, private val settings: SettingsRepos
         const val CHANNEL_STOCK = "low_stock_v2"
         private val LEGACY_CHANNELS = listOf("medication_reminders", "habit_reminders", "low_stock")
         const val NOTIFICATION_ID = 1
-        private const val TAG_MED = "med:"
+        internal const val TAG_MED = "med:"
         private const val TAG_HABIT = "habit:"
         private const val TAG_STOCK = "stock:"
         internal const val TAG_MED_GROUP = "medgroup:"

@@ -7,8 +7,8 @@ sealed interface DataChange {
     data class Medications(
         /** Occurrences whose notification should be removed (resolved or no longer valid). */
         val clearedOccurrenceKeys: List<String> = emptyList(),
-        /** Medication whose stock just fell to or below its threshold. */
-        val lowStockMedicationId: String? = null,
+        /** Medications whose stock just fell to or below their threshold. */
+        val lowStockMedicationIds: List<String> = emptyList(),
     ) : DataChange
 
     data object Everything : DataChange

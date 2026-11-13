@@ -68,7 +68,7 @@ import io.github.funnyhell.daymark.ui.common.SectionHeader
 import io.github.funnyhell.daymark.ui.theme.DaymarkTheme
 import kotlinx.coroutines.launch
 
-private enum class WidgetKind { HABITS, MEDICATIONS, TODAY, PROGRESS, CALENDAR, STREAK }
+private enum class WidgetKind { HABITS, MEDICATIONS, TODAY, PROGRESS, CALENDAR, STREAK, WEEK }
 
 /**
  * Settings for one placed widget. Opened when a widget is added (on Android 12+ it is optional and can be reopened
@@ -91,6 +91,7 @@ class WidgetConfigActivity : ComponentActivity() {
             ProgressWidgetReceiver::class.java.name -> WidgetKind.PROGRESS
             CalendarWidgetReceiver::class.java.name -> WidgetKind.CALENDAR
             StreakWidgetReceiver::class.java.name -> WidgetKind.STREAK
+            WeekWidgetReceiver::class.java.name -> WidgetKind.WEEK
             else -> WidgetKind.HABITS
         }
         val store = WidgetPrefsStore(this)

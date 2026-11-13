@@ -6,6 +6,8 @@ import io.github.funnyhell.daymark.data.sync.PairedDevices
 import io.github.funnyhell.daymark.data.sync.SyncRepository
 import io.github.funnyhell.daymark.platform.sync.SyncCoordinator
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import io.github.funnyhell.daymark.data.db.DaymarkDatabase
 import io.github.funnyhell.daymark.data.repo.DataChange
 import io.github.funnyhell.daymark.data.repo.DataChangeListener
@@ -49,13 +51,17 @@ class AppContainer(context: Context, scope: CoroutineScope) : DataChangeListener
     val notifier = Notifier(appContext, settings)
     val reminders = ReminderEngine(appContext, habits, medications, settings, notifier, time)
 
-    override suspend fun onDataChanged(change: DataChange) {
-        // Widgets first: a tap on a widget should show its result before reminders are recalculated.
-        WidgetUpdater.updateAll(appContext)
+    /**
+     * Reminders come first and do not wait for widgets: a notification action has only a few seconds to finish,
+     * and drawing several widgets in a freshly started process can take longer than that. The alarm for a snoozed
+     * dose must be set even then.
+     */
+    override suspend fun onDataChanged(change: DataChange) = coroutineScope {
+        launch { WidgetUpdater.updateAll(appContext) }
         when (change) {
             is DataChange.Medications -> {
                 change.clearedOccurrenceKeys.forEach { notifier.cancelMedication(it) }
-                change.lowStockMedicationId?.let { id -> medications.get(id)?.let { notifier.showLowStock(it) } }
+                change.lowStockMedicationIds.forEach { id -> medications.get(id)?.let { notifier.showLowStock(it) } }
             }
             DataChange.Habits -> notifier.cancelResolvedHabitReminders(habits.all(), time)
             DataChange.Everything -> notifier.cancelAll()

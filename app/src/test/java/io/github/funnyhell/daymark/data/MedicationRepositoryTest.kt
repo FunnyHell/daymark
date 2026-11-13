@@ -7,6 +7,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import io.github.funnyhell.daymark.data.db.DaymarkDatabase
 import io.github.funnyhell.daymark.data.repo.DataChange
 import io.github.funnyhell.daymark.data.repo.DataChangeListener
+import io.github.funnyhell.daymark.data.repo.DoseRef
 import io.github.funnyhell.daymark.data.repo.MedicationActionResult
 import io.github.funnyhell.daymark.data.repo.MedicationRepository
 import io.github.funnyhell.daymark.domain.medication.ActionSource
@@ -115,6 +116,32 @@ class MedicationRepositoryTest {
     }
 
     @Test
+    fun groupActions_refreshOnceAndSnoozeToTheSameMoment() = runBlocking {
+        val a = repo.create(medDraft())
+        val b = repo.create(medDraft())
+        val doses = listOf(DoseRef(a, todaysKey(a)), DoseRef(b, todaysKey(b)))
+        synchronized(changes) { changes.clear() }
+        val snoozed = repo.snoozeAll(doses, ActionSource.NOTIFICATION)
+        assertTrue(snoozed.all { it is MedicationActionResult.Recorded })
+        assertEquals(1, synchronized(changes) { changes.size })
+        val ends = listOf(a, b).map { id -> repo.get(id)!!.events.single().snoozedUntil }
+        assertEquals(time.now().plus(MedicationRepository.SNOOZE_DURATION), ends[0])
+        assertEquals(ends[0], ends[1])
+
+        synchronized(changes) { changes.clear() }
+        val taken = repo.recordDoses(doses + DoseRef("missing", "x@2024-03-04"), MedicationEventType.TAKEN, ActionSource.NOTIFICATION)
+        assertEquals(listOf(true, true, false), taken.map { it is MedicationActionResult.Recorded })
+        assertEquals(MedicationActionResult.NotFound, taken[2])
+        val change = synchronized(changes) { changes.single() } as DataChange.Medications
+        assertEquals(doses.map { it.occurrenceKey }, change.clearedOccurrenceKeys)
+        assertEquals(9.0, stock(a), 0.0)
+        // A repeated delivery of the whole group records nothing more.
+        repo.recordDoses(doses, MedicationEventType.TAKEN, ActionSource.NOTIFICATION)
+        assertEquals(9.0, stock(a), 0.0)
+        assertEquals(9.0, stock(b), 0.0)
+    }
+
+    @Test
     fun snoozeAfterTaken_isRejectedAsResolved() = runBlocking {
         val id = repo.create(medDraft())
         val key = todaysKey(id)
@@ -167,7 +194,7 @@ class MedicationRepositoryTest {
         assertTrue(first.becameLow)
         val second = repo.recordDose(id, todaysKey(id, 1), MedicationEventType.TAKEN, ActionSource.APP) as MedicationActionResult.Recorded
         assertFalse(second.becameLow)
-        assertTrue(synchronized(changes) { changes.any { it is DataChange.Medications && it.lowStockMedicationId == id } })
+        assertTrue(synchronized(changes) { changes.any { it is DataChange.Medications && id in it.lowStockMedicationIds } })
     }
 
     @Test

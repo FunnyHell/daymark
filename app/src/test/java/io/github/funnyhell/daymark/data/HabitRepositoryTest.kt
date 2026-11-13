@@ -10,6 +10,7 @@ import io.github.funnyhell.daymark.domain.common.LifecycleStatus
 import io.github.funnyhell.daymark.domain.habit.DayState
 import io.github.funnyhell.daymark.domain.habit.HabitDraft
 import io.github.funnyhell.daymark.domain.habit.HabitEvaluator
+import io.github.funnyhell.daymark.domain.habit.HabitEventType
 import io.github.funnyhell.daymark.domain.habit.HabitType
 import io.github.funnyhell.daymark.domain.habit.Recurrence
 import java.time.DayOfWeek
@@ -190,6 +191,36 @@ class HabitRepositoryTest {
         val e = HabitEvaluator(repo.get(id)!!)
         assertEquals(listOf(5), e.cleanRuns(time.today()).map { it.days })
         assertEquals(0, e.streaks(time.today()).current)
+    }
+
+    @Test
+    fun setDone_onAbstinenceRecordsAndRemovesASlip() = runBlocking {
+        val id = repo.create(draft(type = HabitType.ABSTINENCE, target = 0.0))
+        time.set(DAY1.plusDays(3), 9)
+        val yesterday = time.today().minusDays(1)
+        // A clean day is already "done": asking for done changes nothing.
+        assertFalse(repo.setDone(id, done = true))
+        assertTrue(repo.setDone(id, done = false))
+        assertFalse(repo.setDone(id, done = false))
+        assertTrue(repo.setDone(id, done = false, date = yesterday))
+        assertEquals(DayState.LAPSED, HabitEvaluator(repo.get(id)!!).dayResult(time.today(), time.today()).state)
+        assertEquals(0, HabitEvaluator(repo.get(id)!!).streaks(time.today()).current)
+        assertTrue(repo.setDone(id, done = true))
+        assertTrue(repo.setDone(id, done = true, date = yesterday))
+        val data = repo.get(id)!!
+        assertEquals(4, HabitEvaluator(data).streaks(time.today()).current)
+        // The removed slips stay in the history as corrected.
+        assertEquals(2, data.events.count { it.type == HabitEventType.LAPSE && !it.isActive })
+    }
+
+    @Test
+    fun setDone_onAmountFillsUpToTargetAndRemovesTheLatestEntry() = runBlocking {
+        val id = repo.create(draft(type = HabitType.QUANTITY, target = 2000.0, unit = "ml"))
+        repo.addProgress(id, 500.0)
+        assertTrue(repo.setDone(id, done = true))
+        assertEquals(2000.0, HabitEvaluator(repo.get(id)!!).progressOn(DAY1), 0.0)
+        assertTrue(repo.setDone(id, done = false))
+        assertEquals(500.0, HabitEvaluator(repo.get(id)!!).progressOn(DAY1), 0.0)
     }
 
     @Test

@@ -505,4 +505,6 @@
     <string name="sync_working_with">Syncing with %1$s…</string>
     <string name="sync_error_not_paired">The other device doesn\'t know this one. Pair again with a code.</string>
     <string name="sync_error_not_found">Device not found. Open Daymark on it, on the same Wi-Fi.</string>
+    <string name="widget_week_name">Daymark week</string>
+    <string name="widget_week_description">The last 7 days of every habit; tap a day to mark it</string>
 </resources>

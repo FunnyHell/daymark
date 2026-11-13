@@ -7,6 +7,7 @@ import io.github.funnyhell.daymark.domain.habit.HabitType
 import io.github.funnyhell.daymark.domain.habit.PeriodOutcome
 import io.github.funnyhell.daymark.domain.common.startOfWeek
 import io.github.funnyhell.daymark.domain.medication.MedicationData
+import io.github.funnyhell.daymark.domain.medication.MedicationEventType
 import io.github.funnyhell.daymark.domain.medication.OccurrenceRules
 import io.github.funnyhell.daymark.domain.medication.OccurrenceState
 import java.time.DayOfWeek
@@ -55,7 +56,13 @@ object ReminderPlanner {
         if (medicationRemindersEnabled) {
             for (data in medications) {
                 if (data.medication.status != LifecycleStatus.ACTIVE) continue
-                for (date in dates) {
+                // A dose of an earlier day can still be snoozed (late in the evening, or from a notification
+                // left overnight); its reminder has to come back although the day itself is over.
+                val snoozedEarlier = data.events
+                    .filter { it.isActive && it.type == MedicationEventType.SNOOZED && it.snoozedUntil?.isAfter(now.minus(CATCH_UP)) == true }
+                    .mapNotNull { it.occurrenceKey?.let(OccurrenceRules::parseKeyDate) }
+                    .filter { it.isBefore(today) }
+                for (date in (snoozedEarlier + dates).distinct()) {
                     for (status in OccurrenceRules.statusesOn(data, date, now, zone)) {
                         val at = when (status.state) {
                             OccurrenceState.TAKEN, OccurrenceState.SKIPPED, OccurrenceState.MISSED -> continue

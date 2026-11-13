@@ -243,7 +243,11 @@ fun NumberInputDialog(
                     FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         suggestions.forEach { size ->
                             val label = size.formatQuantity()
-                            SuggestionChip(onClick = { text = label }, label = { Text(label) })
+                            // Each tap adds one more of that size: two taps on 20 give 40.
+                            SuggestionChip(
+                                onClick = { text = ((parseNumber(text)?.takeIf { it.isFinite() && it > 0 } ?: 0.0) + size).formatQuantity() },
+                                label = { Text("+$label") },
+                            )
                         }
                     }
                 }

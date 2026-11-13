@@ -131,6 +131,18 @@
                 android:resource="@xml/streak_widget_info" />
         </receiver>
 
+        <receiver
+            android:name=".platform.widgets.WeekWidgetReceiver"
+            android:exported="true"
+            android:label="@string/widget_week_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/week_widget_info" />
+        </receiver>
+
         <activity
             android:name=".platform.widgets.WidgetConfigActivity"
             android:exported="true"

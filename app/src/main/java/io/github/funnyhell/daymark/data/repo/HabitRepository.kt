@@ -15,6 +15,7 @@ import io.github.funnyhell.daymark.domain.common.IdGenerator
 import io.github.funnyhell.daymark.domain.common.LifecycleStatus
 import io.github.funnyhell.daymark.domain.common.TimeSource
 import io.github.funnyhell.daymark.domain.common.isPausedOn
+import io.github.funnyhell.daymark.domain.common.roundQuantity
 import io.github.funnyhell.daymark.domain.habit.HabitData
 import io.github.funnyhell.daymark.domain.habit.HabitDraft
 import io.github.funnyhell.daymark.domain.habit.HabitDraftError
@@ -261,20 +262,42 @@ class HabitRepository(
      * Brings a day to the requested state, used by toggles in the app and in widgets. The caller passes the
      * state it wants rather than "toggle", so a stale widget or a repeated tap cannot flip the result back:
      * marking a done day or unmarking an empty one changes nothing.
+     *
+     * By type: a check, a counted habit and a weekly goal get one completion more or their latest one removed;
+     * an amount is filled up to the day's target or its latest entry removed; an abstinence day is clean unless
+     * a slip is recorded, so "not done" records a slip and "done" removes the day's slips. Removed entries stay
+     * in the history as corrected.
      */
     suspend fun setDone(habitId: String, done: Boolean, date: LocalDate = time.today()): Boolean {
         val data = get(habitId) ?: return false
         val evaluator = HabitEvaluator(data)
-        val isDone = if (data.habit.type == HabitType.WEEKLY_GOAL) {
-            evaluator.progressOn(date) > 0.0
-        } else {
-            evaluator.progressOn(date) >= evaluator.targetOn(date)
+        val isDone = when (data.habit.type) {
+            HabitType.WEEKLY_GOAL -> evaluator.progressOn(date) > 0.0
+            HabitType.ABSTINENCE -> evaluator.eventsOn(date).none { it.type == HabitEventType.LAPSE }
+            else -> evaluator.progressOn(date) >= evaluator.targetOn(date)
         }
-        return when {
-            done && !isDone -> (completeIfIncomplete(habitId, date) is HabitActionResult.Recorded)
-            isDone && !done -> undoCompletion(habitId, date)
-            else -> false
+        if (done == isDone) return false
+        return when (data.habit.type) {
+            HabitType.ABSTINENCE -> if (done) undoLatest(habitId, date, HabitEventType.LAPSE, all = true) else recordLapse(habitId, date) is HabitActionResult.Recorded
+            HabitType.QUANTITY -> if (done) {
+                addProgress(habitId, (evaluator.targetOn(date) - evaluator.progressOn(date)).roundQuantity(), date) is HabitActionResult.Recorded
+            } else {
+                undoLatest(habitId, date, HabitEventType.PROGRESS, all = false)
+            }
+            else -> if (done) completeIfIncomplete(habitId, date) is HabitActionResult.Recorded else undoCompletion(habitId, date)
         }
+    }
+
+    /** Voids the latest active event of [type] on [date], or every one of them when [all] is set. */
+    private suspend fun undoLatest(habitId: String, date: LocalDate, type: HabitEventType, all: Boolean): Boolean {
+        val changed = db.withTransaction {
+            val events = dao.eventsFor(habitId)
+                .filter { it.date == date && it.voidedAt == null && it.type == type.name }
+                .sortedByDescending { it.recordedAt }
+            (if (all) events else events.take(1)).count { dao.voidEvent(it.id, time.now()) > 0 } > 0
+        }
+        if (changed) listener.onDataChanged(DataChange.Habits)
+        return changed
     }
 
     /** Marks an event as corrected. The event stays in history but no longer counts. Idempotent. */

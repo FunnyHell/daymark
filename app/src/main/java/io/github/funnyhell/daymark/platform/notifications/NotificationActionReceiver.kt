@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import io.github.funnyhell.daymark.container
+import io.github.funnyhell.daymark.data.repo.DoseRef
 import io.github.funnyhell.daymark.data.repo.HabitActionResult
 import io.github.funnyhell.daymark.data.repo.MedicationActionResult
 import io.github.funnyhell.daymark.domain.medication.ActionSource
@@ -41,17 +42,14 @@ class NotificationActionReceiver : BroadcastReceiver() {
                 }
             }
             ACTION_TAKE_ALL, ACTION_SNOOZE_ALL -> {
-                val items = intent.getStringArrayExtra(EXTRA_ITEMS)?.toList().orEmpty()
-                for (item in items) {
-                    val medId = item.substringBefore('|')
-                    val key = item.substringAfter('|')
-                    val result = if (action == ACTION_TAKE_ALL) {
-                        c.medications.recordDose(medId, key, MedicationEventType.TAKEN, ActionSource.NOTIFICATION)
-                    } else {
-                        c.medications.snooze(medId, key, ActionSource.NOTIFICATION)
-                    }
-                    Log.i(TAG, "Group action $action for $key: $result")
+                val doses = intent.getStringArrayExtra(EXTRA_ITEMS).orEmpty().map { DoseRef(it.substringBefore('|'), it.substringAfter('|')) }
+                // The alarm for the snoozed doses is set before the notification goes away.
+                val results = if (action == ACTION_TAKE_ALL) {
+                    c.medications.recordDoses(doses, MedicationEventType.TAKEN, ActionSource.NOTIFICATION)
+                } else {
+                    c.medications.snoozeAll(doses, ActionSource.NOTIFICATION)
                 }
+                Log.i(TAG, "Group action $action: $results")
                 intent.getStringExtra(EXTRA_TAG)?.let(c.notifier::cancelTag)
             }
             ACTION_HABITS_DONE -> {

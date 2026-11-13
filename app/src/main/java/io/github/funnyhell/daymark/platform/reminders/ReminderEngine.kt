@@ -19,6 +19,7 @@ import io.github.funnyhell.daymark.platform.notifications.Notifier
 import io.github.funnyhell.daymark.platform.widgets.WidgetUpdater
 import java.time.Duration
 import java.time.Instant
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
@@ -58,7 +59,16 @@ class ReminderEngine(
         val now = time.now()
         val last = settings.lastReminderCheck()
         val plan = plan(now)
-        if (last != null) postAll(ReminderPlanner.dueBetween(plan, last, now))
+        if (last != null) {
+            // A failure to show one reminder must not leave the next alarm unset.
+            try {
+                postAll(ReminderPlanner.dueBetween(plan, last, now))
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Log.e(TAG, "Showing reminders failed", e)
+            }
+        }
         settings.setLastReminderCheck(now)
         arm(plan, now, now)
     }

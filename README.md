@@ -25,18 +25,19 @@ Daymark records what you enter and reminds you at the times you choose. It does 
 - Pause/resume a schedule without false missed doses; corrections with exact inventory reconciliation.
 
 **Inventory**
-- Optional per medication, user-defined unit, initial stock, add packages (previous package sizes offered as one-tap choices), set a counted stock, low-stock threshold and notification, full change log.
+- Optional per medication, user-defined unit, initial stock, add packages (previous package sizes offered as chips; each tap adds that size, so two taps on 20 add 40), set a counted stock, low-stock threshold and notification, full change log.
 
 **Reminders and widgets**
 - Reminders use alarm-clock alarms (delivered with the screen off; the alarm icon shows in the status bar while one is pending), with `USE_EXACT_ALARM` on Android 13+ and the "Alarms & reminders" permission on Android 12 (falls back to inexact). Settings → Reminders has a battery-restriction shortcut and a test reminder., rebuilt after reboot, app update, time and time-zone changes, plus a 6-hourly safety net. Reminders play the default notification sound and vibrate (change it in Settings → Reminders → Sound and vibration).
 - Lock-screen privacy: medication and habit names hidden on the lock screen by default.
-- Six home-screen widgets (Jetpack Glance), each with its own settings including accent color (system or fixed) and background opacity (long-press the widget → Settings on Android 12+):
+- Seven home-screen widgets (Jetpack Glance), each with its own settings including accent color (system or fixed) and background opacity (long-press the widget → Settings on Android 12+):
   - **Habits** — today's habits with a compact tick or radio button that marks and unmarks;
   - **Medications** — today's doses grouped by time, tap to mark/unmark, "mark all" for a time group;
   - **Today** — one ring for today (one sector per habit, done/due count); resizable down to about one cell;
   - **Progress** — rings for today, this week and this month (average progress per habit, unfinished weekly goals included); a row, or today large with week and month stacked when the widget is narrow;
   - **Calendar** — the month with a ring around every day: one sector per habit due that day, filled by its progress (all habits or one);
   - **Streak** — one habit's current streak in large type, best streak and the last 7 days.
+  - **Week** — every habit with its last 7 days as a grid (today on the right): a filled square is a done day, a cross is a slip, a dot is a day not done. Tap a day to mark it, tap again to remove the mark; today's overall progress is shown in the corner.
 
 **History and statistics**
 - Per-habit calendar heatmap with day details, current/best streaks, 30-day completion rate, weekly results, clean-streak history for abstinence habits.
@@ -100,7 +101,7 @@ CI (`.github/workflows/android.yml`) runs the unit tests, builds and inspects th
 - Not yet verified on a physical Samsung device: notification delivery and actions, exact alarm timing, behavior after reboot or with battery optimisation, widgets.
 - Reminder times are local wall-clock times; after travelling to another time zone a 08:00 dose is reminded at 08:00 local time.
 - Snooze is fixed at 30 minutes; the missed window is fixed at 3 hours.
-- Widget buttons record only simple actions (habit done / +1 and unmark, dose taken and unmark, all doses of a time taken). Amounts, slips, skips and snoozes are recorded in the app or the notification.
+- Widget buttons record only simple actions (habit done / +1 and unmark, a slip of a "quit" habit and its removal, dose taken and unmark, all doses of a time taken). A tap on a clean day of a "quit" habit records a slip without asking; tap again to remove it. Exact amounts, notes, skips and snoozes are recorded in the app or the notification.
 - Backups are plain JSON (not encrypted). Import replaces all data; there is no merge.
 - Sync is manual, needs both devices on the same Wi-Fi and is protected by a six-digit code (meant for a trusted home network). Concurrent edits of the same habit or medication keep the later one. No Wear OS app yet.
 

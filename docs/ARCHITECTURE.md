@@ -851,7 +851,7 @@ app/src/main/java/io/github/funnyhell/daymark/
     notifications/        Notifier (channels, private lock-screen versions), NotificationActionReceiver
     reminders/            ReminderEngine (single alarm), ReminderAlarmReceiver, SystemEventReceiver
     work/                 MaintenanceWorker (6-hourly WorkManager safety net)
-    widgets/              Glance HabitWidget / MedicationWidget, ActionCallbacks, WidgetUpdater
+    widgets/              Glance widgets (habits, medications, today, progress, calendar, streak, week), ActionCallbacks, WidgetUpdater
   ui/                     Compose screens and ViewModels: today, habits, medications, history, settings, onboarding
 ```
 

@@ -1071,3 +1071,30 @@ What trade-offs, limitations, tests, or follow-up tasks result?
 
 YYYY-MM-DD
 
+---
+
+## ADR-036 — Reminders before widgets; grouped actions as one change; week widget
+
+**Status:** Accepted
+
+#### Context
+
+Snoozed reminders still did not always come back. A notification action runs in a broadcast receiver with about ten seconds; after each recorded dose the app first redrew every widget and only then cancelled the notification and set the next alarm. "Snooze all" repeated that for every dose of the group. In a freshly started process with several widgets this could run out of time, and the alarm for the snooze end was never set. Two more gaps were found while reading the code: a snoozed dose of an earlier day (snoozed past midnight, or from a notification left overnight) was not planned at all, because only today and tomorrow were considered; and the doses of a group were snoozed a moment apart, so they would have come back as separate notifications. The cause on the user's phone was not reproduced; these are the defects found.
+
+#### Decision
+
+- After a data change the reminder work (cancel notifications, set the alarm) runs at once and widgets are redrawn in parallel; nothing in the reminder path waits for a widget.
+- `MedicationRepository.recordDoses` / `snoozeAll` handle a list of doses, each validated as before, and report one change. All doses of one `snoozeAll` get the same end time. The group notification actions and the widget's "mark all" use them.
+- The planner also plans occurrences of earlier days that have an active snooze ending within the catch-up window.
+- A failure while showing reminders no longer prevents the next alarm from being set.
+- `HabitRepository.setDone` covers every habit type: for an abstinence habit "not done" records a slip and "done" voids the day's slips; for an amount "done" adds the remainder to the target and "not done" voids the latest entry. Voided entries stay in the history.
+- New Week widget: the last seven days of each habit (today last) as a grid of tappable days, calling `setDone(habit, wanted state, date)`. Days before the start, paused days and days a habit is not scheduled cannot be tapped. The list and streak widgets can now toggle abstinence habits the same way.
+- Package size chips add their size to the amount in the field instead of replacing it.
+
+#### Consequences
+
+A tap on a clean abstinence day in a widget records a slip without a confirmation; a second tap removes it. Tests: planner (snooze past midnight), repository (grouped actions report once and share the snooze end; slip and amount toggles), week grid rules, and on the emulator the real "Snooze all" broadcast followed by a check of the system's next alarm, and a short snooze that brings the notification back.
+
+#### Date
+
+2026-11-13

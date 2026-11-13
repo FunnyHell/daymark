@@ -217,6 +217,7 @@ class HabitRepositoryTest {
     fun setDone_onAmountFillsUpToTargetAndRemovesTheLatestEntry() = runBlocking {
         val id = repo.create(draft(type = HabitType.QUANTITY, target = 2000.0, unit = "ml"))
         repo.addProgress(id, 500.0)
+        time.set(DAY1, 10)
         assertTrue(repo.setDone(id, done = true))
         assertEquals(2000.0, HabitEvaluator(repo.get(id)!!).progressOn(DAY1), 0.0)
         assertTrue(repo.setDone(id, done = false))

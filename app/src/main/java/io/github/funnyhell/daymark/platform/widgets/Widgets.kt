@@ -690,8 +690,15 @@ class WeekWidget : GlanceAppWidget() {
                             modifier = GlanceModifier.clickable(actionStartActivity<MainActivity>()),
                         )
                     } else {
-                        LazyColumn {
-                            items(rows, itemId = { it.habitId.hashCode().toLong() }) { row -> WeekRow(context, colors, row, slot) }
+                        // Rows that fit are laid out directly (drawn at once, taps handled without a list
+                        // adapter); a longer list scrolls.
+                        val fitting = ((LocalSize.current.height.value - 46f) / (slot + 2f)).toInt()
+                        if (rows.size <= minOf(fitting, 9)) {
+                            Column { rows.forEach { row -> WeekRow(context, colors, row, slot) } }
+                        } else {
+                            LazyColumn {
+                                items(rows, itemId = { it.habitId.hashCode().toLong() }) { row -> WeekRow(context, colors, row, slot) }
+                            }
                         }
                     }
                 }

@@ -187,6 +187,7 @@ jobs:
           cp emulator-androidtest.log "$OUT"/ 2>/dev/null || true
           mkdir -p "$OUT/androidTest-results"
           cp -r app/build/outputs/androidTest-results/connected/. "$OUT/androidTest-results/" 2>/dev/null || true
+          find app/build/outputs -name 'week-widget.png' -exec cp {} "$OUT"/ \; 2>/dev/null || true
           echo "source_commit=${GITHUB_SHA}" > "$OUT/BUILD_INFO.txt"
           cd "$OUT"
           git init -q -b ci-screens

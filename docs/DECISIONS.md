@@ -1098,3 +1098,29 @@ A tap on a clean abstinence day in a widget records a slip without a confirmatio
 #### Date
 
 2026-11-13
+
+---
+
+## ADR-037 — Widget failures are visible; past days are marked from Today and History
+
+**Status:** Accepted
+
+#### Context
+
+The Week and Calendar widgets stayed on "Loading" on the user's device. A widget that cannot be drawn left no trace: the direct render swallowed the error and the launcher kept the initial layout. The settings preview of the list widgets showed no rows, because a scrolling list has no content outside a launcher. Marks of earlier days could only be made from a habit's or medication's own screen, and the medication history was a raw event log.
+
+#### Decision
+
+- When the direct render of a widget fails, the widget shows a short error text (exception, message, source line) instead of the loading layout. Bitmaps drawn for widgets are limited by the screen size, because launchers refuse a widget whose bitmaps exceed about one and a half screens over all its sizes.
+- CI binds every widget to an `AppWidgetHost` on API 26–34 emulators, with sample data, at several sizes, and draws it through `WidgetRenderer.render`; all widgets are also composed in Russian.
+- Widgets take a `preview` flag for the settings screen: lists are laid out directly, without click actions, and show sample rows when there is nothing real to show.
+- The Today screen can show an earlier day (previous/next, date picker, "Back to today"); the same rows and repository calls are used with that date. Snooze and low-stock notes are only offered for today.
+- History → Medications shows adherence tiles, a 12-week dose calendar and one card per day with a line per dose, which can be marked taken, unmarked or skipped; the event log is folded away.
+
+#### Consequences
+
+The cause of the stuck widgets on the device is not known at the time of this decision; the error text is what will show it if it happens again.
+
+#### Date
+
+2026-11-15

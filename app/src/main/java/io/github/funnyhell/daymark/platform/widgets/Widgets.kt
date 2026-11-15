@@ -84,6 +84,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import java.util.concurrent.ConcurrentHashMap
 import kotlin.math.roundToInt
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -156,17 +159,25 @@ object WidgetRenderer {
     }
 
     /** Composes the widget as it would look now; used for drawing it and for the preview in its settings. */
-    suspend fun compose(context: Context, appWidgetId: Int, preview: Boolean = false): RemoteViews? {
-        val manager = AppWidgetManager.getInstance(context)
-        val info = manager.getAppWidgetInfo(appWidgetId) ?: return null
-        val glanceId = GlanceAppWidgetManager(context).getGlanceIdBy(appWidgetId)
-        return widgetFor(info.provider.className, preview).compose(
-            context = context,
-            id = glanceId,
-            options = manager.getAppWidgetOptions(appWidgetId),
-            size = sizeOf(context, appWidgetId),
-        )
-    }
+    /**
+     * One widget is composed by one caller at a time. Placing a widget makes the launcher send several events in
+     * a row (update, size), and a data change may arrive in between; Glance allows only one composition per widget
+     * and fails the other, which left slow widgets without content.
+     */
+    private val composing = ConcurrentHashMap<Int, Mutex>()
+
+    suspend fun compose(context: Context, appWidgetId: Int, preview: Boolean = false): RemoteViews? =
+        composing.getOrPut(appWidgetId) { Mutex() }.withLock {
+            val manager = AppWidgetManager.getInstance(context)
+            val info = manager.getAppWidgetInfo(appWidgetId) ?: return@withLock null
+            val glanceId = GlanceAppWidgetManager(context).getGlanceIdBy(appWidgetId)
+            widgetFor(info.provider.className, preview).compose(
+                context = context,
+                id = glanceId,
+                options = manager.getAppWidgetOptions(appWidgetId),
+                size = sizeOf(context, appWidgetId),
+            )
+        }
 
     /** Draws the widget now; throws when it cannot be composed or the launcher rejects it. */
     suspend fun render(context: Context, appWidgetId: Int) {

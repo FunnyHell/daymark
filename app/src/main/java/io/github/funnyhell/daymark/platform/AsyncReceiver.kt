@@ -15,14 +15,15 @@ private val receiverScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
  * ten seconds; the work is bounded below that.
  */
 fun BroadcastReceiver.goAsyncWork(block: suspend () -> Unit) {
-    val pending = goAsync()
+    // Null when the receiver already went asynchronous (Glance's widget receivers do that themselves).
+    val pending: BroadcastReceiver.PendingResult? = goAsync()
     receiverScope.launch {
         try {
             withTimeout(9_000) { block() }
         } catch (e: Exception) {
             Log.e("DaymarkReceiver", "Receiver work failed", e)
         } finally {
-            pending.finish()
+            pending?.finish()
         }
     }
 }

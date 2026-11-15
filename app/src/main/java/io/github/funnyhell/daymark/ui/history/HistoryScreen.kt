@@ -2,6 +2,24 @@ package io.github.funnyhell.daymark.ui.history
 
 import android.app.Application
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.selection.toggleable
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.TextButton
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
+import io.github.funnyhell.daymark.domain.medication.OccurrenceState
+import io.github.funnyhell.daymark.ui.common.MessageEffect
+import io.github.funnyhell.daymark.ui.common.TrackingViewModel
+import io.github.funnyhell.daymark.ui.common.UiMessage
+import io.github.funnyhell.daymark.ui.medications.DoseItem
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -83,6 +101,11 @@ data class QuantitySeries(val name: String, val unit: String, val colorArgb: Lon
 
 data class LoggedEvent(val event: MedicationEvent, val medicationName: String)
 
+/** The doses of one day, as shown in the medication history. */
+data class MedDay(val date: LocalDate, val doses: List<DoseItem>) {
+    val taken: Int get() = doses.count { it.state == OccurrenceState.TAKEN }
+}
+
 data class HistoryState(
     val loading: Boolean = true,
     val today: LocalDate = LocalDate.now(),
@@ -99,9 +122,12 @@ data class HistoryState(
     val adherence7: Adherence = Adherence(0, 0, 0, 0),
     val adherence30: Adherence = Adherence(0, 0, 0, 0),
     val events: List<LoggedEvent> = emptyList(),
+    /** Days with doses, newest first, over the weeks the dose calendar shows. */
+    val medDays: List<MedDay> = emptyList(),
+    val medCells: Map<LocalDate, HeatCell> = emptyMap(),
 )
 
-class HistoryViewModel(application: Application) : AppViewModel(application) {
+class HistoryViewModel(application: Application) : TrackingViewModel(application) {
     val state: StateFlow<HistoryState> = combine(
         container.habits.observeAll(), container.medications.observeAll(), container.settings.settings,
     ) { habits, meds, settings ->
@@ -119,8 +145,20 @@ class HistoryViewModel(application: Application) : AppViewModel(application) {
             val text = if (a == null) string(R.string.heat_nothing_due) else string(R.string.heat_done_of, a.done, a.due)
             HeatCell(date, level, "${Formats.dateMedium(app, date)}: $text")
         }
+        val medFrom = today.minusWeeks(MED_WEEKS.toLong())
+        val medDays = generateSequence(today) { it.minusDays(1) }.takeWhile { !it.isBefore(medFrom) }
+            .map { date -> MedDay(date, MedicationPresentation.dosesOn(app, meds, date, now, zone)) }
+            .toList()
+        val medCells = medDays.associate { day ->
+            val total = day.doses.size
+            val level = if (total == 0) null else if (day.taken == 0) 0 else 1 + (3 * day.taken / total).coerceIn(0, 3)
+            val text = if (total == 0) string(R.string.med_heat_none) else string(R.string.med_heat_taken, day.taken, total)
+            day.date to HeatCell(day.date, level, "${Formats.dateMedium(app, day.date)}: $text")
+        }
         HistoryState(
             loading = false,
+            medDays = medDays.filter { it.doses.isNotEmpty() },
+            medCells = medCells,
             today = today,
             firstDayOfWeek = wk,
             hasHabits = habits.isNotEmpty(),
@@ -165,13 +203,19 @@ class HistoryViewModel(application: Application) : AppViewModel(application) {
 
     companion object {
         const val HEATMAP_WEEKS = 20
+        const val MED_WEEKS = 12
         val Factory = appViewModelFactory { app, _ -> HistoryViewModel(app) }
     }
 }
 
 @Composable
-fun HistoryScreen(contentPadding: PaddingValues, vm: HistoryViewModel = viewModel(factory = HistoryViewModel.Factory)) {
+fun HistoryScreen(
+    contentPadding: PaddingValues,
+    showMessage: suspend (UiMessage) -> Unit,
+    vm: HistoryViewModel = viewModel(factory = HistoryViewModel.Factory),
+) {
     val state by vm.state.collectAsStateWithLifecycle()
+    MessageEffect(vm.messages, showMessage)
     var tab by rememberSaveable { mutableIntStateOf(0) }
     Column(Modifier.padding(top = contentPadding.calculateTopPadding())) {
         TabRow(selectedTabIndex = tab) {
@@ -179,7 +223,7 @@ fun HistoryScreen(contentPadding: PaddingValues, vm: HistoryViewModel = viewMode
             Tab(selected = tab == 1, onClick = { tab = 1 }, text = { Text(stringResource(R.string.section_medications)) })
         }
         val bottom = PaddingValues(bottom = contentPadding.calculateBottomPadding() + 24.dp)
-        if (tab == 0) HabitHistory(state, bottom) else MedicationHistory(state, bottom)
+        if (tab == 0) HabitHistory(state, bottom) else MedicationHistory(state, vm, bottom)
     }
 }
 
@@ -280,40 +324,182 @@ private fun QuantityChart(series: QuantitySeries) {
     }
 }
 
+/**
+ * Medication history: how many doses were taken lately, a calendar of the last weeks, and the doses day by day.
+ * Every dose can be marked or unmarked here, so a forgotten mark of an earlier day is filled in on the spot.
+ */
 @Composable
-private fun MedicationHistory(state: HistoryState, padding: PaddingValues) {
+private fun MedicationHistory(state: HistoryState, vm: HistoryViewModel, padding: PaddingValues) {
     val context = LocalContext.current
+    var selected by remember { mutableStateOf<LocalDate?>(null) }
+    var shownDays by rememberSaveable { mutableIntStateOf(7) }
+    var showLog by rememberSaveable { mutableStateOf(false) }
     LazyColumn(contentPadding = padding) {
         if (!state.loading && !state.hasMeds) {
             item { EmptyState(stringResource(R.string.history_no_meds_title), stringResource(R.string.history_no_meds_body)) }
             return@LazyColumn
         }
-        item { SectionHeader(stringResource(R.string.section_adherence)) }
         item {
-            AdherenceCard(stringResource(R.string.last_7_days), state.adherence7)
-            AdherenceCard(stringResource(R.string.last_30_days), state.adherence30)
+            Row(Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                AdherenceTile(stringResource(R.string.last_7_days), state.adherence7, Modifier.weight(1f))
+                AdherenceTile(stringResource(R.string.last_30_days), state.adherence30, Modifier.weight(1f))
+            }
         }
-        item { SectionHeader(stringResource(R.string.section_event_log)) }
-        if (state.events.isEmpty()) {
+        item { SectionHeader(stringResource(R.string.med_history_calendar)) }
+        item {
+            Heatmap(
+                cells = state.medCells,
+                end = state.today,
+                weeks = HistoryViewModel.MED_WEEKS + 1,
+                firstDayOfWeek = state.firstDayOfWeek,
+                color = MaterialTheme.colorScheme.primary,
+                selected = selected,
+                onSelect = { selected = if (selected == it) null else it },
+            )
+        }
+        val chosen = selected
+        if (chosen != null) {
+            val day = state.medDays.firstOrNull { it.date == chosen }
+            if (day == null) {
+                item {
+                    Text(
+                        state.medCells[chosen]?.description ?: Formats.dateMedium(context, chosen),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
+                    )
+                }
+            } else {
+                item(key = "chosen" + day.date) { MedDayCard(day, state.today, vm) }
+            }
+        }
+        item { SectionHeader(stringResource(R.string.med_history_by_day)) }
+        if (state.medDays.isEmpty()) {
             item { Text(stringResource(R.string.history_empty), color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp)) }
         }
-        items(state.events, key = { it.event.id }) { logged ->
-            val ev = logged.event
-            Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 6.dp)) {
-                val scheduled = listOfNotNull(ev.scheduledDate?.let { Formats.dateMedium(context, it) }, ev.scheduledTime?.let { Formats.time(context, it) }).joinToString(" ")
-                Text(
-                    "${logged.medicationName} · ${MedicationPresentation.eventTypeText(context, ev.type)} · $scheduled",
-                    style = MaterialTheme.typography.bodyMedium,
-                    textDecoration = if (ev.isActive) null else TextDecoration.LineThrough,
+        items(state.medDays.take(shownDays), key = { "day" + it.date }) { day -> MedDayCard(day, state.today, vm) }
+        if (state.medDays.size > shownDays) {
+            item {
+                TextButton(onClick = { shownDays += 14 }, modifier = Modifier.padding(horizontal = 12.dp)) {
+                    Text(stringResource(R.string.show_more_days))
+                }
+            }
+        }
+        item {
+            TextButton(onClick = { showLog = !showLog }, modifier = Modifier.padding(horizontal = 12.dp)) {
+                Text(stringResource(if (showLog) R.string.hide_event_log else R.string.show_event_log))
+            }
+        }
+        if (showLog) {
+            if (state.events.isEmpty()) {
+                item { Text(stringResource(R.string.history_empty), color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp)) }
+            }
+            items(state.events, key = { it.event.id }) { logged ->
+                val ev = logged.event
+                Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 6.dp)) {
+                    val scheduled = listOfNotNull(ev.scheduledDate?.let { Formats.dateMedium(context, it) }, ev.scheduledTime?.let { Formats.time(context, it) }).joinToString(" ")
+                    Text(
+                        "${logged.medicationName} · ${MedicationPresentation.eventTypeText(context, ev.type)} · $scheduled",
+                        style = MaterialTheme.typography.bodyMedium,
+                        textDecoration = if (ev.isActive) null else TextDecoration.LineThrough,
+                    )
+                    Text(
+                        listOfNotNull(
+                            stringResource(R.string.recorded_at, Formats.dateTime(context, ev.recordedAt)),
+                            MedicationPresentation.sourceText(context, ev.source),
+                            stringResource(R.string.corrected).takeIf { !ev.isActive },
+                        ).joinToString(" · "),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+        }
+    }
+}
+
+/** One day as a card: the date, how many doses were taken, and a line per dose with its mark. */
+@Composable
+private fun MedDayCard(day: MedDay, today: LocalDate, vm: HistoryViewModel) {
+    val context = LocalContext.current
+    AppCard {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                Formats.dateFull(context, day.date),
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.weight(1f),
+            )
+            Text(
+                stringResource(R.string.med_day_count, day.taken, day.doses.size),
+                style = MaterialTheme.typography.labelLarge,
+                color = if (day.taken == day.doses.size) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        day.doses.forEach { dose -> MedDoseLine(dose, canSkip = !dose.resolved, vm = vm) }
+    }
+}
+
+@Composable
+private fun MedDoseLine(dose: DoseItem, canSkip: Boolean, vm: HistoryViewModel) {
+    var menu by remember { mutableStateOf(false) }
+    val toggleLabel = stringResource(if (dose.resolved) R.string.cd_unmark else R.string.widget_take_cd, dose.name)
+    Row(Modifier.fillMaxWidth().padding(top = 6.dp), verticalAlignment = Alignment.CenterVertically) {
+        Box(
+            Modifier
+                .size(40.dp)
+                .clip(CircleShape)
+                .toggleable(
+                    value = dose.resolved,
+                    role = Role.Checkbox,
+                    onValueChange = { take ->
+                        if (take) vm.takeDose(dose.medicationId, dose.occurrenceKey, dose.name)
+                        else dose.resolutionEventId?.let { vm.undoMedicationEvent(it) }
+                    },
                 )
-                Text(
-                    listOfNotNull(
-                        stringResource(R.string.recorded_at, Formats.dateTime(context, ev.recordedAt)),
-                        MedicationPresentation.sourceText(context, ev.source),
-                        stringResource(R.string.corrected).takeIf { !ev.isActive },
-                    ).joinToString(" · "),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                .semantics { contentDescription = toggleLabel },
+            contentAlignment = Alignment.Center,
+        ) {
+            Icon(
+                painterResource(
+                    when (dose.state) {
+                        OccurrenceState.TAKEN -> R.drawable.ic_widget_check_filled
+                        OccurrenceState.SKIPPED -> R.drawable.ic_widget_skipped
+                        else -> R.drawable.ic_widget_circle
+                    },
+                ),
+                contentDescription = null,
+                tint = if (dose.state == OccurrenceState.SKIPPED) MaterialTheme.colorScheme.onSurfaceVariant else Color(dose.colorArgb),
+                modifier = Modifier.size(26.dp),
+            )
+        }
+        Column(Modifier.weight(1f).padding(start = 6.dp)) {
+            Text(dose.name, style = MaterialTheme.typography.bodyLarge, maxLines = 1)
+            Text(
+                "${dose.timeText} · ${dose.doseText}",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 1,
+            )
+        }
+        Box {
+            Text(
+                dose.stateText,
+                style = MaterialTheme.typography.labelLarge,
+                color = when (dose.state) {
+                    OccurrenceState.TAKEN -> MaterialTheme.colorScheme.primary
+                    OccurrenceState.MISSED -> MaterialTheme.colorScheme.error
+                    else -> MaterialTheme.colorScheme.onSurfaceVariant
+                },
+                modifier = Modifier
+                    .clip(MaterialTheme.shapes.small)
+                    .clickable(enabled = canSkip) { menu = true }
+                    .padding(horizontal = 8.dp, vertical = 6.dp),
+            )
+            DropdownMenu(expanded = menu, onDismissRequest = { menu = false }) {
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.action_skip)) },
+                    onClick = { menu = false; vm.skipDose(dose.medicationId, dose.occurrenceKey, dose.name) },
                 )
             }
         }
@@ -321,16 +507,17 @@ private fun MedicationHistory(state: HistoryState, padding: PaddingValues) {
 }
 
 @Composable
-private fun AdherenceCard(title: String, a: Adherence) {
-    AppCard {
-        Text(title, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold)
+private fun AdherenceTile(title: String, a: Adherence, modifier: Modifier = Modifier) {
+    Column(
+        modifier
+            .background(MaterialTheme.colorScheme.surfaceContainerHigh, MaterialTheme.shapes.medium)
+            .padding(horizontal = 12.dp, vertical = 10.dp),
+    ) {
+        Text(a.takenRate?.let { "${(it * 100).toInt()}%" } ?: "—", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.SemiBold)
+        Text(title, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Text(
             stringResource(R.string.adherence_counts, a.taken, a.skipped, a.missed),
-            style = MaterialTheme.typography.bodyMedium,
-        )
-        Text(
-            a.takenRate?.let { stringResource(R.string.adherence_rate, (it * 100).toInt()) } ?: stringResource(R.string.not_enough_data),
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }

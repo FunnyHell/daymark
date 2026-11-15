@@ -151,3 +151,39 @@ object WidgetContent {
         OccurrenceState.MISSED -> R.string.occ_missed
     }
 }
+
+/** Example content for a widget's settings preview when there is nothing real to show yet. */
+object WidgetSamples {
+    fun habits(context: Context): List<HabitWidgetRow> = listOf(
+        HabitWidgetRow("sample-1", context.getString(R.string.sample_habit_1), context.getString(R.string.state_done), done = true, checked = true, colorArgb = 0xFF2E7D32),
+        HabitWidgetRow("sample-2", context.getString(R.string.sample_habit_2), context.getString(R.string.state_not_done), done = false, checked = false, colorArgb = 0xFF2F5FD0),
+        HabitWidgetRow("sample-3", context.getString(R.string.sample_habit_3), context.getString(R.string.progress_count, "1", "3"), done = false, checked = false, colorArgb = 0xFFC25E00),
+    )
+
+    fun medications(context: Context): List<MedicationWidgetRow> {
+        fun row(n: Int, name: Int, time: LocalTime, state: OccurrenceState, color: Long) = MedicationWidgetRow(
+            medicationId = "sample-$n", occurrenceKey = "sample-$n", title = context.getString(name),
+            subtitle = "${Formats.time(context, time)} · ${context.getString(R.string.dose_default)} · ${context.getString(WidgetContent.stateLabel(state))}",
+            state = state, canTake = state != OccurrenceState.TAKEN, taken = state == OccurrenceState.TAKEN, colorArgb = color, time = time,
+        )
+        return listOf(
+            row(1, R.string.sample_med_1, LocalTime.of(8, 0), OccurrenceState.TAKEN, 0xFF6A4BC4),
+            row(2, R.string.sample_med_2, LocalTime.of(8, 0), OccurrenceState.DUE, 0xFF2E7D32),
+            row(3, R.string.sample_med_1, LocalTime.of(20, 0), OccurrenceState.UPCOMING, 0xFF6A4BC4),
+        )
+    }
+
+    fun week(context: Context, today: LocalDate): List<WeekGridRow> {
+        fun row(n: Int, name: Int, color: Long, streak: Int, marks: List<WeekMark>) = WeekGridRow(
+            "sample-$n", context.getString(name), color, streak,
+            marks.mapIndexed { i, mark -> WeekCell(today.minusDays((6 - i).toLong()), mark, toggleTo = null) },
+        )
+        val d = WeekMark.DONE
+        val o = WeekMark.OPEN
+        return listOf(
+            row(1, R.string.sample_habit_1, 0xFF2E7D32, 3, listOf(d, o, d, o, d, d, d)),
+            row(2, R.string.sample_habit_2, 0xFF2F5FD0, 0, listOf(d, d, o, d, d, o, o)),
+            row(3, R.string.sample_habit_3, 0xFFC25E00, 0, listOf(o, d, d, o, WeekMark.PARTIAL, d, o)),
+        )
+    }
+}

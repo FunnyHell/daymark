@@ -144,7 +144,7 @@ private fun WidgetPreview(appWidgetId: Int, prefs: WidgetPrefs, store: WidgetPre
     var views by remember { mutableStateOf<RemoteViews?>(null) }
     LaunchedEffect(prefs) {
         store.set(appWidgetId, prefs)
-        views = runCatching { WidgetRenderer.compose(context, appWidgetId) }.getOrNull()
+        views = runCatching { WidgetRenderer.compose(context, appWidgetId, preview = true) }.getOrNull()
     }
     val size = remember { WidgetRenderer.sizeOf(context, appWidgetId) }
     Box(

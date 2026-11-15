@@ -514,4 +514,22 @@
     <string name="sync_error_not_found">Устройство не найдено. Откройте на нём Daymark в той же сети Wi-Fi.</string>
     <string name="widget_week_name">Daymark: неделя</string>
     <string name="widget_week_description">Последние 7 дней каждой привычки; нажмите на день, чтобы отметить</string>
+    <string name="widget_error">Не удалось показать виджет. %1$s</string>
+    <string name="sample_habit_1">Утренняя прогулка</string>
+    <string name="sample_habit_2">Прочитать 20 страниц</string>
+    <string name="sample_habit_3">Стакан воды</string>
+    <string name="sample_med_1">Витамин D</string>
+    <string name="sample_med_2">Магний</string>
+    <string name="previous_day">Предыдущий день</string>
+    <string name="next_day">Следующий день</string>
+    <string name="back_to_today">Вернуться к сегодня</string>
+    <string name="pick_day">Выбрать день</string>
+    <string name="med_history_by_day">По дням</string>
+    <string name="med_day_count">Принято %1$d из %2$d</string>
+    <string name="show_more_days">Показать более ранние дни</string>
+    <string name="show_event_log">Показать журнал событий</string>
+    <string name="hide_event_log">Скрыть журнал событий</string>
+    <string name="med_history_calendar">Календарь</string>
+    <string name="med_heat_none">нет приёмов</string>
+    <string name="med_heat_taken">принято %1$d из %2$d</string>
 </resources>

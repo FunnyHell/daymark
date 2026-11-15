@@ -1,6 +1,7 @@
 package io.github.funnyhell.daymark.ui.today
 
 import android.app.Application
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -13,9 +14,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.SelectableDates
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -23,6 +33,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -47,9 +60,12 @@ import io.github.funnyhell.daymark.ui.habits.HabitTodayRow
 import io.github.funnyhell.daymark.ui.medications.DoseItem
 import io.github.funnyhell.daymark.ui.medications.DoseRow
 import io.github.funnyhell.daymark.ui.medications.MedicationPresentation
+import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneOffset
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -61,7 +77,9 @@ data class LowStockItem(val medicationId: String, val text: String)
 
 data class TodayState(
     val loading: Boolean = true,
+    /** The day shown: today, or an earlier day chosen to fill in what was not marked then. */
     val date: LocalDate = LocalDate.now(),
+    val today: LocalDate = LocalDate.now(),
     val doses: List<DoseItem> = emptyList(),
     val habits: List<HabitTodayItem> = emptyList(),
     val lowStock: List<LowStockItem> = emptyList(),
@@ -70,6 +88,7 @@ data class TodayState(
 ) {
     val doneCount: Int get() = doses.count { it.resolved } + habits.count { it.done }
     val totalCount: Int get() = doses.size + habits.size
+    val isToday: Boolean get() = date == today
 }
 
 class TodayViewModel(application: Application) : TrackingViewModel(application) {
@@ -81,19 +100,29 @@ class TodayViewModel(application: Application) : TrackingViewModel(application) 
         }
     }
 
+    /** The earlier day being shown; null follows today (also across midnight). */
+    private val chosenDay = MutableStateFlow<LocalDate?>(null)
+
+    /** Shows [date]; today or a later day goes back to following today. */
+    fun showDay(date: LocalDate?) {
+        chosenDay.value = date?.takeIf { it.isBefore(container.time.today()) }
+    }
+
     val state: StateFlow<TodayState> = combine(
-        container.habits.observeAll(), container.medications.observeAll(), container.settings.settings, ticker,
-    ) { habits, meds, settings, _ ->
+        container.habits.observeAll(), container.medications.observeAll(), container.settings.settings, ticker, chosenDay,
+    ) { habits, meds, settings, _, chosen ->
         val now = container.time.now()
         val zone = container.time.zone()
-        val today = container.time.today()
+        val realToday = container.time.today()
+        val today = chosen ?: realToday
         val activeMeds = meds.filter { it.medication.status == LifecycleStatus.ACTIVE }
         TodayState(
             loading = false,
             date = today,
+            today = realToday,
             doses = MedicationPresentation.dosesOn(app, activeMeds, today, now, zone),
             habits = habits.mapNotNull { HabitPresentation.todayItem(app, it, today, settings.firstDayOfWeek) },
-            lowStock = activeMeds.mapNotNull { data ->
+            lowStock = activeMeds.takeIf { chosen == null }.orEmpty().mapNotNull { data ->
                 MedicationPresentation.stockInfo(app, data, today)?.takeIf { it.low }?.let {
                     LowStockItem(data.medication.id, string(R.string.low_stock_banner, data.medication.name, it.text))
                 }
@@ -129,16 +158,39 @@ fun TodayScreen(
         return
     }
     val context = androidx.compose.ui.platform.LocalContext.current
+    var pickDay by remember { mutableStateOf(false) }
+    if (pickDay) {
+        PastDayPicker(
+            shown = state.date,
+            today = state.today,
+            onPick = { vm.showDay(it); pickDay = false },
+            onDismiss = { pickDay = false },
+        )
+    }
+    val day = state.date.takeIf { !state.isToday }
     LazyColumn(contentPadding = PaddingValues(top = contentPadding.calculateTopPadding(), bottom = contentPadding.calculateBottomPadding() + 24.dp)) {
         item {
             Column(Modifier.padding(horizontal = 20.dp, vertical = 12.dp)) {
-                Text(Formats.dateFull(context, state.date), style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.SemiBold)
-                if (state.totalCount > 0) {
-                    Text(
-                        stringResource(R.string.today_progress, state.doneCount, state.totalCount),
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Column(Modifier.weight(1f).clickable(onClickLabel = stringResource(R.string.pick_day)) { pickDay = true }) {
+                        Text(Formats.dateFull(context, state.date), style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.SemiBold)
+                        if (state.totalCount > 0) {
+                            Text(
+                                stringResource(R.string.today_progress, state.doneCount, state.totalCount),
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                    }
+                    IconButton(onClick = { vm.showDay(state.date.minusDays(1)) }) {
+                        Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = stringResource(R.string.previous_day))
+                    }
+                    IconButton(onClick = { vm.showDay(state.date.plusDays(1)) }, enabled = !state.isToday) {
+                        Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = stringResource(R.string.next_day))
+                    }
+                }
+                if (!state.isToday) {
+                    AssistChip(onClick = { vm.showDay(null) }, label = { Text(stringResource(R.string.back_to_today)) })
                 }
             }
         }
@@ -187,7 +239,7 @@ fun TodayScreen(
                         }
                     }
                 }
-                doseItems(group, vm, onOpenMedication)
+                doseItems(group, vm, onOpenMedication, canSnooze = state.isToday)
             }
         }
         item { SectionHeader(stringResource(R.string.section_habits)) }
@@ -205,10 +257,10 @@ fun TodayScreen(
             HabitTodayRow(
                 item = habit,
                 onOpen = { onOpenHabit(habit.habitId) },
-                onSetDone = { done -> vm.setHabitDone(habit.habitId, done) },
-                onAddAmount = { vm.addHabitProgress(habit.habitId, it) },
-                onSkip = { vm.skipHabit(habit.habitId) },
-                onLapse = { note -> vm.recordLapse(habit.habitId, note = note) },
+                onSetDone = { done -> vm.setHabitDone(habit.habitId, done, day) },
+                onAddAmount = { vm.addHabitProgress(habit.habitId, it, day) },
+                onSkip = { vm.skipHabit(habit.habitId, day) },
+                onLapse = { note -> vm.recordLapse(habit.habitId, day, note) },
                 onUndo = { vm.undoHabitEvent(it) },
             )
         }
@@ -219,15 +271,43 @@ private fun androidx.compose.foundation.lazy.LazyListScope.doseItems(
     doses: List<DoseItem>,
     vm: TodayViewModel,
     onOpenMedication: (String) -> Unit,
+    canSnooze: Boolean,
 ) {
     items(doses, key = { "dose" + it.occurrenceKey }) { dose ->
         DoseRow(
             item = dose,
             onTake = { vm.takeDose(dose.medicationId, dose.occurrenceKey, dose.name) },
             onSkip = { vm.skipDose(dose.medicationId, dose.occurrenceKey, dose.name) },
-            onSnooze = { vm.snoozeDose(dose.medicationId, dose.occurrenceKey) },
+            onSnooze = if (canSnooze) ({ vm.snoozeDose(dose.medicationId, dose.occurrenceKey) }) else null,
             onCorrect = { vm.undoMedicationEvent(it) },
             onOpen = { onOpenMedication(dose.medicationId) },
         )
+    }
+}
+
+/** A calendar limited to today and earlier days. */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun PastDayPicker(shown: LocalDate, today: LocalDate, onPick: (LocalDate) -> Unit, onDismiss: () -> Unit) {
+    fun millis(date: LocalDate) = date.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
+    val lastDay = millis(today)
+    val picker = rememberDatePickerState(
+        initialSelectedDateMillis = millis(shown),
+        selectableDates = object : SelectableDates {
+            override fun isSelectableDate(utcTimeMillis: Long): Boolean = utcTimeMillis <= lastDay
+            override fun isSelectableYear(year: Int): Boolean = year <= today.year
+        },
+    )
+    DatePickerDialog(
+        onDismissRequest = onDismiss,
+        confirmButton = {
+            TextButton(
+                enabled = picker.selectedDateMillis != null,
+                onClick = { picker.selectedDateMillis?.let { onPick(Instant.ofEpochMilli(it).atZone(ZoneOffset.UTC).toLocalDate()) } },
+            ) { Text(stringResource(R.string.ok)) }
+        },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) } },
+    ) {
+        DatePicker(state = picker)
     }
 }

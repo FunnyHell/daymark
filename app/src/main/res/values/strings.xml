@@ -507,4 +507,22 @@
     <string name="sync_error_not_found">Device not found. Open Daymark on it, on the same Wi-Fi.</string>
     <string name="widget_week_name">Daymark week</string>
     <string name="widget_week_description">The last 7 days of every habit; tap a day to mark it</string>
+    <string name="widget_error">Could not draw this widget. %1$s</string>
+    <string name="sample_habit_1">Morning walk</string>
+    <string name="sample_habit_2">Read 20 pages</string>
+    <string name="sample_habit_3">Glass of water</string>
+    <string name="sample_med_1">Vitamin D</string>
+    <string name="sample_med_2">Magnesium</string>
+    <string name="previous_day">Previous day</string>
+    <string name="next_day">Next day</string>
+    <string name="back_to_today">Back to today</string>
+    <string name="pick_day">Choose a day</string>
+    <string name="med_history_by_day">By day</string>
+    <string name="med_day_count">%1$d of %2$d taken</string>
+    <string name="show_more_days">Show earlier days</string>
+    <string name="show_event_log">Show event log</string>
+    <string name="hide_event_log">Hide event log</string>
+    <string name="med_history_calendar">Calendar</string>
+    <string name="med_heat_none">no doses</string>
+    <string name="med_heat_taken">%1$d of %2$d taken</string>
 </resources>

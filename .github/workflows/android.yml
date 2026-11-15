@@ -207,7 +207,8 @@ jobs:
             emulator-androidtest.log
             app/build/reports/androidTests/
 
-  # Starts the app on several Android versions in a tablet profile and fails on any crash.
+  # Starts the app on several Android versions in a tablet profile and fails on any crash; then draws every
+  # widget there the way a launcher gets it.
   startup:
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -250,5 +251,7 @@ jobs:
           cores: 4
           ram-size: 3072M
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: bash .github/scripts/startup_check.sh
+          script: |
+            bash .github/scripts/startup_check.sh
+            ./gradlew --no-daemon connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=io.github.funnyhell.daymark.WidgetHostInstrumentedTest,io.github.funnyhell.daymark.WidgetRenderInstrumentedTest
 

@@ -230,7 +230,7 @@ private fun MainTabs(rootNav: NavHostController, showMessage: suspend (UiMessage
             composable(Tab.MEDICATIONS.route) {
                 MedicationsScreen(padding, onOpen = { rootNav.navigate(Routes.medDetail(it)) }, onNew = { rootNav.navigate(Routes.medEdit()) })
             }
-            composable(Tab.HISTORY.route) { HistoryScreen(padding) }
+            composable(Tab.HISTORY.route) { HistoryScreen(padding, showMessage) }
             composable(Tab.SETTINGS.route) {
                 SettingsScreen(
                     padding,

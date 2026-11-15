@@ -71,8 +71,8 @@ abstract class TrackingViewModel(application: Application) : AppViewModel(applic
     }
 
     /** Tap-to-toggle from the Today ring: marks or unmarks today without a confirmation message. */
-    fun setHabitDone(habitId: String, done: Boolean) = launchSafely {
-        container.habits.setDone(habitId, done)
+    fun setHabitDone(habitId: String, done: Boolean, date: LocalDate? = null) = launchSafely {
+        container.habits.setDone(habitId, done, date ?: container.time.today())
     }
 
     fun addHabitProgress(habitId: String, amount: Double, date: LocalDate? = null, note: String? = null) = launchSafely {

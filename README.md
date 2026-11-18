@@ -21,7 +21,7 @@ Daymark records what you enter and reminds you at the times you choose. It does 
 **Medications**
 - Name, strength/form, notes, color; one or more dose times per day on chosen weekdays; a free-text dose description and a "uses from stock" amount per dose.
 - Earlier days: on Today use the arrows next to the date (or tap the date) to open a previous day and mark its habits and doses; History → Medications shows a calendar of doses and a card per day where each dose can be marked, unmarked or skipped.
-- Tap the circle on the left of a dose to mark it taken, tap again to unmark it (stock is restored). Skip / Snooze 30 min from the dose's menu (⋮) and the notification; Taken also from the notification and the widget (where it can be unmarked too); "Take all" for doses due at the same time; several doses (or habits) due at the same minute arrive as one notification with "Taken all" / "Snooze all" ("Done all" for habits). Every action is validated and idempotent: repeated taps or duplicated notification actions record once.
+- Tap the circle on the left of a dose to mark it taken, tap again to unmark it (stock is restored). Skip / Snooze 30 min from the dose's menu (⋮) and the notification; Taken also from the notification and the widget (where it can be unmarked too); "Take all" for doses due at the same time; several doses (or habits) due at the same minute arrive as one notification with "Taken all" / "Skip all" / "Snooze all" ("Done all" for habits). Every action is validated and idempotent: repeated taps or duplicated notification actions record once.
 - Missed doses are derived (nothing recorded within 3 hours), never invented; late doses can still be recorded.
 - Pause/resume a schedule without false missed doses; corrections with exact inventory reconciliation.
 
@@ -30,6 +30,7 @@ Daymark records what you enter and reminds you at the times you choose. It does 
 
 **Reminders and widgets**
 - Reminders use alarm-clock alarms (delivered with the screen off; the alarm icon shows in the status bar while one is pending), with `USE_EXACT_ALARM` on Android 13+ and the "Alarms & reminders" permission on Android 12 (falls back to inexact). Settings → Reminders has a battery-restriction shortcut and a test reminder., rebuilt after reboot, app update, time and time-zone changes, plus a 6-hourly safety net. Reminders play the default notification sound and vibrate (change it in Settings → Reminders → Sound and vibration).
+- An unmarked dose reminds again every 5 minutes (Settings → Reminders → Repeat until marked: off, 2–30 minutes) until it is taken, skipped or snoozed, for up to 3 hours.
 - Lock-screen privacy: medication and habit names hidden on the lock screen by default.
 - Seven home-screen widgets (Jetpack Glance), each with its own settings including accent color (system or fixed) and background opacity (long-press the widget → Settings on Android 12+):
   - **Habits** — today's habits with a compact tick or radio button that marks and unmarks;

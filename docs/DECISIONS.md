@@ -1124,3 +1124,27 @@ The cause of the stuck widgets on the device is not known at the time of this de
 #### Date
 
 2026-11-15
+
+---
+
+## ADR-038 — Repeated medication reminders; Skip all
+
+**Status:** Accepted
+
+#### Context
+
+The user asked for a dose reminder to ring again every few minutes until the dose is marked, with the interval configurable or off, and noticed that a group notification had no way to skip.
+
+#### Decision
+
+- Setting "Repeat until marked" (Settings → Reminders): off, 2, 5, 10, 15 or 30 minutes; default 5. The planner adds repeated reminders of an open dose at that interval after its reminder time (the dose time, or the end of the latest snooze), until the dose is taken, skipped or snoozed, or its 3-hour missed window ends. A snooze therefore restarts the series from the snooze end.
+- Before a dose is shown again, its earlier notification is removed (alone or from a group), so a dose is in one notification at a time. After a long gap only the latest reminder of each dose is shown. A group notification rings again when reposted; a group shrunk because a dose was recorded elsewhere stays silent.
+- Group notifications offer Taken all, Skip all and Snooze all (Android shows at most three actions, so a per-dose skip in a group is done in the app).
+
+#### Consequences
+
+With the default, an unmarked dose rings up to 36 times. Repeats end with the missed window instead of continuing indefinitely.
+
+#### Date
+
+2026-11-18

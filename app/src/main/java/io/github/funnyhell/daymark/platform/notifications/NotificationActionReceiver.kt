@@ -41,13 +41,13 @@ class NotificationActionReceiver : BroadcastReceiver() {
                     c.notifier.cancelMedication(key)
                 }
             }
-            ACTION_TAKE_ALL, ACTION_SNOOZE_ALL -> {
+            ACTION_TAKE_ALL, ACTION_SKIP_ALL, ACTION_SNOOZE_ALL -> {
                 val doses = intent.getStringArrayExtra(EXTRA_ITEMS).orEmpty().map { DoseRef(it.substringBefore('|'), it.substringAfter('|')) }
                 // The alarm for the snoozed doses is set before the notification goes away.
-                val results = if (action == ACTION_TAKE_ALL) {
-                    c.medications.recordDoses(doses, MedicationEventType.TAKEN, ActionSource.NOTIFICATION)
-                } else {
-                    c.medications.snoozeAll(doses, ActionSource.NOTIFICATION)
+                val results = when (action) {
+                    ACTION_TAKE_ALL -> c.medications.recordDoses(doses, MedicationEventType.TAKEN, ActionSource.NOTIFICATION)
+                    ACTION_SKIP_ALL -> c.medications.recordDoses(doses, MedicationEventType.SKIPPED, ActionSource.NOTIFICATION)
+                    else -> c.medications.snoozeAll(doses, ActionSource.NOTIFICATION)
                 }
                 Log.i(TAG, "Group action $action: $results")
                 intent.getStringExtra(EXTRA_TAG)?.let(c.notifier::cancelTag)
@@ -78,6 +78,7 @@ class NotificationActionReceiver : BroadcastReceiver() {
         const val ACTION_HABIT_DONE = "io.github.funnyhell.daymark.action.HABIT_DONE"
         const val ACTION_TAKE_ALL = "io.github.funnyhell.daymark.action.MED_TAKE_ALL"
         const val ACTION_SNOOZE_ALL = "io.github.funnyhell.daymark.action.MED_SNOOZE_ALL"
+        const val ACTION_SKIP_ALL = "io.github.funnyhell.daymark.action.MED_SKIP_ALL"
         const val ACTION_HABITS_DONE = "io.github.funnyhell.daymark.action.HABITS_DONE"
         const val EXTRA_ITEMS = "items"
         const val EXTRA_TAG = "tag"

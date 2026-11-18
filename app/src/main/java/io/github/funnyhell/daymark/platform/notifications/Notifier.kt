@@ -109,7 +109,7 @@ class Notifier(private val context: Context, private val settings: SettingsRepos
     }
 
     /**
-     * One notification for several doses due at the same time, with "Taken all" and "Snooze all". Each dose is
+     * One notification for several doses due at the same time, with "Taken all", "Skip all" and "Snooze all". Each dose is
      * still recorded separately and validated by the repository. When a dose is recorded elsewhere it is removed
      * from the notification (see [cancelMedication]).
      */
@@ -117,10 +117,11 @@ class Notifier(private val context: Context, private val settings: SettingsRepos
         if (!notificationsEnabled() || items.isEmpty()) return
         val doses = items.map { (data, occ) -> "${data.medication.id}|${occ.key}" }
         val lines = items.map { (data, occ) -> "${data.medication.name} · ${occ.doseLabel.ifBlank { context.getString(R.string.dose_default) }}" }
-        postMedicationGroup(TAG_MED_GROUP + at.epochSecond / 60, doses, lines, Formats.time(context, items.first().second.time))
+        postMedicationGroup(TAG_MED_GROUP + at.epochSecond / 60, doses, lines, Formats.time(context, items.first().second.time), alert = true)
     }
 
-    private suspend fun postMedicationGroup(tag: String, doses: List<String>, lines: List<String>, timeText: String) {
+    /** [alert] rings for a new or repeated reminder; a group shrunk because a dose was recorded elsewhere stays silent. */
+    private suspend fun postMedicationGroup(tag: String, doses: List<String>, lines: List<String>, timeText: String, alert: Boolean) {
         val hide = settings.current().hideNamesOnLockScreen
         val title = context.resources.getQuantityString(R.plurals.notif_med_group_title, lines.size, lines.size, timeText)
         val publicVersion = NotificationCompat.Builder(context, CHANNEL_MEDICATION)
@@ -136,8 +137,7 @@ class Notifier(private val context: Context, private val settings: SettingsRepos
             .setCategory(NotificationCompat.CATEGORY_REMINDER)
             .setDefaults(NotificationCompat.DEFAULT_ALL)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
-            // Updating the list after one dose was recorded must not ring again.
-            .setOnlyAlertOnce(true)
+            .setOnlyAlertOnce(!alert)
             .setVisibility(if (hide) NotificationCompat.VISIBILITY_PRIVATE else NotificationCompat.VISIBILITY_PUBLIC)
             .setPublicVersion(publicVersion)
             .setContentIntent(openAppIntent())
@@ -150,6 +150,7 @@ class Notifier(private val context: Context, private val settings: SettingsRepos
                 },
             )
             .addAction(0, context.getString(R.string.action_taken_all), groupAction(NotificationActionReceiver.ACTION_TAKE_ALL, tag, doses))
+            .addAction(0, context.getString(R.string.action_skip_all), groupAction(NotificationActionReceiver.ACTION_SKIP_ALL, tag, doses))
             .addAction(0, context.getString(R.string.action_snooze_all), groupAction(NotificationActionReceiver.ACTION_SNOOZE_ALL, tag, doses))
         post(tag, builder)
     }
@@ -267,7 +268,7 @@ class Notifier(private val context: Context, private val settings: SettingsRepos
             if (restDoses.isEmpty()) {
                 manager.cancel(tag, NOTIFICATION_ID)
             } else {
-                postMedicationGroup(tag, restDoses, restLines, extras.getString(EXTRA_GROUP_TIME).orEmpty())
+                postMedicationGroup(tag, restDoses, restLines, extras.getString(EXTRA_GROUP_TIME).orEmpty(), alert = false)
             }
         }
     }

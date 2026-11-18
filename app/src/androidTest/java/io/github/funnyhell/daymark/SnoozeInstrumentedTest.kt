@@ -90,6 +90,30 @@ class SnoozeInstrumentedTest {
     }
 
     @Test
+    fun skipAllFromGroupNotification_skipsEveryDose() = runBlocking {
+        val c = context.container
+        val ids = listOf(c.medications.create(draft("Skip A")), c.medications.create(draft("Skip B")))
+        try {
+            val items = ids.map { "$it|${todaysKey(it)}" }.toTypedArray()
+            context.sendBroadcast(
+                Intent(context, NotificationActionReceiver::class.java)
+                    .setAction(NotificationActionReceiver.ACTION_SKIP_ALL)
+                    .putExtra(NotificationActionReceiver.EXTRA_ITEMS, items)
+                    .putExtra(NotificationActionReceiver.EXTRA_TAG, "medgroup:test"),
+            )
+            var skipped = 0
+            for (i in 0 until 50) {
+                skipped = ids.count { id -> c.medications.get(id)!!.events.any { it.type == MedicationEventType.SKIPPED && it.isActive } }
+                if (skipped == 2) break
+                delay(200)
+            }
+            assertEquals(2, skipped)
+        } finally {
+            ids.forEach { c.medications.delete(it) }
+        }
+    }
+
+    @Test
     fun reminderIsShownAgainWhenTheSnoozeEnds() = runBlocking {
         val c = context.container
         val id = c.medications.create(draft("Snooze C"))

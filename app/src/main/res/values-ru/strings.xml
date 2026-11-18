@@ -532,4 +532,14 @@
     <string name="med_history_calendar">Календарь</string>
     <string name="med_heat_none">нет приёмов</string>
     <string name="med_heat_taken">принято %1$d из %2$d</string>
+    <string name="action_skip_all">Пропустить все</string>
+    <string name="settings_med_repeat">Повторять, пока не отмечено</string>
+    <string name="settings_med_repeat_desc">Напоминание о лекарстве звучит снова с этим интервалом, пока доза не отмечена принятой, пропущенной или отложенной (не дольше 3 часов).</string>
+    <string name="settings_med_repeat_off">Выключено</string>
+    <plurals name="settings_med_repeat_every">
+        <item quantity="one">Каждую %1$d минуту</item>
+        <item quantity="few">Каждые %1$d минуты</item>
+        <item quantity="many">Каждые %1$d минут</item>
+        <item quantity="other">Каждые %1$d минуты</item>
+    </plurals>
 </resources>

@@ -51,6 +51,7 @@ class ReminderEngine(
             firstDayOfWeek = s.firstDayOfWeek,
             medicationRemindersEnabled = s.medicationReminders,
             habitRemindersEnabled = s.habitReminders,
+            medicationRepeat = s.medicationRepeatMinutes.takeIf { it > 0 }?.let { Duration.ofMinutes(it.toLong()) },
         )
     }
 
@@ -82,7 +83,12 @@ class ReminderEngine(
 
     /** Reminders due in the same minute are shown as one notification per kind. */
     private suspend fun postAll(due: List<PlannedReminder>) {
-        for ((_, sameMinute) in due.groupBy { it.at.epochSecond / 60 }) {
+        // After a long gap (phone off, late alarm) only the latest reminder of each dose is shown.
+        val latest = due.filter { it.kind == ReminderKind.MEDICATION }.groupBy { it.occurrenceKey }.values.map { it.last() } +
+            due.filter { it.kind != ReminderKind.MEDICATION }
+        // A dose reminded again leaves the notification it was in (alone or in a group), so it is shown once.
+        latest.filter { it.kind == ReminderKind.MEDICATION }.forEach { r -> r.occurrenceKey?.let { notifier.cancelMedication(it) } }
+        for ((_, sameMinute) in latest.sortedBy { it.at }.groupBy { it.at.epochSecond / 60 }) {
             val meds = sameMinute.filter { it.kind == ReminderKind.MEDICATION }.mapNotNull { r ->
                 val data = medications.get(r.ownerId) ?: return@mapNotNull null
                 val occurrence = r.occurrenceKey?.let { OccurrenceRules.findOccurrence(data, it) } ?: return@mapNotNull null

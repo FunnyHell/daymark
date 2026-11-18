@@ -70,6 +70,48 @@ class ReminderPlannerTest {
         assertTrue(plan(meds = listOf(data), now = at(tuesday, 9)).none { it.occurrenceKey == "d2@$MONDAY" })
     }
 
+    private fun planRepeating(meds: List<io.github.funnyhell.daymark.domain.medication.MedicationData>, now: java.time.Instant) =
+        ReminderPlanner.plan(meds, emptyList(), now, UTC, DayOfWeek.MONDAY, medicationRepeat = java.time.Duration.ofMinutes(5))
+
+    @Test
+    fun unmarkedDoseIsRemindedAgainEveryFiveMinutesUntilTheMissedWindowEnds() {
+        val key = "d1@2024-03-04"
+        val times = planRepeating(listOf(medData()), now = at(MONDAY, 7)).filter { it.occurrenceKey == key }.map { it.at }
+        assertEquals(at(MONDAY, 8), times.first())
+        assertEquals(at(MONDAY, 8, 5), times[1])
+        assertEquals(at(MONDAY, 10, 55), times.last())
+        assertEquals(36, times.size)
+        // The alarm after the 08:00 reminder is the 08:05 repeat; at 08:05 that repeat is due.
+        val plan = planRepeating(listOf(medData()), now = at(MONDAY, 8, 1))
+        assertEquals(at(MONDAY, 8, 5), ReminderPlanner.nextAfter(plan, at(MONDAY, 8)))
+        val due = ReminderPlanner.dueBetween(planRepeating(listOf(medData()), now = at(MONDAY, 8, 5)), at(MONDAY, 8), at(MONDAY, 8, 5))
+        assertEquals(listOf(key), due.map { it.occurrenceKey })
+        assertTrue(due.single().repeat)
+    }
+
+    @Test
+    fun takenOrSkippedDoseIsNotRepeated() {
+        for (type in listOf(MedicationEventType.TAKEN, MedicationEventType.SKIPPED)) {
+            val data = medData(events = listOf(medEvent("d1@2024-03-04", type, at(MONDAY, 8, 2))))
+            assertTrue(planRepeating(listOf(data), now = at(MONDAY, 8, 3)).none { it.occurrenceKey == "d1@2024-03-04" })
+        }
+    }
+
+    @Test
+    fun snoozeRestartsTheRepeatsFromTheSnoozeEnd() {
+        // Snoozed at 08:02 for 30 minutes: nothing until 08:32, then 08:37, 08:42...
+        val snooze = medEvent("d1@2024-03-04", MedicationEventType.SNOOZED, at(MONDAY, 8, 2), at(MONDAY, 8, 32))
+        val plan = planRepeating(listOf(medData(events = listOf(snooze))), now = at(MONDAY, 8, 3)).filter { it.occurrenceKey == "d1@2024-03-04" }
+        assertEquals(at(MONDAY, 8, 32), ReminderPlanner.nextAfter(plan, at(MONDAY, 8, 2)))
+        assertEquals(listOf(at(MONDAY, 8, 32), at(MONDAY, 8, 37), at(MONDAY, 8, 42)), plan.take(3).map { it.at })
+    }
+
+    @Test
+    fun withoutRepeatEachDoseIsRemindedOnce() {
+        val p = plan(meds = listOf(medData()), now = at(MONDAY, 7))
+        assertEquals(1, p.count { it.occurrenceKey == "d1@2024-03-04" })
+    }
+
     @Test
     fun pausedMedicationHasNoReminders() {
         val data = medData(pauses = listOf(pause(MONDAY, null)), medication = medication(status = LifecycleStatus.PAUSED))

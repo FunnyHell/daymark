@@ -27,6 +27,8 @@ data class PlannedReminder(
     val ownerId: String,
     /** Occurrence key for medication reminders. */
     val occurrenceKey: String?,
+    /** A repeated reminder of a dose that is still not marked. */
+    val repeat: Boolean = false,
 ) {
     /** Stable identity used for notification ids. */
     val stableId: String get() = occurrenceKey ?: "$ownerId@$date"
@@ -49,6 +51,11 @@ object ReminderPlanner {
         medicationRemindersEnabled: Boolean = true,
         habitRemindersEnabled: Boolean = true,
         horizonDays: Long = 2,
+        /**
+         * When set, an open dose is reminded again at this interval after its reminder time (the dose time or
+         * the end of a snooze), until it is recorded or its missed window ends.
+         */
+        medicationRepeat: Duration? = null,
     ): List<PlannedReminder> {
         val today = now.atZone(zone).toLocalDate()
         val dates = (0 until horizonDays).map { today.plusDays(it) }
@@ -69,6 +76,17 @@ object ReminderPlanner {
                             else -> OccurrenceRules.reminderAt(status.occurrence, data.events, zone)
                         }
                         result += PlannedReminder(ReminderKind.MEDICATION, at, date, data.medication.id, status.occurrence.key)
+                        if (medicationRepeat != null && !medicationRepeat.isZero && !medicationRepeat.isNegative) {
+                            val until = at.plus(OccurrenceRules.MISSED_AFTER)
+                            val earliest = now.minus(CATCH_UP)
+                            var next = at.plus(medicationRepeat)
+                            while (next.isBefore(until)) {
+                                if (!next.isBefore(earliest)) {
+                                    result += PlannedReminder(ReminderKind.MEDICATION, next, date, data.medication.id, status.occurrence.key, repeat = true)
+                                }
+                                next = next.plus(medicationRepeat)
+                            }
+                        }
                     }
                 }
             }

@@ -525,4 +525,12 @@
     <string name="med_history_calendar">Calendar</string>
     <string name="med_heat_none">no doses</string>
     <string name="med_heat_taken">%1$d of %2$d taken</string>
+    <string name="action_skip_all">Skip all</string>
+    <string name="settings_med_repeat">Repeat until marked</string>
+    <string name="settings_med_repeat_desc">A medication reminder rings again at this interval until the dose is marked taken, skipped or snoozed (for up to 3 hours).</string>
+    <string name="settings_med_repeat_off">Off</string>
+    <plurals name="settings_med_repeat_every">
+        <item quantity="one">Every %1$d minute</item>
+        <item quantity="other">Every %1$d minutes</item>
+    </plurals>
 </resources>

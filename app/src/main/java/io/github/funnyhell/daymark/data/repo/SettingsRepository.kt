@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -30,6 +31,11 @@ data class Settings(
     /** Folder (a document tree URI) for automatic daily backups, or null when they are off. */
     val backupFolder: String? = null,
     val lastBackupAt: Instant? = null,
+    /**
+     * An unmarked medication reminder rings again this many minutes after it was shown, until the dose is
+     * taken, skipped or snoozed, or its missed window ends; 0 turns repeating off.
+     */
+    val medicationRepeatMinutes: Int = 5,
 )
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -48,6 +54,7 @@ class SettingsRepository(private val context: Context) {
         val backupFolder = stringPreferencesKey("backup_folder")
         val lastBackup = longPreferencesKey("last_backup")
         val deviceId = stringPreferencesKey("device_id")
+        val medRepeat = intPreferencesKey("medication_repeat_minutes")
     }
 
     val settings: Flow<Settings> = context.dataStore.data.map { p ->
@@ -63,6 +70,7 @@ class SettingsRepository(private val context: Context) {
             autoSync = p[Keys.autoSync] ?: defaults.autoSync,
             backupFolder = p[Keys.backupFolder],
             lastBackupAt = p[Keys.lastBackup]?.let(Instant::ofEpochMilli),
+            medicationRepeatMinutes = (p[Keys.medRepeat] ?: defaults.medicationRepeatMinutes).coerceIn(0, 120),
         )
     }
 
@@ -75,6 +83,7 @@ class SettingsRepository(private val context: Context) {
     suspend fun setHabitReminders(enabled: Boolean) = context.dataStore.edit { it[Keys.habitReminders] = enabled }
     suspend fun setHideNamesOnLockScreen(enabled: Boolean) = context.dataStore.edit { it[Keys.hideNames] = enabled }
     suspend fun setOnboardingDone() = context.dataStore.edit { it[Keys.onboarding] = true }
+    suspend fun setMedicationRepeatMinutes(minutes: Int) = context.dataStore.edit { it[Keys.medRepeat] = minutes.coerceIn(0, 120) }
     suspend fun setAutoSync(enabled: Boolean) = context.dataStore.edit { it[Keys.autoSync] = enabled }
     suspend fun setBackupFolder(uri: String?) = context.dataStore.edit {
         if (uri == null) it.remove(Keys.backupFolder) else it[Keys.backupFolder] = uri

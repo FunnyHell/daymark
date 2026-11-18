@@ -1,5 +1,11 @@
 package io.github.funnyhell.daymark.ui.settings
 
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.material3.RadioButton
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.runtime.remember
 import android.app.Application
 import android.content.Intent
 import android.net.Uri
@@ -91,6 +97,10 @@ class SettingsViewModel(application: Application) : AppViewModel(application) {
     }
     fun setMedReminders(on: Boolean) = launchSafely {
         container.settings.setMedicationReminders(on)
+        container.reminders.reschedule()
+    }
+    fun setMedRepeat(minutes: Int) = launchSafely {
+        container.settings.setMedicationRepeatMinutes(minutes)
         container.reminders.reschedule()
     }
     fun setHabitReminders(on: Boolean) = launchSafely {
@@ -279,6 +289,45 @@ fun RemindersSettingsScreen(
     val requestNotifications = rememberNotificationPermissionRequest()
     SubScreen(stringResource(R.string.settings_reminders), onBack) {
         SwitchRow(stringResource(R.string.settings_med_reminders), null, s.medicationReminders, vm::setMedReminders)
+        var repeatDialog by remember { mutableStateOf(false) }
+        NavRow(
+            stringResource(R.string.settings_med_repeat),
+            repeatText(s.medicationRepeatMinutes),
+            enabled = s.medicationReminders,
+        ) { repeatDialog = true }
+        if (repeatDialog) {
+            AlertDialog(
+                onDismissRequest = { repeatDialog = false },
+                title = { Text(stringResource(R.string.settings_med_repeat)) },
+                text = {
+                    Column(Modifier.selectableGroup()) {
+                        Text(
+                            stringResource(R.string.settings_med_repeat_desc),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(bottom = 8.dp),
+                        )
+                        REPEAT_CHOICES.forEach { minutes ->
+                            Row(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .selectable(
+                                        selected = s.medicationRepeatMinutes == minutes,
+                                        role = Role.RadioButton,
+                                        onClick = { vm.setMedRepeat(minutes); repeatDialog = false },
+                                    )
+                                    .padding(vertical = 10.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
+                                RadioButton(selected = s.medicationRepeatMinutes == minutes, onClick = null)
+                                Text(repeatText(minutes), modifier = Modifier.padding(start = 12.dp))
+                            }
+                        }
+                    }
+                },
+                confirmButton = { TextButton(onClick = { repeatDialog = false }) { Text(stringResource(R.string.cancel)) } },
+            )
+        }
         SwitchRow(stringResource(R.string.settings_habit_reminders), null, s.habitReminders, vm::setHabitReminders)
         SectionHeader(stringResource(R.string.settings_delivery))
         StatusRow(
@@ -457,3 +506,10 @@ private fun NavRow(title: String, detail: String, enabled: Boolean = true, atten
         Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }
+
+private val REPEAT_CHOICES = listOf(0, 2, 5, 10, 15, 30)
+
+@Composable
+private fun repeatText(minutes: Int): String =
+    if (minutes <= 0) stringResource(R.string.settings_med_repeat_off)
+    else pluralStringResource(R.plurals.settings_med_repeat_every, minutes, minutes)

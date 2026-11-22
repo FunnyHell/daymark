@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import java.time.DayOfWeek
 import java.time.Instant
@@ -36,6 +37,12 @@ data class Settings(
      * taken, skipped or snoozed, or its missed window ends; 0 turns repeating off.
      */
     val medicationRepeatMinutes: Int = 5,
+    /** Modules the user turned on or off; modules in neither set use their default (see ModuleRegistry). */
+    val modulesOn: Set<String> = emptySet(),
+    val modulesOff: Set<String> = emptySet(),
+    /** Home sections in the order the user arranged them, and the ones the user hid. */
+    val homeOrder: List<String> = emptyList(),
+    val homeHidden: Set<String> = emptySet(),
 )
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -55,6 +62,10 @@ class SettingsRepository(private val context: Context) {
         val lastBackup = longPreferencesKey("last_backup")
         val deviceId = stringPreferencesKey("device_id")
         val medRepeat = intPreferencesKey("medication_repeat_minutes")
+        val modulesOn = stringSetPreferencesKey("modules_on")
+        val modulesOff = stringSetPreferencesKey("modules_off")
+        val homeOrder = stringPreferencesKey("home_order")
+        val homeHidden = stringSetPreferencesKey("home_hidden")
     }
 
     val settings: Flow<Settings> = context.dataStore.data.map { p ->
@@ -71,6 +82,10 @@ class SettingsRepository(private val context: Context) {
             backupFolder = p[Keys.backupFolder],
             lastBackupAt = p[Keys.lastBackup]?.let(Instant::ofEpochMilli),
             medicationRepeatMinutes = (p[Keys.medRepeat] ?: defaults.medicationRepeatMinutes).coerceIn(0, 120),
+            modulesOn = p[Keys.modulesOn].orEmpty(),
+            modulesOff = p[Keys.modulesOff].orEmpty(),
+            homeOrder = p[Keys.homeOrder]?.split(',')?.filter { it.isNotBlank() }.orEmpty(),
+            homeHidden = p[Keys.homeHidden].orEmpty(),
         )
     }
 
@@ -84,6 +99,16 @@ class SettingsRepository(private val context: Context) {
     suspend fun setHideNamesOnLockScreen(enabled: Boolean) = context.dataStore.edit { it[Keys.hideNames] = enabled }
     suspend fun setOnboardingDone() = context.dataStore.edit { it[Keys.onboarding] = true }
     suspend fun setMedicationRepeatMinutes(minutes: Int) = context.dataStore.edit { it[Keys.medRepeat] = minutes.coerceIn(0, 120) }
+    suspend fun setModuleEnabled(id: String, enabled: Boolean) = context.dataStore.edit {
+        it[Keys.modulesOn] = it[Keys.modulesOn].orEmpty().let { set -> if (enabled) set + id else set - id }
+        it[Keys.modulesOff] = it[Keys.modulesOff].orEmpty().let { set -> if (enabled) set - id else set + id }
+    }
+
+    suspend fun setHomeLayout(order: List<String>, hidden: Set<String>) = context.dataStore.edit {
+        it[Keys.homeOrder] = order.joinToString(",")
+        it[Keys.homeHidden] = hidden
+    }
+
     suspend fun setAutoSync(enabled: Boolean) = context.dataStore.edit { it[Keys.autoSync] = enabled }
     suspend fun setBackupFolder(uri: String?) = context.dataStore.edit {
         if (uri == null) it.remove(Keys.backupFolder) else it[Keys.backupFolder] = uri

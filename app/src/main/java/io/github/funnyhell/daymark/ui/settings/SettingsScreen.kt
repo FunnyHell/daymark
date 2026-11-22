@@ -225,6 +225,7 @@ fun SettingsScreen(
     onOpenReminders: () -> Unit,
     onOpenBackup: () -> Unit,
     onOpenSync: () -> Unit,
+    onOpenModules: () -> Unit,
     vm: SettingsViewModel = viewModel(factory = SettingsViewModel.Factory),
 ) {
     val s by vm.settings.collectAsStateWithLifecycle()
@@ -249,6 +250,7 @@ fun SettingsScreen(
                 ?: stringResource(R.string.settings_backup_desc),
             onClick = onOpenBackup,
         )
+        NavRow(stringResource(R.string.settings_modules), stringResource(R.string.settings_modules_short), onClick = onOpenModules)
         NavRow(stringResource(R.string.settings_sync), stringResource(R.string.settings_sync_desc), onClick = onOpenSync)
 
         SectionHeader(stringResource(R.string.settings_appearance))

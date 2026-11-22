@@ -20,6 +20,10 @@ import io.github.funnyhell.daymark.platform.widgets.WidgetUpdater
 import java.time.Duration
 import java.time.Instant
 import kotlinx.coroutines.CancellationException
+import io.github.funnyhell.daymark.module.ModuleReminder
+import io.github.funnyhell.daymark.module.ModuleRegistry
+import io.github.funnyhell.daymark.modules.habits.HabitsModule
+import io.github.funnyhell.daymark.modules.medications.MedicationsModule
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
@@ -43,14 +47,28 @@ class ReminderEngine(
 
     private suspend fun plan(now: Instant): List<PlannedReminder> {
         val s = settings.current()
-        return ReminderPlanner.plan(
+        val zone = time.zone()
+        val modules = ModuleRegistry.enabled(s).mapNotNull { module ->
+            val source = module.reminders ?: return@mapNotNull null
+            // A failing module must not take the medication and habit reminders down with it.
+            val planned = try {
+                source.plan(context, now, zone)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Log.e(TAG, "Module ${module.id} could not plan reminders", e)
+                emptyList()
+            }
+            planned.map { PlannedReminder(ReminderKind.MODULE, it.at, it.at.atZone(zone).toLocalDate(), module.id, it.key) }
+        }.flatten()
+        return modules + ReminderPlanner.plan(
             medications = medications.all(),
             habits = habits.all(),
             now = now,
             zone = time.zone(),
             firstDayOfWeek = s.firstDayOfWeek,
-            medicationRemindersEnabled = s.medicationReminders,
-            habitRemindersEnabled = s.habitReminders,
+            medicationRemindersEnabled = s.medicationReminders && ModuleRegistry.isEnabled(MedicationsModule.ID, s),
+            habitRemindersEnabled = s.habitReminders && ModuleRegistry.isEnabled(HabitsModule.ID, s),
             medicationRepeat = s.medicationRepeatMinutes.takeIf { it > 0 }?.let { Duration.ofMinutes(it.toLong()) },
         )
     }
@@ -85,7 +103,18 @@ class ReminderEngine(
     private suspend fun postAll(due: List<PlannedReminder>) {
         // After a long gap (phone off, late alarm) only the latest reminder of each dose is shown.
         val latest = due.filter { it.kind == ReminderKind.MEDICATION }.groupBy { it.occurrenceKey }.values.map { it.last() } +
-            due.filter { it.kind != ReminderKind.MEDICATION }
+            due.filter { it.kind == ReminderKind.MODULE }.groupBy { it.ownerId }.values.map { it.last() } +
+            due.filter { it.kind == ReminderKind.HABIT }
+        for (r in latest.filter { it.kind == ReminderKind.MODULE }) {
+            val module = ModuleRegistry.byId(r.ownerId)?.reminders ?: continue
+            try {
+                module.show(context, ModuleReminder(r.occurrenceKey.orEmpty(), r.at))
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Log.e(TAG, "Module ${r.ownerId} could not show a reminder", e)
+            }
+        }
         // A dose reminded again leaves the notification it was in (alone or in a group), so it is shown once.
         latest.filter { it.kind == ReminderKind.MEDICATION }.forEach { r -> r.occurrenceKey?.let { notifier.cancelMedication(it) } }
         for ((_, sameMinute) in latest.sortedBy { it.at }.groupBy { it.at.epochSecond / 60 }) {

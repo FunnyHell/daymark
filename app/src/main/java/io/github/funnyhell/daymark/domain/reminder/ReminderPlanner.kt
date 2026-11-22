@@ -17,7 +17,13 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 
-enum class ReminderKind { MEDICATION, HABIT }
+enum class ReminderKind {
+    MEDICATION,
+    HABIT,
+
+    /** A reminder of an optional module: ownerId is the module id, occurrenceKey the module's own key. */
+    MODULE,
+}
 
 data class PlannedReminder(
     val kind: ReminderKind,

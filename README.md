@@ -28,6 +28,10 @@ Daymark records what you enter and reminds you at the times you choose. It does 
 **Inventory**
 - Optional per medication, user-defined unit, initial stock, add packages (previous package sizes offered as chips; each tap adds that size, so two taps on 20 add 40), set a counted stock, low-stock threshold and notification, full change log.
 
+**Home and modules**
+- Home shows sections of the enabled modules; the pencil on Home hides and reorders them. Settings → Modules turns features on or off (Habits, Medications, Movement breaks); data of a module that is off is kept. Movement breaks reminds you to get up every 30–120 minutes during chosen hours and days ("I moved" / "Later").
+- Contributing a module: see docs/MODULES.md; ideas in docs/IDEAS.md.
+
 **Reminders and widgets**
 - Reminders use alarm-clock alarms (delivered with the screen off; the alarm icon shows in the status bar while one is pending), with `USE_EXACT_ALARM` on Android 13+ and the "Alarms & reminders" permission on Android 12 (falls back to inexact). Settings → Reminders has a battery-restriction shortcut and a test reminder., rebuilt after reboot, app update, time and time-zone changes, plus a 6-hourly safety net. Reminders play the default notification sound and vibrate (change it in Settings → Reminders → Sound and vibration).
 - An unmarked dose reminds again every 5 minutes (Settings → Reminders → Repeat until marked: off, 2–30 minutes) until it is taken, skipped or snoozed, for up to 3 hours.

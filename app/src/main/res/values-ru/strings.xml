@@ -542,4 +542,47 @@
         <item quantity="many">Каждые %1$d минут</item>
         <item quantity="other">Каждые %1$d минуты</item>
     </plurals>
+    <string name="module_habits">Привычки</string>
+    <string name="module_habits_desc">Ежедневные, недельные привычки и отказ от вредных, с сериями и напоминаниями.</string>
+    <string name="module_medications">Лекарства</string>
+    <string name="module_medications_desc">Приёмы, напоминания, история и запас.</string>
+    <string name="module_breaks">Разминка</string>
+    <string name="module_breaks_desc">Напоминание встать и подвигаться через заданные промежутки в течение дня.</string>
+    <string name="module_settings">Настройки: %1$s</string>
+    <string name="settings_modules">Модули</string>
+    <string name="settings_modules_short">Включить или выключить разделы</string>
+    <string name="settings_modules_desc">Выключите то, чем не пользуетесь. Выключенный модуль пропадает с главного экрана, из вкладок и напоминаний; его данные сохраняются.</string>
+    <string name="home_edit">Настроить главный экран</string>
+    <string name="home_manage_modules">Модули…</string>
+    <string name="home_no_sections">Включите модуль, чтобы добавить разделы.</string>
+    <string name="home_empty_title">Главный экран пуст</string>
+    <string name="home_empty_body">Выберите, что здесь показывать.</string>
+    <string name="home_no_habits_yet">Привычек пока нет.</string>
+    <string name="home_no_medications_yet">Лекарств пока нет.</string>
+    <string name="home_no_doses">В этот день приёмов нет.</string>
+    <string name="move_up">Переместить «%1$s» выше</string>
+    <string name="move_down">Переместить «%1$s» ниже</string>
+    <string name="editor_done">Готово</string>
+    <string name="breaks_channel">Разминка</string>
+    <string name="breaks_channel_desc">Напоминания встать и подвигаться</string>
+    <string name="breaks_notif_title">Пора размяться</string>
+    <string name="breaks_notif_text">Встаньте, потянитесь или пройдитесь пару минут.</string>
+    <string name="breaks_done">Размялся</string>
+    <string name="breaks_later">Позже</string>
+    <string name="breaks_next_today">Следующая разминка в %1$s</string>
+    <string name="breaks_next_on">Следующая разминка: %1$s, %2$s</string>
+    <string name="breaks_none_planned">Разминки не запланированы. Проверьте дни и часы.</string>
+    <string name="breaks_done_today">Сегодня: %1$d</string>
+    <string name="breaks_interval">Каждые</string>
+    <string name="breaks_hours">Активные часы</string>
+    <string name="breaks_from">С</string>
+    <string name="breaks_until">До</string>
+    <string name="breaks_hours_invalid">Конец должен быть позже начала.</string>
+    <string name="breaks_days">Дни</string>
+    <plurals name="minutes_short">
+        <item quantity="one">%1$d мин</item>
+        <item quantity="few">%1$d мин</item>
+        <item quantity="many">%1$d мин</item>
+        <item quantity="other">%1$d мин</item>
+    </plurals>
 </resources>

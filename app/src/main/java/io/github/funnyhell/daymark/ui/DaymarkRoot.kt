@@ -10,7 +10,6 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
@@ -54,42 +53,43 @@ import androidx.navigation.compose.rememberNavController
 import io.github.funnyhell.daymark.R
 import io.github.funnyhell.daymark.container
 import io.github.funnyhell.daymark.ui.common.UiMessage
-import io.github.funnyhell.daymark.ui.habits.HabitDetailScreen
-import io.github.funnyhell.daymark.ui.habits.HabitEditScreen
-import io.github.funnyhell.daymark.ui.habits.HabitsScreen
 import io.github.funnyhell.daymark.ui.history.HistoryScreen
-import io.github.funnyhell.daymark.ui.medications.MedicationDetailScreen
-import io.github.funnyhell.daymark.ui.medications.MedicationEditScreen
-import io.github.funnyhell.daymark.ui.medications.MedicationsScreen
 import io.github.funnyhell.daymark.ui.onboarding.OnboardingScreen
 import io.github.funnyhell.daymark.ui.settings.BackupSettingsScreen
 import io.github.funnyhell.daymark.ui.settings.RemindersSettingsScreen
 import io.github.funnyhell.daymark.ui.settings.SettingsScreen
 import io.github.funnyhell.daymark.ui.sync.SyncScreen
-import io.github.funnyhell.daymark.ui.today.TodayScreen
+import io.github.funnyhell.daymark.module.ModuleFab
+import io.github.funnyhell.daymark.module.ModuleHost
+import io.github.funnyhell.daymark.module.ModuleIcon
+import io.github.funnyhell.daymark.module.ModuleNavigator
+import io.github.funnyhell.daymark.module.ModuleRegistry
+import io.github.funnyhell.daymark.ui.home.HomeScreen
+import io.github.funnyhell.daymark.ui.settings.ModulesScreen
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
 
-private enum class Tab(val route: String, val label: Int, val icon: ImageVector?, val iconRes: Int?) {
-    TODAY("today", R.string.tab_today, Icons.Filled.Home, null),
-    HABITS("habits", R.string.tab_habits, Icons.Filled.CheckCircle, null),
-    MEDICATIONS("medications", R.string.tab_medications, null, R.drawable.ic_pill),
-    HISTORY("history", R.string.tab_history, Icons.Filled.DateRange, null),
-    SETTINGS("settings", R.string.tab_settings, Icons.Filled.Settings, null),
-}
-
+/** Screens of the app shell; module screens bring their own routes (see DaymarkModule.screens). */
 private object Routes {
-    const val HABIT_EDIT = "habit/edit?id={id}"
-    const val HABIT_DETAIL = "habit/{id}"
-    const val MED_EDIT = "medication/edit?id={id}"
-    const val MED_DETAIL = "medication/{id}"
+    const val HOME = "home"
+    const val HISTORY = "history"
+    const val SETTINGS = "settings"
     const val SYNC = "sync"
     const val REMINDERS = "settings/reminders"
     const val BACKUP = "settings/backup"
-    fun habitEdit(id: String? = null) = "habit/edit?id=${id.orEmpty()}"
-    fun habitDetail(id: String) = "habit/$id"
-    fun medEdit(id: String? = null) = "medication/edit?id=${id.orEmpty()}"
-    fun medDetail(id: String) = "medication/$id"
+    const val MODULES = "settings/modules"
 }
+
+/** A bottom-bar tab: Home, the tabs of enabled modules, History and Settings. */
+private data class TabItem(
+    val route: String,
+    val label: Int,
+    val icon: ModuleIcon,
+    val fab: ModuleFab? = null,
+    val content: @Composable (ModuleHost) -> Unit,
+)
 
 @Composable
 fun DaymarkRoot(onboardingDone: Boolean) {
@@ -111,24 +111,23 @@ fun DaymarkRoot(onboardingDone: Boolean) {
         )
         if (result == SnackbarResult.ActionPerformed) msg.onAction?.invoke()
     }
+    val show = showMessage
+    val navigator = remember(nav) {
+        object : ModuleNavigator {
+            override fun navigate(route: String) = nav.navigate(route)
+            override fun back(from: NavBackStackEntry) = nav.popFrom(from)
+            override suspend fun showMessage(message: UiMessage) = show(message)
+        }
+    }
     Box(Modifier.fillMaxSize()) {
         NavHost(nav, startDestination = "main") {
-            composable("main") { MainTabs(nav, showMessage) }
-            composable(Routes.HABIT_EDIT, arguments = listOf(optionalId())) { entry ->
-                HabitEditScreen(onDone = { nav.popFrom(entry) }, showMessage = showMessage)
-            }
-            composable(Routes.HABIT_DETAIL) { entry ->
-                HabitDetailScreen(onBack = { nav.popFrom(entry) }, onEdit = { nav.navigate(Routes.habitEdit(it)) }, showMessage = showMessage)
-            }
-            composable(Routes.MED_EDIT, arguments = listOf(optionalId())) { entry ->
-                MedicationEditScreen(onDone = { nav.popFrom(entry) }, showMessage = showMessage)
-            }
+            composable("main") { MainTabs(navigator, showMessage) }
             composable(Routes.SYNC) { entry -> SyncScreen(onBack = { nav.popFrom(entry) }) }
             composable(Routes.REMINDERS) { entry -> RemindersSettingsScreen(onBack = { nav.popFrom(entry) }, showMessage = showMessage) }
             composable(Routes.BACKUP) { entry -> BackupSettingsScreen(onBack = { nav.popFrom(entry) }, showMessage = showMessage) }
-            composable(Routes.MED_DETAIL) { entry ->
-                MedicationDetailScreen(onBack = { nav.popFrom(entry) }, onEdit = { nav.navigate(Routes.medEdit(it)) }, showMessage = showMessage)
-            }
+            composable(Routes.MODULES) { entry -> ModulesScreen(onBack = { nav.popFrom(entry) }, onOpen = { nav.navigate(it) }) }
+            // Every module registers its screens, also while it is off, so open links and the back stack stay valid.
+            ModuleRegistry.all.forEach { module -> with(module) { screens(navigator) } }
         }
         // One snackbar host above all screens, kept clear of the bottom navigation bar.
         SnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(bottom = 88.dp)) { data ->
@@ -158,30 +157,58 @@ private fun NavHostController.popFrom(entry: NavBackStackEntry) {
     if (currentBackStackEntry?.id == entry.id && previousBackStackEntry != null) popBackStack()
 }
 
-private fun optionalId() = navArgument("id") {
-    type = NavType.StringType
-    nullable = true
-    defaultValue = null
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun MainTabs(rootNav: NavHostController, showMessage: suspend (UiMessage) -> Unit) {
+private fun MainTabs(navigator: ModuleNavigator, showMessage: suspend (UiMessage) -> Unit) {
+    val context = LocalContext.current
+    val settings by context.container.settings.settings.collectAsStateWithLifecycle(initialValue = null)
+    val current = settings ?: return
+    val tabs = buildList {
+        add(
+            TabItem(Routes.HOME, R.string.tab_today, ModuleIcon.Vector(Icons.Filled.Home)) { host ->
+                HomeScreen(host.contentPadding, host.navigator, onOpenModules = { host.navigator.navigate(Routes.MODULES) })
+            },
+        )
+        ModuleRegistry.enabled(current).forEach { module ->
+            module.tab?.let { tab -> add(TabItem(tab.route, tab.label, module.icon, tab.fab) { host -> tab.Content(host) }) }
+        }
+        add(TabItem(Routes.HISTORY, R.string.tab_history, ModuleIcon.Vector(Icons.Filled.DateRange)) { host -> HistoryScreen(host.contentPadding, showMessage) })
+        add(
+            TabItem(Routes.SETTINGS, R.string.tab_settings, ModuleIcon.Vector(Icons.Filled.Settings)) { host ->
+                SettingsScreen(
+                    host.contentPadding,
+                    showMessage,
+                    onOpenReminders = { navigator.navigate(Routes.REMINDERS) },
+                    onOpenBackup = { navigator.navigate(Routes.BACKUP) },
+                    onOpenSync = { navigator.navigate(Routes.SYNC) },
+                    onOpenModules = { navigator.navigate(Routes.MODULES) },
+                )
+            },
+        )
+    }
     val tabsNav = rememberNavController()
     val entry by tabsNav.currentBackStackEntryAsState()
-    val current = Tab.entries.firstOrNull { it.route == entry?.destination?.route } ?: Tab.TODAY
+    val selected = tabs.firstOrNull { it.route == entry?.destination?.route } ?: tabs.first()
+    // A tab of a module that was just turned off is left for Home.
+    LaunchedEffect(tabs.map { it.route }, entry?.destination?.route) {
+        val route = entry?.destination?.route
+        if (route != null && tabs.none { it.route == route }) {
+            tabsNav.navigate(Routes.HOME) { popUpTo(tabsNav.graph.findStartDestination().id) { inclusive = false } }
+        }
+    }
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(if (current == Tab.TODAY) R.string.app_name else current.label), fontWeight = FontWeight.SemiBold) },
+                title = { Text(stringResource(if (selected.route == Routes.HOME) R.string.app_name else selected.label), fontWeight = FontWeight.SemiBold) },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
             )
         },
         bottomBar = {
             NavigationBar {
-                Tab.entries.forEach { tab ->
+                tabs.forEach { tab ->
                     NavigationBarItem(
-                        selected = tab == current,
+                        selected = tab.route == selected.route,
                         onClick = {
                             tabsNav.navigate(tab.route) {
                                 popUpTo(tabsNav.graph.findStartDestination().id) { saveState = true }
@@ -190,7 +217,10 @@ private fun MainTabs(rootNav: NavHostController, showMessage: suspend (UiMessage
                             }
                         },
                         icon = {
-                            if (tab.icon != null) Icon(tab.icon, contentDescription = null) else Icon(painterResource(tab.iconRes!!), contentDescription = null)
+                            when (val icon = tab.icon) {
+                                is ModuleIcon.Vector -> Icon(icon.image, contentDescription = null)
+                                is ModuleIcon.Drawable -> Icon(painterResource(icon.res), contentDescription = null)
+                            }
                         },
                         label = { Text(stringResource(tab.label), maxLines = 1) },
                     )
@@ -198,47 +228,30 @@ private fun MainTabs(rootNav: NavHostController, showMessage: suspend (UiMessage
             }
         },
         floatingActionButton = {
-            when (current) {
-                Tab.HABITS -> ExtendedFloatingActionButton(
-                    onClick = { rootNav.navigate(Routes.habitEdit()) },
+            selected.fab?.let { fab ->
+                ExtendedFloatingActionButton(
+                    onClick = { fab.onClick(navigator) },
                     icon = { Icon(Icons.Filled.Add, contentDescription = null) },
-                    text = { Text(stringResource(R.string.new_habit)) },
+                    text = { Text(stringResource(fab.label)) },
                 )
-                Tab.MEDICATIONS -> ExtendedFloatingActionButton(
-                    onClick = { rootNav.navigate(Routes.medEdit()) },
-                    icon = { Icon(Icons.Filled.Add, contentDescription = null) },
-                    text = { Text(stringResource(R.string.new_medication)) },
-                )
-                else -> Unit
             }
         },
     ) { padding ->
-        NavHost(tabsNav, startDestination = Tab.TODAY.route, modifier = Modifier) {
-            composable(Tab.TODAY.route) {
-                TodayScreen(
-                    contentPadding = padding,
-                    onOpenHabit = { rootNav.navigate(Routes.habitDetail(it)) },
-                    onOpenMedication = { rootNav.navigate(Routes.medDetail(it)) },
-                    onNewHabit = { rootNav.navigate(Routes.habitEdit()) },
-                    onNewMedication = { rootNav.navigate(Routes.medEdit()) },
-                    showMessage = showMessage,
-                )
-            }
-            composable(Tab.HABITS.route) {
-                HabitsScreen(padding, onOpen = { rootNav.navigate(Routes.habitDetail(it)) }, onNew = { rootNav.navigate(Routes.habitEdit()) })
-            }
-            composable(Tab.MEDICATIONS.route) {
-                MedicationsScreen(padding, onOpen = { rootNav.navigate(Routes.medDetail(it)) }, onNew = { rootNav.navigate(Routes.medEdit()) })
-            }
-            composable(Tab.HISTORY.route) { HistoryScreen(padding, showMessage) }
-            composable(Tab.SETTINGS.route) {
-                SettingsScreen(
-                    padding,
-                    showMessage,
-                    onOpenReminders = { rootNav.navigate(Routes.REMINDERS) },
-                    onOpenBackup = { rootNav.navigate(Routes.BACKUP) },
-                    onOpenSync = { rootNav.navigate(Routes.SYNC) },
-                )
+        val host = object : ModuleHost {
+            override val navigator = navigator
+            override val contentPadding = padding
+        }
+        // Routes of all tabs that can exist are registered, so turning a module on or off does not rebuild the graph.
+        val allTabs = remember {
+            listOf(Routes.HOME, Routes.HISTORY, Routes.SETTINGS) + ModuleRegistry.all.mapNotNull { it.tab?.route }
+        }
+        val byRoute by rememberUpdatedState(tabs.associateBy { it.route })
+        NavHost(tabsNav, startDestination = Routes.HOME) {
+            allTabs.forEach { route ->
+                composable(route) {
+                    val item = byRoute[route]
+                    if (item != null) item.content(host)
+                }
             }
         }
     }

@@ -20,6 +20,7 @@ class DaymarkApplication : Application() {
         super.onCreate()
         container = AppContainer(this, appScope)
         container.notifier.createChannels()
+        io.github.funnyhell.daymark.module.ModuleRegistry.all.forEach { it.onAppStart(this) }
         MaintenanceWorker.schedule(this)
         appScope.launch { container.reminders.runCheck() }
         registerActivityLifecycleCallbacks(ForegroundTracker { visible ->

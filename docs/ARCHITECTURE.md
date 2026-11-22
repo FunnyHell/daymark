@@ -867,3 +867,16 @@ app/src/main/java/io/github/funnyhell/daymark/
 `habits`, `habit_schedules` (versioned), `habit_events` (voidable), `pauses` (habit and medication pause/archive intervals), `medications`, `medication_schedules` (versioned), `scheduled_doses`, `medication_events` (voidable; TAKEN, SKIPPED, SNOOZED), `inventory_adjustments` (ledger; unique `event_id`+`type`). IDs are random UUID strings. Dates are ISO text, times `HH:mm`, instants epoch milliseconds.
 
 The exact rules are recorded in `docs/DECISIONS.md` ADR-011 to ADR-022.
+
+## Feature modules (ADR-039)
+
+```
+module/        DaymarkModule contract, ModuleRegistry, HomeLayout
+modules/
+  habits/      HabitsModule: tab, screens, Home section
+  medications/ MedicationsModule: tab, screens, Home section
+  breaks/      BreaksModule: rules, own DataStore, reminders, notification actions, Home section, settings
+ui/home/       Home screen (sections of enabled modules, earlier days) and its editor
+```
+
+The shell (`ui/DaymarkRoot`) builds the bottom bar from Home, the tabs of enabled modules, History and Settings, and registers the screens of all modules. `ReminderEngine` merges module reminders into its single alarm. Contributor guide: docs/MODULES.md.

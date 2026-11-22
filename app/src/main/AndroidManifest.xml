@@ -132,6 +132,10 @@
         </receiver>
 
         <receiver
+            android:name=".modules.breaks.BreakActionReceiver"
+            android:exported="false" />
+
+        <receiver
             android:name=".platform.widgets.WeekWidgetReceiver"
             android:exported="true"
             android:label="@string/widget_week_name">

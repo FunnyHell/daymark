@@ -1148,3 +1148,30 @@ With the default, an unmarked dose rings up to 36 times. Repeats end with the mi
 #### Date
 
 2026-11-18
+
+---
+
+## ADR-039 — Feature modules and a configurable Home
+
+**Status:** Accepted
+
+#### Context
+
+A second developer wants to add features (first a reminder to move during the day), and the user wants a Home screen like Samsung Health's, where sections are added and removed, and features that are not needed can be turned off.
+
+#### Decision
+
+- A feature is a `DaymarkModule` (`module/DaymarkModule.kt`) listed in `ModuleRegistry`. It can provide a bottom-bar tab, Home sections, screens, a settings screen and reminders. The user turns modules on or off in Settings → Modules; the choice is stored as two sets (`modulesOn`, `modulesOff`) so that a module's default applies until the user chooses.
+- Home is the list of sections of the enabled modules. The user hides and reorders them (Edit Home); new sections from a module turned on later are added at the end (`HomeLayout.resolve`). The date navigation (earlier days) stays on Home and is passed to the sections.
+- Habits and Medications became the first two modules. Their reminders, notifications, widgets, history, backup and sync remain in the core and are switched off with the module where they are user-visible (tab, Home, reminders); widgets keep working.
+- Module reminders go through the single reminder alarm: `ReminderEngine` asks each enabled module for its upcoming reminders and calls it back when one is due. A failing module is logged and skipped.
+- The first new module, Movement breaks (off by default), keeps its settings in its own DataStore file and is not part of backups or sync.
+- One Gradle module for now; packages (`module/`, `modules/<id>/`) are laid out for a later split. The guide for contributors is docs/MODULES.md; ideas are in docs/IDEAS.md.
+
+#### Consequences
+
+Turning off Medications or Habits stops their reminders but leaves their widgets and History tab. Data of a module that is off is still exported and synced.
+
+#### Date
+
+2026-11-22

@@ -533,4 +533,45 @@
         <item quantity="one">Every %1$d minute</item>
         <item quantity="other">Every %1$d minutes</item>
     </plurals>
+    <string name="module_habits">Habits</string>
+    <string name="module_habits_desc">Daily, weekly and quit habits with streaks and reminders.</string>
+    <string name="module_medications">Medications</string>
+    <string name="module_medications_desc">Doses, reminders, intake history and stock.</string>
+    <string name="module_breaks">Movement breaks</string>
+    <string name="module_breaks_desc">A reminder to get up and move every so often during the day.</string>
+    <string name="module_settings">%1$s settings</string>
+    <string name="settings_modules">Modules</string>
+    <string name="settings_modules_short">Turn features on or off</string>
+    <string name="settings_modules_desc">Turn off what you do not use. A module that is off disappears from Home, the tabs and reminders; its data is kept.</string>
+    <string name="home_edit">Edit Home</string>
+    <string name="home_manage_modules">Modules…</string>
+    <string name="home_no_sections">Turn on a module to add sections.</string>
+    <string name="home_empty_title">Home is empty</string>
+    <string name="home_empty_body">Choose what to show here.</string>
+    <string name="home_no_habits_yet">No habits yet.</string>
+    <string name="home_no_medications_yet">No medications yet.</string>
+    <string name="home_no_doses">No doses on this day.</string>
+    <string name="move_up">Move %1$s up</string>
+    <string name="move_down">Move %1$s down</string>
+    <string name="editor_done">Done</string>
+    <string name="breaks_channel">Movement breaks</string>
+    <string name="breaks_channel_desc">Reminders to get up and move</string>
+    <string name="breaks_notif_title">Time to move</string>
+    <string name="breaks_notif_text">Stand up, stretch or walk for a couple of minutes.</string>
+    <string name="breaks_done">I moved</string>
+    <string name="breaks_later">Later</string>
+    <string name="breaks_next_today">Next break at %1$s</string>
+    <string name="breaks_next_on">Next break %1$s, %2$s</string>
+    <string name="breaks_none_planned">No breaks planned. Check the days and hours.</string>
+    <string name="breaks_done_today">Today: %1$d</string>
+    <string name="breaks_interval">Every</string>
+    <string name="breaks_hours">Active hours</string>
+    <string name="breaks_from">From</string>
+    <string name="breaks_until">Until</string>
+    <string name="breaks_hours_invalid">The end must be later than the start.</string>
+    <string name="breaks_days">Days</string>
+    <plurals name="minutes_short">
+        <item quantity="one">%1$d min</item>
+        <item quantity="other">%1$d min</item>
+    </plurals>
 </resources>

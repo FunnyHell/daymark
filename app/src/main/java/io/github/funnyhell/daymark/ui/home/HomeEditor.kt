@@ -57,9 +57,12 @@ fun HomeEditor(settings: Settings, onSave: (List<String>, Set<String>) -> Unit, 
                             onCheckedChange = { show -> hidden = if (show) hidden - id else hidden + id; save() },
                         )
                         Column(Modifier.weight(1f)) {
-                            Text(stringResource(section.title), style = MaterialTheme.typography.bodyLarge)
-                            if (module != null && module.title != section.title) {
-                                Text(stringResource(module.title), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            val sectionTitle = stringResource(section.title)
+                            val moduleTitle = module?.let { stringResource(it.title) }
+                            Text(sectionTitle, style = MaterialTheme.typography.bodyLarge)
+                            // The module's name only when it adds something (a module with several sections).
+                            if (moduleTitle != null && moduleTitle != sectionTitle) {
+                                Text(moduleTitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
                         }
                         IconButton(

@@ -1227,6 +1227,7 @@ Routines consist of steps ("brush teeth ×2, shower"), and some lists are weekly
 - Permissions: READ_EXERCISE and READ_STEPS, requested from the module screen; a rationale screen (`HealthRationaleActivity`, plus the Android 14 `VIEW_PERMISSION_USAGE` alias) explains the use, as Health Connect requires.
 - The module shows today's steps and the last 14 days of workouts, lets the user write a note per workout (stored in the module's own DataStore by Health Connect record id), and can mark a chosen habit done on days with a workout. Each workout marks once (`ActivityRules.daysToMark`), so a mark the user removes stays removed. Marking runs when the app comes to the foreground (new optional `DaymarkModule.onForeground`).
 - Workout notes are not part of backups or sync yet.
+- connect-client 1.1.0 requires compileSdk 36, so the app is compiled against Android 16 (API 36). targetSdk stays 35 and minSdk 26: compiling against a newer SDK only makes newer APIs visible to the compiler and does not change behavior on devices; Lint (NewApi) still rejects calls missing on older versions.
 
 #### Date
 

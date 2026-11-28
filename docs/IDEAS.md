@@ -2,7 +2,7 @@
 
 Ideas, not plans; nothing here is implemented unless docs/DEVELOPMENT_STATUS.md says so. Each fits the module contract in docs/MODULES.md and keeps the app local-first: no account, no server.
 
-## Activity from Samsung Health (Health Connect)
+## Activity from Samsung Health (Health Connect) — implemented as the Activity module (ADR-042)
 
 Samsung Health can share its data with **Health Connect**, Android's on-device health store (part of the system on Android 14, an app on older versions; the user turns sharing on in Samsung Health's settings). Daymark can read it from Health Connect with the user's permission, without any cloud service:
 
@@ -11,7 +11,7 @@ Samsung Health can share its data with **Health Connect**, Android's on-device h
 
 What it needs: the `androidx.health.connect:connect-client` library, permission declarations and a screen explaining why the data is read (Health Connect requires one), reading data in the background only when the user allows it. Data is read, not written back. Samsung also has its own Health Data SDK; its conditions were not checked for this document.
 
-## Notes on any mark
+## Notes on any mark — implemented for habit days and doses (ADR-041)
 
 Habit marks and slips already have a `note` field in the database (only slips use it in the UI). A note could be attached to any mark, dose or workout: "bench 5×5 60 kg", "took it after lunch". Notes would show in History and be searchable. This is a small core change rather than a module.
 
@@ -38,3 +38,11 @@ Blood pressure, weight, symptoms with severity, linked to medications ("headache
 ## Wear OS
 
 Mark doses and habits from the watch, see the next reminder; also a "breaks" vibration. Needs a separate Wear OS app (see CLAUDE.md).
+
+## Outdoor quests — first version implemented (Outdoors module)
+
+Implemented: a daily public outdoor place within walking time (OpenStreetMap, whitelist of outdoor public kinds), check-in by location, manual mark, notes, history. Next steps:
+- a photo per quest (camera, stored in the app's files; recognising what is on it is out of scope for now);
+- linking a quest to a walk from Health Connect (distance and time of the walk that ended at the place);
+- more variety: routes through two places, "a place you have never been to", seasonal tasks;
+- an offline fallback when the Overpass service is unavailable.

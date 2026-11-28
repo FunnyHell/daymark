@@ -9,6 +9,8 @@ Current modules (`app/src/main/java/io/github/funnyhell/daymark/modules/`):
 | Habits | `habits` | on | Habits tab, habit screens, "Habits" section on Home |
 | Medications | `medications` | on | Medications tab, medication screens, "Medications" section on Home |
 | Interval reminders | `breaks` (id of its first version) | off | Intervals tab, edit screen, Home section, reminders on their own notification channel |
+| Activity | `activity` | off | Steps and workouts from Health Connect, workout notes, a habit marked on workout days |
+| Outdoor quests | `outdoors` | off | A daily public outdoor place to walk to (OpenStreetMap), check-in by location or by hand |
 
 Habits and medications were the whole app before modules existed; their reminders, notifications, widgets, history, backup and sync are still built into the core and are only switched off when the module is off. **Interval reminders** (`modules/intervals/`) is the reference: a small module that uses every part of the contract and nothing else.
 
@@ -27,6 +29,7 @@ Habits and medications were the whole app before modules existed; their reminder
 | `screens(nav)` | Registers the module's screens in the navigation graph. Prefix routes with the module id. |
 | `reminders` | `ModuleReminders`: `plan()` returns upcoming reminders, `show()` posts one when it is due. Give each reminder a `group`; after a long gap only the latest of each group is shown. Use a notification channel of the module's own, so the user can set its sound. |
 | `onAppStart(context)` | Runs at process start for every module (create notification channels here). |
+| `onForeground(context)` | Runs when the app comes to the foreground while the module is on (read new data, as Activity does). |
 | `onDisabled(context)` | Runs when the user turns the module off (remove notifications). |
 
 ### Home sections

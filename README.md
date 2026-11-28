@@ -28,8 +28,17 @@ Daymark records what you enter and reminds you at the times you choose. It does 
 **Inventory**
 - Optional per medication, user-defined unit, initial stock, add packages (previous package sizes offered as chips; each tap adds that size, so two taps on 20 add 40), set a counted stock, low-stock threshold and notification, full change log.
 
+**Habits with steps and notes**
+- "Routine with steps" (each day: brush teeth ×2, shower…) and "Weekly list of steps" (cleaning: kitchen, bathroom, floors on any days). Tap a step to mark it; the routine is done when every step is. Partial progress counts as a share in the rings and statistics; streaks need the whole list.
+- Notes: on any day of a habit (⋮ → Add note, or in the habit's calendar) and on a recorded dose.
+
 **Home and modules**
-- Home shows sections of the enabled modules; the pencil on Home hides and reorders them. Settings → Modules turns features on or off (Habits, Medications, Movement breaks); data of a module that is off is kept. Movement breaks reminds you to get up every 30–120 minutes during chosen hours and days ("I moved" / "Later").
+- Home shows sections of the enabled modules; the pencil on Home hides and reorders them; the gear opens Settings. Settings → Bottom bar chooses up to four tabs after Home; screens not in the bar open from chips on Home. Settings → Modules turns features on or off; data of a module that is off is kept:
+  - Habits, Medications;
+  - Interval reminders: any number of reminders that repeat during chosen hours and days ("Stretch every hour"), with Done / Later, on a quieter notification type than medications;
+  - Activity: steps and workouts from Samsung Health and other apps through Health Connect, with notes per workout; can mark a habit on workout days;
+  - Outdoor quests: one public outdoor place a day (park, square, viewpoint, monument…) within your walking time, more on weekends; done when location shows you there ("I'm here") or marked by hand. Places come from OpenStreetMap; homes, shops, clinics and other private or indoor places are never offered.
+- Notification types: medication reminders have their own chime and a longer vibration; each type's sound can be changed in Settings → Reminders → Notification types. Low stock warns after every dose while at or below the threshold.
 - Contributing a module: see docs/MODULES.md; ideas in docs/IDEAS.md.
 
 **Reminders and widgets**

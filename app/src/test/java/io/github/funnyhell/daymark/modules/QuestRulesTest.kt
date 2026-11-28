@@ -80,7 +80,11 @@ class QuestRulesTest {
             "Moscow" to (55.7558 to 37.6173), "Kyiv" to (50.4501 to 30.5234),
         )
         for ((city, at) in cities) {
-            val places = Overpass.fetch(at.first, at.second, 1500, "en")
+            val places = try {
+                Overpass.fetch(at.first, at.second, 1500, "en")
+            } catch (e: java.io.IOException) {
+                throw AssertionError("$city: ${e.message}", e)
+            }
             println("$city: ${places.size} places, e.g. ${places.take(3).map { "${it.kind} ${it.name}" }}")
             assertTrue("$city: nothing found", places.isNotEmpty())
         }

@@ -118,13 +118,16 @@ jobs:
       - name: Live check of the quest place search (public Overpass servers)
         continue-on-error: true
         run: |
-          OVERPASS_LIVE=1 ./gradlew --no-daemon testDebugUnitTest --tests '*QuestRulesTest.liveSearch*'
+          OVERPASS_LIVE=1 ./gradlew --no-daemon testDebugUnitTest --tests '*QuestRulesTest.liveSearch*' && R=0 || R=1
           python3 - <<'PY'
           import glob, xml.etree.ElementTree as ET
           for f in glob.glob('app/build/test-results/testDebugUnitTest/*QuestRulesTest.xml'):
-              out = ET.parse(f).getroot().findtext('system-out') or ''
-              print(out)
+              root = ET.parse(f).getroot()
+              print(root.findtext('system-out') or '')
+              for bad in root.iter('failure'):
+                  print('FAILED:', (bad.get('message') or '')[:3000])
           PY
+          exit $R
 
       - name: Publish APK to ci-apk branch
         if: success() && github.event_name == 'push'

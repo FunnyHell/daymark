@@ -646,7 +646,7 @@
     <string name="module_outdoors_desc">A small trip outside every day: a park, a square, a viewpoint within your walking time.</string>
     <string name="tab_outdoors">Outdoors</string>
     <string name="quest_intro_title">How quests work</string>
-    <string name="quest_intro_body">When you look for a quest, Daymark reads your position once and asks OpenStreetMap (overpass-api.de) for public outdoor places nearby: parks, squares, viewpoints, monuments, fountains, public art. Your rounded position is sent for that search; nothing else leaves the phone. Homes, shops, clinics and other private or indoor places are never offered. When you are there, tap "I'm here", or mark the quest by hand.</string>
+    <string name="quest_intro_body">When you look for a quest, Daymark reads your position once and asks OpenStreetMap (overpass-api.de) for public outdoor places nearby: parks, squares, viewpoints, monuments, fountains, public art. Your rounded position is sent for that search; nothing else leaves the phone. Homes, shops, clinics and other private or indoor places are never offered. When you are there, tap "I\'m here", or mark the quest by hand.</string>
     <string name="quest_intro_agree">Turn on</string>
     <string name="quest_location_needed">Quests need your location while you use them.</string>
     <string name="quest_allow_location">Allow location</string>
@@ -654,7 +654,7 @@
     <string name="quest_none_yet">No quest yet today.</string>
     <string name="quest_find">Find a quest</string>
     <string name="quest_another">Another place</string>
-    <string name="quest_check_in">I'm here</string>
+    <string name="quest_check_in">I\'m here</string>
     <string name="quest_mark_by_hand">Mark by hand</string>
     <string name="quest_open_map">Map</string>
     <string name="quest_distance">About %1$d m away</string>
@@ -672,7 +672,7 @@
     <string name="quest_weekends">Weekends</string>
     <string name="quest_weekend_trips">Weekend trips farther away</string>
     <string name="quest_history">Done: %1$d</string>
-    <string name="quest_home_find">Find today's quest</string>
+    <string name="quest_home_find">Find today\'s quest</string>
     <string name="quest_home_none">No quest on this day</string>
     <string name="quest_task_photo">Go there and take a photo of something you like.</string>
     <string name="quest_task_bench">Go there and spend five minutes on a bench or by the edge, without the phone.</string>

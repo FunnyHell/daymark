@@ -101,6 +101,19 @@ jobs:
             app/build/outputs/apk/debug/SHA256SUMS.txt
             app/build/outputs/apk/debug/BADGING.txt
 
+      - name: Signing diagnostics
+        if: success()
+        continue-on-error: true
+        run: |
+          env | grep -i '^ANDROID' || true
+          echo "user.home keystore:"; ls -la ~/.android/ || true
+          for f in $(sudo find / -name 'debug.keystore' -not -path '/proc/*' 2>/dev/null); do
+            echo "== $f"; ls -la "$f"; keytool -list -v -keystore "$f" -storepass android 2>/dev/null | grep -m1 'SHA256:' || true
+          done
+          BT=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)
+          "$BT/apksigner" verify --print-certs app/build/outputs/apk/debug/app-debug.apk | grep -i 'SHA-256' | tee apk-cert.txt
+          ./gradlew --no-daemon -q signingReport 2>/dev/null | head -40 || true
+
       - name: Publish APK to ci-apk branch
         if: success() && github.event_name == 'push'
         run: |
@@ -114,6 +127,7 @@ jobs:
           echo "run_url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" >> "$OUT/BUILD_INFO.txt"
           echo "version_code=${GITHUB_RUN_NUMBER}" >> "$OUT/BUILD_INFO.txt"
           echo "signing_$(cat signing-fingerprint.txt | tr -d ' \t')" >> "$OUT/BUILD_INFO.txt"
+          echo "apk_cert=$(cat apk-cert.txt 2>/dev/null | head -1 | sed 's/.*: //')" >> "$OUT/BUILD_INFO.txt"
           cd "$OUT"
           git init -q -b ci-apk
           git config user.name "github-actions[bot]"

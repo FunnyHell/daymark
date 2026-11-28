@@ -31,7 +31,7 @@ object Overpass {
     fun query(lat: Double, lon: Double, radius: Int): String {
         val around = "(around:$radius,${"%.4f".format(java.util.Locale.ROOT, lat)},${"%.4f".format(java.util.Locale.ROOT, lon)})"
         return """
-            [out:json][timeout:25];
+            [out:json][timeout:20];
             (
               nwr["leisure"~"^(park|garden|nature_reserve)$"]$around;
               nwr["place"="square"]$around;
@@ -41,21 +41,34 @@ object Overpass {
               nwr["natural"="beach"]$around;
               nwr["leisure"="promenade"]$around;
             );
-            out tags bb 200;
+            out tags bb qt 200;
         """.trimIndent()
     }
 
     /**
-     * Fetches places from the first server that answers; throws with every server's error when none does. Sends
-     * only the position rounded to about 10 m and the search radius. [language] picks local names ("name:pl").
+     * Fetches places. The public servers are often at capacity, so all of them are asked at once and the first
+     * answer wins; when every one fails the search is repeated once after a pause. Throws with every server's error
+     * when nothing answers. Sends only the position rounded to about 10 m and the search radius. [language] picks
+     * local names ("name:pl").
      */
-    fun fetch(lat: Double, lon: Double, radius: Int, language: String? = null): List<Place> {
+    fun fetch(lat: Double, lon: Double, radius: Int, language: String? = null, pauseMs: Long = 5_000): List<Place> {
         val errors = mutableListOf<String>()
-        for (endpoint in ENDPOINTS) {
+        repeat(2) { round ->
+            if (round > 0) Thread.sleep(pauseMs)
+            val pool = java.util.concurrent.Executors.newFixedThreadPool(ENDPOINTS.size)
             try {
-                return fetchFrom(endpoint, lat, lon, radius, language)
-            } catch (e: Exception) {
-                errors += "${URL(endpoint).host}: ${e.message ?: e.javaClass.simpleName}"
+                val done = java.util.concurrent.ExecutorCompletionService<Result<List<Place>>>(pool)
+                ENDPOINTS.forEach { endpoint ->
+                    done.submit {
+                        runCatching { fetchFrom(endpoint, lat, lon, radius, language) }
+                            .onFailure { synchronized(errors) { errors += "${URL(endpoint).host}: ${it.message ?: it.javaClass.simpleName}" } }
+                    }
+                }
+                repeat(ENDPOINTS.size) {
+                    done.take().get().getOrNull()?.let { return it }
+                }
+            } finally {
+                pool.shutdownNow()
             }
         }
         throw java.io.IOException(errors.joinToString("; "))
@@ -66,7 +79,7 @@ object Overpass {
         val connection = (URL(endpoint).openConnection() as HttpURLConnection).apply {
             requestMethod = "POST"
             connectTimeout = 15_000
-            readTimeout = 30_000
+            readTimeout = 40_000
             doOutput = true
             setRequestProperty("Content-Type", "application/x-www-form-urlencoded")
             setRequestProperty("Accept", "application/json")

@@ -20,7 +20,13 @@ import kotlinx.serialization.json.longOrNull
  * as private or closed are dropped.
  */
 object Overpass {
-    const val ENDPOINT = "https://overpass-api.de/api/interpreter"
+    /** Public Overpass servers, tried in this order; the main one is often busy. */
+    val ENDPOINTS = listOf(
+        "https://overpass-api.de/api/interpreter",
+        "https://overpass.kumi.systems/api/interpreter",
+        "https://overpass.private.coffee/api/interpreter",
+        "https://maps.mail.ru/osm/tools/overpass/api/interpreter",
+    )
 
     fun query(lat: Double, lon: Double, radius: Int): String {
         val around = "(around:$radius,${"%.4f".format(java.util.Locale.ROOT, lat)},${"%.4f".format(java.util.Locale.ROOT, lon)})"
@@ -39,10 +45,25 @@ object Overpass {
         """.trimIndent()
     }
 
-    /** Fetches places; throws on network errors (the caller shows them). Sends only the rounded position. */
-    fun fetch(lat: Double, lon: Double, radius: Int): List<Place> {
+    /**
+     * Fetches places from the first server that answers; throws with every server's error when none does. Sends
+     * only the position rounded to about 10 m and the search radius. [language] picks local names ("name:pl").
+     */
+    fun fetch(lat: Double, lon: Double, radius: Int, language: String? = null): List<Place> {
+        val errors = mutableListOf<String>()
+        for (endpoint in ENDPOINTS) {
+            try {
+                return fetchFrom(endpoint, lat, lon, radius, language)
+            } catch (e: Exception) {
+                errors += "${URL(endpoint).host}: ${e.message ?: e.javaClass.simpleName}"
+            }
+        }
+        throw java.io.IOException(errors.joinToString("; "))
+    }
+
+    private fun fetchFrom(endpoint: String, lat: Double, lon: Double, radius: Int, language: String?): List<Place> {
         val body = "data=" + URLEncoder.encode(query(lat, lon, radius), "UTF-8")
-        val connection = (URL(ENDPOINT).openConnection() as HttpURLConnection).apply {
+        val connection = (URL(endpoint).openConnection() as HttpURLConnection).apply {
             requestMethod = "POST"
             connectTimeout = 15_000
             readTimeout = 30_000
@@ -52,8 +73,8 @@ object Overpass {
         }
         try {
             connection.outputStream.use { it.write(body.toByteArray()) }
-            if (connection.responseCode != 200) error("Overpass HTTP ${connection.responseCode}")
-            return parse(connection.inputStream.bufferedReader().use { it.readText() })
+            if (connection.responseCode != 200) error("HTTP ${connection.responseCode}")
+            return parse(connection.inputStream.bufferedReader().use { it.readText() }, language)
         } finally {
             connection.disconnect()
         }
@@ -62,7 +83,7 @@ object Overpass {
     private val json = Json { ignoreUnknownKeys = true }
 
     /** Turns an Overpass JSON answer into places; unknown, private or position-less elements are skipped. */
-    fun parse(text: String): List<Place> {
+    fun parse(text: String, language: String? = null): List<Place> {
         val root = json.parseToJsonElement(text).jsonObject
         val elements = root["elements"]?.jsonArray ?: return emptyList()
         return elements.mapNotNull { e ->
@@ -82,7 +103,7 @@ object Overpass {
             val lon = o["lon"]?.jsonPrimitive?.doubleOrNull ?: bounds?.let { (it.minLon + it.maxLon) / 2 } ?: return@mapNotNull null
             val type = o["type"]?.jsonPrimitive?.contentOrNull ?: "node"
             val id = o["id"]?.jsonPrimitive?.longOrNull ?: return@mapNotNull null
-            Place("$type/$id", tag("name:ru") ?: tag("name"), kind, lat, lon, bounds)
+            Place("$type/$id", language?.let { tag("name:$it") } ?: tag("name"), kind, lat, lon, bounds)
         }.distinctBy { it.id }
     }
 

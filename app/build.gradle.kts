@@ -29,6 +29,19 @@ android {
         checkDependencies = false
     }
 
+    signingConfigs {
+        getByName("debug") {
+            // CI points this at its one persistent key. Without it the Android plugin makes a new random key on every
+            // clean machine, and Android then refuses to install the build as an update.
+            System.getenv("DAYMARK_DEBUG_KEYSTORE")?.takeIf { it.isNotBlank() }?.let {
+                storeFile = file(it)
+                storePassword = "android"
+                keyAlias = "androiddebugkey"
+                keyPassword = "android"
+            }
+        }
+    }
+
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"

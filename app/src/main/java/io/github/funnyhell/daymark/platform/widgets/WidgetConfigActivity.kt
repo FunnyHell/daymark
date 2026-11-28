@@ -1,5 +1,6 @@
 package io.github.funnyhell.daymark.platform.widgets
 
+import androidx.compose.material3.FilterChip
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
@@ -264,6 +265,49 @@ private fun ConfigScreen(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(horizontal = 20.dp),
             )
+            SectionHeader(stringResource(R.string.widget_bg_color))
+            Row(
+                Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = 16.dp, vertical = 4.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                val system = WidgetColors.background(WidgetBackground.SYSTEM, 0xFFFAF9FD.toInt() to 0xFF1B1B1F.toInt(), 0 to 0)
+                val accentPair = WidgetColors.accent(context, prefs.accent)
+                WidgetBackground.entries.forEach { bg ->
+                    val (day, night) = WidgetColors.background(bg, system, accentPair)
+                    val selected = prefs.background == bg
+                    val label = stringResource(backgroundLabel(bg))
+                    Box(
+                        Modifier
+                            .size(44.dp)
+                            .clip(CircleShape)
+                            .background(Color(if (dark) night else day))
+                            .border(if (selected) 3.dp else 1.dp, MaterialTheme.colorScheme.onSurface, CircleShape)
+                            .selectable(selected = selected, onClick = { prefs = prefs.copy(background = bg) }, role = Role.RadioButton)
+                            .semantics { contentDescription = label },
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        if (selected) {
+                            Icon(Icons.Filled.Check, contentDescription = null, tint = Color(if (WidgetColors.isLight(if (dark) night else day)) 0xFF1B1B21.toInt() else 0xFFFFFFFF.toInt()))
+                        }
+                    }
+                }
+            }
+            Text(
+                stringResource(backgroundLabel(prefs.background)),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(horizontal = 20.dp),
+            )
+            SectionHeader(stringResource(R.string.widget_text_color))
+            Row(Modifier.padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                WidgetText.entries.forEach { t ->
+                    FilterChip(
+                        selected = prefs.text == t,
+                        onClick = { prefs = prefs.copy(text = t) },
+                        label = { Text(stringResource(when (t) { WidgetText.AUTO -> R.string.widget_text_auto; WidgetText.LIGHT -> R.string.widget_text_light; WidgetText.DARK -> R.string.widget_text_dark })) },
+                    )
+                }
+            }
             SectionHeader(stringResource(R.string.widget_bg_opacity, prefs.backgroundAlpha))
             Slider(
                 value = prefs.backgroundAlpha.toFloat(),
@@ -280,6 +324,16 @@ private fun ConfigScreen(
         }
         }
     }
+}
+
+private fun backgroundLabel(bg: WidgetBackground): Int = when (bg) {
+    WidgetBackground.SYSTEM -> R.string.widget_bg_system
+    WidgetBackground.WHITE -> R.string.widget_bg_white
+    WidgetBackground.LIGHT_GRAY -> R.string.widget_bg_light_gray
+    WidgetBackground.DARK_GRAY -> R.string.widget_bg_dark_gray
+    WidgetBackground.BLACK -> R.string.widget_bg_black
+    WidgetBackground.NAVY -> R.string.widget_bg_navy
+    WidgetBackground.ACCENT -> R.string.widget_bg_accent
 }
 
 private fun accentLabel(accent: WidgetAccent): Int = when (accent) {

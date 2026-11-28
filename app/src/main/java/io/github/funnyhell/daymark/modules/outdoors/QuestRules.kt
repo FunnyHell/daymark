@@ -89,7 +89,8 @@ object QuestRules {
         date: LocalDate,
         recentDays: Long = 14,
     ): Place? {
-        val near = places.filter { distance(lat, lon, it.lat, it.lon) <= radius }
+        // An area (a large park) counts when its middle is a bit outside the radius: its edge is nearer.
+        val near = places.filter { distance(lat, lon, it.lat, it.lon) <= if (it.bounds != null) radius * 1.5 else radius }
         val fresh = near.filter { p -> visited[p.id]?.let { it.isBefore(date.minusDays(recentDays)) } ?: true }
         val pool = (fresh.ifEmpty { near }).let { list -> list.filter { it.name != null }.ifEmpty { list } }.sortedBy { it.id }
         if (pool.isEmpty()) return null

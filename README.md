@@ -79,17 +79,18 @@ The debug APK is built by GitHub Actions on every push and published to the bran
 
 Package ID: `io.github.funnyhell.daymark.debug` · version `0.1.0-debug` · versionCode = CI run number · minSdk 26 (Android 8.0) · targetSdk 35.
 
-**Updating:** CI signs every build with the same key and numbers builds increasingly, so a newer APK installs over the old one and keeps the data. Builds made before this change (up to CI run 35) used a throwaway key per build: replace such an install once (export a backup or sync with another device, uninstall, install, import).
+**Updating:** every CI build is signed with one fixed key and numbered increasingly, so a newer APK installs over the old one and keeps the data. The key's certificate fingerprint is in `app/signing-cert.sha256`; CI checks the built APK against it and fails, without publishing, if the APK is signed with any other key (ADR-043). Builds up to CI run 55 were signed with a new random key each time and need one last reinstall (export a backup, uninstall, install, import).
 
-The key is kept in the GitHub Actions cache (`daymark-debug-keystore-v1`). Caches unused for 7 days are deleted, and then a new key is made, which needs one more reinstall. To make the key permanent, create a keystore once and store it as the repository secret `DEBUG_KEYSTORE_BASE64`:
+The key is kept in the GitHub Actions cache (`daymark-debug-keystore-v1`), and `app/build.gradle.kts` signs with it when `DAYMARK_DEBUG_KEYSTORE` points to it. If the cache is ever lost, CI fails at "Check the APK is signed with the app's key" instead of publishing an APK that cannot update. To keep the key independent of the cache, a keystore can be stored as the repository secret `DEBUG_KEYSTORE_BASE64`:
 
 ```bash
 keytool -genkeypair -keystore daymark-debug.keystore -storepass android -alias androiddebugkey -keypass android \
   -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
 base64 -w0 daymark-debug.keystore   # paste the output into Settings → Secrets and variables → Actions
+keytool -list -v -keystore daymark-debug.keystore -storepass android | grep SHA256   # put this into app/signing-cert.sha256
 ```
 
-Changing to a new key (including from the cached key to the secret) needs one reinstall. Keep the keystore file private and out of the repository.
+Changing to a new key needs one reinstall. Keep the keystore file private and out of the repository.
 
 ### Recommended phone settings for reliable reminders
 

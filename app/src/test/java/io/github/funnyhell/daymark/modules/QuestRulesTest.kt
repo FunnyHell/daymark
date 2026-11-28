@@ -62,10 +62,27 @@ class QuestRulesTest {
               {"type":"node","id":14,"lat":55.2,"lon":37.2,"tags":{"tourism":"viewpoint","name":"View","name:ru":"Вид"}}
             ]}
         """.trimIndent()
-        val places = Overpass.parse(json)
+        val places = Overpass.parse(json, "ru")
         assertEquals(listOf("way/10", "node/11", "node/14"), places.map { it.id })
         assertEquals(55.2, places[0].lat, 1e-9)
         assertEquals(PlaceKind.PARK, places[0].kind)
         assertEquals("Вид", places[2].name)
+        assertEquals("View", Overpass.parse(json, "pl")[2].name)
+        assertEquals("Central", Overpass.parse(json, "ru")[0].name)
+    }
+
+    /** Real request to the public servers; runs only when OVERPASS_LIVE is set (a CI step), never in normal builds. */
+    @Test
+    fun liveSearchFindsPlacesInSeveralCountries() {
+        if (System.getenv("OVERPASS_LIVE").isNullOrBlank()) return
+        val cities = mapOf(
+            "Warsaw" to (52.2297 to 21.0122), "Helsinki" to (60.1699 to 24.9384), "Berlin" to (52.5200 to 13.4050),
+            "Moscow" to (55.7558 to 37.6173), "Kyiv" to (50.4501 to 30.5234),
+        )
+        for ((city, at) in cities) {
+            val places = Overpass.fetch(at.first, at.second, 1500, "en")
+            println("$city: ${places.size} places, e.g. ${places.take(3).map { "${it.kind} ${it.name}" }}")
+            assertTrue("$city: nothing found", places.isNotEmpty())
+        }
     }
 }

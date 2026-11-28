@@ -71,6 +71,10 @@ class QuestViewModel(application: Application) : AppViewModel(application) {
     var busy by mutableStateOf(false)
         private set
 
+    /** Why the last search failed, shown on the screen; null after a successful one. */
+    var lastError by mutableStateOf<String?>(null)
+        private set
+
     /** Distance to today's place from the last position read, in meters. */
     var lastDistance by mutableStateOf<Double?>(null)
         private set
@@ -86,18 +90,41 @@ class QuestViewModel(application: Application) : AppViewModel(application) {
         if (busy) return@launchSafely
         busy = true
         try {
+            lastError = null
             val today = container.time.today()
-            val location = OutdoorsModule.currentLocation(app)
+            val location = OutdoorsModule.searchLocation(app)
             if (location == null) {
-                say(string(R.string.quest_no_location))
+                lastError = string(R.string.quest_no_location)
                 return@launchSafely
             }
             val s = store.current()
-            val radius = QuestRules.radiusMeters(s.prefs, today).roundToInt()
+            val language = java.util.Locale.getDefault().language
+            var radius = QuestRules.radiusMeters(s.prefs, today).roundToInt()
             val cached = s.cacheDate == today && s.cacheRadius >= radius && s.cacheLat != null && s.cacheLon != null &&
                 QuestRules.distance(location.latitude, location.longitude, s.cacheLat, s.cacheLon) < 300
-            val places = if (cached) s.cache else withContext(Dispatchers.IO) { Overpass.fetch(location.latitude, location.longitude, radius) }
-                .also { store.setCache(it, location.latitude, location.longitude, radius, today) }
+            var places = if (cached) {
+                s.cache
+            } else {
+                try {
+                    withContext(Dispatchers.IO) { Overpass.fetch(location.latitude, location.longitude, radius, language) }
+                } catch (e: Exception) {
+                    lastError = string(R.string.quest_search_failed, e.message ?: e.javaClass.simpleName)
+                    return@launchSafely
+                }
+            }
+            // Nothing public outdoors within the walking time: look a little farther (twice, then four times).
+            var widened = 0
+            while (places.none { QuestRules.distance(location.latitude, location.longitude, it.lat, it.lon) <= radius * 1.5 } && widened < 2) {
+                radius = (radius * 2).coerceAtMost(15_000)
+                widened++
+                places = try {
+                    withContext(Dispatchers.IO) { Overpass.fetch(location.latitude, location.longitude, radius, language) }
+                } catch (e: Exception) {
+                    lastError = string(R.string.quest_search_failed, e.message ?: e.javaClass.simpleName)
+                    return@launchSafely
+                }
+            }
+            store.setCache(places, location.latitude, location.longitude, radius, today)
             if (skipCurrent) {
                 store.updateQuests { list -> list.map { if (it.date == today && it.status == QuestStatus.OPEN) it.copy(status = QuestStatus.SKIPPED) else it } }
             }
@@ -105,7 +132,7 @@ class QuestViewModel(application: Application) : AppViewModel(application) {
             val skippedToday = after.quests.filter { it.date == today && it.status == QuestStatus.SKIPPED }.associate { it.place.id to today }
             val place = QuestRules.pick(places, location.latitude, location.longitude, radius.toDouble(), after.visited + skippedToday, today)
             if (place == null) {
-                say(string(R.string.quest_no_places))
+                lastError = string(R.string.quest_no_places)
                 return@launchSafely
             }
             store.updateQuests { it + Quest(today, place, QuestRules.taskIndex(place, today, tasks.size), QuestStatus.OPEN) }
@@ -216,8 +243,9 @@ private fun QuestContent(padding: PaddingValues, vm: QuestViewModel) {
                 AppCard {
                     Text(stringResource(R.string.quest_none_yet), style = MaterialTheme.typography.bodyMedium)
                     Button(onClick = { vm.findQuest() }, enabled = hasPermission && !vm.busy, modifier = Modifier.padding(top = 8.dp)) {
-                        Text(stringResource(R.string.quest_find))
+                        Text(stringResource(if (vm.busy) R.string.quest_searching else R.string.quest_find))
                     }
+                    vm.lastError?.let { Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 8.dp)) }
                 }
             } else {
                 QuestCard(

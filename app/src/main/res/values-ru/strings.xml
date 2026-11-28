@@ -676,6 +676,8 @@
     <string name="quest_marked_by_hand">вручную</string>
     <string name="quest_not_there">Ещё не на месте: примерно %1$d м.</string>
     <string name="quest_no_location">Не удалось определить местоположение. Включите геолокацию и попробуйте на улице.</string>
+    <string name="quest_search_failed">Поиск не удался: %1$s</string>
+    <string name="quest_searching">Ищу…</string>
     <string name="quest_no_places">Рядом не нашлось общественных мест на улице в пределах вашего времени. Попробуйте время побольше.</string>
     <string name="quest_manual_title">Отметить выполненным?</string>
     <string name="quest_manual_body">Используйте, если вы были на месте, но геолокация не сработала.</string>
@@ -700,4 +702,16 @@
     <string name="place_monument">памятник</string>
     <string name="place_fountain">фонтан</string>
     <string name="place_waterfront">набережная</string>
+    <string name="widget_bg_color">Фон</string>
+    <string name="widget_bg_system">Системный (светлая или тёмная тема)</string>
+    <string name="widget_bg_white">Белый</string>
+    <string name="widget_bg_light_gray">Светло-серый</string>
+    <string name="widget_bg_dark_gray">Тёмно-серый</string>
+    <string name="widget_bg_black">Чёрный</string>
+    <string name="widget_bg_navy">Тёмно-синий</string>
+    <string name="widget_bg_accent">Оттенок акцентного цвета</string>
+    <string name="widget_text_color">Текст</string>
+    <string name="widget_text_auto">Автоматически</string>
+    <string name="widget_text_light">Светлый</string>
+    <string name="widget_text_dark">Тёмный</string>
 </resources>

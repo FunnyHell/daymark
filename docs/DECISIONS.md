@@ -1232,3 +1232,18 @@ Routines consist of steps ("brush teeth ×2, shower"), and some lists are weekly
 #### Date
 
 2026-11-28
+
+## ADR-043 — Signing checked against a committed fingerprint; widget colours; quest search fallbacks
+
+**Status:** Accepted (2026-11-28)
+
+**Context.** ADR-035 kept one debug keystore in `~/.android/debug.keystore` and reported its fingerprint. CI run 55 showed that AGP 8.10 does not use that file: it signs with `~/.config/.android/debug.keystore`, which it creates fresh on every clean runner. Every build was therefore signed with a different random key, and the fingerprint in `BUILD_INFO.txt` was of a key that was never used. Updates failed although the documentation said they would work.
+
+**Decision.**
+- `app/build.gradle.kts` sets the debug `signingConfig` explicitly from `DAYMARK_DEBUG_KEYSTORE`; CI points it at the persistent key (secret or cache).
+- The certificate SHA-256 of that key is committed in `app/signing-cert.sha256` (public data, not a secret). After `assembleDebug` CI reads the certificate from the APK itself with `apksigner` and fails the build if it differs; nothing is published then. `BUILD_INFO.txt` records the certificate read from the APK.
+- Widgets get a background colour (system, white, light grey, dark grey, black, navy, accent) and a text colour (auto, light, dark). Auto picks light or dark text by the background's luminance, so a transparent widget can still be read on a dark or light wallpaper with "light"/"dark".
+- Quest search: a recent known position (up to 15 min) or a network position is used before waiting for GPS; four public Overpass servers are tried in turn; when nothing is found the radius doubles up to twice (at most 15 km); place names follow the device language; the reason for a failure is shown on the screen. A CI step queries real servers for Warsaw, Helsinki, Berlin, Moscow and Kyiv (informational, does not fail the build).
+
+**Consequences.** Builds up to run 55 cannot be updated in place; one more reinstall with backup is needed, after which a key change cannot reach the phone unnoticed. Losing the Actions cache now stops publishing until the key is restored or replaced (with a new fingerprint and one reinstall).
+

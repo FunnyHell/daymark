@@ -54,7 +54,8 @@ jobs:
               -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
             echo "Signing key: created (saved to the cache at the end of this job)"
           fi
-          keytool -list -v -keystore ~/.android/debug.keystore -storepass android | grep -m1 "SHA256:" | tee signing-fingerprint.txt
+          echo "DAYMARK_DEBUG_KEYSTORE=$HOME/.android/debug.keystore" >> "$GITHUB_ENV"
+          keytool -list -v -keystore ~/.android/debug.keystore -storepass android | grep -m1 "SHA256:"
 
       - name: Unit and Robolectric tests
         run: ./gradlew --no-daemon testDebugUnitTest
@@ -91,6 +92,19 @@ jobs:
           AAPT2=$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -n1)aapt2
           "$AAPT2" dump badging "$APK" | grep -E "^(package|minSdkVersion|sdkVersion|targetSdkVersion|uses-permission|application-label:|launchable-activity)" | tee app/build/outputs/apk/debug/BADGING.txt
 
+      - name: Check the APK is signed with the app's key
+        run: |
+          # Android installs an update only when it is signed with the same key as the installed app. The key's
+          # certificate fingerprint is in the repository; a build signed with any other key fails here and is
+          # never published.
+          BT=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)
+          ACTUAL=$("$BT/apksigner" verify --print-certs app/build/outputs/apk/debug/app-debug.apk | grep -m1 'certificate SHA-256 digest' | sed 's/.*: //')
+          EXPECTED=$(tr -d ' \n:' < app/signing-cert.sha256 | tr 'A-F' 'a-f')
+          echo "APK certificate SHA-256: $ACTUAL"
+          echo "Expected:                $EXPECTED"
+          echo "$ACTUAL" > apk-cert.txt
+          [ "$ACTUAL" = "$EXPECTED" ] || { echo "::error::APK is signed with a different key; it would not install as an update"; exit 1; }
+
       - name: Upload APK
         if: success()
         uses: actions/upload-artifact@v4
@@ -101,18 +115,16 @@ jobs:
             app/build/outputs/apk/debug/SHA256SUMS.txt
             app/build/outputs/apk/debug/BADGING.txt
 
-      - name: Signing diagnostics
-        if: success()
+      - name: Live check of the quest place search (public Overpass servers)
         continue-on-error: true
         run: |
-          env | grep -i '^ANDROID' || true
-          echo "user.home keystore:"; ls -la ~/.android/ || true
-          for f in $(sudo find / -name 'debug.keystore' -not -path '/proc/*' 2>/dev/null); do
-            echo "== $f"; ls -la "$f"; keytool -list -v -keystore "$f" -storepass android 2>/dev/null | grep -m1 'SHA256:' || true
-          done
-          BT=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)
-          "$BT/apksigner" verify --print-certs app/build/outputs/apk/debug/app-debug.apk | grep -i 'SHA-256' | tee apk-cert.txt
-          ./gradlew --no-daemon -q signingReport 2>/dev/null | head -40 || true
+          OVERPASS_LIVE=1 ./gradlew --no-daemon testDebugUnitTest --tests '*QuestRulesTest.liveSearch*'
+          python3 - <<'PY'
+          import glob, xml.etree.ElementTree as ET
+          for f in glob.glob('app/build/test-results/testDebugUnitTest/*QuestRulesTest.xml'):
+              out = ET.parse(f).getroot().findtext('system-out') or ''
+              print(out)
+          PY
 
       - name: Publish APK to ci-apk branch
         if: success() && github.event_name == 'push'
@@ -126,8 +138,7 @@ jobs:
           echo "source_commit=${GITHUB_SHA}" >> "$OUT/BUILD_INFO.txt"
           echo "run_url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" >> "$OUT/BUILD_INFO.txt"
           echo "version_code=${GITHUB_RUN_NUMBER}" >> "$OUT/BUILD_INFO.txt"
-          echo "signing_$(cat signing-fingerprint.txt | tr -d ' \t')" >> "$OUT/BUILD_INFO.txt"
-          echo "apk_cert=$(cat apk-cert.txt 2>/dev/null | head -1 | sed 's/.*: //')" >> "$OUT/BUILD_INFO.txt"
+          echo "apk_cert_sha256=$(cat apk-cert.txt)" >> "$OUT/BUILD_INFO.txt"
           cd "$OUT"
           git init -q -b ci-apk
           git config user.name "github-actions[bot]"

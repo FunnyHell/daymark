@@ -63,16 +63,34 @@ object OutdoorsModule : DaymarkModule {
         ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
     }
 
-    /** One fresh position, or null when none arrives within 30 seconds (indoors, location off). */
+    /**
+     * A position for searching: a recent one the phone already knows (up to 15 minutes old), else a fresh one from
+     * the network (fast, rough) or GPS. Null when none arrives (location off, no signal).
+     */
+    @SuppressLint("MissingPermission")
+    suspend fun searchLocation(context: Context): Location? {
+        if (!hasLocationPermission(context)) return null
+        val manager = context.getSystemService(LocationManager::class.java) ?: return null
+        val recent = manager.allProviders.mapNotNull { runCatching { manager.getLastKnownLocation(it) }.getOrNull() }
+            .filter { System.currentTimeMillis() - it.time < 15 * 60_000 }
+            .minByOrNull { if (it.hasAccuracy()) it.accuracy else 1_000f }
+        return recent ?: fresh(context, manager, LocationManager.NETWORK_PROVIDER, 15_000) ?: fresh(context, manager, LocationManager.GPS_PROVIDER, 30_000)
+    }
+
+    /** A fresh position for "I'm here": GPS first (precise), then the network. */
     @SuppressLint("MissingPermission")
     suspend fun currentLocation(context: Context): Location? {
         if (!hasLocationPermission(context)) return null
         val manager = context.getSystemService(LocationManager::class.java) ?: return null
-        val provider = listOf(LocationManager.GPS_PROVIDER, LocationManager.NETWORK_PROVIDER, LocationManager.PASSIVE_PROVIDER)
-            .firstOrNull { runCatching { manager.isProviderEnabled(it) }.getOrDefault(false) } ?: return null
+        return fresh(context, manager, LocationManager.GPS_PROVIDER, 30_000) ?: fresh(context, manager, LocationManager.NETWORK_PROVIDER, 15_000)
+    }
+
+    @SuppressLint("MissingPermission")
+    private suspend fun fresh(context: Context, manager: LocationManager, provider: String, timeoutMs: Long): Location? {
+        if (!hasLocationPermission(context) || !runCatching { manager.isProviderEnabled(provider) }.getOrDefault(false)) return null
         val executor = Executors.newSingleThreadExecutor()
         try {
-            return withTimeoutOrNull(30_000) {
+            return withTimeoutOrNull(timeoutMs) {
                 suspendCancellableCoroutine { cont ->
                     val signal = CancellationSignal()
                     cont.invokeOnCancellation { signal.cancel() }

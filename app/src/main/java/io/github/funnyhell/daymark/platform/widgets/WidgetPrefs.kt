@@ -19,6 +19,15 @@ enum class CheckStyle { CIRCLE, RADIO }
 /** Accent color of a widget; [SYSTEM] follows the wallpaper colors on Android 12+. */
 enum class WidgetAccent { SYSTEM, BLUE, GREEN, ORANGE, PURPLE, RED, MONO }
 
+/** Background color of a widget; [SYSTEM] follows the light or dark theme. Opacity is set separately. */
+enum class WidgetBackground { SYSTEM, WHITE, LIGHT_GRAY, DARK_GRAY, BLACK, NAVY, ACCENT }
+
+/**
+ * Color of a widget's text. [AUTO] picks dark or light text for the background color; on a mostly transparent
+ * background the wallpaper decides what is readable, so [LIGHT] or [DARK] can be chosen instead.
+ */
+enum class WidgetText { AUTO, LIGHT, DARK }
+
 /** Per-widget settings, chosen in [WidgetConfigActivity] and stored by app widget id. */
 data class WidgetPrefs(
     val checkStyle: CheckStyle = CheckStyle.CIRCLE,
@@ -28,6 +37,8 @@ data class WidgetPrefs(
     val accent: WidgetAccent = WidgetAccent.SYSTEM,
     /** Background opacity in percent (0 = fully transparent, 100 = opaque). */
     val backgroundAlpha: Int = 100,
+    val background: WidgetBackground = WidgetBackground.SYSTEM,
+    val text: WidgetText = WidgetText.AUTO,
 )
 
 private val Context.widgetStore: DataStore<Preferences> by preferencesDataStore(name = "widget_prefs")
@@ -48,6 +59,8 @@ class WidgetPrefsStore(private val context: Context) {
             habitId = p[stringPreferencesKey(key(appWidgetId, "habit"))],
             accent = p[stringPreferencesKey(key(appWidgetId, "accent"))]?.let { runCatching { WidgetAccent.valueOf(it) }.getOrNull() } ?: d.accent,
             backgroundAlpha = (p[intPreferencesKey(key(appWidgetId, "bg_alpha"))] ?: d.backgroundAlpha).coerceIn(0, 100),
+            background = p[stringPreferencesKey(key(appWidgetId, "bg_color"))]?.let { runCatching { WidgetBackground.valueOf(it) }.getOrNull() } ?: d.background,
+            text = p[stringPreferencesKey(key(appWidgetId, "text_color"))]?.let { runCatching { WidgetText.valueOf(it) }.getOrNull() } ?: d.text,
         )
     }
 
@@ -57,6 +70,8 @@ class WidgetPrefsStore(private val context: Context) {
             p[booleanPreferencesKey(key(appWidgetId, "hide_done"))] = prefs.hideCompleted
             p[stringPreferencesKey(key(appWidgetId, "accent"))] = prefs.accent.name
             p[intPreferencesKey(key(appWidgetId, "bg_alpha"))] = prefs.backgroundAlpha.coerceIn(0, 100)
+            p[stringPreferencesKey(key(appWidgetId, "bg_color"))] = prefs.background.name
+            p[stringPreferencesKey(key(appWidgetId, "text_color"))] = prefs.text.name
             val habitKey = stringPreferencesKey(key(appWidgetId, "habit"))
             if (prefs.habitId == null) {
                 p.remove(habitKey)

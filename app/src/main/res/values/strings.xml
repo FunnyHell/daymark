@@ -663,6 +663,8 @@
     <string name="quest_marked_by_hand">by hand</string>
     <string name="quest_not_there">Not there yet: about %1$d m to go.</string>
     <string name="quest_no_location">Could not get your location. Turn location on and try again outside.</string>
+    <string name="quest_search_failed">Search failed: %1$s</string>
+    <string name="quest_searching">Searching…</string>
     <string name="quest_no_places">No public outdoor places found within your walking time. Try a longer time.</string>
     <string name="quest_manual_title">Mark as done?</string>
     <string name="quest_manual_body">Use this when you were there but location did not work.</string>
@@ -687,4 +689,16 @@
     <string name="place_monument">monument</string>
     <string name="place_fountain">fountain</string>
     <string name="place_waterfront">waterfront</string>
+    <string name="widget_bg_color">Background</string>
+    <string name="widget_bg_system">System (light or dark theme)</string>
+    <string name="widget_bg_white">White</string>
+    <string name="widget_bg_light_gray">Light gray</string>
+    <string name="widget_bg_dark_gray">Dark gray</string>
+    <string name="widget_bg_black">Black</string>
+    <string name="widget_bg_navy">Navy</string>
+    <string name="widget_bg_accent">Tint of the accent color</string>
+    <string name="widget_text_color">Text</string>
+    <string name="widget_text_auto">Automatic</string>
+    <string name="widget_text_light">Light</string>
+    <string name="widget_text_dark">Dark</string>
 </resources>

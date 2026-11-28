@@ -35,6 +35,8 @@ data class PlannedReminder(
     val occurrenceKey: String?,
     /** A repeated reminder of a dose that is still not marked. */
     val repeat: Boolean = false,
+    /** For module reminders: reminders of the same group replace each other when several are due at once. */
+    val group: String? = null,
 ) {
     /** Stable identity used for notification ids. */
     val stableId: String get() = occurrenceKey ?: "$ownerId@$date"

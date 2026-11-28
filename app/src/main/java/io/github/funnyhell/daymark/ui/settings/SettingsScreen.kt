@@ -61,6 +61,7 @@ import io.github.funnyhell.daymark.data.repo.ThemeMode
 import io.github.funnyhell.daymark.platform.backup.AutoBackup
 import io.github.funnyhell.daymark.platform.backup.BackupFile
 import io.github.funnyhell.daymark.platform.notifications.Notifier
+import io.github.funnyhell.daymark.modules.intervals.IntervalsModule
 import io.github.funnyhell.daymark.ui.common.AppViewModel
 import io.github.funnyhell.daymark.ui.common.MessageEffect
 import io.github.funnyhell.daymark.ui.common.SectionHeader
@@ -226,6 +227,7 @@ fun SettingsScreen(
     onOpenBackup: () -> Unit,
     onOpenSync: () -> Unit,
     onOpenModules: () -> Unit,
+    onOpenTabs: () -> Unit,
     vm: SettingsViewModel = viewModel(factory = SettingsViewModel.Factory),
 ) {
     val s by vm.settings.collectAsStateWithLifecycle()
@@ -251,6 +253,7 @@ fun SettingsScreen(
             onClick = onOpenBackup,
         )
         NavRow(stringResource(R.string.settings_modules), stringResource(R.string.settings_modules_short), onClick = onOpenModules)
+        NavRow(stringResource(R.string.settings_tabs), stringResource(R.string.settings_tabs_short), onClick = onOpenTabs)
         NavRow(stringResource(R.string.settings_sync), stringResource(R.string.settings_sync_desc), onClick = onOpenSync)
 
         SectionHeader(stringResource(R.string.settings_appearance))
@@ -355,12 +358,22 @@ fun RemindersSettingsScreen(
             },
         )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            StatusRow(
-                title = stringResource(R.string.settings_sound),
-                status = stringResource(R.string.settings_sound_desc),
-                action = stringResource(R.string.perm_open_settings),
-                onAction = { SystemSettings.openChannelSettings(context, Notifier.CHANNEL_MEDICATION) },
-            )
+            // Each kind of reminder is its own notification type: sound, vibration and importance are set per type
+            // in the system settings.
+            SectionHeader(stringResource(R.string.settings_notification_types))
+            listOf(
+                Triple(R.string.channel_medication, R.string.notif_type_medication_desc, Notifier.CHANNEL_MEDICATION),
+                Triple(R.string.channel_habit, R.string.notif_type_habit_desc, Notifier.CHANNEL_HABIT),
+                Triple(R.string.channel_intervals, R.string.notif_type_intervals_desc, IntervalsModule.CHANNEL),
+                Triple(R.string.channel_stock, R.string.notif_type_stock_desc, Notifier.CHANNEL_STOCK),
+            ).forEach { (title, desc, channel) ->
+                StatusRow(
+                    title = stringResource(title),
+                    status = stringResource(desc),
+                    action = stringResource(R.string.settings_sound),
+                    onAction = { SystemSettings.openChannelSettings(context, channel) },
+                )
+            }
         }
         NavRow(stringResource(R.string.settings_test_reminder), stringResource(R.string.settings_test_reminder_desc), onClick = vm::sendTestReminder)
     }

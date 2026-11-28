@@ -59,13 +59,15 @@ import io.github.funnyhell.daymark.ui.settings.BackupSettingsScreen
 import io.github.funnyhell.daymark.ui.settings.RemindersSettingsScreen
 import io.github.funnyhell.daymark.ui.settings.SettingsScreen
 import io.github.funnyhell.daymark.ui.sync.SyncScreen
-import io.github.funnyhell.daymark.module.ModuleFab
 import io.github.funnyhell.daymark.module.ModuleHost
 import io.github.funnyhell.daymark.module.ModuleIcon
 import io.github.funnyhell.daymark.module.ModuleNavigator
 import io.github.funnyhell.daymark.module.ModuleRegistry
 import io.github.funnyhell.daymark.ui.home.HomeScreen
 import io.github.funnyhell.daymark.ui.settings.ModulesScreen
+import io.github.funnyhell.daymark.ui.settings.TabsScreen
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -73,23 +75,13 @@ import kotlinx.coroutines.launch
 
 /** Screens of the app shell; module screens bring their own routes (see DaymarkModule.screens). */
 private object Routes {
-    const val HOME = "home"
-    const val HISTORY = "history"
     const val SETTINGS = "settings"
     const val SYNC = "sync"
     const val REMINDERS = "settings/reminders"
     const val BACKUP = "settings/backup"
     const val MODULES = "settings/modules"
+    const val TABS = "settings/tabs"
 }
-
-/** A bottom-bar tab: Home, the tabs of enabled modules, History and Settings. */
-private data class TabItem(
-    val route: String,
-    val label: Int,
-    val icon: ModuleIcon,
-    val fab: ModuleFab? = null,
-    val content: @Composable (ModuleHost) -> Unit,
-)
 
 @Composable
 fun DaymarkRoot(onboardingDone: Boolean) {
@@ -126,6 +118,14 @@ fun DaymarkRoot(onboardingDone: Boolean) {
             composable(Routes.REMINDERS) { entry -> RemindersSettingsScreen(onBack = { nav.popFrom(entry) }, showMessage = showMessage) }
             composable(Routes.BACKUP) { entry -> BackupSettingsScreen(onBack = { nav.popFrom(entry) }, showMessage = showMessage) }
             composable(Routes.MODULES) { entry -> ModulesScreen(onBack = { nav.popFrom(entry) }, onOpen = { nav.navigate(it) }) }
+            composable(Routes.TABS) { entry -> TabsScreen(onBack = { nav.popFrom(entry) }) }
+            composable(Routes.SETTINGS) { entry ->
+                SettingsRoot(
+                    onBack = { nav.popFrom(entry) },
+                    showMessage = showMessage,
+                    onOpen = { nav.navigate(it) },
+                )
+            }
             // Every module registers its screens, also while it is off, so open links and the back stack stay valid.
             ModuleRegistry.all.forEach { module -> with(module) { screens(navigator) } }
         }
@@ -158,64 +158,79 @@ private fun NavHostController.popFrom(entry: NavBackStackEntry) {
 }
 
 
+/** Settings, opened from the gear on Home. */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun SettingsRoot(onBack: () -> Unit, showMessage: suspend (UiMessage) -> Unit, onOpen: (String) -> Unit) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.tab_settings)) },
+                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back)) } },
+            )
+        },
+    ) { padding ->
+        SettingsScreen(
+            padding,
+            showMessage,
+            onOpenReminders = { onOpen(Routes.REMINDERS) },
+            onOpenBackup = { onOpen(Routes.BACKUP) },
+            onOpenSync = { onOpen(Routes.SYNC) },
+            onOpenModules = { onOpen(Routes.MODULES) },
+            onOpenTabs = { onOpen(Routes.TABS) },
+        )
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun MainTabs(navigator: ModuleNavigator, showMessage: suspend (UiMessage) -> Unit) {
     val context = LocalContext.current
     val settings by context.container.settings.settings.collectAsStateWithLifecycle(initialValue = null)
     val current = settings ?: return
-    val tabs = buildList {
-        add(
-            TabItem(Routes.HOME, R.string.tab_today, ModuleIcon.Vector(Icons.Filled.Home)) { host ->
-                HomeScreen(host.contentPadding, host.navigator, onOpenModules = { host.navigator.navigate(Routes.MODULES) })
-            },
-        )
-        ModuleRegistry.enabled(current).forEach { module ->
-            module.tab?.let { tab -> add(TabItem(tab.route, tab.label, module.icon, tab.fab) { host -> tab.Content(host) }) }
-        }
-        add(TabItem(Routes.HISTORY, R.string.tab_history, ModuleIcon.Vector(Icons.Filled.DateRange)) { host -> HistoryScreen(host.contentPadding, showMessage) })
-        add(
-            TabItem(Routes.SETTINGS, R.string.tab_settings, ModuleIcon.Vector(Icons.Filled.Settings)) { host ->
-                SettingsScreen(
-                    host.contentPadding,
-                    showMessage,
-                    onOpenReminders = { navigator.navigate(Routes.REMINDERS) },
-                    onOpenBackup = { navigator.navigate(Routes.BACKUP) },
-                    onOpenSync = { navigator.navigate(Routes.SYNC) },
-                    onOpenModules = { navigator.navigate(Routes.MODULES) },
-                )
-            },
-        )
-    }
     val tabsNav = rememberNavController()
-    val entry by tabsNav.currentBackStackEntryAsState()
-    val selected = tabs.firstOrNull { it.route == entry?.destination?.route } ?: tabs.first()
-    // A tab of a module that was just turned off is left for Home.
-    LaunchedEffect(tabs.map { it.route }, entry?.destination?.route) {
-        val route = entry?.destination?.route
-        if (route != null && tabs.none { it.route == route }) {
-            tabsNav.navigate(Routes.HOME) { popUpTo(tabsNav.graph.findStartDestination().id) { inclusive = false } }
+    val openTab: (String) -> Unit = { route ->
+        tabsNav.navigate(route) {
+            popUpTo(tabsNav.graph.findStartDestination().id) { saveState = true }
+            launchSingleTop = true
+            restoreState = true
         }
     }
+    val moduleTabs = ModuleRegistry.enabled(current).mapNotNull { m -> m.tab }.associateBy { it.route }
+    val barTabs = listOf(TabSpec(AppTabs.HOME, R.string.tab_today, ModuleIcon.Vector(Icons.Filled.Home))) + AppTabs.chosen(current)
+    val entry by tabsNav.currentBackStackEntryAsState()
+    val route = entry?.destination?.route ?: AppTabs.HOME
+    val open = AppTabs.available(current).map { it.route } + AppTabs.HOME
+    // A tab of a module that was just turned off is left for Home.
+    LaunchedEffect(open, route) {
+        if (route !in open) tabsNav.navigate(AppTabs.HOME) { popUpTo(tabsNav.graph.findStartDestination().id) { inclusive = false } }
+    }
+    val title = when (route) {
+        AppTabs.HOME -> R.string.app_name
+        AppTabs.HISTORY -> R.string.tab_history
+        else -> moduleTabs[route]?.label ?: R.string.app_name
+    }
+    val fab = moduleTabs[route]?.fab
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(if (selected.route == Routes.HOME) R.string.app_name else selected.label), fontWeight = FontWeight.SemiBold) },
+                title = { Text(stringResource(title), fontWeight = FontWeight.SemiBold) },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
+                actions = {
+                    if (route == AppTabs.HOME) {
+                        IconButton(onClick = { navigator.navigate(Routes.SETTINGS) }) {
+                            Icon(Icons.Filled.Settings, contentDescription = stringResource(R.string.tab_settings))
+                        }
+                    }
+                },
             )
         },
         bottomBar = {
             NavigationBar {
-                tabs.forEach { tab ->
+                barTabs.forEach { tab ->
                     NavigationBarItem(
-                        selected = tab.route == selected.route,
-                        onClick = {
-                            tabsNav.navigate(tab.route) {
-                                popUpTo(tabsNav.graph.findStartDestination().id) { saveState = true }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        },
+                        selected = tab.route == route,
+                        onClick = { openTab(tab.route) },
                         icon = {
                             when (val icon = tab.icon) {
                                 is ModuleIcon.Vector -> Icon(icon.image, contentDescription = null)
@@ -228,11 +243,11 @@ private fun MainTabs(navigator: ModuleNavigator, showMessage: suspend (UiMessage
             }
         },
         floatingActionButton = {
-            selected.fab?.let { fab ->
+            fab?.let {
                 ExtendedFloatingActionButton(
-                    onClick = { fab.onClick(navigator) },
+                    onClick = { it.onClick(navigator) },
                     icon = { Icon(Icons.Filled.Add, contentDescription = null) },
-                    text = { Text(stringResource(fab.label)) },
+                    text = { Text(stringResource(it.label)) },
                 )
             }
         },
@@ -241,17 +256,17 @@ private fun MainTabs(navigator: ModuleNavigator, showMessage: suspend (UiMessage
             override val navigator = navigator
             override val contentPadding = padding
         }
-        // Routes of all tabs that can exist are registered, so turning a module on or off does not rebuild the graph.
-        val allTabs = remember {
-            listOf(Routes.HOME, Routes.HISTORY, Routes.SETTINGS) + ModuleRegistry.all.mapNotNull { it.tab?.route }
-        }
-        val byRoute by rememberUpdatedState(tabs.associateBy { it.route })
-        NavHost(tabsNav, startDestination = Routes.HOME) {
-            allTabs.forEach { route ->
-                composable(route) {
-                    val item = byRoute[route]
-                    if (item != null) item.content(host)
-                }
+        val tabsByRoute by rememberUpdatedState(moduleTabs)
+        // Routes of every screen that can be a tab are registered once, so turning a module on or off or changing
+        // the bottom bar does not rebuild the graph. A screen not in the bar is opened from Home.
+        val allRoutes = remember { ModuleRegistry.all.mapNotNull { it.tab?.route } }
+        NavHost(tabsNav, startDestination = AppTabs.HOME) {
+            composable(AppTabs.HOME) {
+                HomeScreen(padding, navigator, onOpenModules = { navigator.navigate(Routes.MODULES) }, onOpenTab = openTab)
+            }
+            composable(AppTabs.HISTORY) { HistoryScreen(padding, showMessage) }
+            allRoutes.forEach { r ->
+                composable(r) { tabsByRoute[r]?.let { tab -> tab.Content(host) } }
             }
         }
     }

@@ -59,7 +59,7 @@ class ReminderEngine(
                 Log.e(TAG, "Module ${module.id} could not plan reminders", e)
                 emptyList()
             }
-            planned.map { PlannedReminder(ReminderKind.MODULE, it.at, it.at.atZone(zone).toLocalDate(), module.id, it.key) }
+            planned.map { PlannedReminder(ReminderKind.MODULE, it.at, it.at.atZone(zone).toLocalDate(), module.id, it.key, group = it.group) }
         }.flatten()
         return modules + ReminderPlanner.plan(
             medications = medications.all(),
@@ -103,12 +103,12 @@ class ReminderEngine(
     private suspend fun postAll(due: List<PlannedReminder>) {
         // After a long gap (phone off, late alarm) only the latest reminder of each dose is shown.
         val latest = due.filter { it.kind == ReminderKind.MEDICATION }.groupBy { it.occurrenceKey }.values.map { it.last() } +
-            due.filter { it.kind == ReminderKind.MODULE }.groupBy { it.ownerId }.values.map { it.last() } +
+            due.filter { it.kind == ReminderKind.MODULE }.groupBy { it.ownerId to it.group }.values.map { it.last() } +
             due.filter { it.kind == ReminderKind.HABIT }
         for (r in latest.filter { it.kind == ReminderKind.MODULE }) {
             val module = ModuleRegistry.byId(r.ownerId)?.reminders ?: continue
             try {
-                module.show(context, ModuleReminder(r.occurrenceKey.orEmpty(), r.at))
+                module.show(context, ModuleReminder(r.occurrenceKey.orEmpty(), r.at, r.group ?: r.occurrenceKey.orEmpty()))
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {

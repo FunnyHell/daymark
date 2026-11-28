@@ -177,6 +177,12 @@ object InventoryRules {
     fun crossedLowThreshold(before: Double, after: Double, threshold: Double?): Boolean =
         !isLow(before, threshold) && isLow(after, threshold)
 
+    /**
+     * Whether an intake that took stock from [before] to [after] should warn about low stock: every time stock
+     * goes down while it is at or below the threshold, so 5 left and then 4 left both warn.
+     */
+    fun warnAfterIntake(before: Double, after: Double, threshold: Double?): Boolean = after < before && isLow(after, threshold)
+
     /** Delta needed to make the stock equal [counted] (a manual stock count). */
     fun correctionDelta(currentStock: Double, counted: Double): Double = (counted - currentStock).roundQuantity()
 

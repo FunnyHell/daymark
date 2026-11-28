@@ -1,4 +1,4 @@
-package io.github.funnyhell.daymark.modules.breaks
+package io.github.funnyhell.daymark.modules.intervals
 
 import java.time.DayOfWeek
 import java.time.Duration
@@ -6,7 +6,7 @@ import java.time.Instant
 import java.time.LocalTime
 import java.time.ZoneId
 
-/** When movement breaks are due: every [intervalMinutes] between [from] and [until] on [days]. */
+/** When an interval reminder is due: every [intervalMinutes] between [from] and [until] on [days]. */
 data class BreakPlan(
     val intervalMinutes: Int = 60,
     val from: LocalTime = LocalTime.of(9, 0),
@@ -17,21 +17,21 @@ data class BreakPlan(
 
     companion object {
         const val MIN_INTERVAL_MINUTES = 5L
-        val INTERVAL_CHOICES = listOf(30, 45, 60, 90, 120)
+        val INTERVAL_CHOICES = listOf(15, 30, 45, 60, 90, 120, 180)
     }
 }
 
 object BreakRules {
-    /** Breaks that came due this long ago are still offered (late alarm, phone off). */
+    /** Reminders that came due this long ago are still offered (late alarm, phone off). */
     val CATCH_UP: Duration = Duration.ofHours(2)
 
     /** How long "Later" puts off a break. */
     val LATER: Duration = Duration.ofMinutes(15)
 
     /**
-     * Break times on the days from today, today included, for [days] days. Inside the active hours of a day the
-     * first break comes one interval after the start, or one interval after [anchor] (the last break taken, see
-     * [anchorAfterDone] and [anchorForLater]) when that falls inside the same hours. No break is later than [BreakPlan.until].
+     * Reminder times on the days from today, today included, for [days] days. Inside the active hours of a day the
+     * first one comes one interval after the start, or one interval after [anchor] (the last time it was done, see
+     * [anchorAfterDone] and [anchorForLater]) when that falls inside the same hours. None is later than [BreakPlan.until].
      */
     fun upcoming(plan: BreakPlan, anchor: Instant?, now: Instant, zone: ZoneId, days: Int = 2): List<Instant> {
         if (!plan.until.isAfter(plan.from) || plan.days.isEmpty()) return emptyList()

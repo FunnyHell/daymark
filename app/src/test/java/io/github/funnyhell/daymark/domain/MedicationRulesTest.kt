@@ -194,6 +194,12 @@ class MedicationRulesTest {
         assertFalse(InventoryRules.isLow(5.5, 5.0))
         assertTrue(InventoryRules.crossedLowThreshold(6.0, 5.0, 5.0))
         assertFalse(InventoryRules.crossedLowThreshold(5.0, 4.0, 5.0))
+        // Below the threshold every further intake warns again; a restock or no threshold does not.
+        assertTrue(InventoryRules.warnAfterIntake(5.0, 4.0, 5.0))
+        assertTrue(InventoryRules.warnAfterIntake(6.0, 5.0, 5.0))
+        assertFalse(InventoryRules.warnAfterIntake(7.0, 6.0, 5.0))
+        assertFalse(InventoryRules.warnAfterIntake(4.0, 4.0, 5.0))
+        assertFalse(InventoryRules.warnAfterIntake(4.0, 3.0, null))
     }
 
     @Test

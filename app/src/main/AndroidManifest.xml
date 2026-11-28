@@ -132,7 +132,7 @@
         </receiver>
 
         <receiver
-            android:name=".modules.breaks.BreakActionReceiver"
+            android:name=".modules.intervals.IntervalActionReceiver"
             android:exported="false" />
 
         <receiver

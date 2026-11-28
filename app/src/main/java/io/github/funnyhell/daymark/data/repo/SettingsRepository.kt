@@ -43,6 +43,8 @@ data class Settings(
     /** Home sections in the order the user arranged them, and the ones the user hid. */
     val homeOrder: List<String> = emptyList(),
     val homeHidden: Set<String> = emptySet(),
+    /** Routes of the bottom-bar tabs after Home, in order; null until the user arranges them (see AppTabs). */
+    val tabs: List<String>? = null,
 )
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -66,6 +68,7 @@ class SettingsRepository(private val context: Context) {
         val modulesOff = stringSetPreferencesKey("modules_off")
         val homeOrder = stringPreferencesKey("home_order")
         val homeHidden = stringSetPreferencesKey("home_hidden")
+        val tabs = stringPreferencesKey("tabs")
     }
 
     val settings: Flow<Settings> = context.dataStore.data.map { p ->
@@ -86,6 +89,7 @@ class SettingsRepository(private val context: Context) {
             modulesOff = p[Keys.modulesOff].orEmpty(),
             homeOrder = p[Keys.homeOrder]?.split(',')?.filter { it.isNotBlank() }.orEmpty(),
             homeHidden = p[Keys.homeHidden].orEmpty(),
+            tabs = p[Keys.tabs]?.split(',')?.filter { it.isNotBlank() },
         )
     }
 
@@ -108,6 +112,8 @@ class SettingsRepository(private val context: Context) {
         it[Keys.homeOrder] = order.joinToString(",")
         it[Keys.homeHidden] = hidden
     }
+
+    suspend fun setTabs(routes: List<String>) = context.dataStore.edit { it[Keys.tabs] = routes.joinToString(",") }
 
     suspend fun setAutoSync(enabled: Boolean) = context.dataStore.edit { it[Keys.autoSync] = enabled }
     suspend fun setBackupFolder(uri: String?) = context.dataStore.edit {

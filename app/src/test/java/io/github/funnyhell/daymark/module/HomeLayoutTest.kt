@@ -1,7 +1,7 @@
 package io.github.funnyhell.daymark.module
 
 import io.github.funnyhell.daymark.data.repo.Settings
-import io.github.funnyhell.daymark.modules.breaks.BreaksModule
+import io.github.funnyhell.daymark.modules.intervals.IntervalsModule
 import io.github.funnyhell.daymark.modules.habits.HabitsModule
 import io.github.funnyhell.daymark.modules.medications.MedicationsModule
 import org.junit.Assert.assertEquals
@@ -28,9 +28,9 @@ class HomeLayoutTest {
         val defaults = Settings()
         assertTrue(ModuleRegistry.isEnabled(HabitsModule.ID, defaults))
         assertTrue(ModuleRegistry.isEnabled(MedicationsModule.ID, defaults))
-        assertFalse(ModuleRegistry.isEnabled(BreaksModule.ID, defaults))
-        val changed = defaults.copy(modulesOn = setOf(BreaksModule.ID), modulesOff = setOf(MedicationsModule.ID))
-        assertEquals(listOf(HabitsModule.ID, BreaksModule.ID), ModuleRegistry.enabled(changed).map { it.id })
+        assertFalse(ModuleRegistry.isEnabled(IntervalsModule.ID, defaults))
+        val changed = defaults.copy(modulesOn = setOf(IntervalsModule.ID), modulesOff = setOf(MedicationsModule.ID))
+        assertEquals(listOf(HabitsModule.ID, IntervalsModule.ID), ModuleRegistry.enabled(changed).map { it.id })
     }
 
     @Test

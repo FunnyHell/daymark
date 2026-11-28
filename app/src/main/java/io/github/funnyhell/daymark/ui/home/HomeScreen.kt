@@ -2,7 +2,14 @@ package io.github.funnyhell.daymark.ui.home
 
 import android.app.Application
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.size
+import androidx.compose.ui.res.painterResource
+import io.github.funnyhell.daymark.module.ModuleIcon
+import io.github.funnyhell.daymark.ui.AppTabs
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -46,7 +53,7 @@ import io.github.funnyhell.daymark.module.HomeLayout
 import io.github.funnyhell.daymark.module.HomeSection
 import io.github.funnyhell.daymark.module.ModuleNavigator
 import io.github.funnyhell.daymark.module.ModuleRegistry
-import io.github.funnyhell.daymark.modules.breaks.BreaksModule
+import io.github.funnyhell.daymark.modules.intervals.IntervalsModule
 import io.github.funnyhell.daymark.modules.habits.HabitsModule
 import io.github.funnyhell.daymark.modules.medications.MedicationsModule
 import io.github.funnyhell.daymark.ui.common.AppViewModel
@@ -110,7 +117,7 @@ class HomeViewModel(application: Application) : AppViewModel(application) {
             sections = HomeLayout.resolve(available, HomeSection::id, settings.homeOrder, settings.homeHidden).map { it.id },
             needsReminderPermissions = (MedicationsModule.ID in ids && meds.any { m -> m.medication.status == LifecycleStatus.ACTIVE && m.schedules.any { it.doses.isNotEmpty() } }) ||
                 (HabitsModule.ID in ids && habits.any { it.habit.reminderTime != null && it.habit.status == LifecycleStatus.ACTIVE }) ||
-                BreaksModule.ID in ids,
+                IntervalsModule.ID in ids,
         )
     }.flowOn(Dispatchers.Default).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), HomeState())
 
@@ -122,11 +129,13 @@ class HomeViewModel(application: Application) : AppViewModel(application) {
 }
 
 /** Home: the day's sections from the enabled modules, in the order the user chose, for today or an earlier day. */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun HomeScreen(
     contentPadding: PaddingValues,
     navigator: ModuleNavigator,
     onOpenModules: () -> Unit,
+    onOpenTab: (String) -> Unit,
     vm: HomeViewModel = viewModel(factory = HomeViewModel.Factory),
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
@@ -166,6 +175,26 @@ fun HomeScreen(
                 }
                 if (!state.isToday) {
                     AssistChip(onClick = { vm.showDay(null) }, label = { Text(stringResource(R.string.back_to_today)) })
+                }
+            }
+        }
+        val elsewhere = AppTabs.notInBar(state.settings)
+        if (elsewhere.isNotEmpty() && state.isToday) {
+            // Screens that are not in the bottom bar are opened from here.
+            item(key = "home.launcher") {
+                FlowRow(Modifier.padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    elsewhere.forEach { tab ->
+                        AssistChip(
+                            onClick = { onOpenTab(tab.route) },
+                            label = { Text(stringResource(tab.label)) },
+                            leadingIcon = {
+                                when (val icon = tab.icon) {
+                                    is ModuleIcon.Vector -> Icon(icon.image, contentDescription = null, modifier = Modifier.size(18.dp))
+                                    is ModuleIcon.Drawable -> Icon(painterResource(icon.res), contentDescription = null, modifier = Modifier.size(18.dp))
+                                }
+                            },
+                        )
+                    }
                 }
             }
         }

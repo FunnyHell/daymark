@@ -188,13 +188,15 @@ class MedicationRepositoryTest {
     }
 
     @Test
-    fun lowStockThreshold_reportedOnlyWhenCrossed() = runBlocking {
-        val id = repo.create(medDraft(times = listOf(LocalTime.of(8, 0), LocalTime.of(8, 30)), stock = 10.0, threshold = 9.0))
+    fun lowStock_warnsOnEveryIntakeWhileAtOrBelowThreshold() = runBlocking {
+        val id = repo.create(medDraft(times = listOf(LocalTime.of(8, 0), LocalTime.of(8, 30), LocalTime.of(9, 0)), stock = 10.0, threshold = 8.0))
         val first = repo.recordDose(id, todaysKey(id, 0), MedicationEventType.TAKEN, ActionSource.APP) as MedicationActionResult.Recorded
-        assertTrue(first.becameLow)
+        assertFalse(first.becameLow)
         val second = repo.recordDose(id, todaysKey(id, 1), MedicationEventType.TAKEN, ActionSource.APP) as MedicationActionResult.Recorded
-        assertFalse(second.becameLow)
-        assertTrue(synchronized(changes) { changes.any { it is DataChange.Medications && id in it.lowStockMedicationIds } })
+        assertTrue(second.becameLow)
+        val third = repo.recordDose(id, todaysKey(id, 2), MedicationEventType.TAKEN, ActionSource.APP) as MedicationActionResult.Recorded
+        assertTrue(third.becameLow)
+        assertEquals(2, synchronized(changes) { changes.count { it is DataChange.Medications && id in it.lowStockMedicationIds } })
     }
 
     @Test

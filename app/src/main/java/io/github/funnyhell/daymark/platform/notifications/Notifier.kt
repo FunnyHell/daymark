@@ -46,18 +46,30 @@ class Notifier(private val context: Context, private val settings: SettingsRepos
             .setUsage(AudioAttributes.USAGE_NOTIFICATION_EVENT)
             .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
             .build()
-        fun channel(id: String, name: Int, desc: Int, importance: Int) = NotificationChannel(id, context.getString(name), importance).apply {
-            description = context.getString(desc)
-            lockscreenVisibility = android.app.Notification.VISIBILITY_PRIVATE
-            setSound(sound, audio)
-            enableVibration(true)
-            vibrationPattern = longArrayOf(0, 250, 150, 250)
-            enableLights(true)
-        }
-        nm.createNotificationChannel(channel(CHANNEL_MEDICATION, R.string.channel_medication, R.string.channel_medication_desc, NotificationManager.IMPORTANCE_HIGH))
+        fun channel(id: String, name: Int, desc: Int, importance: Int, tone: android.net.Uri = sound, vibration: LongArray = longArrayOf(0, 250, 150, 250)) =
+            NotificationChannel(id, context.getString(name), importance).apply {
+                description = context.getString(desc)
+                lockscreenVisibility = android.app.Notification.VISIBILITY_PRIVATE
+                setSound(tone, audio)
+                enableVibration(true)
+                vibrationPattern = vibration
+                enableLights(true)
+            }
+        // Medication reminders are the most important type: their own sound and a longer vibration, so they can
+        // be told apart from habit and interval reminders without looking.
+        nm.createNotificationChannel(
+            channel(
+                CHANNEL_MEDICATION, R.string.channel_medication, R.string.channel_medication_desc, NotificationManager.IMPORTANCE_HIGH,
+                tone = medicationSound(), vibration = longArrayOf(0, 400, 200, 400, 200, 400),
+            ),
+        )
         nm.createNotificationChannel(channel(CHANNEL_HABIT, R.string.channel_habit, R.string.channel_habit_desc, NotificationManager.IMPORTANCE_HIGH))
         nm.createNotificationChannel(channel(CHANNEL_STOCK, R.string.channel_stock, R.string.channel_stock_desc, NotificationManager.IMPORTANCE_DEFAULT))
     }
+
+    /** The medication chime bundled with the app (res/raw/medication_chime). */
+    fun medicationSound(): android.net.Uri =
+        android.net.Uri.parse("android.resource://${context.packageName}/${R.raw.medication_chime}")
 
     fun hasPermission(): Boolean = Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
         ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
@@ -80,6 +92,7 @@ class Notifier(private val context: Context, private val settings: SettingsRepos
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(title)
             .setContentText(text)
+            .setSound(medicationSound())
             .setCategory(NotificationCompat.CATEGORY_REMINDER)
             .setDefaults(NotificationCompat.DEFAULT_ALL)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -334,10 +347,10 @@ class Notifier(private val context: Context, private val settings: SettingsRepos
     }
 
     companion object {
-        const val CHANNEL_MEDICATION = "medication_reminders_v2"
+        const val CHANNEL_MEDICATION = "medication_reminders_v3"
         const val CHANNEL_HABIT = "habit_reminders_v2"
         const val CHANNEL_STOCK = "low_stock_v2"
-        private val LEGACY_CHANNELS = listOf("medication_reminders", "habit_reminders", "low_stock")
+        private val LEGACY_CHANNELS = listOf("medication_reminders", "habit_reminders", "low_stock", "medication_reminders_v2")
         const val NOTIFICATION_ID = 1
         internal const val TAG_MED = "med:"
         private const val TAG_HABIT = "habit:"

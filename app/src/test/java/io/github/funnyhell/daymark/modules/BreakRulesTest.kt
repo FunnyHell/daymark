@@ -1,7 +1,7 @@
 package io.github.funnyhell.daymark.modules
 
-import io.github.funnyhell.daymark.modules.breaks.BreakPlan
-import io.github.funnyhell.daymark.modules.breaks.BreakRules
+import io.github.funnyhell.daymark.modules.intervals.BreakPlan
+import io.github.funnyhell.daymark.modules.intervals.BreakRules
 import java.time.DayOfWeek
 import java.time.Instant
 import java.time.LocalDate

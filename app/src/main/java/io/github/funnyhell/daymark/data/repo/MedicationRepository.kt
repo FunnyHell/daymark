@@ -40,7 +40,7 @@ sealed interface MedicationActionResult {
         val eventId: String,
         /** Stock did not cover the full dose; the user should update the stock count. */
         val insufficientStock: Boolean = false,
-        /** Stock reached or fell below the low-stock threshold with this action. */
+        /** Stock went down while at or below the low-stock threshold with this action (a low-stock warning is due). */
         val becameLow: Boolean = false,
     ) : MedicationActionResult
 
@@ -246,7 +246,7 @@ class MedicationRepository(
                             insufficient = consumption.insufficient
                             insertAdjustment(dose.medicationId, consumption.delta, AdjustmentType.INTAKE, null, eventId)
                             becameLow = data.medication.lowStockAlerts &&
-                                InventoryRules.crossedLowThreshold(before, before + consumption.delta, data.medication.lowStockThreshold)
+                                InventoryRules.warnAfterIntake(before, before + consumption.delta, data.medication.lowStockThreshold)
                         }
                         MedicationActionResult.Recorded(eventId, insufficient, becameLow)
                     }

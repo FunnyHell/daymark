@@ -129,4 +129,8 @@ interface ModuleReminders {
     suspend fun show(context: Context, reminder: ModuleReminder)
 }
 
-data class ModuleReminder(val key: String, val at: Instant)
+/**
+ * One planned reminder. [group] tells which reminders replace each other: after a long gap only the latest due
+ * reminder of each group is shown (a module with several independent reminders uses one group per reminder).
+ */
+data class ModuleReminder(val key: String, val at: Instant, val group: String = key)

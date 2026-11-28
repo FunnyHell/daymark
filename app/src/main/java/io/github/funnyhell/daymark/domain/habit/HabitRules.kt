@@ -47,6 +47,11 @@ data class WeekResult(
 
 data class StreakSummary(val current: Int, val best: Int)
 
+/** How far one checklist step is on a day (CHECKLIST) or in a week (WEEKLY_CHECKLIST). */
+data class StepProgress(val step: HabitStep, val done: Int) {
+    val complete: Boolean get() = done >= step.target
+}
+
 /** A run of consecutive clean days for an abstinence habit. */
 data class CleanRun(val start: LocalDate, val endInclusive: LocalDate, val days: Int, val endedByLapse: Boolean)
 
@@ -82,25 +87,57 @@ class HabitEvaluator(
 
     /** True if the day is an active scheduled day (scheduled and not paused). */
     fun isScheduled(date: LocalDate): Boolean = when (habit.type) {
-        HabitType.WEEKLY_GOAL, HabitType.ABSTINENCE ->
+        HabitType.WEEKLY_GOAL, HabitType.WEEKLY_CHECKLIST, HabitType.ABSTINENCE ->
             !date.isBefore(habit.startDate) && scheduleOn(date) != null && !isPaused(date)
         else -> recurrenceMatches(date) && !isPaused(date)
     }
 
     fun eventsOn(date: LocalDate): List<HabitEvent> = eventsByDate[date].orEmpty()
 
-    /** Progress on a day: number of completions, or the summed amount for QUANTITY habits. */
-    fun progressOn(date: LocalDate): Double = eventsOn(date)
-        .filter { it.type == HabitEventType.COMPLETION || it.type == HabitEventType.PROGRESS }
-        .sumOf { it.amount }
-        .roundQuantity()
+    /**
+     * Progress on a day: number of completions, or the summed amount for QUANTITY habits. For a CHECKLIST the
+     * steps done that day, each counted up to its own target (so brushing teeth three times does not make up for
+     * a missed shower); for a WEEKLY_CHECKLIST the step completions made that day.
+     */
+    fun progressOn(date: LocalDate): Double = when (habit.type) {
+        HabitType.CHECKLIST -> stepProgress(date).sumOf { minOf(it.done, it.step.target) }.toDouble()
+        else -> eventsOn(date)
+            .filter { it.type == HabitEventType.COMPLETION || it.type == HabitEventType.PROGRESS }
+            .sumOf { it.amount }
+            .roundQuantity()
+    }
 
     fun targetOn(date: LocalDate): Double = when (habit.type) {
         HabitType.CHECK -> 1.0
         HabitType.ABSTINENCE -> 0.0
-        HabitType.WEEKLY_GOAL -> 1.0
+        HabitType.WEEKLY_GOAL, HabitType.WEEKLY_CHECKLIST -> 1.0
+        HabitType.CHECKLIST -> stepsOn(date).sumOf { it.target }.takeIf { it > 0 }?.toDouble() ?: 1.0
         else -> scheduleOn(date)?.target ?: scheduleOn(habit.startDate)?.target ?: 1.0
     }
+
+    // ---- Checklists ----
+
+    /** The steps that count on [date], in their order. */
+    fun stepsOn(date: LocalDate): List<HabitStep> = data.steps.filter { it.activeOn(date) }.sortedBy { it.sortOrder }
+
+    /**
+     * Each step with how often it was done: on [date] for a CHECKLIST, in the week of [date] up to [date] for a
+     * WEEKLY_CHECKLIST.
+     */
+    fun stepProgress(date: LocalDate): List<StepProgress> {
+        val days = if (habit.type == HabitType.WEEKLY_CHECKLIST) {
+            generateSequence(date.startOfWeek(firstDayOfWeek)) { it.plusDays(1) }.takeWhile { !it.isAfter(date) }.toSet()
+        } else {
+            setOf(date)
+        }
+        val counts = activeEvents.filter { it.type == HabitEventType.COMPLETION && it.stepId != null && it.date in days }
+            .groupingBy { it.stepId }.eachCount()
+        return stepsOn(date).map { StepProgress(it, counts[it.id] ?: 0) }
+    }
+
+    /** The day's note (the latest one written), if any. */
+    fun noteOn(date: LocalDate): HabitEvent? =
+        eventsOn(date).filter { it.type == HabitEventType.NOTE && !it.note.isNullOrBlank() }.maxByOrNull { it.recordedAt }
 
     fun dayResult(date: LocalDate, today: LocalDate): DayResult {
         val progress = progressOn(date)
@@ -110,7 +147,7 @@ class HabitEvaluator(
             date.isBefore(habit.startDate) -> DayState.BEFORE_START
             isPaused(date) -> DayState.PAUSED
             habit.type == HabitType.ABSTINENCE -> abstinenceState(date)
-            habit.type == HabitType.WEEKLY_GOAL ->
+            habit.type.isWeekly ->
                 if (scheduleOn(date) == null) DayState.NOT_SCHEDULED
                 else if (progress > 0.0) DayState.DONE else DayState.NOT_SCHEDULED
             !recurrenceMatches(date) -> DayState.NOT_SCHEDULED
@@ -141,11 +178,20 @@ class HabitEvaluator(
         val weekEnd = weekStart.plusDays(6)
         val lastEvaluated = minOf(weekEnd, today)
         val schedule = scheduleOn(lastEvaluated) ?: scheduleOn(weekStart)
-        val goal = schedule?.target ?: 0.0
-        val completions = generateSequence(weekStart) { it.plusDays(1) }.take(7)
-            .filter { !it.isAfter(today) }
-            .sumOf { progressOn(it) }
-            .roundQuantity()
+        val goal: Double
+        val completions: Double
+        if (habit.type == HabitType.WEEKLY_CHECKLIST) {
+            // Every step up to its own weekly target; the week is complete when all steps are.
+            val steps = stepProgress(lastEvaluated)
+            goal = steps.sumOf { it.step.target }.toDouble()
+            completions = if (weekStart.isAfter(today)) 0.0 else steps.sumOf { minOf(it.done, it.step.target) }.toDouble()
+        } else {
+            goal = schedule?.target ?: 0.0
+            completions = generateSequence(weekStart) { it.plusDays(1) }.take(7)
+                .filter { !it.isAfter(today) }
+                .sumOf { progressOn(it) }
+                .roundQuantity()
+        }
         val days = generateSequence(weekStart) { it.plusDays(1) }.take(7).toList()
         val trackedDays = days.filter { !it.isBefore(habit.startDate) && scheduleOn(it) != null }
         val hasPausedOrMissingDays = days.any { it.isBefore(habit.startDate) || scheduleOn(it) == null || isPaused(it) }
@@ -170,8 +216,8 @@ class HabitEvaluator(
     // ---- Streaks and rates ----
 
     /** Outcomes per evaluation unit (days, or weeks for WEEKLY_GOAL) from the start date to today. */
-    fun outcomes(today: LocalDate): List<PeriodOutcome> = when (habit.type) {
-        HabitType.WEEKLY_GOAL -> weeks(habit.startDate, today).map { it.outcome }
+    fun outcomes(today: LocalDate): List<PeriodOutcome> = when {
+        habit.type.isWeekly -> weeks(habit.startDate, today).map { it.outcome }
         else -> days(habit.startDate, today, today).map { dayOutcome(it) }
     }
 
@@ -190,8 +236,8 @@ class HabitEvaluator(
      * Returns null when nothing was evaluated.
      */
     fun completionRate(from: LocalDate, to: LocalDate, today: LocalDate): RateSummary {
-        val outcomes = when (habit.type) {
-            HabitType.WEEKLY_GOAL -> weeks(from, today)
+        val outcomes = when {
+            habit.type.isWeekly -> weeks(from, today)
                 .filter { !it.weekStart.plusDays(6).isBefore(from) && !it.weekStart.isAfter(to) }
                 .map { it.outcome }
             else -> days(maxOf(from, habit.startDate), minOf(to, today), today).map { dayOutcome(it) }

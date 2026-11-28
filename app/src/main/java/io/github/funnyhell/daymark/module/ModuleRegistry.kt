@@ -2,12 +2,14 @@ package io.github.funnyhell.daymark.module
 
 import io.github.funnyhell.daymark.data.repo.Settings
 import io.github.funnyhell.daymark.modules.intervals.IntervalsModule
+import io.github.funnyhell.daymark.modules.activity.ActivityModule
 import io.github.funnyhell.daymark.modules.habits.HabitsModule
 import io.github.funnyhell.daymark.modules.medications.MedicationsModule
+import io.github.funnyhell.daymark.modules.outdoors.OutdoorsModule
 
 /** Every module of the app, in the order of the module list and the bottom bar. A new module is added here. */
 object ModuleRegistry {
-    val all: List<DaymarkModule> = listOf(HabitsModule, MedicationsModule, IntervalsModule)
+    val all: List<DaymarkModule> = listOf(HabitsModule, MedicationsModule, IntervalsModule, ActivityModule, OutdoorsModule)
 
     fun byId(id: String): DaymarkModule? = all.firstOrNull { it.id == id }
 

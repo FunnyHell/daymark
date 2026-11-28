@@ -48,6 +48,9 @@ interface DaymarkModule {
     /** Called once when the app process starts, whether the module is on or not (for example to create channels). */
     fun onAppStart(context: Context) {}
 
+    /** Called when the app comes to the foreground while the module is on (for example to read new data). */
+    suspend fun onForeground(context: Context) {}
+
     /** Called after the user turned the module off; remove its notifications here. */
     suspend fun onDisabled(context: Context) {}
 

@@ -163,6 +163,8 @@ object HabitsDaySection : HomeSection {
                         onSkip = { vm.skipHabit(habit.habitId, day) },
                         onLapse = { note -> vm.recordLapse(habit.habitId, day, note) },
                         onUndo = { vm.undoHabitEvent(it) },
+                        onMarkStep = { stepId, done -> vm.markStep(habit.habitId, stepId, done, day) },
+                        onNote = { vm.setHabitNote(habit.habitId, it, day) },
                     )
                 }
             }

@@ -7,6 +7,7 @@ import io.github.funnyhell.daymark.domain.habit.HabitData
 import io.github.funnyhell.daymark.domain.habit.HabitEvent
 import io.github.funnyhell.daymark.domain.habit.HabitEventType
 import io.github.funnyhell.daymark.domain.habit.HabitSchedule
+import io.github.funnyhell.daymark.domain.habit.HabitStep
 import io.github.funnyhell.daymark.domain.habit.HabitType
 import io.github.funnyhell.daymark.domain.habit.Recurrence
 import io.github.funnyhell.daymark.domain.medication.ActionSource
@@ -49,8 +50,11 @@ fun schedule(
     target: Double = 1.0,
 ) = HabitSchedule(newId("hs"), "h1", from, until, recurrence, target)
 
-fun event(date: LocalDate, type: HabitEventType = HabitEventType.COMPLETION, amount: Double = 1.0, voided: Boolean = false) =
-    HabitEvent(newId("he"), "h1", date, type, amount, null, EPOCH, if (voided) EPOCH else null)
+fun event(date: LocalDate, type: HabitEventType = HabitEventType.COMPLETION, amount: Double = 1.0, voided: Boolean = false, stepId: String? = null) =
+    HabitEvent(newId("he"), "h1", date, type, amount, null, EPOCH, if (voided) EPOCH else null, stepId)
+
+fun step(id: String, target: Int = 1, order: Int = 0, from: LocalDate = MONDAY, until: LocalDate? = null) =
+    HabitStep(id, "h1", id, target, order, from, until)
 
 fun pause(start: LocalDate, end: LocalDate?) = PauseInterval(newId("p"), "h1", start, end)
 
@@ -59,7 +63,8 @@ fun habitData(
     schedules: List<HabitSchedule> = listOf(schedule(from = habit.startDate)),
     pauses: List<PauseInterval> = emptyList(),
     events: List<HabitEvent> = emptyList(),
-) = HabitData(habit, schedules, pauses, events)
+    steps: List<HabitStep> = emptyList(),
+) = HabitData(habit, schedules, pauses, events, steps)
 
 val ALL_DAYS: Set<DayOfWeek> = DayOfWeek.entries.toSet()
 

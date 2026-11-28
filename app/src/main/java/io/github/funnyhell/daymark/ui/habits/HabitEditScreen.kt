@@ -1,5 +1,8 @@
 package io.github.funnyhell.daymark.ui.habits
 
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
+import io.github.funnyhell.daymark.domain.habit.StepDraft
 import android.app.Application
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -96,6 +99,8 @@ class HabitEditViewModel(application: Application, handle: SavedStateHandle) : A
     var reminderTime by mutableStateOf<LocalTime?>(null)
     var showOnWidget by mutableStateOf(true)
     var errors by mutableStateOf<List<HabitDraftError>>(emptyList())
+    /** Steps of a checklist being edited; existing steps keep their ids so their history stays theirs. */
+    var steps by mutableStateOf<List<StepDraft>>(emptyList())
     var saved by mutableStateOf(false)
 
     init {
@@ -111,6 +116,7 @@ class HabitEditViewModel(application: Application, handle: SavedStateHandle) : A
             reminderTime = h.reminderTime
             showOnWidget = h.showOnWidget
             hasHistory = data.events.isNotEmpty()
+            steps = data.steps.filter { it.removedOn == null }.sortedBy { it.sortOrder }.map { StepDraft(it.id, it.title, it.target) }
             val schedule = data.schedules.lastOrNull()
             if (schedule != null) {
                 targetText = schedule.target.formatQuantity()
@@ -132,6 +138,7 @@ class HabitEditViewModel(application: Application, handle: SavedStateHandle) : A
             HabitType.QUANTITY -> ""
             else -> ""
         }
+        if (t.isChecklist && steps.isEmpty()) steps = listOf(StepDraft(null, ""), StepDraft(null, ""))
     }
 
     private fun recurrence(): Recurrence? = when (recurrenceChoice) {
@@ -149,12 +156,13 @@ class HabitEditViewModel(application: Application, handle: SavedStateHandle) : A
             return
         }
         val target = when (type) {
-            HabitType.CHECK, HabitType.ABSTINENCE -> 1.0
+            HabitType.CHECK, HabitType.ABSTINENCE, HabitType.CHECKLIST, HabitType.WEEKLY_CHECKLIST -> 1.0
             else -> parseNumber(targetText) ?: Double.NaN
         }
         val draft = HabitDraft(
             name = name, description = description, colorArgb = color, type = type, unit = unit.ifBlank { null },
             startDate = startDate, recurrence = rec, target = target, reminderTime = reminderTime, showOnWidget = showOnWidget,
+            steps = steps,
         )
         errors = HabitDraftValidator.validate(draft, container.time.today())
         if (errors.isNotEmpty()) return
@@ -278,7 +286,21 @@ fun HabitEditScreen(
                 }
             }
 
-            if (vm.type == HabitType.CHECK || vm.type == HabitType.MULTI || vm.type == HabitType.QUANTITY) {
+            if (vm.type.isChecklist) {
+                SectionHeader(stringResource(R.string.field_steps))
+                StepsEditor(
+                    steps = vm.steps,
+                    onChange = { vm.steps = it },
+                    perWeek = vm.type == HabitType.WEEKLY_CHECKLIST,
+                    error = when {
+                        HabitDraftError.STEPS_REQUIRED in errors -> stringResource(R.string.error_steps_required)
+                        HabitDraftError.STEP_INVALID in errors -> stringResource(R.string.error_step_invalid)
+                        else -> null
+                    },
+                )
+            }
+
+            if (vm.type == HabitType.CHECK || vm.type == HabitType.MULTI || vm.type == HabitType.QUANTITY || vm.type == HabitType.CHECKLIST) {
                 SectionHeader(stringResource(R.string.field_schedule))
                 FlowRow(Modifier.padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     FilterChip(vm.recurrenceChoice == RecurrenceChoice.DAILY, { vm.recurrenceChoice = RecurrenceChoice.DAILY }, { Text(stringResource(R.string.recurrence_daily)) })
@@ -407,6 +429,38 @@ private fun typeHelp(type: HabitType): Int = when (type) {
     HabitType.QUANTITY -> R.string.type_quantity_help
     HabitType.WEEKLY_GOAL -> R.string.type_weekly_help
     HabitType.ABSTINENCE -> R.string.type_abstinence_help
+    HabitType.CHECKLIST -> R.string.type_checklist_help
+    HabitType.WEEKLY_CHECKLIST -> R.string.type_weekly_checklist_help
+}
+
+/** Steps of a checklist: a title and how many times per day or week each, reorderable and removable. */
+@Composable
+private fun StepsEditor(steps: List<StepDraft>, onChange: (List<StepDraft>) -> Unit, perWeek: Boolean, error: String?) {
+    Column(Modifier.padding(horizontal = 16.dp)) {
+        steps.forEachIndexed { index, step ->
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                OutlinedTextField(
+                    value = step.title,
+                    onValueChange = { text -> onChange(steps.toMutableList().also { it[index] = step.copy(title = text.take(HabitDraftValidator.MAX_NAME)) }) },
+                    label = { Text(stringResource(R.string.field_step, index + 1)) },
+                    singleLine = true,
+                    modifier = Modifier.weight(1f),
+                )
+                // Times per day (or week): tap to cycle 1..5.
+                TextButton(onClick = { onChange(steps.toMutableList().also { it[index] = step.copy(target = step.target % 5 + 1) }) }) {
+                    Text(stringResource(if (perWeek) R.string.step_times_week else R.string.step_times_day, step.target))
+                }
+                IconButton(onClick = { onChange(steps.toMutableList().also { it.removeAt(index) }) }) {
+                    Icon(Icons.Filled.Close, contentDescription = stringResource(R.string.remove_step, step.title.ifBlank { (index + 1).toString() }))
+                }
+            }
+        }
+        TextButton(onClick = { onChange(steps + StepDraft(null, "")) }, enabled = steps.size < HabitDraftValidator.MAX_STEPS) {
+            Icon(Icons.Filled.Add, contentDescription = null)
+            Text(stringResource(R.string.add_step))
+        }
+        if (error != null) Text(error, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+    }
 }
 
 private fun targetError(type: HabitType): Int = when (type) {

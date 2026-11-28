@@ -1,5 +1,6 @@
 package io.github.funnyhell.daymark.ui.medications
 
+import io.github.funnyhell.daymark.ui.common.NoteDialog
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
@@ -55,7 +56,10 @@ fun DoseRow(
     onCorrect: (String) -> Unit,
     onOpen: (() -> Unit)? = null,
     showName: Boolean = true,
+    /** Writes the note of a recorded dose; null where notes are not offered. */
+    onNote: ((String?) -> Unit)? = null,
 ) {
+    var noteDialog by remember { mutableStateOf(false) }
     val toggleLabel = stringResource(if (item.resolved) R.string.cd_unmark else R.string.widget_take_cd, item.name)
     AppCard(onClick = onOpen) {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -97,20 +101,31 @@ fun DoseRow(
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
+                item.note?.let { Text(it, style = MaterialTheme.typography.bodySmall, maxLines = 2) }
             }
             // The circle already shows taken and skipped; the chip only adds what it does not show.
             if (item.state in setOf(OccurrenceState.DUE, OccurrenceState.MISSED, OccurrenceState.SNOOZED)) StateChip(item)
-            if (!item.resolved) {
+            if (!item.resolved || (onNote != null && item.resolutionEventId != null)) {
                 var menu by remember { mutableStateOf(false) }
                 IconButton(onClick = { menu = true }) { Icon(Icons.Filled.MoreVert, contentDescription = stringResource(R.string.more_actions)) }
                 DropdownMenu(expanded = menu, onDismissRequest = { menu = false }) {
-                    DropdownMenuItem(text = { Text(stringResource(R.string.action_skip)) }, onClick = { menu = false; onSkip() })
-                    if (onSnooze != null) {
-                        DropdownMenuItem(text = { Text(stringResource(R.string.action_snooze)) }, onClick = { menu = false; onSnooze() })
+                    if (!item.resolved) {
+                        DropdownMenuItem(text = { Text(stringResource(R.string.action_skip)) }, onClick = { menu = false; onSkip() })
+                        if (onSnooze != null) {
+                            DropdownMenuItem(text = { Text(stringResource(R.string.action_snooze)) }, onClick = { menu = false; onSnooze() })
+                        }
+                    } else {
+                        DropdownMenuItem(
+                            text = { Text(stringResource(if (item.note == null) R.string.note_add else R.string.note_edit)) },
+                            onClick = { menu = false; noteDialog = true },
+                        )
                     }
                 }
             }
         }
+    }
+    if (noteDialog && onNote != null) {
+        NoteDialog(item.name, item.note, onSave = onNote, onDismiss = { noteDialog = false })
     }
 }
 

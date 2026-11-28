@@ -35,6 +35,8 @@ data class DoseItem(
     /** Active TAKEN/SKIPPED event that a correction would void. */
     val resolutionEventId: String?,
     val snoozedUntilText: String?,
+    /** The note on the recorded dose. */
+    val note: String? = null,
 ) {
     val resolved: Boolean get() = state == OccurrenceState.TAKEN || state == OccurrenceState.SKIPPED
 }
@@ -57,6 +59,7 @@ object MedicationPresentation {
             stateText = context.getString(WidgetContent.stateLabel(status.state)),
             resolutionEventId = status.resolution?.id,
             snoozedUntilText = status.snoozedUntil?.let { Formats.time(context, it, zone) },
+            note = status.resolution?.note,
         )
     }
 

@@ -13,6 +13,7 @@ import io.github.funnyhell.daymark.domain.habit.HabitEvaluator
 import io.github.funnyhell.daymark.domain.habit.HabitEventType
 import io.github.funnyhell.daymark.domain.habit.HabitType
 import io.github.funnyhell.daymark.domain.habit.Recurrence
+import io.github.funnyhell.daymark.domain.habit.StepDraft
 import java.time.DayOfWeek
 import java.time.ZoneOffset
 import kotlinx.coroutines.runBlocking
@@ -211,6 +212,87 @@ class HabitRepositoryTest {
         assertEquals(4, HabitEvaluator(data).streaks(time.today()).current)
         // The removed slips stay in the history as corrected.
         assertEquals(2, data.events.count { it.type == HabitEventType.LAPSE && !it.isActive })
+    }
+
+    private fun routineDraft(type: HabitType = HabitType.CHECKLIST, steps: List<StepDraft> = listOf(StepDraft(null, "Brush teeth", 2), StepDraft(null, "Shower"))) =
+        HabitDraft("Evening", null, 0xFF00AA00, type, null, DAY1, Recurrence.Daily, 1.0, null, true, steps = steps)
+
+    @Test
+    fun checklist_stepsAreMarkedUpToTheirTargetAndUnmarkedOneByOne() = runBlocking {
+        val id = repo.create(routineDraft())
+        val (teeth, shower) = repo.get(id)!!.steps.sortedBy { it.sortOrder }
+        assertTrue(repo.markStep(id, teeth.id, done = true))
+        assertTrue(repo.markStep(id, teeth.id, done = true))
+        // The target of 2 is reached: a third mark is not recorded.
+        assertFalse(repo.markStep(id, teeth.id, done = true))
+        assertEquals(DayState.PENDING, HabitEvaluator(repo.get(id)!!).dayResult(DAY1, DAY1).state)
+        assertTrue(repo.markStep(id, shower.id, done = true))
+        assertEquals(DayState.DONE, HabitEvaluator(repo.get(id)!!).dayResult(DAY1, DAY1).state)
+        assertTrue(repo.markStep(id, teeth.id, done = false))
+        assertEquals(listOf(1, 1), HabitEvaluator(repo.get(id)!!).stepProgress(DAY1).map { it.done })
+        // A completion without a step, or for an unknown step, is refused.
+        assertEquals(HabitActionResult.Rejected(HabitRejectReason.WRONG_TYPE), repo.addCompletion(id))
+    }
+
+    @Test
+    fun checklist_doneMarksEveryOpenStepAndNotDoneClearsTheDay() = runBlocking {
+        val id = repo.create(routineDraft())
+        assertTrue(repo.setDone(id, done = true))
+        assertEquals(3, repo.get(id)!!.events.count { it.isActive && it.stepId != null })
+        assertFalse(repo.setDone(id, done = true))
+        assertTrue(repo.setDone(id, done = false))
+        val data = repo.get(id)!!
+        assertEquals(0, data.events.count { it.isActive })
+        // The removed marks stay in history as corrected.
+        assertEquals(3, data.events.count { !it.isActive })
+        assertTrue(repo.completeIfIncomplete(id) is HabitActionResult.Recorded)
+        assertEquals(DayState.DONE, HabitEvaluator(repo.get(id)!!).dayResult(DAY1, DAY1).state)
+    }
+
+    @Test
+    fun checklist_editingKeepsHistoryOfRemovedSteps() = runBlocking {
+        val id = repo.create(routineDraft())
+        val (teeth, shower) = repo.get(id)!!.steps.sortedBy { it.sortOrder }
+        repo.markStep(id, shower.id, done = true)
+        time.set(DAY1.plusDays(1), 9)
+        // Shower is removed (it has history, so it ends today), teeth renamed, a new step added.
+        repo.update(id, routineDraft(steps = listOf(StepDraft(teeth.id, "Teeth", 2), StepDraft(null, "Floss"))))
+        val data = repo.get(id)!!
+        assertEquals(3, data.steps.size)
+        assertEquals(DAY1.plusDays(1), data.steps.first { it.id == shower.id }.removedOn)
+        val e = HabitEvaluator(data)
+        assertEquals(listOf("Teeth", "Shower"), e.stepsOn(DAY1).map { it.title })
+        assertEquals(listOf("Teeth", "Floss"), e.stepsOn(DAY1.plusDays(1)).map { it.title })
+    }
+
+    @Test
+    fun weeklyChecklist_marksCountForTheWholeWeek() = runBlocking {
+        val id = repo.create(routineDraft(HabitType.WEEKLY_CHECKLIST, listOf(StepDraft(null, "Kitchen"), StepDraft(null, "Floors"))))
+        val (kitchen, floors) = repo.get(id)!!.steps.sortedBy { it.sortOrder }
+        repo.markStep(id, kitchen.id, done = true)
+        time.set(DAY1.plusDays(2), 9)
+        // Already done this week on Monday.
+        assertFalse(repo.markStep(id, kitchen.id, done = true))
+        assertTrue(repo.markStep(id, floors.id, done = true))
+        val e = HabitEvaluator(repo.get(id)!!)
+        assertTrue(e.stepProgress(DAY1.plusDays(2)).all { it.complete })
+        // Unmarking on Wednesday removes Monday's kitchen mark, since it is in the same week.
+        assertTrue(repo.markStep(id, kitchen.id, done = false))
+        assertFalse(HabitEvaluator(repo.get(id)!!).stepProgress(DAY1.plusDays(2)).first { it.step.id == kitchen.id }.complete)
+    }
+
+    @Test
+    fun notes_replaceTheDaysNoteAndKeepTheOldOneAsCorrected() = runBlocking {
+        val id = repo.create(draft())
+        assertTrue(repo.setNote(id, DAY1, "bench 5x5 60 kg"))
+        assertFalse(repo.setNote(id, DAY1, "bench 5x5 60 kg"))
+        assertTrue(repo.setNote(id, DAY1, "bench 5x5 62.5 kg"))
+        val e = HabitEvaluator(repo.get(id)!!)
+        assertEquals("bench 5x5 62.5 kg", e.noteOn(DAY1)?.note)
+        assertEquals(0.0, e.progressOn(DAY1), 0.0)
+        assertTrue(repo.setNote(id, DAY1, " "))
+        assertEquals(null, HabitEvaluator(repo.get(id)!!).noteOn(DAY1))
+        assertFalse(repo.setNote(id, DAY1.plusDays(1), "future"))
     }
 
     @Test

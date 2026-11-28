@@ -96,6 +96,8 @@ data class MedicationEvent(
     val source: ActionSource,
     val recordedAt: Instant,
     val voidedAt: Instant?,
+    /** The user's note about the dose ("after lunch"); does not change what was recorded. */
+    val note: String? = null,
 ) {
     val isActive: Boolean get() = voidedAt == null
     val isResolution: Boolean get() = type == MedicationEventType.TAKEN || type == MedicationEventType.SKIPPED

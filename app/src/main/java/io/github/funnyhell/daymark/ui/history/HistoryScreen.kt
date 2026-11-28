@@ -178,7 +178,7 @@ class HistoryViewModel(application: Application) : TrackingViewModel(application
                     current = s.current,
                     best = s.best,
                     rate30 = e.completionRate(today.minusDays(29), today, today).rate,
-                    unitPlural = if (data.habit.type == HabitType.WEEKLY_GOAL) R.plurals.unit_weeks else R.plurals.unit_days,
+                    unitPlural = if (data.habit.type.isWeekly) R.plurals.unit_weeks else R.plurals.unit_days,
                     extra = when (data.habit.type) {
                         HabitType.ABSTINENCE -> string(R.string.lapses_count, e.lapses().size)
                         HabitType.QUANTITY -> string(R.string.total_amount, e.totalProgress().formatQuantity(), data.habit.unit.orEmpty())

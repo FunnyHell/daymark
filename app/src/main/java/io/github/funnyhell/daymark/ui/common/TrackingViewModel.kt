@@ -75,6 +75,17 @@ abstract class TrackingViewModel(application: Application) : AppViewModel(applic
         container.habits.setDone(habitId, done, date ?: container.time.today())
     }
 
+    /** Marks a checklist step once more, or removes its latest mark. */
+    fun markStep(habitId: String, stepId: String, done: Boolean, date: LocalDate? = null) = launchSafely {
+        container.habits.markStep(habitId, stepId, done, date ?: container.time.today())
+    }
+
+    fun setHabitNote(habitId: String, note: String?, date: LocalDate? = null) = launchSafely {
+        container.habits.setNote(habitId, date ?: container.time.today(), note)
+    }
+
+    fun setDoseNote(eventId: String, note: String?) = launchSafely { container.medications.setDoseNote(eventId, note) }
+
     fun addHabitProgress(habitId: String, amount: Double, date: LocalDate? = null, note: String? = null) = launchSafely {
         report(container.habits.addProgress(habitId, amount, date ?: container.time.today(), note))
     }

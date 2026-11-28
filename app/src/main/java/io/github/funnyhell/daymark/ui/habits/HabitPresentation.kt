@@ -34,7 +34,15 @@ data class HabitTodayItem(
     val skipped: Boolean,
     /** State of the tap-to-toggle ring: tapping sets the opposite. Null when the ring is not a toggle. */
     val checked: Boolean? = null,
+    /** Steps of a checklist with how often each is done (today, or this week for a weekly checklist). */
+    val steps: List<StepItem> = emptyList(),
+    /** The note of the shown day. */
+    val note: String? = null,
 )
+
+data class StepItem(val stepId: String, val title: String, val done: Int, val target: Int) {
+    val complete: Boolean get() = done >= target
+}
 
 object HabitPresentation {
     fun todayItem(context: Context, data: HabitData, today: LocalDate, firstDayOfWeek: DayOfWeek): HabitTodayItem? {
@@ -44,7 +52,30 @@ object HabitPresentation {
         if (!e.isScheduled(today)) return null
         val todays = e.eventsOn(today).sortedBy { it.recordedAt }
         val streak = e.streaks(today)
+        val note = e.noteOn(today)?.note
         return when (habit.type) {
+            HabitType.CHECKLIST, HabitType.WEEKLY_CHECKLIST -> {
+                val steps = e.stepProgress(today).map { StepItem(it.step.id, it.step.title, it.done, it.step.target) }
+                val total = steps.sumOf { it.target }
+                val done = steps.sumOf { minOf(it.done, it.target) }
+                val complete = steps.isNotEmpty() && steps.all { it.complete }
+                val weekly = habit.type == HabitType.WEEKLY_CHECKLIST
+                HabitTodayItem(
+                    habit.id, habit.name, habit.colorArgb, habit.type, habit.unit,
+                    fraction = if (total > 0) done.toFloat() / total else 0f,
+                    ringLabel = "${steps.count { it.complete }}/${steps.size}",
+                    statusText = context.getString(if (weekly) R.string.progress_steps_week else R.string.progress_steps, steps.count { it.complete }, steps.size),
+                    done = complete,
+                    streakText = streak.current.takeIf { it > 0 }?.let {
+                        context.resources.getQuantityString(if (weekly) R.plurals.streak_weeks else R.plurals.streak_days, it, it)
+                    },
+                    undoEventId = null,
+                    skipped = false,
+                    checked = complete,
+                    steps = steps,
+                    note = note,
+                )
+            }
             HabitType.WEEKLY_GOAL -> {
                 val week = e.weekResult(today.startOfWeek(firstDayOfWeek), today)
                 val doneThisWeek = week.completions >= week.goal
@@ -58,6 +89,7 @@ object HabitPresentation {
                     undoEventId = todays.lastOrNull { it.type == HabitEventType.COMPLETION }?.id,
                     skipped = false,
                     checked = e.progressOn(today) > 0.0,
+                    note = note,
                 )
             }
             HabitType.ABSTINENCE -> {
@@ -72,6 +104,7 @@ object HabitPresentation {
                     streakText = context.getString(R.string.best_streak_days, streak.best),
                     undoEventId = todays.lastOrNull { it.type == HabitEventType.LAPSE }?.id,
                     skipped = false,
+                    note = note,
                 )
             }
             else -> {
@@ -96,6 +129,7 @@ object HabitPresentation {
                     undoEventId = todays.lastOrNull { it.type == HabitEventType.COMPLETION || it.type == HabitEventType.PROGRESS || it.type == HabitEventType.SKIP }?.id,
                     skipped = day.state == DayState.SKIPPED,
                     checked = done.takeIf { habit.type != HabitType.QUANTITY && day.state != DayState.SKIPPED },
+                    note = note,
                 )
             }
         }
@@ -108,6 +142,8 @@ object HabitPresentation {
             HabitType.QUANTITY -> R.string.type_quantity
             HabitType.WEEKLY_GOAL -> R.string.type_weekly
             HabitType.ABSTINENCE -> R.string.type_abstinence
+            HabitType.CHECKLIST -> R.string.type_checklist
+            HabitType.WEEKLY_CHECKLIST -> R.string.type_weekly_checklist
         },
     )
 
@@ -119,12 +155,17 @@ object HabitPresentation {
         val target = schedule.target.formatQuantity()
         return when (habit.type) {
             HabitType.WEEKLY_GOAL -> context.getString(R.string.schedule_weekly, target)
+            HabitType.WEEKLY_CHECKLIST -> context.getString(R.string.schedule_weekly_checklist, data.steps.count { it.removedOn == null })
             HabitType.ABSTINENCE -> context.getString(R.string.schedule_abstinence, Formats.dateMedium(context, habit.startDate))
             else -> {
                 val rec = recurrenceText(context, schedule.recurrence)
                 when (habit.type) {
                     HabitType.MULTI -> context.getString(R.string.schedule_with_target, rec, context.getString(R.string.times_per_day, target))
                     HabitType.QUANTITY -> context.getString(R.string.schedule_with_target, rec, "$target ${habit.unit.orEmpty()}")
+                    HabitType.CHECKLIST -> context.getString(
+                        R.string.schedule_with_target, rec,
+                        context.resources.getQuantityString(R.plurals.steps_count, data.steps.count { it.removedOn == null }, data.steps.count { it.removedOn == null }),
+                    )
                     else -> rec
                 }
             }
@@ -138,7 +179,8 @@ object HabitPresentation {
     }
 
     fun eventText(context: Context, data: HabitData, event: HabitEvent): String = when (event.type) {
-        HabitEventType.COMPLETION -> context.getString(R.string.event_completion)
+        HabitEventType.COMPLETION -> event.stepId?.let { id -> data.steps.firstOrNull { it.id == id }?.title } ?: context.getString(R.string.event_completion)
+        HabitEventType.NOTE -> context.getString(R.string.event_note, event.note.orEmpty())
         HabitEventType.PROGRESS -> context.getString(R.string.event_progress, event.amount.formatQuantity(), data.habit.unit.orEmpty())
         HabitEventType.SKIP -> context.getString(R.string.event_skip)
         HabitEventType.LAPSE -> context.getString(R.string.event_lapse)

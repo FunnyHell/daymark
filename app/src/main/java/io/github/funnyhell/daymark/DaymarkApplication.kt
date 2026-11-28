@@ -25,6 +25,15 @@ class DaymarkApplication : Application() {
         appScope.launch { container.reminders.runCheck() }
         registerActivityLifecycleCallbacks(ForegroundTracker { visible ->
             if (visible) container.syncCoordinator.onForeground() else container.syncCoordinator.onBackground()
+            if (visible) {
+                appScope.launch {
+                    val settings = container.settings.current()
+                    io.github.funnyhell.daymark.module.ModuleRegistry.enabled(settings).forEach { module ->
+                        runCatching { module.onForeground(this@DaymarkApplication) }
+                            .onFailure { android.util.Log.w("Daymark", "Module ${module.id} failed on foreground", it) }
+                    }
+                }
+            }
         })
     }
 

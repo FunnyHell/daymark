@@ -1175,3 +1175,59 @@ Turning off Medications or Habits stops their reminders but leaves their widgets
 #### Date
 
 2026-11-22
+
+---
+
+## ADR-040 — Bottom bar chosen by the user, interval reminders, notification types, repeated low-stock warnings
+
+**Status:** Accepted
+
+#### Decision
+
+- The bottom bar is Home plus up to four screens the user picks and orders (Settings → Bottom bar): tabs of enabled modules and History. Until the user arranges it, the available screens are shown in default order. Screens not in the bar are opened from chips on Home. Settings moved from the bar to a gear in Home's top bar.
+- Movement breaks became Interval reminders: any number of reminders with a title, an interval (15–180 min), active hours and days; a tab with the list, an editor, a Home section and Done / Later. The module id stays `breaks` and its data file stays `module_breaks`; the single break of the first version is carried over as one reminder. Each reminder is its own reminder group (`ModuleReminder.group`), so after a long gap only the latest of each is shown.
+- Notification types: medication reminders use a new channel with a bundled chime (`res/raw/medication_chime.wav`, generated for the app) and a longer vibration; interval reminders have their own quieter channel; Settings → Reminders lists the types and opens each one's system settings for sound and vibration. Android does not allow an app to change a channel's sound after creation, so the medication channel was replaced (the user's earlier channel settings for it are not carried over).
+- Low stock: after every dose that lowers the stock while it is at or below the threshold, the low-stock notification is shown again with the new count (`InventoryRules.warnAfterIntake`).
+
+#### Date
+
+2026-11-28
+
+---
+
+## ADR-041 — Checklist habits and notes (schema 3)
+
+**Status:** Accepted
+
+#### Context
+
+Routines consist of steps ("brush teeth ×2, shower"), and some lists are weekly ("cleaning: kitchen, bathroom, floors" on any days). Progress and streaks must account for partly done lists. Users want to write what exactly was done.
+
+#### Decision
+
+- Two habit types: CHECKLIST (steps each scheduled day) and WEEKLY_CHECKLIST (steps over the week). Steps are rows of `habit_steps` (title, times per day/week, order, added on, removed on). A step completion is a COMPLETION event with `step_id`.
+- Progress of a day (CHECKLIST) is the sum over its steps of min(done, target) out of the sum of targets; the day is done only when every step is. A weekly checklist counts the same over the week up to the evaluated day; streaks and rates use weeks, like weekly goals. Statistics therefore count a half-done routine as half.
+- Editing steps never rewrites history: a removed step with marks ends today (its earlier days keep it), a new step counts from today when there is history.
+- Notes: a NOTE habit event per day (replacing a note voids the previous one); a nullable `note` on medication events, edited in place because it describes a record and does not change it. Workout notes live in the Activity module (ADR-042).
+- Schema 3 (`MIGRATION_2_3`): table `habit_steps`, columns `habit_events.step_id` and `medication_events.note`. Backups and sync carry steps, step ids and notes; files from older versions still import. Older app versions cannot read new backups or sync with this version (unknown fields are rejected), so all devices should be updated together.
+
+#### Date
+
+2026-11-28
+
+---
+
+## ADR-042 — Activity module (Health Connect)
+
+**Status:** Accepted
+
+#### Decision
+
+- New module Activity (off by default) reads workouts (exercise sessions) and steps from Health Connect with `androidx.health.connect:connect-client` 1.1.0. Samsung Health shares these with Health Connect when the user turns that on in Samsung Health. Read only, only while the app is open; nothing is written back or sent anywhere.
+- Permissions: READ_EXERCISE and READ_STEPS, requested from the module screen; a rationale screen (`HealthRationaleActivity`, plus the Android 14 `VIEW_PERMISSION_USAGE` alias) explains the use, as Health Connect requires.
+- The module shows today's steps and the last 14 days of workouts, lets the user write a note per workout (stored in the module's own DataStore by Health Connect record id), and can mark a chosen habit done on days with a workout. Each workout marks once (`ActivityRules.daysToMark`), so a mark the user removes stays removed. Marking runs when the app comes to the foreground (new optional `DaymarkModule.onForeground`).
+- Workout notes are not part of backups or sync yet.
+
+#### Date
+
+2026-11-28

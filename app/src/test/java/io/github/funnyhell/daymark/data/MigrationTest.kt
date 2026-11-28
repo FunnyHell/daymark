@@ -11,6 +11,10 @@ import io.github.funnyhell.daymark.data.db.DELETED_HABIT
 import io.github.funnyhell.daymark.data.db.DaymarkDatabase
 import io.github.funnyhell.daymark.data.db.DeletedRecordEntity
 import io.github.funnyhell.daymark.data.db.MIGRATION_1_2
+import io.github.funnyhell.daymark.data.db.MIGRATION_2_3
+import io.github.funnyhell.daymark.data.db.HabitStepEntity
+import io.github.funnyhell.daymark.data.db.HabitEventEntity
+import java.time.LocalDate
 import java.time.Instant
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -21,7 +25,7 @@ import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
 
 /**
- * Opens a version 1 database (the 0.1.0 schema) with the current Room database and [MIGRATION_1_2]. Room checks
+ * Opens a version 1 database (the 0.1.0 schema) with the current Room database and every migration. Room checks
  * after migrating that every table matches the current entities, so a wrong migration fails here.
  */
 @RunWith(AndroidJUnit4::class)
@@ -43,7 +47,7 @@ class MigrationTest {
     @Test
     fun version1To2_keepsDataAndAddsDeletedRecords() = runBlocking {
         createVersion1()
-        val db = Room.databaseBuilder(context, DaymarkDatabase::class.java, name).addMigrations(MIGRATION_1_2).build()
+        val db = Room.databaseBuilder(context, DaymarkDatabase::class.java, name).addMigrations(MIGRATION_1_2, MIGRATION_2_3).build()
         try {
             val habits = db.habitDao().habits()
             assertEquals(listOf("h1"), habits.map { it.id })
@@ -51,6 +55,12 @@ class MigrationTest {
             assertEquals(1, db.medicationDao().adjustments().size)
             db.deletedRecordDao().insert(DeletedRecordEntity("x", DELETED_HABIT, Instant.ofEpochMilli(1_000)))
             assertEquals(listOf("x"), db.deletedRecordDao().all().map { it.id })
+            // Schema 3: steps, a completion of a step, a note on a dose.
+            assertEquals(null, db.habitDao().events().single().stepId)
+            db.habitDao().insertStep(HabitStepEntity("st1", "h1", "Shower", 1, 0, LocalDate.of(2024, 3, 4), null))
+            db.habitDao().insertEvent(HabitEventEntity("e2", "h1", LocalDate.of(2024, 3, 5), "COMPLETION", 1.0, null, Instant.ofEpochMilli(3000), null, "st1"))
+            assertEquals("st1", db.habitDao().events().first { it.id == "e2" }.stepId)
+            assertEquals(listOf("Shower"), db.habitDao().stepsFor("h1").map { it.title })
         } finally {
             db.close()
         }

@@ -29,7 +29,7 @@ class AppContainer(context: Context, scope: CoroutineScope) : DataChangeListener
     val time: TimeSource = TimeSource.System
     val database: DaymarkDatabase = DaymarkDatabase.build(appContext)
     val settings = SettingsRepository(appContext)
-    val habits = HabitRepository(database, time, listener = this)
+    val habits = HabitRepository(database, time, listener = this, weekStart = { settings.current().firstDayOfWeek })
     val medications = MedicationRepository(database, time, listener = this)
     val backup = BackupRepository(
         db = database,

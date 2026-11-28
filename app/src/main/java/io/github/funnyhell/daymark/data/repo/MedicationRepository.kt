@@ -355,6 +355,17 @@ class MedicationRepository(
         return true
     }
 
+    /**
+     * Sets the user's note on a recorded dose ("after lunch", "half a tablet"). Notes describe a record and do not
+     * change it, so the note is edited in place.
+     */
+    suspend fun setDoseNote(eventId: String, note: String?): Boolean {
+        val clean = note?.trim()?.take(2000)?.ifEmpty { null }
+        val changed = dao.setEventNote(eventId, clean) > 0
+        if (changed) listener.onDataChanged(DataChange.Medications())
+        return changed
+    }
+
     /** Records a manual stock count. The difference is stored as a correction so the change stays explainable. */
     suspend fun setStock(medicationId: String, counted: Double, note: String?): Boolean {
         if (!MedicationDraftValidator.isValidQuantity(counted, allowZero = true)) return false

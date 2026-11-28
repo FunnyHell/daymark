@@ -24,6 +24,8 @@ data class BackupFile(
     val inventoryAdjustments: List<BackupAdjustment> = emptyList(),
     /** Habits and medications deleted on the exporting device (used by sync; absent in older files). */
     val deletedRecords: List<BackupDeletion> = emptyList(),
+    /** Steps of checklist habits (absent in files from versions before checklists). */
+    val habitSteps: List<BackupHabitStep> = emptyList(),
 ) {
     companion object {
         const val FORMAT_ID = "daymark-backup"
@@ -80,6 +82,18 @@ data class BackupHabitEvent(
     val note: String? = null,
     val recordedAt: String,
     val voidedAt: String? = null,
+    val stepId: String? = null,
+)
+
+@Serializable
+data class BackupHabitStep(
+    val id: String,
+    val habitId: String,
+    val title: String,
+    val target: Int,
+    val sortOrder: Int,
+    val addedOn: String,
+    val removedOn: String? = null,
 )
 
 @Serializable
@@ -141,6 +155,7 @@ data class BackupMedicationEvent(
     val source: String,
     val recordedAt: String,
     val voidedAt: String? = null,
+    val note: String? = null,
 )
 
 @Serializable

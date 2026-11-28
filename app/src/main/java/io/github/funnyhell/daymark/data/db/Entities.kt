@@ -60,6 +60,24 @@ data class HabitEventEntity(
     val note: String?,
     @ColumnInfo(name = "recorded_at") val recordedAt: Instant,
     @ColumnInfo(name = "voided_at") val voidedAt: Instant?,
+    /** Checklist step of a completion (schema 3). */
+    @ColumnInfo(name = "step_id") val stepId: String? = null,
+)
+
+/** Steps of checklist habits (schema 3). A removed step keeps its row with [removedOn] set, so history stays readable. */
+@Entity(
+    tableName = "habit_steps",
+    foreignKeys = [ForeignKey(entity = HabitEntity::class, parentColumns = ["id"], childColumns = ["habit_id"], onDelete = ForeignKey.CASCADE)],
+    indices = [Index("habit_id")],
+)
+data class HabitStepEntity(
+    @PrimaryKey val id: String,
+    @ColumnInfo(name = "habit_id") val habitId: String,
+    val title: String,
+    val target: Int,
+    @ColumnInfo(name = "sort_order") val sortOrder: Int,
+    @ColumnInfo(name = "added_on") val addedOn: LocalDate,
+    @ColumnInfo(name = "removed_on") val removedOn: LocalDate?,
 )
 
 /** Pause and archive intervals for habits and medications (see [owner_type]). */
@@ -134,6 +152,8 @@ data class MedicationEventEntity(
     val source: String,
     @ColumnInfo(name = "recorded_at") val recordedAt: Instant,
     @ColumnInfo(name = "voided_at") val voidedAt: Instant?,
+    /** The user's note about the dose (schema 3). */
+    val note: String? = null,
 )
 
 /**

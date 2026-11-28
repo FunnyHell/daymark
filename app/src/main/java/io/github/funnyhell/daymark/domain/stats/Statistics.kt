@@ -42,7 +42,7 @@ object HabitStatistics {
             val e = HabitEvaluator(data, firstDayOfWeek)
             for (day in e.days(from, minOf(to, today), today)) {
                 val (done, due) = when {
-                    data.habit.type == HabitType.WEEKLY_GOAL -> if (day.state == DayState.DONE) 1 to 1 else 0 to 0
+                    data.habit.type.isWeekly -> if (day.state == DayState.DONE) 1 to 1 else 0 to 0
                     day.state == DayState.DONE -> 1 to 1
                     day.state in setOf(DayState.PARTIAL, DayState.MISSED, DayState.PENDING) -> 0 to 1
                     else -> 0 to 0
@@ -65,9 +65,9 @@ object HabitStatistics {
         habits.filter { date != today || it.habit.status == LifecycleStatus.ACTIVE }.mapNotNull { data ->
             val e = HabitEvaluator(data, firstDayOfWeek)
             if (date.isAfter(today) || !e.isScheduled(date)) return@mapNotNull null
-            when (data.habit.type) {
-                HabitType.ABSTINENCE -> if (e.dayResult(date, today).state == DayState.LAPSED) 0.0 else 1.0
-                HabitType.WEEKLY_GOAL -> {
+            when {
+                data.habit.type == HabitType.ABSTINENCE -> if (e.dayResult(date, today).state == DayState.LAPSED) 0.0 else 1.0
+                data.habit.type.isWeekly -> {
                     val week = e.weekResult(date.startOfWeek(firstDayOfWeek), date)
                     if (week.goal <= 0.0) null else (week.completions / week.goal).coerceIn(0.0, 1.0)
                 }
@@ -82,19 +82,21 @@ object HabitStatistics {
      * Average progress of the habits over [from]..[today] (inclusive), in 0..1, or null when nothing was due.
      * Each habit contributes one value so that a frequent habit does not outweigh a weekly one:
      * - day-based habits: mean day progress over their due days, today included (partial days count partly);
-     * - weekly goals: mean of min(1, completions / goal) over the weeks touching the period, the current week
-     *   included, so a goal not yet reached this week lowers the value;
+     * - weekly goals and weekly checklists: mean of min(1, done / goal) over the weeks touching the period, the
+     *   current week included, so a goal not yet reached this week lowers the value (a weekly checklist's goal is
+     *   all of its steps);
+     * - checklists: like day-based habits, a day's progress is the share of its steps done;
      * - abstinence: share of clean days.
      * Paused, skipped and unscheduled days are not counted; archived habits are excluded.
      */
     fun periodProgress(habits: List<HabitData>, from: LocalDate, today: LocalDate, firstDayOfWeek: DayOfWeek): Double? {
         val perHabit = habits.filter { it.habit.status != LifecycleStatus.ARCHIVED }.mapNotNull { data ->
             val e = HabitEvaluator(data, firstDayOfWeek)
-            val values: List<Double> = when (data.habit.type) {
-                HabitType.WEEKLY_GOAL -> e.weeks(from, today)
+            val values: List<Double> = when {
+                data.habit.type.isWeekly -> e.weeks(from, today)
                     .filter { it.outcome != PeriodOutcome.NEUTRAL && it.goal > 0.0 }
                     .map { (it.completions / it.goal).coerceIn(0.0, 1.0) }
-                HabitType.ABSTINENCE -> e.days(maxOf(from, data.habit.startDate), today, today)
+                data.habit.type == HabitType.ABSTINENCE -> e.days(maxOf(from, data.habit.startDate), today, today)
                     .filter { it.state == DayState.DONE || it.state == DayState.LAPSED }
                     .map { if (it.state == DayState.DONE) 1.0 else 0.0 }
                 else -> e.days(maxOf(from, data.habit.startDate), today, today)

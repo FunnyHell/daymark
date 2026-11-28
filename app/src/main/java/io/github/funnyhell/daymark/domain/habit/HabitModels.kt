@@ -22,6 +22,34 @@ enum class HabitType {
 
     /** Avoiding a behavior; lapses are recorded explicitly. */
     ABSTINENCE,
+
+    /** Several steps on each scheduled day (a routine: brush teeth ×2, shower); done when every step is done. */
+    CHECKLIST,
+
+    /** Several steps over a week, on any days (cleaning: kitchen, bathroom, floors); done when every step is done. */
+    WEEKLY_CHECKLIST,
+    ;
+
+    /** Evaluated per week (streaks count weeks) and possible on any day. */
+    val isWeekly: Boolean get() = this == WEEKLY_GOAL || this == WEEKLY_CHECKLIST
+
+    val isChecklist: Boolean get() = this == CHECKLIST || this == WEEKLY_CHECKLIST
+}
+
+/**
+ * One step of a checklist habit, done [target] times per day (CHECKLIST) or per week (WEEKLY_CHECKLIST).
+ * A step removed from the list keeps its history: it counts on the days from [addedOn] until [removedOn] (exclusive).
+ */
+data class HabitStep(
+    val id: String,
+    val habitId: String,
+    val title: String,
+    val target: Int,
+    val sortOrder: Int,
+    val addedOn: LocalDate,
+    val removedOn: LocalDate?,
+) {
+    fun activeOn(date: LocalDate): Boolean = !date.isBefore(addedOn) && (removedOn == null || date.isBefore(removedOn))
 }
 
 /** Recurrence for day-based habit types (CHECK, MULTI, QUANTITY). */
@@ -89,6 +117,9 @@ enum class HabitEventType {
 
     /** Abstinence lapse. */
     LAPSE,
+
+    /** A note about a day (what was done and how); does not count as progress. */
+    NOTE,
 }
 
 /**
@@ -104,6 +135,8 @@ data class HabitEvent(
     val note: String?,
     val recordedAt: Instant,
     val voidedAt: Instant?,
+    /** For checklist habits: the step this completion belongs to. */
+    val stepId: String? = null,
 ) {
     val isActive: Boolean get() = voidedAt == null
 }
@@ -114,4 +147,5 @@ data class HabitData(
     val schedules: List<HabitSchedule>,
     val pauses: List<PauseInterval>,
     val events: List<HabitEvent>,
+    val steps: List<HabitStep> = emptyList(),
 )

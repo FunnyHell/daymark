@@ -174,7 +174,7 @@ class Notifier(private val context: Context, private val settings: SettingsRepos
         val hide = settings.current().hideNamesOnLockScreen
         val tag = TAG_HABIT_GROUP + at.epochSecond / 60
         val names = items.map { it.first.habit.name }
-        val completable = items.filter { (data, _) -> data.habit.type in setOf(HabitType.CHECK, HabitType.MULTI, HabitType.WEEKLY_GOAL) }
+        val completable = items.filter { (data, _) -> data.habit.type in COMPLETABLE }
             .map { (data, date) -> "${data.habit.id}|$date" }
         val publicVersion = NotificationCompat.Builder(context, CHANNEL_HABIT)
             .setSmallIcon(R.drawable.ic_notification)
@@ -228,13 +228,13 @@ class Notifier(private val context: Context, private val settings: SettingsRepos
             .setPublicVersion(publicVersion)
             .setContentIntent(openAppIntent())
             .setAutoCancel(true)
-        if (habit.type == HabitType.CHECK || habit.type == HabitType.MULTI || habit.type == HabitType.WEEKLY_GOAL) {
+        if (habit.type in COMPLETABLE) {
             val intent = Intent(context, NotificationActionReceiver::class.java)
                 .setAction(NotificationActionReceiver.ACTION_HABIT_DONE)
                 .putExtra(NotificationActionReceiver.EXTRA_HABIT_ID, habit.id)
                 .putExtra(NotificationActionReceiver.EXTRA_DATE, date.toString())
             val pi = PendingIntent.getBroadcast(context, ("habit" + habit.id + date).hashCode(), intent, PI_FLAGS)
-            val label = if (habit.type == HabitType.CHECK) R.string.action_done else R.string.action_plus_one
+            val label = if (habit.type == HabitType.MULTI || habit.type == HabitType.WEEKLY_GOAL) R.string.action_plus_one else R.string.action_done
             builder.addAction(0, context.getString(label), pi)
         }
         post(habitTag(habit.id, date), builder)
@@ -362,6 +362,9 @@ class Notifier(private val context: Context, private val settings: SettingsRepos
         private const val EXTRA_GROUP_TIME = "io.github.funnyhell.daymark.group_time"
         private const val TAG_TEST = "test"
         private const val PI_FLAGS = PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+
+        /** Habit types a notification can complete ("Done" completes every step of a checklist). */
+        private val COMPLETABLE = setOf(HabitType.CHECK, HabitType.MULTI, HabitType.WEEKLY_GOAL, HabitType.CHECKLIST, HabitType.WEEKLY_CHECKLIST)
 
         fun habitTag(habitId: String, date: LocalDate) = "$TAG_HABIT$habitId@$date"
     }

@@ -265,3 +265,26 @@ fun NumberInputDialog(
 
 /** Accepts both "1.5" and "1,5". */
 fun parseNumber(text: String): Double? = text.trim().replace(',', '.').toDoubleOrNull()
+
+/** Edit the note of a day or a dose: what was done and how. An empty text removes the note. */
+@Composable
+fun NoteDialog(title: String, initial: String?, onSave: (String?) -> Unit, onDismiss: () -> Unit) {
+    var text by remember { mutableStateOf(initial.orEmpty()) }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(title) },
+        text = {
+            OutlinedTextField(
+                value = text,
+                onValueChange = { text = it.take(2000) },
+                label = { Text(stringResource(R.string.note_label)) },
+                minLines = 3,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        },
+        confirmButton = {
+            TextButton(onClick = { onSave(text.trim().ifEmpty { null }); onDismiss() }) { Text(stringResource(R.string.save)) }
+        },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) } },
+    )
+}

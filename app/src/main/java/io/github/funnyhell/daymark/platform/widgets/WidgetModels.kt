@@ -75,7 +75,7 @@ object WidgetContent {
                     DayState.SKIPPED -> WeekCell(date, WeekMark.OFF, toggleTo = true)
                     // A weekly goal can be done on any day of its schedule; other habits only on their own days.
                     DayState.NOT_SCHEDULED ->
-                        if (data.habit.type == HabitType.WEEKLY_GOAL && e.isScheduled(date)) WeekCell(date, WeekMark.OPEN, toggleTo = true)
+                        if (data.habit.type.isWeekly && e.isScheduled(date)) WeekCell(date, WeekMark.OPEN, toggleTo = true)
                         else WeekCell(date, WeekMark.OFF, toggleTo = null)
                     DayState.FUTURE, DayState.BEFORE_START, DayState.PAUSED -> WeekCell(date, WeekMark.OFF, toggleTo = null)
                 }
@@ -89,6 +89,15 @@ object WidgetContent {
             val e = HabitEvaluator(data, firstDayOfWeek)
             if (!e.isScheduled(today)) return@mapNotNull null
             when (habit.type) {
+                HabitType.CHECKLIST, HabitType.WEEKLY_CHECKLIST -> {
+                    val steps = e.stepProgress(today)
+                    val complete = steps.isNotEmpty() && steps.all { it.complete }
+                    HabitWidgetRow(
+                        habit.id, habit.name,
+                        context.getString(R.string.progress_steps, steps.count { it.complete }, steps.size),
+                        done = complete, checked = complete, colorArgb = habit.colorArgb,
+                    )
+                }
                 HabitType.WEEKLY_GOAL -> {
                     val week = e.weekResult(today.startOfWeek(firstDayOfWeek), today)
                     val doneToday = e.progressOn(today) > 0

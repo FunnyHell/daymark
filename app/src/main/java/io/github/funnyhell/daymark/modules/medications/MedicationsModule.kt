@@ -223,6 +223,7 @@ object MedicationsDaySection : HomeSection {
                             onSnooze = if (canSnooze) ({ vm.snoozeDose(dose.medicationId, dose.occurrenceKey) }) else null,
                             onCorrect = { vm.undoMedicationEvent(it) },
                             onOpen = { host.navigator.navigate(MedicationsModule.Routes.detail(dose.medicationId)) },
+                            onNote = { note -> dose.resolutionEventId?.let { vm.setDoseNote(it, note) } },
                         )
                     }
                 }

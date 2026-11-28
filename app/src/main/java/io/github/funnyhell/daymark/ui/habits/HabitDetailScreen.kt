@@ -1,5 +1,10 @@
 package io.github.funnyhell.daymark.ui.habits
 
+import io.github.funnyhell.daymark.domain.habit.HabitEventType
+import io.github.funnyhell.daymark.ui.common.NoteDialog
+import androidx.compose.material3.FilterChip
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import android.app.Application
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -92,6 +97,9 @@ data class HabitDetailState(
     val cells: Map<LocalDate, HeatCell> = emptyMap(),
     val selected: LocalDate = LocalDate.now(),
     val selectedDay: DayResult? = null,
+    /** Steps of a checklist on the selected day (or in its week for a weekly checklist). */
+    val selectedSteps: List<StepItem> = emptyList(),
+    val selectedNote: String? = null,
     val selectedEvents: List<HabitEvent> = emptyList(),
     val weeks: List<WeekResult> = emptyList(),
     val cleanRuns: List<CleanRun> = emptyList(),
@@ -132,8 +140,10 @@ class HabitDetailViewModel(application: Application, handle: SavedStateHandle) :
             cells = cells,
             selected = selected,
             selectedDay = selectedDay,
-            selectedEvents = data.events.filter { it.date == selected }.sortedBy { it.recordedAt },
-            weeks = if (data.habit.type == HabitType.WEEKLY_GOAL) e.weeks(today.minusWeeks(11), today).reversed() else emptyList(),
+            selectedEvents = data.events.filter { it.date == selected && it.type != HabitEventType.NOTE }.sortedBy { it.recordedAt },
+            selectedSteps = if (data.habit.type.isChecklist) e.stepProgress(selected).map { StepItem(it.step.id, it.step.title, it.done, it.step.target) } else emptyList(),
+            selectedNote = e.noteOn(selected)?.note,
+            weeks = if (data.habit.type.isWeekly) e.weeks(today.minusWeeks(11), today).reversed() else emptyList(),
             cleanRuns = e.cleanRuns(today).reversed(),
             recentEvents = data.events.sortedByDescending { it.recordedAt }.take(30),
         )
@@ -169,7 +179,7 @@ class HabitDetailViewModel(application: Application, handle: SavedStateHandle) :
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun HabitDetailScreen(
     onBack: () -> Unit,
@@ -188,6 +198,7 @@ fun HabitDetailScreen(
     var correctEvent by remember { mutableStateOf<HabitEvent?>(null) }
     var amountDialog by remember { mutableStateOf(false) }
     var lapseDialog by remember { mutableStateOf(false) }
+    var noteDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -281,18 +292,34 @@ fun HabitDetailScreen(
                         }
                         Text(HabitPresentation.dayStateText(context, day.state) + progress, style = MaterialTheme.typography.bodyMedium)
                     }
+                    state.selectedNote?.let { Text(it, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(top = 4.dp)) }
                     state.selectedEvents.forEach { ev -> EventLine(data, ev, onCorrect = { correctEvent = ev }) }
                     val canRecord = day != null && habit.status != LifecycleStatus.ARCHIVED &&
                         day.state !in setOf(DayState.FUTURE, DayState.BEFORE_START, DayState.PAUSED)
                     if (canRecord) {
                         Row(Modifier.fillMaxWidth().padding(top = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End)) {
-                            when (habit.type) {
-                                HabitType.QUANTITY -> FilledTonalButton(onClick = { amountDialog = true }) { Text(stringResource(R.string.add_amount)) }
-                                HabitType.ABSTINENCE -> OutlinedButton(onClick = { lapseDialog = true }) { Text(stringResource(R.string.action_lapse)) }
+                            TextButton(onClick = { noteDialog = true }) {
+                                Text(stringResource(if (state.selectedNote == null) R.string.note_add else R.string.note_edit))
+                            }
+                            when {
+                                habit.type == HabitType.QUANTITY -> FilledTonalButton(onClick = { amountDialog = true }) { Text(stringResource(R.string.add_amount)) }
+                                habit.type == HabitType.ABSTINENCE -> OutlinedButton(onClick = { lapseDialog = true }) { Text(stringResource(R.string.action_lapse)) }
+                                habit.type.isChecklist -> Unit
                                 else -> FilledTonalButton(onClick = { vm.completeHabit(vm.habitId, state.selected) }) { Text(stringResource(R.string.add_completion)) }
                             }
-                            if (habit.type in setOf(HabitType.CHECK, HabitType.MULTI, HabitType.QUANTITY) && day?.state != DayState.SKIPPED && day?.state != DayState.DONE) {
+                            if (habit.type in setOf(HabitType.CHECK, HabitType.MULTI, HabitType.QUANTITY, HabitType.CHECKLIST) && day?.state != DayState.SKIPPED && day?.state != DayState.DONE) {
                                 OutlinedButton(onClick = { vm.skipHabit(vm.habitId, state.selected) }) { Text(stringResource(R.string.action_skip)) }
+                            }
+                        }
+                        if (state.selectedSteps.isNotEmpty()) {
+                            FlowRow(Modifier.padding(top = 8.dp), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                                state.selectedSteps.forEach { step ->
+                                    FilterChip(
+                                        selected = step.complete,
+                                        onClick = { vm.markStep(vm.habitId, step.stepId, !step.complete, state.selected) },
+                                        label = { Text(if (step.target > 1) "${step.title} ${step.done.coerceAtMost(step.target)}/${step.target}" else step.title) },
+                                    )
+                                }
                             }
                         }
                     }
@@ -407,4 +434,7 @@ private fun outcomeText(outcome: PeriodOutcome): String = stringResource(
         PeriodOutcome.NEUTRAL -> R.string.outcome_neutral
         PeriodOutcome.IN_PROGRESS -> R.string.outcome_in_progress
     },
-)
+)    if (noteDialog) {
+        NoteDialog(data.habit.name, state.selectedNote, onSave = { vm.setHabitNote(vm.habitId, it, state.selected) }, onDismiss = { noteDialog = false })
+    }
+

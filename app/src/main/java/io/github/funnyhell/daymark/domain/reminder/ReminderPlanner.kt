@@ -107,7 +107,7 @@ object ReminderPlanner {
                 val evaluator = HabitEvaluator(data, firstDayOfWeek)
                 for (date in dates) {
                     if (!evaluator.isScheduled(date)) continue
-                    val needed = if (habit.type == HabitType.WEEKLY_GOAL) {
+                    val needed = if (habit.type.isWeekly) {
                         evaluator.weekResult(date.startOfWeek(firstDayOfWeek), maxOf(date, today)).outcome != PeriodOutcome.SUCCESS
                     } else {
                         evaluator.progressOn(date) < evaluator.targetOn(date)

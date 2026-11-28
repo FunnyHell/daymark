@@ -5,6 +5,7 @@ import io.github.funnyhell.daymark.data.db.DELETED_MEDICATION
 import io.github.funnyhell.daymark.data.db.DeletedRecordEntity
 import io.github.funnyhell.daymark.data.db.HabitEntity
 import io.github.funnyhell.daymark.data.db.HabitEventEntity
+import io.github.funnyhell.daymark.data.db.HabitStepEntity
 import io.github.funnyhell.daymark.data.db.HabitScheduleEntity
 import io.github.funnyhell.daymark.data.db.InventoryAdjustmentEntity
 import io.github.funnyhell.daymark.data.db.KIND_DAILY
@@ -44,10 +45,11 @@ data class Snapshot(
     val medicationEvents: List<MedicationEventEntity>,
     val adjustments: List<InventoryAdjustmentEntity>,
     val deletions: List<DeletedRecordEntity> = emptyList(),
+    val habitSteps: List<HabitStepEntity> = emptyList(),
 ) {
     val recordCount: Int
         get() = habits.size + habitSchedules.size + habitEvents.size + pauses.size + medications.size +
-            medicationSchedules.size + doses.size + medicationEvents.size + adjustments.size
+            medicationSchedules.size + doses.size + medicationEvents.size + adjustments.size + habitSteps.size
 }
 
 sealed interface DecodeResult {
@@ -83,8 +85,9 @@ object BackupCodec {
             BackupHabitSchedule(it.id, it.habitId, it.effectiveFrom.toString(), it.effectiveUntil?.toString(), it.recurrenceKind, it.weekdayMask, it.intervalDays, it.target)
         },
         habitEvents = s.habitEvents.map {
-            BackupHabitEvent(it.id, it.habitId, it.date.toString(), it.type, it.amount, it.note, it.recordedAt.toString(), it.voidedAt?.toString())
+            BackupHabitEvent(it.id, it.habitId, it.date.toString(), it.type, it.amount, it.note, it.recordedAt.toString(), it.voidedAt?.toString(), it.stepId)
         },
+        habitSteps = s.habitSteps.map { BackupHabitStep(it.id, it.habitId, it.title, it.target, it.sortOrder, it.addedOn.toString(), it.removedOn?.toString()) },
         pauses = s.pauses.map { BackupPause(it.id, it.ownerType, it.ownerId, it.start.toString(), it.end?.toString(), it.createdAt.toString()) },
         medications = s.medications.map {
             BackupMedication(
@@ -99,7 +102,7 @@ object BackupCodec {
         medicationEvents = s.medicationEvents.map {
             BackupMedicationEvent(
                 it.id, it.medicationId, it.occurrenceKey, it.doseId, it.scheduledDate?.toString(), it.scheduledTime?.toString(),
-                it.doseLabel, it.type, it.quantity, it.snoozedUntil?.toString(), it.source, it.recordedAt.toString(), it.voidedAt?.toString(),
+                it.doseLabel, it.type, it.quantity, it.snoozedUntil?.toString(), it.source, it.recordedAt.toString(), it.voidedAt?.toString(), it.note,
             )
         },
         inventoryAdjustments = s.adjustments.map {
@@ -185,7 +188,16 @@ object BackupCodec {
             val recorded = v.instant(e.recordedAt, ctx)
             val voided = e.voidedAt?.let { v.instant(it, ctx) }
             if (date == null || type == null || recorded == null) null
-            else HabitEventEntity(e.id, e.habitId, date, type.name, e.amount, e.note, recorded, voided)
+            else HabitEventEntity(e.id, e.habitId, date, type.name, e.amount, e.note, recorded, voided, e.stepId)
+        }
+        v.unique(file.habitSteps.map { it.id }, "habit step")
+        val habitSteps = file.habitSteps.mapNotNull { st ->
+            val ctx = "habit step ${st.id}"
+            v.reference(st.habitId in habitIds, ctx, "habit ${st.habitId}")
+            if (st.target !in 1..1000) v.fail(ctx, "invalid target ${st.target}")
+            val added = v.date(st.addedOn, ctx)
+            val removed = st.removedOn?.let { v.date(it, ctx) }
+            if (added == null) null else HabitStepEntity(st.id, st.habitId, st.title, st.target, st.sortOrder, added, removed)
         }
         val pauses = file.pauses.mapNotNull { p ->
             val ctx = "pause ${p.id}"
@@ -236,7 +248,7 @@ object BackupCodec {
             val recorded = v.instant(e.recordedAt, ctx)
             val voided = e.voidedAt?.let { v.instant(it, ctx) }
             if (type == null || source == null || recorded == null) null
-            else MedicationEventEntity(e.id, e.medicationId, e.occurrenceKey, e.doseId, date, time, e.doseLabel, type.name, e.quantity, snoozed, source.name, recorded, voided)
+            else MedicationEventEntity(e.id, e.medicationId, e.occurrenceKey, e.doseId, date, time, e.doseLabel, type.name, e.quantity, snoozed, source.name, recorded, voided, e.note)
         }
         // At most one active TAKEN/SKIPPED per occurrence, as the app itself guarantees.
         medicationEvents.filter { it.voidedAt == null && it.occurrenceKey != null && (it.type == "TAKEN" || it.type == "SKIPPED") }
@@ -265,7 +277,7 @@ object BackupCodec {
         if (errors.isNotEmpty()) return DecodeResult.Invalid(errors.take(MAX_REPORTED_ERRORS))
         val exportedAt = runCatching { Instant.parse(file.exportedAt) }.getOrNull()
         return DecodeResult.Valid(
-            Snapshot(habits, habitSchedules, habitEvents, pauses, medications, medicationSchedules, doses, medicationEvents, adjustments, deletions),
+            Snapshot(habits, habitSchedules, habitEvents, pauses, medications, medicationSchedules, doses, medicationEvents, adjustments, deletions, habitSteps),
             settings,
             exportedAt,
         )

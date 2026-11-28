@@ -7,6 +7,7 @@ import io.github.funnyhell.daymark.domain.habit.HabitData
 import io.github.funnyhell.daymark.domain.habit.HabitEvent
 import io.github.funnyhell.daymark.domain.habit.HabitEventType
 import io.github.funnyhell.daymark.domain.habit.HabitSchedule
+import io.github.funnyhell.daymark.domain.habit.HabitStep
 import io.github.funnyhell.daymark.domain.habit.HabitType
 import io.github.funnyhell.daymark.domain.habit.Recurrence
 import io.github.funnyhell.daymark.domain.medication.ActionSource
@@ -69,12 +70,16 @@ const val KIND_EVERY_N_DAYS = "EVERY_N_DAYS"
 
 fun HabitEventEntity.toDomain() = HabitEvent(
     id = id, habitId = habitId, date = date, type = HabitEventType.valueOf(type), amount = amount, note = note,
-    recordedAt = recordedAt, voidedAt = voidedAt,
+    recordedAt = recordedAt, voidedAt = voidedAt, stepId = stepId,
 )
+
+fun HabitStepEntity.toDomain() = HabitStep(id, habitId, title, target, sortOrder, addedOn, removedOn)
+
+fun HabitStep.toEntity() = HabitStepEntity(id, habitId, title, target, sortOrder, addedOn, removedOn)
 
 fun HabitEvent.toEntity() = HabitEventEntity(
     id = id, habitId = habitId, date = date, type = type.name, amount = amount, note = note,
-    recordedAt = recordedAt, voidedAt = voidedAt,
+    recordedAt = recordedAt, voidedAt = voidedAt, stepId = stepId,
 )
 
 fun PauseEntity.toDomain() = PauseInterval(id = id, ownerId = ownerId, start = start, end = end)
@@ -103,13 +108,13 @@ fun MedicationScheduleEntity.toDomain(doses: List<ScheduledDoseEntity>) = Medica
 fun MedicationEventEntity.toDomain() = MedicationEvent(
     id = id, medicationId = medicationId, occurrenceKey = occurrenceKey, doseId = doseId, scheduledDate = scheduledDate,
     scheduledTime = scheduledTime, doseLabel = doseLabel, type = MedicationEventType.valueOf(type), quantity = quantity,
-    snoozedUntil = snoozedUntil, source = ActionSource.valueOf(source), recordedAt = recordedAt, voidedAt = voidedAt,
+    snoozedUntil = snoozedUntil, source = ActionSource.valueOf(source), recordedAt = recordedAt, voidedAt = voidedAt, note = note,
 )
 
 fun MedicationEvent.toEntity() = MedicationEventEntity(
     id = id, medicationId = medicationId, occurrenceKey = occurrenceKey, doseId = doseId, scheduledDate = scheduledDate,
     scheduledTime = scheduledTime, doseLabel = doseLabel, type = type.name, quantity = quantity,
-    snoozedUntil = snoozedUntil, source = source.name, recordedAt = recordedAt, voidedAt = voidedAt,
+    snoozedUntil = snoozedUntil, source = source.name, recordedAt = recordedAt, voidedAt = voidedAt, note = note,
 )
 
 fun InventoryAdjustmentEntity.toDomain() = InventoryAdjustment(
@@ -127,7 +132,9 @@ fun assembleHabits(
     schedules: List<HabitScheduleEntity>,
     pauses: List<PauseEntity>,
     events: List<HabitEventEntity>,
+    steps: List<HabitStepEntity> = emptyList(),
 ): List<HabitData> {
+    val st = steps.groupBy { it.habitId }
     val s = schedules.groupBy { it.habitId }
     val p = pauses.filter { it.ownerType == OWNER_HABIT }.groupBy { it.ownerId }
     val e = events.groupBy { it.habitId }
@@ -137,6 +144,7 @@ fun assembleHabits(
             schedules = s[h.id].orEmpty().map { it.toDomain() },
             pauses = p[h.id].orEmpty().map { it.toDomain() },
             events = e[h.id].orEmpty().map { it.toDomain() },
+            steps = st[h.id].orEmpty().map { it.toDomain() },
         )
     }
 }

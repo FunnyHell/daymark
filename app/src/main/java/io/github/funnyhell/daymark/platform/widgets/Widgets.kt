@@ -666,7 +666,7 @@ private fun StreakContent(
 ) {
     val e = HabitEvaluator(data, firstDayOfWeek)
     val streak = e.streaks(today)
-    val weeks = data.habit.type == HabitType.WEEKLY_GOAL
+    val weeks = data.habit.type.isWeekly
     val unit = context.resources.getQuantityString(if (weeks) R.plurals.unit_weeks_short else R.plurals.unit_days_short, streak.current)
     val row = WidgetContent.habitRows(context, listOf(data), today, firstDayOfWeek).firstOrNull()
     val last7 = e.days(today.minusDays(6), today, today)

@@ -5,6 +5,7 @@ import io.github.funnyhell.daymark.data.db.DeletedRecordEntity
 import io.github.funnyhell.daymark.data.db.HabitEntity
 import io.github.funnyhell.daymark.data.db.HabitEventEntity
 import io.github.funnyhell.daymark.data.db.HabitScheduleEntity
+import io.github.funnyhell.daymark.data.db.HabitStepEntity
 import io.github.funnyhell.daymark.data.db.InventoryAdjustmentEntity
 import io.github.funnyhell.daymark.data.db.MedicationEntity
 import io.github.funnyhell.daymark.data.db.MedicationEventEntity
@@ -38,11 +39,13 @@ object SyncMerger {
 
         val habits = mutableListOf<HabitEntity>()
         val habitSchedules = mutableListOf<HabitScheduleEntity>()
+        val habitSteps = mutableListOf<HabitStepEntity>()
         val pauses = mutableListOf<PauseEntity>()
         for (id in ((a.habits + b.habits).map { it.id }.toSet() - deleted)) {
             val winner = newer(habitAggregate(a, id), habitAggregate(b, id)) ?: continue
             habits += winner.habit
             habitSchedules += winner.schedules
+            habitSteps += winner.steps
             pauses += winner.pauses
         }
 
@@ -61,7 +64,10 @@ object SyncMerger {
         val medicationIds = medications.map { it.id }.toSet()
         val habitEvents = unionById(a.habitEvents + b.habitEvents, { it.id }) { x, y -> x.copy(voidedAt = earliest(x.voidedAt, y.voidedAt)) }
             .filter { it.habitId in habitIds }
-        val unionEvents = unionById(a.medicationEvents + b.medicationEvents, { it.id }) { x, y -> x.copy(voidedAt = earliest(x.voidedAt, y.voidedAt)) }
+        // A note can be written on either device; the same text everywhere is kept by taking the larger one.
+        val unionEvents = unionById(a.medicationEvents + b.medicationEvents, { it.id }) { x, y ->
+            x.copy(voidedAt = earliest(x.voidedAt, y.voidedAt), note = listOfNotNull(x.note, y.note).maxOrNull())
+        }
             .filter { it.medicationId in medicationIds }
         val unionAdjustments = unionById(a.adjustments + b.adjustments, { it.id }) { x, _ -> x }
             .filter { it.medicationId in medicationIds }
@@ -78,6 +84,7 @@ object SyncMerger {
             medicationEvents = medicationEvents.sortedBy { it.id },
             adjustments = adjustments.sortedBy { it.id },
             deletions = deletions.sortedBy { it.id },
+            habitSteps = habitSteps.sortedBy { it.id },
         )
     }
 
@@ -86,6 +93,7 @@ object SyncMerger {
         changed(before.habits, after.habits) { it.id } +
             changed(before.habitSchedules, after.habitSchedules) { it.id } +
             changed(before.habitEvents, after.habitEvents) { it.id } +
+            changed(before.habitSteps, after.habitSteps) { it.id } +
             changed(before.pauses, after.pauses) { it.id } +
             changed(before.medications, after.medications) { it.id } +
             changed(before.medicationSchedules, after.medicationSchedules) { it.id } +
@@ -110,9 +118,10 @@ object SyncMerger {
         val habit: HabitEntity,
         val schedules: List<HabitScheduleEntity>,
         val pauses: List<PauseEntity>,
+        val steps: List<HabitStepEntity>,
     ) : Aggregate {
         override val updatedAt: Instant get() = habit.updatedAt
-        override val key: String get() = "$habit|$schedules|$pauses"
+        override val key: String get() = "$habit|$schedules|$pauses|$steps"
     }
 
     private class MedicationAggregate(
@@ -131,6 +140,7 @@ object SyncMerger {
             habit,
             s.habitSchedules.filter { it.habitId == id }.sortedBy { it.id },
             s.pauses.filter { it.ownerType == OWNER_HABIT && it.ownerId == id }.sortedBy { it.id },
+            s.habitSteps.filter { it.habitId == id }.sortedBy { it.id },
         )
     }
 

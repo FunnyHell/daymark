@@ -41,6 +41,27 @@ interface HabitDao {
     @Query("SELECT * FROM habit_events WHERE id = :id")
     suspend fun event(id: String): HabitEventEntity?
 
+    @Query("SELECT * FROM habit_steps ORDER BY sort_order")
+    fun observeSteps(): Flow<List<HabitStepEntity>>
+
+    @Query("SELECT * FROM habit_steps ORDER BY sort_order")
+    suspend fun steps(): List<HabitStepEntity>
+
+    @Query("SELECT * FROM habit_steps WHERE habit_id = :habitId ORDER BY sort_order")
+    suspend fun stepsFor(habitId: String): List<HabitStepEntity>
+
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun insertStep(step: HabitStepEntity)
+
+    @Update
+    suspend fun updateStep(step: HabitStepEntity)
+
+    @Query("DELETE FROM habit_steps WHERE id = :id")
+    suspend fun deleteStep(id: String)
+
+    @Insert
+    suspend fun insertSteps(items: List<HabitStepEntity>)
+
     @Query("SELECT COALESCE(MAX(sort_order), -1) + 1 FROM habits")
     suspend fun nextSortOrder(): Int
 
@@ -113,6 +134,9 @@ interface PauseDao {
 
 @Dao
 interface MedicationDao {
+    @Query("UPDATE medication_events SET note = :note WHERE id = :id")
+    suspend fun setEventNote(id: String, note: String?): Int
+
     @Query("SELECT * FROM medications ORDER BY created_at")
     fun observeMedications(): Flow<List<MedicationEntity>>
 

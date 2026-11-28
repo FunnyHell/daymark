@@ -250,6 +250,7 @@ fun MedicationDetailScreen(
                         onSnooze = if (dose.date == state.today) ({ vm.snoozeDose(dose.medicationId, dose.occurrenceKey) }) else null,
                         onCorrect = { correctEvent = it },
                         showName = false,
+                        onNote = { note -> dose.resolutionEventId?.let { vm.setDoseNote(it, note) } },
                     )
                 }
             }

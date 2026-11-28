@@ -405,6 +405,9 @@ fun HabitDetailScreen(
     if (lapseDialog && data != null) {
         LapseDialog(data.habit.name, onConfirm = { note -> vm.recordLapse(vm.habitId, state.selected, note) }, onDismiss = { lapseDialog = false })
     }
+    if (noteDialog && data != null) {
+        NoteDialog(data.habit.name, state.selectedNote, onSave = { vm.setHabitNote(vm.habitId, it, state.selected) }, onDismiss = { noteDialog = false })
+    }
 }
 
 @Composable
@@ -434,7 +437,5 @@ private fun outcomeText(outcome: PeriodOutcome): String = stringResource(
         PeriodOutcome.NEUTRAL -> R.string.outcome_neutral
         PeriodOutcome.IN_PROGRESS -> R.string.outcome_in_progress
     },
-)    if (noteDialog) {
-        NoteDialog(data.habit.name, state.selectedNote, onSave = { vm.setHabitNote(vm.habitId, it, state.selected) }, onDismiss = { noteDialog = false })
-    }
+)
 

@@ -69,11 +69,16 @@ object Overpass {
             readTimeout = 30_000
             doOutput = true
             setRequestProperty("Content-Type", "application/x-www-form-urlencoded")
+            setRequestProperty("Accept", "application/json")
             setRequestProperty("User-Agent", "Daymark (Android habit app; outdoor quests)")
         }
         try {
             connection.outputStream.use { it.write(body.toByteArray()) }
-            if (connection.responseCode != 200) error("HTTP ${connection.responseCode}")
+            if (connection.responseCode != 200) {
+                val detail = connection.errorStream?.bufferedReader()?.use { it.readText() }.orEmpty()
+                    .replace(Regex("<[^>]*>"), " ").replace(Regex("\\s+"), " ").trim().take(200)
+                error("HTTP ${connection.responseCode} $detail".trim())
+            }
             return parse(connection.inputStream.bufferedReader().use { it.readText() }, language)
         } finally {
             connection.disconnect()

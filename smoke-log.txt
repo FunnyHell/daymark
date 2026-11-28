@@ -1,0 +1,70 @@
+launched, pid 6526
+screenshot smoke/01-onboarding.png
+tapped 'Get started' at (540, 2236)
+screenshot smoke/01b-notification-permission.png
+tapped 'Allow' at (540, 1304)
+screenshot smoke/02-today-empty.png
+tapped 'New habit' at (933, 718)
+tapped 'Name' at (143, 390)
+screenshot smoke/03-habit-editor.png
+tapped 'Save' at (993, 212)
+tapped 'Habits' at (402, 2274)
+FAB 'New habit' not in UI dump; tapped its position (864, 2016)
+tapped 'Name' at (143, 390)
+tapped 'Several times a day' at (330, 1133)
+tapped 'Save' at (993, 212)
+screenshot smoke/04-habits-list.png
+tapped 'Medications' at (677, 2274)
+tapped FAB 'New medication' at (540, 643)
+tapped 'Name' at (143, 390)
+tapped 'Track stock' at (471, 2170)
+screenshot smoke/05-medication-editor.png
+tapped 'Save' at (540, 2324)
+screenshot smoke/06-medications-list.png
+tapped 'Today' at (127, 2274)
+screenshot smoke/07-today-with-items.png
+tapped 'Mark Vitamin D taken' at (142, 1608)
+screenshot smoke/08-today-after-taken.png
+tapped 'Mark Morning stretch done' at (147, 1009)
+screenshot smoke/09-today-after-done.png
+tapped 'Unmark Morning stretch' at (147, 1030)
+screenshot smoke/09b-today-after-unmark.png
+tapped 'History' at (953, 2274)
+screenshot smoke/10-history-habits.png
+tapped 'Medications' at (810, 358)
+screenshot smoke/10b-history-medications.png
+tapped 'Today' at (127, 2274)
+tapped 'Previous day' at (712, 412)
+screenshot smoke/10c-previous-day.png
+tapped 'Back to today' at (206, 517)
+tapped 'Edit Home' at (964, 412)
+screenshot smoke/10e-home-editor.png
+tapped 'Modules…' at (298, 1337)
+screenshot smoke/10f-modules.png
+tapped 'Interval reminders' at (338, 898)
+screenshot smoke/10g-modules-intervals-on.png
+tapped 'Intervals' at (760, 2274)
+FAB 'New reminder' not in UI dump; tapped its position (864, 2016)
+screenshot smoke/10h-interval-editor.png
+tapped 'Save' at (993, 212)
+screenshot smoke/10i-intervals.png
+tapped 'Today' at (100, 2274)
+screenshot smoke/10j-home-with-intervals.png
+tapped 'Settings' at (1006, 212)
+screenshot smoke/11-settings.png
+tapped 'Reminders' at (159, 359)
+screenshot smoke/11b-settings-reminders.png
+tapped 'Test reminder' at (190, 2286)
+screen off, waiting for the test reminder
+screenshot smoke/12-after-test-reminder.png
+test reminder posted with the screen off
+tapped 'Backups' at (139, 528)
+screenshot smoke/12b-settings-backups.png
+tapped 'Bottom bar' at (165, 866)
+screenshot smoke/12c-bottom-bar.png
+tapped 'Sync devices' at (182, 1035)
+screenshot smoke/13-sync.png
+tapped 'Show code' at (206, 1005)
+screenshot smoke/14-sync-code.png
+tapped 'Cancel' at (203, 743)
+Smoke test passed

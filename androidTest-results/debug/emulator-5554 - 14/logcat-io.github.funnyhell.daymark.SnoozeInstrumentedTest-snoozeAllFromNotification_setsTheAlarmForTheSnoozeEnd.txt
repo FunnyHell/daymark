@@ -1,0 +1,856 @@
+11-28 13:25:40.691  5012  5036 I TestRunner: started: snoozeAllFromNotification_setsTheAlarmForTheSnoozeEnd(io.github.funnyhell.daymark.SnoozeInstrumentedTest)
+11-28 13:25:40.696  5012  5036 I UiAutomationPermGranter: Permission: android.permission.POST_NOTIFICATIONS is already granted!
+11-28 13:25:40.703  4023  5028 I ConfigUpdater: Update downloaded, starting installation
+11-28 13:25:40.707  2223  5578 D TrafficStats: tagSocket(83) with statsTag=0xffffff01, statsUid=10129
+11-28 13:25:40.721  1529  3309 W BpBinder: Large outgoing transaction of 323832 bytes, interface descriptor , code 4
+11-28 13:25:40.752  1863  2871 W TimedProcessReaper: Scheduling killing of process to refresh configuration
+11-28 13:25:40.754  1677  2019 I SP      : <==== Finishing job {m:b:u:l, fg}, 5219 ms. elapsed since start
+11-28 13:25:40.755  1677  2019 I SuperpacksForegroundTaskService: SuperpacksForegroundTaskService.finishJob():54 SuperpacksForegroundTaskService.finishJob()
+11-28 13:25:40.764  1529  5421 I NamespaceManager: Package com.android.refreshratecontrol name not found! Using module version.
+11-28 13:25:40.766  1529  5421 I NamespaceManager: Package com.google.oslo name not found! Using module version.
+11-28 13:25:40.766  1529  5421 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:40.767  1529  5421 I NamespaceManager: Package com.android.media.swcodec name not found! Using module version.
+11-28 13:25:40.767  1529  5421 I NamespaceManager: Package com.android.appsearch name not found! Using module version.
+11-28 13:25:40.767  5221  5255 I PhenotypeBackgroundRecv: Successfully updated snapshot for com.google.android.libraries.notifications.platform#com.google.android.googlequicksearchbox
+11-28 13:25:40.772  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_birthdaydoodle_jar__name to integer.
+11-28 13:25:40.772  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_call_jar__name to integer.
+11-28 13:25:40.772  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_canvas_jar__name to integer.
+11-28 13:25:40.772  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_chkpkg_jar__name to integer.
+11-28 13:25:40.772  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_crashtest_jar__name to integer.
+11-28 13:25:40.772  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_dining_jar__name to integer.
+11-28 13:25:40.772  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_doodle_notifications_jar__name to integer.
+11-28 13:25:40.772  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_imageviewer_jar__name to integer.
+11-28 13:25:40.772  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_ipa_jar__name to integer.
+11-28 13:25:40.772  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_jslocation_jar__name to integer.
+11-28 13:25:40.772  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_localintent_jar__name to integer.
+11-28 13:25:40.772  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_messaging_jar__name to integer.
+11-28 13:25:40.772  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_nativesrp_activity_jar__name to integer.
+11-28 13:25:40.772  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_nativesrp_presenter_jar__name to integer.
+11-28 13:25:40.772  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_nowcontent_jar__name to integer.
+11-28 13:25:40.772  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_recents_activity_jar__name to integer.
+11-28 13:25:40.772  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_save_jar__name to integer.
+11-28 13:25:40.772  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_searchresults_activity_jar__name to integer.
+11-28 13:25:40.772  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_test_jar__name to integer.
+11-28 13:25:40.772  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_weather_jar__name to integer.
+11-28 13:25:40.772  1863  2383 W A       : Can't format flag bindle_flags__bloblobber_blob to integer.
+11-28 13:25:40.772  1863  2383 W A       : Can't format flag bindle_flags__velour_jar to integer.
+11-28 13:25:40.773  5221  5221 I PhenotypeBackgroundRecv: Skipping com.google.android.apps.search.assistant.user#com.google.android.googlequicksearchbox which doesn't use ProcessStable flags.
+11-28 13:25:40.774  1529  5421 I NamespaceManager: Package com.android.neuralnetworks name not found! Using module version.
+11-28 13:25:40.774  1529  5421 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:40.775  1529  5421 I NamespaceManager: Package 1 name not found! Using module version.
+11-28 13:25:40.780  4503  5138 W TimedProcessReaper: Scheduling killing of process to refresh configuration
+11-28 13:25:40.784  1677  2019 I SP      : Download stopped: delight:main_en_840_2022102600_1, succeeded foreground, size: 20290852
+11-28 13:25:40.785  1821  1821 I GsaVoiceInteractionSrv: Handling ACTION_START_HOTWORD
+11-28 13:25:40.785  4023  5028 I ConfigUpdater: doneInstall
+11-28 13:25:40.788  1529  5421 I NamespaceManager: Package com.android.refreshratecontrol name not found! Using module version.
+11-28 13:25:40.789  1821  2321 I GsaVoiceInteractionSrv: disregardVoiceMatch: false
+11-28 13:25:40.791  1529  5421 I NamespaceManager: Package com.google.oslo name not found! Using module version.
+11-28 13:25:40.792  2223  5549 V DownloadManager: Deleting /data/data/com.android.providers.downloads/cache/09252026-sms-denylist-metadata.txt via provider delete
+11-28 13:25:40.792  1863  2904 W TimedProcessReaper: Scheduling killing of process to refresh configuration
+11-28 13:25:40.793  1529  5421 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:40.794  1529  5421 I NamespaceManager: Package com.android.media.swcodec name not found! Using module version.
+11-28 13:25:40.795  1529  5421 I NamespaceManager: Package com.android.appsearch name not found! Using module version.
+11-28 13:25:40.796  1529  5421 I NamespaceManager: Package com.android.neuralnetworks name not found! Using module version.
+11-28 13:25:40.797  1529  5421 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:40.797  1529  5421 I NamespaceManager: Package 1 name not found! Using module version.
+11-28 13:25:40.798  1863  1863 I A       : Refusing EXCLUSIVE task 21, it is already pending. Try again in 359 seconds.
+11-28 13:25:40.803  1863  2715 W SearchServiceCore: Abort, client detached.
+11-28 13:25:40.804  1529  2435 W GLSUser : [AppCertManager] Exception while requesting key:
+11-28 13:25:40.804  1529  2435 W GLSUser : java.io.IOException: Invalid device key response.
+11-28 13:25:40.804  1529  2435 W GLSUser : 	at oub.b(:com.google.android.gms@231818047@23.18.18 (190800-535401451):40)
+11-28 13:25:40.804  1529  2435 W GLSUser : 	at otz.b(:com.google.android.gms@231818047@23.18.18 (190800-535401451):4)
+11-28 13:25:40.804  1529  2435 W GLSUser : 	at otu.a(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-28 13:25:40.804  1529  2435 W GLSUser : 	at otx.a(:com.google.android.gms@231818047@23.18.18 (190800-535401451):6)
+11-28 13:25:40.804  1529  2435 W GLSUser : 	at lzq.call(:com.google.android.gms@231818047@23.18.18 (190800-535401451):14)
+11-28 13:25:40.804  1529  2435 W GLSUser : 	at java.util.concurrent.FutureTask.run(FutureTask.java:264)
+11-28 13:25:40.804  1529  2435 W GLSUser : 	at aced.c(:com.google.android.gms@231818047@23.18.18 (190800-535401451):6)
+11-28 13:25:40.804  1529  2435 W GLSUser : 	at aced.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):7)
+11-28 13:25:40.804  1529  2435 W GLSUser : 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-28 13:25:40.804  1529  2435 W GLSUser : 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-28 13:25:40.804  1529  2435 W GLSUser : 	at acjn.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-28 13:25:40.804  1529  2435 W GLSUser : 	at java.lang.Thread.run(Thread.java:1012)
+11-28 13:25:40.805  1863  2386 I A       : Refusing EXCLUSIVE task 24, it is already pending. Try again in 311 seconds.
+11-28 13:25:40.805  1863  2715 W SearchServiceCore: Abort, client detached.
+11-28 13:25:40.805  1677  2019 I SP      : Scheduling job with delay of 0s for {m:b:u:l, bg}, 5 candidates
+11-28 13:25:40.806  1863  2715 W SearchServiceCore: Abort, client detached.
+11-28 13:25:40.806  1863  2715 W SearchServiceCore: Abort, client detached.
+11-28 13:25:40.808  1863  2715 W SearchServiceCore: Abort, client detached.
+11-28 13:25:40.808  1863  2715 W SearchServiceCore: Abort, client detached.
+11-28 13:25:40.808  4503  4640 I BuglePhenotype: onReceive for cslib package [CONTEXT package_name="com.google.android.ims.library" ]
+11-28 13:25:40.809  1821  2321 I GsaVoiceInteractionSrv: Cannot start hotword, hotword has been explicitly disabled.
+11-28 13:25:40.810  1757  4303 W ModernMediaScanner: Failed to visit /data/data/com.android.providers.downloads/cache/09252026-sms-denylist-metadata.txt: java.nio.file.NoSuchFileException: /data/data/com.android.providers.downloads/cache/09252026-sms-denylist-metadata.txt
+11-28 13:25:40.810  4503  4614 I Bugle   : BroadcastReceiverAsyncWorkTracker: Acknowledging broadcast of com.google.android.apps.messaging.shared.experiments.receiver.BuglePhenotypeBroadcastReceiver@740c7a7
+11-28 13:25:40.811  4503  4503 I PhenotypeBackgroundRecv: Skipping com.google.android.ims.library which doesn't use ProcessStable flags.
+11-28 13:25:40.811  1863  2715 W SearchServiceCore: Abort, client detached.
+11-28 13:25:40.811  1863  2715 W SearchServiceCore: Abort, client detached.
+11-28 13:25:40.812  1863  2715 W SearchServiceCore: Abort, client detached.
+11-28 13:25:40.813  1863  2715 W SearchServiceCore: Abort, client detached.
+11-28 13:25:40.817  1863  2387 I FedAssExpListener: Fed-ass not supported for signed out users.
+11-28 13:25:40.817  1863  2387 I FedAssExpListener: Successfully processed experiments changed.
+11-28 13:25:40.819  1757  4303 I MediaProvider: Scanned internal due to REASON_DEMAND, found 0 items in 24ms, 0 inserts 0 updates 0 deletes
+11-28 13:25:40.820  1863  2387 I A       : NGA disabled since it's running Panthera and at least one a11y feature is on.
+11-28 13:25:40.823  1583  5083 I Icing   : Indexing com.google.android.gms-apps from com.google.android.gms
+11-28 13:25:40.824  1863  2386 I OpaEligibilityChecker: send OpaEligibilityChange broadcast to CommonBroadcastReceiver
+11-28 13:25:40.828  1776  2154 I AiAiEcho: Predicting[0]:
+11-28 13:25:40.828  1776  2154 I AiAiEcho: EchoTargets:
+11-28 13:25:40.828  1776  2154 I AiAiEcho: Filtered by AiAi flag check:
+11-28 13:25:40.828  1776  2154 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata:
+11-28 13:25:40.829  1776  2154 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+11-28 13:25:40.833   914   914 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+11-28 13:25:40.833  1677  2019 I SP      : Scheduling job with delay of 0s for {m:b:u:l, fg}, 1 candidates
+11-28 13:25:40.835  1677  1677 I SpBackgroundTask: SuperpacksBackgroundJobService.onStartJob():23 onStartJob: android.app.job.JobParameters@bd395ee
+11-28 13:25:40.836  1677  1677 I SP      : ====> Starting job {m:b:u:l, bg}
+11-28 13:25:40.838  2223  5549 V DownloadManager: Deleting /data/data/com.android.providers.downloads/cache/09252026-sms-denylist.txt via provider delete
+11-28 13:25:40.840  1677  1677 I SuperpacksForegroundTaskService: SuperpacksForegroundTaskService.onStartCommand():41 SuperpacksForegroundTaskService.onStartCommand(): 1
+11-28 13:25:40.842  1863  2386 W CorpusConfigHelper: Invalid input from icing corpus JSON flag.
+11-28 13:25:40.842  1863  2386 W CorpusConfigHelper: android.util.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 123 column 2
+11-28 13:25:40.842  1863  2386 W CorpusConfigHelper: 	at android.util.JsonReader.syntaxError(JsonReader.java:1162)
+11-28 13:25:40.842  1863  2386 W CorpusConfigHelper: 	at android.util.JsonReader.checkLenient(JsonReader.java:840)
+11-28 13:25:40.842  1863  2386 W CorpusConfigHelper: 	at android.util.JsonReader.nextInArray(JsonReader.java:615)
+11-28 13:25:40.842  1863  2386 W CorpusConfigHelper: 	at android.util.JsonReader.peek(JsonReader.java:345)
+11-28 13:25:40.842  1863  2386 W CorpusConfigHelper: 	at android.util.JsonReader.hasNext(JsonReader.java:321)
+11-28 13:25:40.842  1863  2386 W CorpusConfigHelper: 	at com.google.android.apps.gsa.searchbox.c.b.b.k.c(PG:7)
+11-28 13:25:40.842  1863  2386 W CorpusConfigHelper: 	at com.google.android.apps.gsa.searchbox.c.b.b.j.a(Unknown Source:2)
+11-28 13:25:40.842  1863  2386 W CorpusConfigHelper: 	at com.google.android.apps.gsa.search.core.i.r.run(PG:5)
+11-28 13:25:40.842  1863  2386 W CorpusConfigHelper: 	at com.google.android.libraries.gsa.k.a.h.run(PG:2)
+11-28 13:25:40.842  1863  2386 W CorpusConfigHelper: 	at com.google.android.apps.gsa.shared.logger.f.a.a.l.p(PG:2)
+11-28 13:25:40.842  1863  2386 W CorpusConfigHelper: 	at com.google.android.apps.gsa.shared.logger.f.a.a.g.run(Unknown Source:4)
+11-28 13:25:40.842  1863  2386 W CorpusConfigHelper: 	at com.google.android.apps.gsa.shared.util.c.a.cf.b(PG:1)
+11-28 13:25:40.842  1863  2386 W CorpusConfigHelper: 	at com.google.android.apps.gsa.shared.util.c.a.ci.run(PG:1)
+11-28 13:25:40.842  1863  2386 W CorpusConfigHelper: 	at com.google.android.libraries.i.ae.run(PG:1)
+11-28 13:25:40.842  1863  2386 W CorpusConfigHelper: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-28 13:25:40.842  1863  2386 W CorpusConfigHelper: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-28 13:25:40.842  1863  2386 W CorpusConfigHelper: 	at com.google.android.libraries.i.k.run(PG:2)
+11-28 13:25:40.842  1863  2386 W CorpusConfigHelper: 	at com.google.android.libraries.i.p.run(PG:4)
+11-28 13:25:40.842  1863  2386 W CorpusConfigHelper: 	at java.lang.Thread.run(Thread.java:1012)
+11-28 13:25:40.847  4503  5138 I BugleRcsProvisioning: BugleSystemBindingManager: onBuglePhenotypeFlagChanged
+11-28 13:25:40.848  4503  5138 I BugleTransport: onBuglePhenotypeFlagChanged: kicking off updateActiveTransport
+11-28 13:25:40.848  4503  4621 I BugleTransport: isChatAvailable: RcsAvailability is DISABLED_VIA_GSERVICES (RCS is disabled for this carrier by Google)
+11-28 13:25:40.849  2223  5572 D DownloadManager: [10] Finished with status SUCCESS
+11-28 13:25:40.850  4503  4610 W BugleAction: Null config in BugleSharedPrefs
+11-28 13:25:40.850  4503  4610 W BugleAction: Failed to get msisdn from Bugle
+11-28 13:25:40.850  4503  4610 W BugleAction: Failed to get msisdn from RcsProfileService
+11-28 13:25:40.850  4503  4610 W BugleAction: cksi: Jibe SDK Service not available. Is the Jibe SDK service running? Did you call connect() and wait for the notification before calling an API function?
+11-28 13:25:40.850  4503  4610 W BugleAction: 	at cksa.b(PG:2)
+11-28 13:25:40.850  4503  4610 W BugleAction: 	at com.google.android.rcs.client.profile.RcsProfileService.g(PG:1)
+11-28 13:25:40.850  4503  4610 W BugleAction: 	at com.google.android.rcs.client.profile.RcsProfileService.getMsisdn(PG:3)
+11-28 13:25:40.850  4503  4610 W BugleAction: 	at awsw.aj(PG:17)
+11-28 13:25:40.850  4503  4610 W BugleAction: 	at awsw.z(PG:2)
+11-28 13:25:40.850  4503  4610 W BugleAction: 	at aule.k(PG:1)
+11-28 13:25:40.850  4503  4610 W BugleAction: 	at aulc.call(Unknown Source:2)
+11-28 13:25:40.850  4503  4610 W BugleAction: 	at cnsg.a(PG:1)
+11-28 13:25:40.850  4503  4610 W BugleAction: 	at cnpm.a(PG:3)
+11-28 13:25:40.850  4503  4610 W BugleAction: 	at ctfv.a(PG:1)
+11-28 13:25:40.850  4503  4610 W BugleAction: 	at ctet.run(PG:4)
+11-28 13:25:40.850  4503  4610 W BugleAction: 	at ctfx.run(PG:1)
+11-28 13:25:40.850  4503  4610 W BugleAction: 	at bxfd.run(PG:1)
+11-28 13:25:40.850  4503  4610 W BugleAction: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-28 13:25:40.850  4503  4610 W BugleAction: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-28 13:25:40.850  4503  4610 W BugleAction: 	at bxef.run(PG:2)
+11-28 13:25:40.850  4503  4610 W BugleAction: 	at java.lang.Thread.run(Thread.java:1012)
+11-28 13:25:40.850  4503  4610 W BugleAction: 	at bxfj.run(PG:5)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: Bugle: SubscriptionMetadataUtils get: unexpected subId = -2, replacing with -1
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: cpwb: FULL
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at bdsy.h(PG:6)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at bdvp.a(PG:1)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at bgit.<init>(PG:1)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at bgiu.a(PG:1)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at awsw.ai(PG:3)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at awsw.aj(PG:25)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at awsw.z(PG:2)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at aule.k(PG:1)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at aulc.call(Unknown Source:2)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at cnsg.a(PG:1)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at cnpm.a(PG:3)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at ctfv.a(PG:1)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at ctet.run(PG:4)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at ctfx.run(PG:1)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at bxfd.run(PG:1)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at bxef.run(PG:2)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at java.lang.Thread.run(Thread.java:1012)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at bxfj.run(PG:5)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: Bugle: SubscriptionMetadataUtils get: unexpected subId = -2, replacing with -1
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: cpwb: FULL
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at bdsy.h(PG:6)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at bgit.<init>(PG:2)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at bgiu.a(PG:1)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at awsw.ai(PG:3)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at awsw.aj(PG:25)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at awsw.z(PG:2)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at aule.k(PG:1)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at aulc.call(Unknown Source:2)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at cnsg.a(PG:1)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at cnpm.a(PG:3)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at ctfv.a(PG:1)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at ctet.run(PG:4)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at ctfx.run(PG:1)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at bxfd.run(PG:1)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at bxef.run(PG:2)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at java.lang.Thread.run(Thread.java:1012)
+11-28 13:25:40.850  4503  4610 W SubscriptionMetadataUti: 	at bxfj.run(PG:5)
+11-28 13:25:40.851  4503  4610 W SubscriptionMetadataUti: Bugle: SubscriptionMetadataUtils get: unexpected subId = -2, replacing with -1
+11-28 13:25:40.851  4503  4610 W SubscriptionMetadataUti: cpwb: FULL
+11-28 13:25:40.851  4503  4610 W SubscriptionMetadataUti: 	at bdsy.h(PG:6)
+11-28 13:25:40.851  4503  4610 W SubscriptionMetadataUti: 	at awsw.ai(PG:18)
+11-28 13:25:40.851  4503  4610 W SubscriptionMetadataUti: 	at awsw.aj(PG:25)
+11-28 13:25:40.851  4503  4610 W SubscriptionMetadataUti: 	at awsw.z(PG:2)
+11-28 13:25:40.851  4503  4610 W SubscriptionMetadataUti: 	at aule.k(PG:1)
+11-28 13:25:40.851  4503  4610 W SubscriptionMetadataUti: 	at aulc.call(Unknown Source:2)
+11-28 13:25:40.851  4503  4610 W SubscriptionMetadataUti: 	at cnsg.a(PG:1)
+11-28 13:25:40.851  4503  4610 W SubscriptionMetadataUti: 	at cnpm.a(PG:3)
+11-28 13:25:40.851  4503  4610 W SubscriptionMetadataUti: 	at ctfv.a(PG:1)
+11-28 13:25:40.851  4503  4610 W SubscriptionMetadataUti: 	at ctet.run(PG:4)
+11-28 13:25:40.851  4503  4610 W SubscriptionMetadataUti: 	at ctfx.run(PG:1)
+11-28 13:25:40.851  4503  4610 W SubscriptionMetadataUti: 	at bxfd.run(PG:1)
+11-28 13:25:40.851  4503  4610 W SubscriptionMetadataUti: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-28 13:25:40.851  4503  4610 W SubscriptionMetadataUti: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-28 13:25:40.851  4503  4610 W SubscriptionMetadataUti: 	at bxef.run(PG:2)
+11-28 13:25:40.851  4503  4610 W SubscriptionMetadataUti: 	at java.lang.Thread.run(Thread.java:1012)
+11-28 13:25:40.851  4503  4610 W SubscriptionMetadataUti: 	at bxfj.run(PG:5)
+11-28 13:25:40.852  4503  4613 I BugleRcsEngine: [47] bptz.run: SystemBindingManager: SystemBinding enabled: true
+11-28 13:25:40.854  4503  4613 I BugleRcsEngine: [47] bpua.b: System Binding updated
+11-28 13:25:40.854  5012  5036 I DaymarkReminders: Next alarm at 2026-11-29T00:00:00Z (in 634 min, reminder=true)
+11-28 13:25:40.855  4503  4610 I Bugle   : SubscriptionUtilsAsOfLMR1: getActiveSubscriptionInfo(): empty sub info for subscription{id:-1}
+11-28 13:25:40.855  4503  4610 I Bugle   : SubscriptionUtilsAsOfLMR1: getActiveSubscriptionInfo(): empty sub info for subscription{id:-1}
+11-28 13:25:40.855  4503  4610 W Bugle   : SubscriptionUtilsAsOfLMR1: getSelfRawNumber: subInfo is null for subscription{id:-1}
+11-28 13:25:40.856  1677  1677 I SP      : ====> Starting job {m:b:u:l, fg}
+11-28 13:25:40.857  4503  5139 W BugleRcsEngine: [104] bpxc.w: Unable to send diagnostic log
+11-28 13:25:40.857  4503  4622 W BugleRcsEngine: [55] bpxc.w: Unable to send diagnostic log
+11-28 13:25:40.857  1583  3083 I Icing   : IndexChimeraService.getServiceInterface callingPackage=com.google.android.googlequicksearchbox componentName=agsa_icing_connection serviceId=32
+11-28 13:25:40.859  1583  2952 I Icing   : IndexChimeraService.getServiceInterface callingPackage=com.google.android.googlequicksearchbox componentName=agsa_icing_connection serviceId=33
+11-28 13:25:40.861  1757  4303 W ModernMediaScanner: Failed to visit /data/data/com.android.providers.downloads/cache/09252026-sms-denylist.txt: java.nio.file.NoSuchFileException: /data/data/com.android.providers.downloads/cache/09252026-sms-denylist.txt
+11-28 13:25:40.862  1757  4303 I MediaProvider: Scanned internal due to REASON_DEMAND, found 0 items in 1ms, 0 inserts 0 updates 0 deletes
+11-28 13:25:40.865  1529  4002 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.checkin.CheckinService started execution. cause:1 exec_start_elapsed_seconds: 111 [CONTEXT service_id=218 ]
+11-28 13:25:40.866  4503  4610 W BugleAction: No default number, returning empty msisdn
+11-28 13:25:40.866  4503  5138 I BugleTransport: updateActiveTransport: refreshing chat transport
+11-28 13:25:40.867  4503  5138 I BugleTransport: RCS Configuration is empty. Enabled transport is Dual Reg [CONTEXT ratelimit_period="5 SECONDS" skipped=2 ]
+11-28 13:25:40.867  4503  5138 I BugleTransport: refreshChatTransport: isChatAvailable: false, enabledTransport: 1, configuration: <empty>
+11-28 13:25:40.868  4503  4610 I RcsClientLib: Connecting RcsEngineLifecycleService
+11-28 13:25:40.869  1677  2019 I SP      : Scheduling: download stopped, 0 started, 0 paused, 6 scheduled, 6 pending: content_cache:e9a5a2de48a4f8b9a658b411bcfb375d * {m:b:u:l, bg}, content_cache:8722425f4121ffdea802b1066df73991 * {m:b:u:l, bg}, content_cache:fa1da98da1212aad6fb9a8efaff48148 * {m:b:u:l, bg}, kc_tflite_model:tflite-kc-en_us_secagg-20220805_235142 * {m:b:u:l, fg}, next-word-predictor:tflite-nwp-be541314788c7304827a9710c3ac4edb * {m:b:u:l, bg}, expressive_concepts_triggering:2022011819_en * {m:b:u:l, bg}
+11-28 13:25:40.870  4503  4610 W RcsClientLib: No CS.apk RCS service found. Is RCS running in Bugle?
+11-28 13:25:40.872  4503  4610 I RcsClientLib: shouldUseCarrierServicesJibeService: false, CarrierServices rcs service found: false
+11-28 13:25:40.873  1529  3978 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.auth.account.be.legacy.AuthCronService finished executing. cause:5 result: 3 elapsed_millis: 3666 uptime_millis: 3666 exec_start_elapsed_seconds: 107 [CONTEXT service_id=218 ]
+11-28 13:25:40.876  4503  4610 I RcsClientLib: com.google.android.rcs.client.lifecycle.RcsEngineLifecycleService connected
+11-28 13:25:40.878  5141  5194 I BugleRcsEngine: [64] RcsEngineImpl.triggerStopRcsStack: RcsEngineImpl[DUAL_REG]:[a62ba709-b4ca]: triggerStopRcsStack for msisdn:redacted-pii:phone_number[chars:0,last2:]
+11-28 13:25:40.878  5141  5266 I BugleRcsEngine: [85] brqh.handleMessage: RcsEngineImpl[DUAL_REG]:[a62ba709-b4ca]>Handler: handleMessage processing message:[STOP_RCS_STACK] with [non-null]:RcsEngineImpl reference
+11-28 13:25:40.878  5141  5266 I BugleRcsEngine: [85] brqh.handleMessage: RcsEngineImpl[DUAL_REG]:[a62ba709-b4ca]>Handler: RCS engine STOP RCS stack
+11-28 13:25:40.878  5141  5266 W BugleRcsEngine: [85] RcsEngineImpl.e: RcsEngineImpl[DUAL_REG]:[a62ba709-b4ca]: imsModule is null, shutdown not required
+11-28 13:25:40.878  5141  5266 I BugleRcsEngine: [85] RcsEngineImpl.stopRcsStackInternal: RcsEngineImpl[DUAL_REG]:[a62ba709-b4ca]: skipping imsModule.stop
+11-28 13:25:40.878  5141  5266 I BugleRcsEngine: [85] brqh.handleMessage: RcsEngineImpl[DUAL_REG]:[a62ba709-b4ca]>Handler: handleMessage processing message:[NOTIFY_UPTIME_IGNORE_STATE_CHANGED] with [non-null]:RcsEngineImpl reference
+11-28 13:25:40.879  5141  5266 I BugleRcsEngine: [85] brnl.h: RCS Configuration storage in Bugle is disabled by p/h flag, using ProvisioningEngineStateCacheUtil.getProvisioningConfigurationForGivenSimIfExist()
+11-28 13:25:40.880  4503  4640 I RcsClientLib: Disconnecting RcsEngineLifecycleService
+11-28 13:25:40.884  1583  5083 I Icing   : Indexing done com.google.android.gms-apps
+11-28 13:25:40.885  1583  5083 W Icing   : No valid account for uploading user actions
+11-28 13:25:40.894  1677  2019 I SP      : Scheduling job with delay of 0s for {m:b:u:l, fg}, 1 candidates
+11-28 13:25:40.896  1529  5421 I NamespaceManager: Package com.android.refreshratecontrol name not found! Using module version.
+11-28 13:25:40.896  1529  5421 I NamespaceManager: Package com.google.oslo name not found! Using module version.
+11-28 13:25:40.896  1529  5421 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:40.896  1529  5421 I NamespaceManager: Package com.android.media.swcodec name not found! Using module version.
+11-28 13:25:40.896  1529  5421 I NamespaceManager: Package com.android.appsearch name not found! Using module version.
+11-28 13:25:40.897  1529  5421 I NamespaceManager: Package com.android.neuralnetworks name not found! Using module version.
+11-28 13:25:40.897  1529  5421 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:40.897  1529  5421 I NamespaceManager: Package 1 name not found! Using module version.
+11-28 13:25:40.898  1583  5083 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0
+11-28 13:25:40.900  1863  2715 W SearchServiceCore: Abort, client detached.
+11-28 13:25:40.900  1863  2871 I BgTaskExecutorImpl: Starting EXCLUSIVE background task FETCH_CONFIGS_FROM_PHENOTYPE.
+11-28 13:25:40.901  1677  1677 I SuperpacksForegroundTaskService: SuperpacksForegroundTaskService.onStartCommand():41 SuperpacksForegroundTaskService.onStartCommand(): 2
+11-28 13:25:40.906  5012  5036 I DaymarkReminders: Next alarm at 2026-11-29T00:00:00Z (in 634 min, reminder=true)
+11-28 13:25:40.907  1583  5083 W Icing   : No valid account for uploading user actions
+11-28 13:25:40.918  2936  3287 I PhenotypeBackgroundRecv: Successfully updated snapshot for com.google.android.gms.clearcut_client#com.google.android.dialer
+11-28 13:25:40.919  1583  5392 I GmscoreIpa: Starting mediastore instant index [CONTEXT service_id=255 ]
+11-28 13:25:40.919  4503  4613 I BuglePhenotype: Notify about updates in current package [CONTEXT current_package_name="com.google.android.ims.library" ]
+11-28 13:25:40.920  4503  4613 I Bugle   : RcsAvailabilityUtilForProvisioningEngineV2: onCsLibPhenotypeUpdated
+11-28 13:25:40.920  1583  5083 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0
+11-28 13:25:40.924  1776  2154 I AiAiEcho: Predicting[0]:
+11-28 13:25:40.924  1776  2154 I AiAiEcho: EchoTargets:
+11-28 13:25:40.924  1776  2154 I AiAiEcho: Filtered by AiAi flag check:
+11-28 13:25:40.925  1776  2154 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata:
+11-28 13:25:40.926  1776  2154 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+11-28 13:25:40.929  4503  4613 I BugleRcsProvisioning: RcsProvisioningTrigger: onCsLibPhenotypeUpdated, enableProvisioningTaskInBugle = true
+11-28 13:25:40.929  4503  4613 I BugleRcsProvisioning: RcsProvisioningTrigger: updateRcsAvailability : hint = CSLIB_PHENOTYPE_UPDATE
+11-28 13:25:40.930  4503  4613 I Bugle   : RcsAvailabilityUtilForProvisioningEngineV2: updateAvailabilityAsync, hint: CSLIB_PHENOTYPE_UPDATE
+11-28 13:25:40.930  4503  4613 I Bugle   : RcsAvailabilityUtilForProvisioningEngineV2: swapAvailabilityUpdater, provisioningTaskInBugle: true, activeRcsAvailabilityUpdater: awuh
+11-28 13:25:40.930  4503  4613 I BugleRcsProvisioning: RcsAvailabilityUpdaterLocal: updateAvailabilityAsync: scheduling updateRcsAvailability call, hint: CSLIB_PHENOTYPE_UPDATE, enableWelcomePopupWithoutGoogleTos: false, reshowSuccessPopup: false
+11-28 13:25:40.930  4503  4613 I BugleRcsProvisioning: scheduleProvisioning using legacy code path
+11-28 13:25:40.930  4503  4613 W BugleRcsEngine: [47] brcu.d: [SR]: Single Registration is disabled. Skipping Single Registration capability check for subId: 1, OS.isAtLeastS:[true], enableSingleRegistrationProvisioning:[false]
+11-28 13:25:40.930  4503  4613 I BugleRcsProvisioning: RcsProvisioningTrigger: DR is active, initializing DR provisioning. DUAL_REG
+11-28 13:25:40.931  4503  4610 W BugleRcsEngine: [45] brcu.d: [SR]: Single Registration is disabled. Skipping Single Registration capability check for subId: 1, OS.isAtLeastS:[true], enableSingleRegistrationProvisioning:[false]
+11-28 13:25:40.932  4503  4610 I BugleRcsEngine: [45] brnl.e: No RCS Configuration was found in Bugle for simID: redacted-pii:sim_id[chars:20,last3:897]
+11-28 13:25:40.932  4503  5138 W BugleRcsEngine: [103] brcu.d: [SR]: Single Registration is disabled. Skipping Single Registration capability check for subId: 1, OS.isAtLeastS:[true], enableSingleRegistrationProvisioning:[false]
+11-28 13:25:40.932  4503  4610 I BugleRcsEngine: [45] zzm.run: Skipping provisioning scheduling since RCS is disabled
+11-28 13:25:40.933  4503  5138 I BugleRcsEngine: [103] brnl.e: No RCS Configuration was found in Bugle for simID: redacted-pii:sim_id[chars:20,last3:897]
+11-28 13:25:40.933  4503  5138 I BugleRcsProvisioning: RcsAvailabilityUpdaterLocal: RcsAvailability configuration availability and enabled status: simId: redacted-pii:sim_id[chars:20,last3:897], SipConnectionType: DUAL_REG, isConfigurationAvailableAndEnabled: false
+11-28 13:25:40.933  4503  5138 I BugleRcsEngine: [103] brox.b: Using config server URL from bqas
+11-28 13:25:40.933  4503  5138 I BugleRcsProvisioning: RcsAvailabilityUpdaterLocal: RcsAvailability subscription{id:1}, simId: redacted-pii:sim_id[chars:20,last3:897], sipConnectionType: DUAL_REG, isRcsAvailable: false
+11-28 13:25:40.933  4503  5138 I BugleRcsProvisioning: RcsAvailabilityUpdaterLocal: updateRcsAvailability, currentAvailability: 2, newAvailability: 10, hint: CSLIB_PHENOTYPE_UPDATE
+11-28 13:25:40.934  4503  4622 I BugleRcsProvisioning: RcsProvisioningTrigger: onRcsAvailabilityUpdate : availability is updated to Carrier RCS is not set up, lastAvailability is RCS is disabled for this carrier by Google, simId hash = -4229792515567788269, simId = redacted-pii:sim_id[chars:20,last3:897], isPev3Enabled = true
+11-28 13:25:40.934  4503  4610 W BugleRcsEngine: [45] bpxc.w: Unable to send diagnostic log
+11-28 13:25:40.934  4503  4613 I BugleRcsEngine: [47] bptz.run: SystemBindingManager: SystemBinding enabled: true
+11-28 13:25:40.934  4503  4613 I BugleRcsEngine: [47] bpua.b: System Binding updated
+11-28 13:25:40.934  4503  4622 I BugleRcsEngine: [55] brle.i: RcsProvisioningManager: Receive onRcsAvailabilityUpdate, SIM = redacted-pii:sim_id[chars:20,last3:897], availability = RcsAvailability{mAvailability=CARRIER_SETUP_PENDING (Carrier RCS is not set up)}
+11-28 13:25:40.934  4503  4623 W BugleRcsEngine: [56] bpxc.w: Unable to send diagnostic log
+11-28 13:25:40.935  4503  4622 I BugleRcsEngine: [55] brnl.e: No RCS Configuration was found in Bugle for simID: redacted-pii:sim_id[chars:20,last3:897]
+11-28 13:25:40.935  4503  4622 I BugleRcsProvisioning: RcsProvisioningTrigger: onRcsAvailabilityUpdate : isPreviousDisabled = true, isCurrentDisabled = false, config[simId:redacted-pii:sim_id[chars:20,last3:897]] = [Type: 0, Version: 0, Validity: 0, Last updated: 0, Remaining validity: 0, Reconfiguration requested: false, Messaging technology: SIMPLE_IM, rcsVolteSingleRegistration: false], hasToken: false, isValidAndUpdated: false
+11-28 13:25:40.935  4503  4622 I BugleRcsProvisioning: RcsProvisioningTrigger: Schedule KEEP provision when trigger configuration not valid
+11-28 13:25:40.935  4503  4622 I BugleRcsProvisioning: scheduleProvisioning using legacy code path
+11-28 13:25:40.936  4503  4622 W BugleRcsEngine: [55] brcu.d: [SR]: Single Registration is disabled. Skipping Single Registration capability check for subId: 1, OS.isAtLeastS:[true], enableSingleRegistrationProvisioning:[false]
+11-28 13:25:40.936  4503  4622 I BugleRcsProvisioning: RcsProvisioningTrigger: DR is active, initializing DR provisioning. DUAL_REG
+11-28 13:25:40.936  4503  4623 W BugleRcsEngine: [56] brcu.d: [SR]: Single Registration is disabled. Skipping Single Registration capability check for subId: 1, OS.isAtLeastS:[true], enableSingleRegistrationProvisioning:[false]
+11-28 13:25:40.936  4503  4623 I BugleRcsEngine: [56] brnl.e: No RCS Configuration was found in Bugle for simID: redacted-pii:sim_id[chars:20,last3:897]
+11-28 13:25:40.936  4503  5138 I BugleTransport: onRcsAvailabilityUpdate: kicking off updateActiveTransport for simId:redacted-pii:sim_id[chars:20,last3:897]
+11-28 13:25:40.937  4503  5138 I BugleRcsEngine: [103] brku.a: RcsProvisioningManager: AvailabilityObserver.onUpdate : Notify RcsAvailabilityListener bbob@69c49ff onRcsAvailabilityUpdate, SIM = redacted-pii:sim_id[chars:20,last3:897], availability = 10
+11-28 13:25:40.937  4503  5139 W BugleAction: Null config in BugleSharedPrefs
+11-28 13:25:40.937  4503  5139 W BugleAction: Failed to get msisdn from Bugle
+11-28 13:25:40.937  4503  5139 W BugleAction: Failed to get msisdn from RcsProfileService
+11-28 13:25:40.937  4503  5139 W BugleAction: cksi: Jibe SDK Service not available. Is the Jibe SDK service running? Did you call connect() and wait for the notification before calling an API function?
+11-28 13:25:40.937  4503  5139 W BugleAction: 	at cksa.b(PG:2)
+11-28 13:25:40.937  4503  5139 W BugleAction: 	at com.google.android.rcs.client.profile.RcsProfileService.g(PG:1)
+11-28 13:25:40.937  4503  5139 W BugleAction: 	at com.google.android.rcs.client.profile.RcsProfileService.getMsisdn(PG:3)
+11-28 13:25:40.937  4503  5139 W BugleAction: 	at awsw.aj(PG:17)
+11-28 13:25:40.937  4503  5139 W BugleAction: 	at awsw.z(PG:2)
+11-28 13:25:40.937  4503  5139 W BugleAction: 	at aule.k(PG:1)
+11-28 13:25:40.937  4503  5139 W BugleAction: 	at aulc.call(Unknown Source:2)
+11-28 13:25:40.937  4503  5139 W BugleAction: 	at cnsg.a(PG:1)
+11-28 13:25:40.937  4503  5139 W BugleAction: 	at cnpm.a(PG:3)
+11-28 13:25:40.937  4503  5139 W BugleAction: 	at ctfv.a(PG:1)
+11-28 13:25:40.937  4503  5139 W BugleAction: 	at ctet.run(PG:4)
+11-28 13:25:40.937  4503  5139 W BugleAction: 	at ctfx.run(PG:1)
+11-28 13:25:40.937  4503  5139 W BugleAction: 	at bxfd.run(PG:1)
+11-28 13:25:40.937  4503  5139 W BugleAction: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-28 13:25:40.937  4503  5139 W BugleAction: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-28 13:25:40.937  4503  5139 W BugleAction: 	at bxef.run(PG:2)
+11-28 13:25:40.937  4503  5139 W BugleAction: 	at java.lang.Thread.run(Thread.java:1012)
+11-28 13:25:40.937  4503  5139 W BugleAction: 	at bxfj.run(PG:5)
+11-28 13:25:40.938  4503  4623 I BugleRcsEngine: [56] zzo.l: Scheduled provisioning task with 0 seconds delay, KEEP policy, trigger is CSLIB_PHENOTYPE_UPDATE, workerId is 019fa218-07e7-4988-97fe-5916a7fb219c
+11-28 13:25:40.938  4503  5139 W SubscriptionMetadataUti: Bugle: SubscriptionMetadataUtils get: unexpected subId = -2, replacing with -1
+11-28 13:25:40.938  4503  5139 W SubscriptionMetadataUti: cpwb: FULL
+11-28 13:25:40.938  4503  5139 W SubscriptionMetadataUti: 	at bdsy.h(PG:6)
+11-28 13:25:40.938  4503  5139 W SubscriptionMetadataUti: 	at bdvp.a(PG:1)
+11-28 13:25:40.938  4503  5139 W SubscriptionMetadataUti: 	at bgit.<init>(PG:1)
+11-28 13:25:40.938  4503  5139 W SubscriptionMetadataUti: 	at bgiu.a(PG:1)
+11-28 13:25:40.938  4503  5139 W SubscriptionMetadataUti: 	at awsw.ai(PG:3)
+11-28 13:25:40.938  4503  5139 W SubscriptionMetadataUti: 	at awsw.aj(PG:25)
+11-28 13:25:40.938  4503  5139 W SubscriptionMetadataUti: 	at awsw.z(PG:2)
+11-28 13:25:40.938  4503  5139 W SubscriptionMetadataUti: 	at aule.k(PG:1)
+11-28 13:25:40.938  4503  5139 W SubscriptionMetadataUti: 	at aulc.call(Unknown Source:2)
+11-28 13:25:40.938  4503  5139 W SubscriptionMetadataUti: 	at cnsg.a(PG:1)
+11-28 13:25:40.938  4503  5139 W SubscriptionMetadataUti: 	at cnpm.a(PG:3)
+11-28 13:25:40.938  4503  5139 W SubscriptionMetadataUti: 	at ctfv.a(PG:1)
+11-28 13:25:40.938  4503  5139 W SubscriptionMetadataUti: 	at ctet.run(PG:4)
+11-28 13:25:40.938  4503  5139 W SubscriptionMetadataUti: 	at ctfx.run(PG:1)
+11-28 13:25:40.938  4503  5139 W SubscriptionMetadataUti: 	at bxfd.run(PG:1)
+11-28 13:25:40.938  4503  5139 W SubscriptionMetadataUti: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-28 13:25:40.938  4503  5139 W SubscriptionMetadataUti: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-28 13:25:40.938  4503  5139 W SubscriptionMetadataUti: 	at bxef.run(PG:2)
+11-28 13:25:40.938  4503  5139 W SubscriptionMetadataUti: 	at java.lang.Thread.run(Thread.java:1012)
+11-28 13:25:40.938  4503  5139 W SubscriptionMetadataUti: 	at bxfj.run(PG:5)
+11-28 13:25:40.939  4503  5139 W SubscriptionMetadataUti: Bugle: SubscriptionMetadataUtils get: unexpected subId = -2, replacing with -1
+11-28 13:25:40.939  4503  5139 W SubscriptionMetadataUti: cpwb: FULL
+11-28 13:25:40.939  4503  5139 W SubscriptionMetadataUti: 	at bdsy.h(PG:6)
+11-28 13:25:40.939  4503  5139 W SubscriptionMetadataUti: 	at bgit.<init>(PG:2)
+11-28 13:25:40.939  4503  5139 W SubscriptionMetadataUti: 	at bgiu.a(PG:1)
+11-28 13:25:40.939  4503  5139 W SubscriptionMetadataUti: 	at awsw.ai(PG:3)
+11-28 13:25:40.939  4503  5139 W SubscriptionMetadataUti: 	at awsw.aj(PG:25)
+11-28 13:25:40.939  4503  5139 W SubscriptionMetadataUti: 	at awsw.z(PG:2)
+11-28 13:25:40.939  4503  5139 W SubscriptionMetadataUti: 	at aule.k(PG:1)
+11-28 13:25:40.939  4503  5139 W SubscriptionMetadataUti: 	at aulc.call(Unknown Source:2)
+11-28 13:25:40.939  4503  5139 W SubscriptionMetadataUti: 	at cnsg.a(PG:1)
+11-28 13:25:40.939  4503  5139 W SubscriptionMetadataUti: 	at cnpm.a(PG:3)
+11-28 13:25:40.939  4503  5139 W SubscriptionMetadataUti: 	at ctfv.a(PG:1)
+11-28 13:25:40.939  4503  5139 W SubscriptionMetadataUti: 	at ctet.run(PG:4)
+11-28 13:25:40.939  4503  5139 W SubscriptionMetadataUti: 	at ctfx.run(PG:1)
+11-28 13:25:40.939  4503  5139 W SubscriptionMetadataUti: 	at bxfd.run(PG:1)
+11-28 13:25:40.939  4503  5139 W SubscriptionMetadataUti: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-28 13:25:40.939  4503  5139 W SubscriptionMetadataUti: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-28 13:25:40.939  4503  5139 W SubscriptionMetadataUti: 	at bxef.run(PG:2)
+11-28 13:25:40.939  4503  5139 W SubscriptionMetadataUti: 	at java.lang.Thread.run(Thread.java:1012)
+11-28 13:25:40.939  4503  5139 W SubscriptionMetadataUti: 	at bxfj.run(PG:5)
+11-28 13:25:40.940  4503  4623 I BugleTransport: isChatAvailable: RcsAvailability is CARRIER_SETUP_PENDING (Carrier RCS is not set up)
+11-28 13:25:40.941   914   914 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+11-28 13:25:40.941  4503  5139 W SubscriptionMetadataUti: Bugle: SubscriptionMetadataUtils get: unexpected subId = -2, replacing with -1
+11-28 13:25:40.941  4503  5139 W SubscriptionMetadataUti: cpwb: FULL
+11-28 13:25:40.941  4503  5139 W SubscriptionMetadataUti: 	at bdsy.h(PG:6)
+11-28 13:25:40.941  4503  5139 W SubscriptionMetadataUti: 	at awsw.ai(PG:18)
+11-28 13:25:40.941  4503  5139 W SubscriptionMetadataUti: 	at awsw.aj(PG:25)
+11-28 13:25:40.941  4503  5139 W SubscriptionMetadataUti: 	at awsw.z(PG:2)
+11-28 13:25:40.941  4503  5139 W SubscriptionMetadataUti: 	at aule.k(PG:1)
+11-28 13:25:40.941  4503  5139 W SubscriptionMetadataUti: 	at aulc.call(Unknown Source:2)
+11-28 13:25:40.941  4503  5139 W SubscriptionMetadataUti: 	at cnsg.a(PG:1)
+11-28 13:25:40.941  4503  5139 W SubscriptionMetadataUti: 	at cnpm.a(PG:3)
+11-28 13:25:40.941  4503  5139 W SubscriptionMetadataUti: 	at ctfv.a(PG:1)
+11-28 13:25:40.941  4503  5139 W SubscriptionMetadataUti: 	at ctet.run(PG:4)
+11-28 13:25:40.941  4503  5139 W SubscriptionMetadataUti: 	at ctfx.run(PG:1)
+11-28 13:25:40.941  4503  5139 W SubscriptionMetadataUti: 	at bxfd.run(PG:1)
+11-28 13:25:40.941  4503  5139 W SubscriptionMetadataUti: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-28 13:25:40.941  4503  5139 W SubscriptionMetadataUti: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-28 13:25:40.941  4503  5139 W SubscriptionMetadataUti: 	at bxef.run(PG:2)
+11-28 13:25:40.941  4503  5139 W SubscriptionMetadataUti: 	at java.lang.Thread.run(Thread.java:1012)
+11-28 13:25:40.941  4503  5139 W SubscriptionMetadataUti: 	at bxfj.run(PG:5)
+11-28 13:25:40.941  4503  5139 I Bugle   : SubscriptionUtilsAsOfLMR1: getActiveSubscriptionInfo(): empty sub info for subscription{id:-1}
+11-28 13:25:40.941  4503  5139 I Bugle   : SubscriptionUtilsAsOfLMR1: getActiveSubscriptionInfo(): empty sub info for subscription{id:-1}
+11-28 13:25:40.941  4503  5139 W Bugle   : SubscriptionUtilsAsOfLMR1: getSelfRawNumber: subInfo is null for subscription{id:-1}
+11-28 13:25:40.944  4503  5139 W BugleAction: No default number, returning empty msisdn
+11-28 13:25:40.945  2936  2936 I PhenotypeBackgroundRecv: Skipping com.google.android.gms.icing.mdd#com.google.android.dialer which doesn't use ProcessStable flags.
+11-28 13:25:40.945  4503  4623 I BugleTransport: updateActiveTransport: refreshing chat transport
+11-28 13:25:40.945  4503  4623 I BugleTransport: refreshChatTransport: isChatAvailable: false, enabledTransport: 1, configuration: <empty>
+11-28 13:25:40.946  4503  4623 I RcsClientLib: Connecting RcsEngineLifecycleService
+11-28 13:25:40.948  1677  2019 I SP      : Scheduling: job start ({m:b:u:l, bg}), 5 started, 0 paused, 1 scheduled, 6 pending: content_cache:e9a5a2de48a4f8b9a658b411bcfb375d @ * {m:b:u:l, bg}, content_cache:8722425f4121ffdea802b1066df73991 @ * {m:b:u:l, bg}, content_cache:fa1da98da1212aad6fb9a8efaff48148 @ * {m:b:u:l, bg}, kc_tflite_model:tflite-kc-en_us_secagg-20220805_235142 * {m:b:u:l, fg}, next-word-predictor:tflite-nwp-be541314788c7304827a9710c3ac4edb @ * {m:b:u:l, bg}, expressive_concepts_triggering:2022011819_en @ * {m:b:u:l, bg}
+11-28 13:25:40.949  4503  4623 W RcsClientLib: No CS.apk RCS service found. Is RCS running in Bugle?
+11-28 13:25:40.950  4503  4623 I RcsClientLib: shouldUseCarrierServicesJibeService: false, CarrierServices rcs service found: false
+11-28 13:25:40.950  2936  3130 I PhenotypeBackgroundRecv: Successfully updated snapshot for com.google.android.libraries.notifications.platform#com.google.android.dialer
+11-28 13:25:40.951  4503  5139 D MddListenableWorkerFactory: createWorker for class: com.google.android.apps.messaging.rcsprovisioning.RcsProvisioningListenableWorker
+11-28 13:25:40.954  1677  2019 I SP      : Scheduling: job start ({m:b:u:l, fg}), 1 started, 0 paused, 0 scheduled, 6 pending: content_cache:e9a5a2de48a4f8b9a658b411bcfb375d @ {m:b:u:l, bg}, content_cache:8722425f4121ffdea802b1066df73991 @ {m:b:u:l, bg}, content_cache:fa1da98da1212aad6fb9a8efaff48148 @ {m:b:u:l, bg}, kc_tflite_model:tflite-kc-en_us_secagg-20220805_235142 @ * {m:b:u:l, fg}, next-word-predictor:tflite-nwp-be541314788c7304827a9710c3ac4edb @ {m:b:u:l, bg}, expressive_concepts_triggering:2022011819_en @ {m:b:u:l, bg}
+11-28 13:25:40.954  1677  2019 I SP      : Requesting download of URL https://www.gstatic.com/android/keyboard/modelpack/contentcache/202211221443/emoji2expr.pb to e9a5a2de48a4f8b9a658b411bcfb375d.fetched (constraints: m:b:u:l)
+11-28 13:25:40.954  1677  2019 I SP      : Requesting download of URL https://www.gstatic.com/android/keyboard/modelpack/contentcache/202211221443/text2expr.pb to 8722425f4121ffdea802b1066df73991.fetched (constraints: m:b:u:l)
+11-28 13:25:40.954  1677  2019 I SP      : Requesting download of URL https://www.gstatic.com/android/keyboard/modelpack/contentcache/202211221443/contextual_ek.pb to fa1da98da1212aad6fb9a8efaff48148.fetched (constraints: m:b:u:l)
+11-28 13:25:40.954  1677  2019 I SP      : Requesting download of URL https://www.gstatic.com/android/keyboard/next_word_predictor/prod/tflite-nwp-20230309_154225.zip to tflite-nwp-be541314788c7304827a9710c3ac4edb.zip.fetched (constraints: m:b:u:l)
+11-28 13:25:40.954  1677  2019 I SP      : Requesting download of URL https://www.gstatic.com/android/keyboard/modelpack/expressive_concepts_triggering/2022011819/en.zip to 2022011819_en.zip.fetched (constraints: m:b:u:l)
+11-28 13:25:40.954  1677  2019 I SP      : Requesting download of URL https://www.gstatic.com/android/keyboard/kc_triggering_model/tflite-kc-en_us_secagg-20220805_235142.zip to tflite-kc-en_us_secagg-20220805_235142.zip.fetched (constraints: m:b:u:l)
+11-28 13:25:40.955  4503  4503 I BugleRcsWorker: [seqId=0][workId=019fa218-07e7-4988-97fe-5916a7fb219c] RCS provisioning task has started
+11-28 13:25:40.960  2936  3287 I PhenotypeBackgroundRecv: Successfully updated snapshot for com.google.android.libraries.consentverifier#com.google.android.dialer
+11-28 13:25:40.960  4503  5139 I RcsClientLib: com.google.android.rcs.client.lifecycle.RcsEngineLifecycleService connected
+11-28 13:25:40.961   547  2618 D ConnectivityService: requestNetwork for uid/pid:10131/4503 activeRequest: null callbackRequest: 135 [NetworkRequest [ REQUEST id=136, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10131 RequestorUid: 10131 RequestorPkg: com.google.android.apps.messaging UnderlyingNetworks: Null] ]] callback flags: 0 order: 2147483647
+11-28 13:25:40.961  4503  4611 I BugleRcsWorker: [seqId=0][workId=019fa218-07e7-4988-97fe-5916a7fb219c] Starting StateMachine, trigger is CSLIB_PHENOTYPE_UPDATE
+11-28 13:25:40.961  4503  4611 I BugleRcsEngine: [46] brfq.d: (PEv2-SM-Bugle-250428389): start PEv2, trigger is CSLIB_PHENOTYPE_UPDATE, workerId is 019fa218-07e7-4988-97fe-5916a7fb219c [null]
+11-28 13:25:40.961  4503  4611 I BugleRcsEngine: [46] broo.g: Created new RcsProvisioningProtoDataStorage for sim redacted-pii:sim_id[chars:20,last3:897]
+11-28 13:25:40.962  4503  4611 I BugleRcsEngine: [46] brnl.h: No RCS Configuration was found in Bugle for simID: redacted-pii:sim_id[chars:20,last3:897]
+11-28 13:25:40.962  4503  4611 I BugleRcsEngine: [46] brfq.d: (PEv2-SM-Bugle-250428389): start [null]
+11-28 13:25:40.964   547   841 D ConnectivityService: NetReassign [136 : null → 100] [c 1] [a 2] [i 1]
+11-28 13:25:40.965  5141  5194 I BugleRcsEngine: [64] RcsEngineImpl.triggerStopRcsStack: RcsEngineImpl[DUAL_REG]:[a62ba709-b4ca]: triggerStopRcsStack for msisdn:redacted-pii:phone_number[chars:0,last2:]
+11-28 13:25:40.965   357  5585 I resolv  : GetAddrInfoHandler::run: {100 100 100 983140 10140 0}
+11-28 13:25:40.965  1583  1583 D BoundBrokerSvc: onUnbind: Intent { act=com.google.android.gms.asterism.service.START pkg=com.google.android.gms }
+11-28 13:25:40.965   547   834 D WifiNetworkFactory: got request NetworkRequest [ REQUEST id=136, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10131 RequestorUid: 10131 RequestorPkg: com.google.android.apps.messaging UnderlyingNetworks: Null] ]
+11-28 13:25:40.965   547   834 D UntrustedWifiNetworkFactory: got request NetworkRequest [ REQUEST id=136, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10131 RequestorUid: 10131 RequestorPkg: com.google.android.apps.messaging UnderlyingNetworks: Null] ]
+11-28 13:25:40.965   547   834 D OemPaidWifiNetworkFactory: got request NetworkRequest [ REQUEST id=136, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10131 RequestorUid: 10131 RequestorPkg: com.google.android.apps.messaging UnderlyingNetworks: Null] ]
+11-28 13:25:40.965   547   834 D MultiInternetWifiNetworkFactory: got request NetworkRequest [ REQUEST id=136, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10131 RequestorUid: 10131 RequestorPkg: com.google.android.apps.messaging UnderlyingNetworks: Null] ]
+11-28 13:25:40.966  4503  5583 I BugleRcsEngine: [108] brfq.d: (PEv2-SM-Bugle-250428389): Enter EnabledState [null]
+11-28 13:25:40.968  1529  5421 I NamespaceManager: Package com.android.refreshratecontrol name not found! Using module version.
+11-28 13:25:40.968  1529  5421 I NamespaceManager: Package com.google.oslo name not found! Using module version.
+11-28 13:25:40.969  1529  5421 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:40.969  1529  5421 I NamespaceManager: Package com.android.media.swcodec name not found! Using module version.
+11-28 13:25:40.969  1529  5421 I NamespaceManager: Package com.android.appsearch name not found! Using module version.
+11-28 13:25:40.969  1529  5421 I NamespaceManager: Package com.android.neuralnetworks name not found! Using module version.
+11-28 13:25:40.969  1529  5421 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:40.969  1529  5421 I NamespaceManager: Package 1 name not found! Using module version.
+11-28 13:25:40.970   357  5587 I resolv  : res_nmkquery: (QUERY, IN, AAAA)
+11-28 13:25:40.970   357  5587 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x752116261390
+11-28 13:25:40.970   357  5587 I resolv  : doQuery: rcode=0, ancount=8, return value=257
+11-28 13:25:40.971   357  5588 I resolv  : res_nmkquery: (QUERY, IN, A)
+11-28 13:25:40.972  4503  5583 W BugleRcsEngine: [108] bpxc.w: Unable to send diagnostic log
+11-28 13:25:40.975  4503  5583 I BugleRcsEngine: [108] brds.c: Sending ProvisioningEvent to Bugle [Send Provisioning Session ID (18)], redacted-pii:[chars:97]
+11-28 13:25:40.978  4503  5583 I BugleRcsEngine: [108] bsgz.b: EngineBroadcaster: Broadcasting provisioning intent com.google.android.ims.provisioning.engine.provisioningEventAction to Bugle with extras redacted-pii:[chars:255] from source PROVISIONING_EVENT
+11-28 13:25:40.980   357  5588 I resolv  : res_nsend: used send_dg 161 terrno: 0
+11-28 13:25:40.980   357  5588 I resolv  : doQuery: rcode=0, ancount=8, return value=161
+11-28 13:25:40.981  1677  5584 D TrafficStats: tagSocket(165) with statsTag=0xffffffff, statsUid=-1
+11-28 13:25:40.984  1677  1763 I SuperDelight: SuperDelightUnpacker$UnpackCancellableTask.execute():102 UnpackCancellableTask#execute(): fst-decompress /data/user/0/com.google.android.inputmethod.latin/files/superpacks/delight/main_en_840_2022102600_1.staged
+11-28 13:25:40.986  1677  5584 W putmethod.latin: Accessing hidden method Lcom/android/org/conscrypt/ConscryptEngineSocket;->setUseSessionTickets(Z)V (max-target-q,core-platform-api, reflection, denied)
+11-28 13:25:40.986  1677  5584 W putmethod.latin: Accessing hidden method Lcom/android/org/conscrypt/OpenSSLSocketImpl;->setUseSessionTickets(Z)V (max-target-q,core-platform-api, reflection, denied)
+11-28 13:25:40.986  1677  5584 W putmethod.latin: Accessing hidden method Lcom/android/org/conscrypt/AbstractConscryptSocket;->setUseSessionTickets(Z)V (max-target-q, reflection, denied)
+11-28 13:25:40.986  1677  5584 W putmethod.latin: Accessing hidden method Lcom/android/org/conscrypt/ConscryptEngineSocket;->setHostname(Ljava/lang/String;)V (max-target-q,core-platform-api, reflection, denied)
+11-28 13:25:40.986  1677  5584 W putmethod.latin: Accessing hidden method Lcom/android/org/conscrypt/OpenSSLSocketImpl;->setHostname(Ljava/lang/String;)V (max-target-q,core-platform-api, reflection, denied)
+11-28 13:25:40.986  1677  5584 W putmethod.latin: Accessing hidden method Lcom/android/org/conscrypt/AbstractConscryptSocket;->setHostname(Ljava/lang/String;)V (max-target-q, reflection, denied)
+11-28 13:25:40.986  1677  5584 W putmethod.latin: Accessing hidden method Lcom/android/org/conscrypt/OpenSSLSocketImpl;->setAlpnProtocols([B)V (max-target-q,core-platform-api, reflection, denied)
+11-28 13:25:40.986  1677  5584 W putmethod.latin: Accessing hidden method Lcom/android/org/conscrypt/AbstractConscryptSocket;->setAlpnProtocols([B)V (max-target-q, reflection, denied)
+11-28 13:25:40.989  4503  5583 I BugleRcsEngine: [108] brfq.d: (PEv2-SM-Bugle-250428389): Start a new provisioning session [dd374454-3abb-48cc-b35d-5002265c6897]
+11-28 13:25:40.990  4503  5583 I BugleRcsEngine: [108] brnl.e: No RCS Configuration was found in Bugle for simID: redacted-pii:sim_id[chars:20,last3:897]
+11-28 13:25:40.990  4503  5583 I BugleRcsEngine: [108] brjv.b: RcsAvailabilityManager: Calculating Rcs Availability
+11-28 13:25:40.992  4503  5583 I BugleRcsEngine: [108] brnl.C: Bugle is default SMS app: true
+11-28 13:25:40.992  4503  5583 I BugleRcsEngine: [108] brjv.b: Bugle has minimum required RCS permissions: true
+11-28 13:25:40.993  4503  5583 I BugleRcsEngine: [108] brnl.B: Rcs is enabled from user settings: true
+11-28 13:25:40.993  4503  5583 I BugleRcsEngine: [108] brox.b: Using config server URL from bqas
+11-28 13:25:40.993  4503  5583 I BugleRcsEngine: [108] brnl.e: No RCS Configuration was found in Bugle for simID: redacted-pii:sim_id[chars:20,last3:897]
+11-28 13:25:40.993  2936  3130 W TimedProcessReaper: Scheduling killing of process to refresh configuration
+11-28 13:25:40.993  4503  5583 I BugleRcsEngine: [108] brnl.e: No RCS Configuration was found in Bugle for simID: redacted-pii:sim_id[chars:20,last3:897]
+11-28 13:25:40.995  1776  2154 I AiAiEcho: Predicting[0]:
+11-28 13:25:40.995  1776  2154 I AiAiEcho: EchoTargets:
+11-28 13:25:40.995  1776  2154 I AiAiEcho: Filtered by AiAi flag check:
+11-28 13:25:40.996  1776  2154 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata:
+11-28 13:25:40.997  4503  5583 I BugleRcsEngine: [108] brjv.b: Config state is not ACCEPTED, provisioning still in progress
+11-28 13:25:40.997  4503  5583 I BugleRcsEngine: [108] brjv.b: RcsAvailabilityManager: Updating Rcs Availability to CARRIER_SETUP_PENDING (Carrier RCS is not set up), sim id changed: true
+11-28 13:25:40.997  4503  5583 I BugleRcsEngine: [108] brox.b: Using config server URL from bqas
+11-28 13:25:40.998  4503  5583 W BugleRcsEngine: [108] bpxc.w: Unable to send diagnostic log
+11-28 13:25:40.998  4503  5583 I BugleRcsEngine: [108] brds.c: Sending ProvisioningEvent to Bugle [Availability updated (12)], redacted-pii:[chars:145]
+11-28 13:25:40.998  4503  5583 I BugleRcsEngine: [108] bsgz.b: EngineBroadcaster: Broadcasting provisioning intent com.google.android.ims.provisioning.engine.provisioningEventAction to Bugle with extras redacted-pii:[chars:303] from source PROVISIONING_EVENT
+11-28 13:25:40.999  1776  2154 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+11-28 13:25:40.999   914   914 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+11-28 13:25:41.001  4503  5583 I BugleRcsEngine: [108] brjv.b: Sending ProvisioningEvent Internal [Availability updated (12)], redacted-pii:[chars:145]
+11-28 13:25:41.002  4503  5583 I BugleRcsEngine: [108] brnl.e: No RCS Configuration was found in Bugle for simID: redacted-pii:sim_id[chars:20,last3:897]
+11-28 13:25:41.005  2223  2252 I d.process.media: Background concurrent copying GC freed 31644(1400KB) AllocSpace objects, 20(400KB) LOS objects, 49% free, 2946KB/5892KB, paused 22us,10us total 109.986ms
+11-28 13:25:41.005  4503  5583 I BugleRcsEngine: [108] brfq.d: (PEv2-SM-Bugle-250428389): transitionViaMessage, srcState=EnabledState, destState = CheckPreconditionsState [dd374454-3abb-48cc-b35d-5002265c6897]
+11-28 13:25:41.005  4503  5583 I BugleRcsEngine: [108] brds.c: Sending ProvisioningEvent to Bugle [Update provisioning status (11)], redacted-pii:[chars:85]
+11-28 13:25:41.005  4503  5583 I BugleRcsEngine: [108] bsgz.b: EngineBroadcaster: Broadcasting provisioning intent com.google.android.ims.provisioning.engine.provisioningEventAction to Bugle with extras redacted-pii:[chars:243] from source PROVISIONING_EVENT
+11-28 13:25:41.018  1529  5421 I NamespaceManager: Package com.android.refreshratecontrol name not found! Using module version.
+11-28 13:25:41.019  1529  5421 I NamespaceManager: Package com.google.oslo name not found! Using module version.
+11-28 13:25:41.019  1529  5421 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:41.019  1529  5421 I NamespaceManager: Package com.android.media.swcodec name not found! Using module version.
+11-28 13:25:41.019  1529  5421 I NamespaceManager: Package com.android.appsearch name not found! Using module version.
+11-28 13:25:41.019  1529  5421 I NamespaceManager: Package com.android.neuralnetworks name not found! Using module version.
+11-28 13:25:41.019  1529  5421 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:41.019  1529  5421 I NamespaceManager: Package 1 name not found! Using module version.
+11-28 13:25:41.021  2936  3287 W TimedProcessReaper: Scheduling killing of process to refresh configuration
+11-28 13:25:41.025  4503  5583 I BugleRcsEngine: [108] brfq.d: (PEv2-SM-Bugle-250428389): EnabledState: Transition to check preconditions [dd374454-3abb-48cc-b35d-5002265c6897]
+11-28 13:25:41.026  4503  5583 I BugleRcsEngine: [108] brfq.d: (PEv2-SM-Bugle-250428389): transitionTo: destState=CheckPreconditionsState [dd374454-3abb-48cc-b35d-5002265c6897]
+11-28 13:25:41.026  4503  5583 I BugleRcsEngine: [108] brfq.d: (PEv2-SM-Bugle-250428389): onTransitionRequested EnabledState [dd374454-3abb-48cc-b35d-5002265c6897]
+11-28 13:25:41.026  1677  2019 I SP      : Successfully got manifest for transformer_expression-manifest: manifests:transformer_expression-2023012522
+11-28 13:25:41.026  4503  5583 I BugleRcsEngine: [108] brfq.d: (PEv2-SM-Bugle-250428389): Enter CheckPreconditionsState [dd374454-3abb-48cc-b35d-5002265c6897]
+11-28 13:25:41.032  4503  5583 W BugleRcsEngine: [108] bpxc.w: Unable to send diagnostic log
+11-28 13:25:41.033  4503  5583 I BugleRcsEngine: [108] brfq.d: (PEv2-SM-Bugle-250428389): Battery optimization is not required. [dd374454-3abb-48cc-b35d-5002265c6897]
+11-28 13:25:41.033  4503  5583 I BugleRcsEngine: [108] brnl.e: No RCS Configuration was found in Bugle for simID: redacted-pii:sim_id[chars:20,last3:897]
+11-28 13:25:41.033  4503  5583 I BugleRcsEngine: [108] brfq.d: (PEv2-SM-Bugle-250428389): transitionViaMessage, srcState=CheckPreconditionsState, destState = ReadyState [dd374454-3abb-48cc-b35d-5002265c6897]
+11-28 13:25:41.033  4503  5583 I BugleRcsEngine: [108] brfq.d: (PEv2-SM-Bugle-250428389): CheckPreconditionsState: Transition to ready [dd374454-3abb-48cc-b35d-5002265c6897]
+11-28 13:25:41.033  4503  5583 I BugleRcsEngine: [108] brfq.d: (PEv2-SM-Bugle-250428389): transitionTo: destState=ReadyState [dd374454-3abb-48cc-b35d-5002265c6897]
+11-28 13:25:41.033  4503  5583 I BugleRcsEngine: [108] brfq.d: (PEv2-SM-Bugle-250428389): onTransitionRequested CheckPreconditionsState [dd374454-3abb-48cc-b35d-5002265c6897]
+11-28 13:25:41.034  4503  5583 I BugleRcsEngine: [108] brfq.d: (PEv2-SM-Bugle-250428389): Exit CheckPreconditionsState [dd374454-3abb-48cc-b35d-5002265c6897]
+11-28 13:25:41.034  4503  5583 I BugleRcsEngine: [108] brfq.d: (PEv2-SM-Bugle-250428389): Exit EnabledState [dd374454-3abb-48cc-b35d-5002265c6897]
+11-28 13:25:41.034  4503  5583 W BugleRcsEngine: [108] bpxc.w: Unable to send diagnostic log
+11-28 13:25:41.034  4503  5583 I BugleRcsEngine: [108] brfq.d: (PEv2-SM-Bugle-250428389): Enter InProgressState [dd374454-3abb-48cc-b35d-5002265c6897]
+11-28 13:25:41.038  4503  5583 W BugleRcsEngine: [108] bpxc.w: Unable to send diagnostic log
+11-28 13:25:41.038  4503  5583 I BugleRcsEngine: [108] brfq.d: (PEv2-SM-Bugle-250428389): Enter ReadyState [dd374454-3abb-48cc-b35d-5002265c6897]
+11-28 13:25:41.040  1677  2019 I SP      : Syncing transformer_expression (2023012522) with slices: [2023012316_en], metadata: false
+11-28 13:25:41.049  4503  5583 W BugleRcsEngine: [108] bpxc.w: Unable to send diagnostic log
+11-28 13:25:41.050  1529  5564 I NamespaceManager: Package com.android.refreshratecontrol name not found! Using module version.
+11-28 13:25:41.050  1529  5564 I NamespaceManager: Package com.google.oslo name not found! Using module version.
+11-28 13:25:41.050  4503  5583 I BugleRcsEngine: [108] brnl.e: No RCS Configuration was found in Bugle for simID: redacted-pii:sim_id[chars:20,last3:897]
+11-28 13:25:41.050  1529  5564 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:41.050  1529  5564 I NamespaceManager: Package com.android.media.swcodec name not found! Using module version.
+11-28 13:25:41.050  1529  5564 I NamespaceManager: Package com.android.appsearch name not found! Using module version.
+11-28 13:25:41.050  1529  5564 I NamespaceManager: Package com.android.neuralnetworks name not found! Using module version.
+11-28 13:25:41.051  1529  5564 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:41.051  1529  5564 I NamespaceManager: Package 1 name not found! Using module version.
+11-28 13:25:41.053  4503  4614 I RcsClientLib: Disconnecting RcsEngineLifecycleService
+11-28 13:25:41.053  4503  4600 W BugleRcsEngine: [42] bpxc.w: Unable to send diagnostic log
+11-28 13:25:41.054  5141  5266 I BugleRcsEngine: [85] brqh.handleMessage: RcsEngineImpl[DUAL_REG]:[a62ba709-b4ca]>Handler: handleMessage processing message:[STOP_RCS_STACK] with [non-null]:RcsEngineImpl reference
+11-28 13:25:41.054  5141  5266 I BugleRcsEngine: [85] brqh.handleMessage: RcsEngineImpl[DUAL_REG]:[a62ba709-b4ca]>Handler: RCS engine STOP RCS stack
+11-28 13:25:41.054  5141  5266 W BugleRcsEngine: [85] RcsEngineImpl.e: RcsEngineImpl[DUAL_REG]:[a62ba709-b4ca]: imsModule is null, shutdown not required
+11-28 13:25:41.055  5141  5266 I BugleRcsEngine: [85] RcsEngineImpl.stopRcsStackInternal: RcsEngineImpl[DUAL_REG]:[a62ba709-b4ca]: skipping imsModule.stop
+11-28 13:25:41.055  5141  5266 I BugleRcsEngine: [85] brqh.handleMessage: RcsEngineImpl[DUAL_REG]:[a62ba709-b4ca]>Handler: handleMessage processing message:[NOTIFY_UPTIME_IGNORE_STATE_CHANGED] with [non-null]:RcsEngineImpl reference
+11-28 13:25:41.056  4503  5583 I BugleRcsEngine: [108] brfq.d: (PEv2-SM-Bugle-250428389): transitionViaMessage, srcState=ReadyState, destState = RequestWithImsiState [dd374454-3abb-48cc-b35d-5002265c6897]
+11-28 13:25:41.056  4503  5583 I BugleRcsEngine: [108] brfq.d: (PEv2-SM-Bugle-250428389): ReadyState: Transition to request with imsi [dd374454-3abb-48cc-b35d-5002265c6897]
+11-28 13:25:41.056  4503  5583 I BugleRcsEngine: [108] brfq.d: (PEv2-SM-Bugle-250428389): transitionTo: destState=RequestWithImsiState [dd374454-3abb-48cc-b35d-5002265c6897]
+11-28 13:25:41.056  4503  5583 I BugleRcsEngine: [108] brfq.d: (PEv2-SM-Bugle-250428389): onTransitionRequested ReadyState [dd374454-3abb-48cc-b35d-5002265c6897]
+11-28 13:25:41.057  4503  5583 I BugleRcsEngine: [108] brfq.d: (PEv2-SM-Bugle-250428389): Exit ReadyState [dd374454-3abb-48cc-b35d-5002265c6897]
+11-28 13:25:41.057  4503  5583 W BugleRcsEngine: [108] bpxc.w: Unable to send diagnostic log
+11-28 13:25:41.057  4503  5583 I BugleRcsEngine: [108] brfq.d: (PEv2-SM-Bugle-250428389): Enter RequestWithImsiState [dd374454-3abb-48cc-b35d-5002265c6897]
+11-28 13:25:41.061  5141  5266 I BugleRcsEngine: [85] brnl.h: No RCS Configuration was found in Bugle for simID: redacted-pii:sim_id[chars:20,last3:897]
+11-28 13:25:41.062  1529  3978 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.checkin.CheckinService finished executing. cause:1 result: 3 elapsed_millis: 211 uptime_millis: 211 exec_start_elapsed_seconds: 111 [CONTEXT service_id=218 ]
+11-28 13:25:41.065  4503  5583 W BugleRcsEngine: [108] bpxc.w: Unable to send diagnostic log
+11-28 13:25:41.065  4503  5583 I BugleRcsEngine: [108] brnl.A: ProvisioningConsent from user settings: false
+11-28 13:25:41.066  4503  5583 W BugleConnectivity: getNetworkState: NetworkStateMonitor not found for subId 1.
+11-28 13:25:41.066  4503  5583 I BugleConnectivity: HasReadPrivilegedPhoneState: true
+11-28 13:25:41.070  4503  5583 I BugleRcsEngine: [108] brox.b: Using config server URL from bqas
+11-28 13:25:41.071  4503  5583 I BugleRcsEngine: [108] brnl.e: No RCS Configuration was found in Bugle for simID: redacted-pii:sim_id[chars:20,last3:897]
+11-28 13:25:41.071  4503  5583 I BugleRcsEngine: [108] brnl.A: ProvisioningConsent from user settings: false
+11-28 13:25:41.074  4503  5583 I BugleRcsEngine: [108] brnl.A: ProvisioningConsent from user settings: false
+11-28 13:25:41.076   357   397 I netd    : tetherGetStats() -> {[]} <0.43ms>
+11-28 13:25:41.084  4503  4600 W BugleRcsEngine: [42] bpxc.w: Unable to send diagnostic log
+11-28 13:25:41.085  4503  5583 I BugleRcsEngine: [108] brnl.e: No RCS Configuration was found in Bugle for simID: redacted-pii:sim_id[chars:20,last3:897]
+11-28 13:25:41.085  4503  5583 W BugleRcsEngine: [108] brfq.e: (PEv2-SM-Bugle-250428389): Could not retrieve MSISDN from configuration. Configuration is empty. [dd374454-3abb-48cc-b35d-5002265c6897]
+11-28 13:25:41.085  4503  5583 W BugleRcsEngine: [108] brfq.e: (PEv2-SM-Bugle-250428389): Skipping adding Tachyon identity key to request. Null/empty RCS msisdn from configuration for sim ID: 89860318640220133897. [dd374454-3abb-48cc-b35d-5002265c6897]
+11-28 13:25:41.085  4503  5583 I BugleRcsEngine: [108] brnl.A: ProvisioningConsent from user settings: false
+11-28 13:25:41.086   357   397 I netd    : bandwidthSetGlobalAlert(2097152) <0.23ms>
+11-28 13:25:41.088   357   397 I netd    : bandwidthRemoveInterfaceQuota(eth0) <0.53ms>
+11-28 13:25:41.090   357   397 I netd    : bandwidthSetInterfaceQuota(eth0, 9223372036854775807) <0.84ms>
+11-28 13:25:41.099  2958  5555 W DG      : [flow rcs_provisioning] DroidGuardRunner.newVmProcessForFastSignalCollection(): Fast program not found [CONTEXT service_id=25 ]
+11-28 13:25:41.100  1529  3978 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.clearcut.uploader.QosUploaderService started execution. cause:5 exec_start_elapsed_seconds: 111 [CONTEXT service_id=218 ]
+11-28 13:25:41.102  4503  4600 W BugleRcsEngine: [42] bpxc.w: Unable to send diagnostic log
+11-28 13:25:41.106  4023  5028 I ConfigUpdater: Update downloaded, starting installation
+11-28 13:25:41.118  1677  5584 W putmethod.latin: Accessing hidden method Lcom/android/org/conscrypt/OpenSSLSocketImpl;->getAlpnSelectedProtocol()[B (max-target-q,core-platform-api, reflection, denied)
+11-28 13:25:41.120  1583  5083 I Icing   : Indexing com.google.android.gms-apps from com.google.android.gms
+11-28 13:25:41.124  1677  5584 W putmethod.latin: Accessing hidden method Lcom/android/org/conscrypt/AbstractConscryptSocket;->getAlpnSelectedProtocol()[B (max-target-q, reflection, denied)
+11-28 13:25:41.127  1583  5083 I Icing   : Indexing done com.google.android.gms-apps
+11-28 13:25:41.129  2223  5589 D DownloadManager: [12] Starting
+11-28 13:25:41.131  4023  5028 I ConfigUpdater: doneInstall
+11-28 13:25:41.132  1583  5083 I Icing   : Indexing com.google.android.gms-internal.3p:MobileApplication from com.google.android.gms
+11-28 13:25:41.168  4127  5307 I PhenotypeBackgroundRecv: Successfully updated snapshot for com.google.android.projection.gearhead
+11-28 13:25:41.172  1677  2019 I SP      : Scheduling: download registered, 1 started, 0 paused, 0 scheduled, 7 pending: content_cache:e9a5a2de48a4f8b9a658b411bcfb375d @ {m:b:u:l, bg}, content_cache:8722425f4121ffdea802b1066df73991 @ {m:b:u:l, bg}, content_cache:fa1da98da1212aad6fb9a8efaff48148 @ {m:b:u:l, bg}, kc_tflite_model:tflite-kc-en_us_secagg-20220805_235142 @ {m:b:u:l, fg}, next-word-predictor:tflite-nwp-be541314788c7304827a9710c3ac4edb @ {m:b:u:l, bg}, expressive_concepts_triggering:2022011819_en @ {m:b:u:l, bg}, transformer_expression:2023012316_en @ * {m:b:u:l, bg}
+11-28 13:25:41.172  1677  2019 I SP      : Requesting download of URL https://www.gstatic.com/android/keyboard/modelpack/transformer_expression/2023012316/en.zip to 2023012316_en.zip.fetched (constraints: m:b:u:l)
+11-28 13:25:41.173  1677  2019 I SP      : Download stopped: content_cache:e9a5a2de48a4f8b9a658b411bcfb375d, succeeded, size: 11231
+11-28 13:25:41.177  1529  5564 I NamespaceManager: Package com.android.refreshratecontrol name not found! Using module version.
+11-28 13:25:41.178  1529  5564 I NamespaceManager: Package com.google.oslo name not found! Using module version.
+11-28 13:25:41.178  1529  5564 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:41.185  1529  5564 I NamespaceManager: Package com.android.media.swcodec name not found! Using module version.
+11-28 13:25:41.186  1529  5564 I NamespaceManager: Package com.android.appsearch name not found! Using module version.
+11-28 13:25:41.187  1529  5564 I NamespaceManager: Package com.android.neuralnetworks name not found! Using module version.
+11-28 13:25:41.196  1583  5083 I Icing   : Indexing done com.google.android.gms-internal.3p:MobileApplication
+11-28 13:25:41.197  1529  3309 W BpBinder: Large outgoing transaction of 323832 bytes, interface descriptor , code 4
+11-28 13:25:41.205  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_birthdaydoodle_jar__name to integer.
+11-28 13:25:41.208  1677  2019 I SP      : Scheduling: download stopped, 0 started, 0 paused, 0 scheduled, 6 pending: content_cache:8722425f4121ffdea802b1066df73991 @ {m:b:u:l, bg}, content_cache:fa1da98da1212aad6fb9a8efaff48148 @ {m:b:u:l, bg}, kc_tflite_model:tflite-kc-en_us_secagg-20220805_235142 @ {m:b:u:l, fg}, next-word-predictor:tflite-nwp-be541314788c7304827a9710c3ac4edb @ {m:b:u:l, bg}, expressive_concepts_triggering:2022011819_en @ {m:b:u:l, bg}, transformer_expression:2023012316_en @ {m:b:u:l, bg}
+11-28 13:25:41.217   547  2621 D ConnectivityService: requestNetwork for uid/pid:10132/1863 activeRequest: null callbackRequest: 137 [NetworkRequest [ REQUEST id=137, [ Transports: CELLULAR Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VPN&NOT_VCN_MANAGED Uid: 10132 RequestorUid: 10132 RequestorPkg: com.google.android.googlequicksearchbox UnderlyingNetworks: Null] ]] callback flags: 0 order: 2147483647
+11-28 13:25:41.221  1677  2019 I SP      : Download stopped: content_cache:8722425f4121ffdea802b1066df73991, succeeded, size: 5017
+11-28 13:25:41.222  1529  5564 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:41.222  1529  5564 I NamespaceManager: Package 1 name not found! Using module version.
+11-28 13:25:41.224   357   397 I netd    : networkSetPermissionForNetwork(101, 0) <1.00ms>
+11-28 13:25:41.229  1677  2019 I SP      : Scheduling: download stopped, 0 started, 0 paused, 0 scheduled, 5 pending: content_cache:fa1da98da1212aad6fb9a8efaff48148 @ {m:b:u:l, bg}, kc_tflite_model:tflite-kc-en_us_secagg-20220805_235142 @ {m:b:u:l, fg}, next-word-predictor:tflite-nwp-be541314788c7304827a9710c3ac4edb @ {m:b:u:l, bg}, expressive_concepts_triggering:2022011819_en @ {m:b:u:l, bg}, transformer_expression:2023012316_en @ {m:b:u:l, bg}
+11-28 13:25:41.230  1677  2019 I SP      : Download stopped: content_cache:fa1da98da1212aad6fb9a8efaff48148, succeeded, size: 1065
+11-28 13:25:41.231  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_call_jar__name to integer.
+11-28 13:25:41.231  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_canvas_jar__name to integer.
+11-28 13:25:41.234  1677  1677 I PhenotypeModule: PhenotypeModule.receiveBroadcast():373 onReceive() urgent = false
+11-28 13:25:41.234  1677  1677 I PhenotypeModule: PhenotypeModule.maybeFetchAndUpdate():166 maybeFetchAndUpdate: start new task to fetch
+11-28 13:25:41.235  1677  2896 I PhenotypeBackgroundRecv: Successfully updated snapshot for com.google.android.libraries.consentverifier#com.google.android.inputmethod.latin
+11-28 13:25:41.235  1677  1677 I PhenotypeModule: PhenotypeModule.receiveBroadcast():373 onReceive() urgent = false
+11-28 13:25:41.238  1677  2019 I SP      : Scheduling: download stopped, 0 started, 0 paused, 0 scheduled, 4 pending: kc_tflite_model:tflite-kc-en_us_secagg-20220805_235142 @ {m:b:u:l, fg}, next-word-predictor:tflite-nwp-be541314788c7304827a9710c3ac4edb @ {m:b:u:l, bg}, expressive_concepts_triggering:2022011819_en @ {m:b:u:l, bg}, transformer_expression:2023012316_en @ {m:b:u:l, bg}
+11-28 13:25:41.247  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_chkpkg_jar__name to integer.
+11-28 13:25:41.250  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_crashtest_jar__name to integer.
+11-28 13:25:41.251  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_dining_jar__name to integer.
+11-28 13:25:41.254   547   841 D ConnectivityService: NetReassign [137 : null → 101] [c 4] [a 26] [i 5]
+11-28 13:25:41.254   547   841 D ConnectivityService: reportNetworkConnectivity(100, false) by 10132
+11-28 13:25:41.254  1087  2895 D NetworkMonitor/100: Forcing reevaluation for UID 10132. Dns signal count: 0
+11-28 13:25:41.255  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_doodle_notifications_jar__name to integer.
+11-28 13:25:41.255  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_imageviewer_jar__name to integer.
+11-28 13:25:41.255  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_ipa_jar__name to integer.
+11-28 13:25:41.263  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_jslocation_jar__name to integer.
+11-28 13:25:41.264  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_localintent_jar__name to integer.
+11-28 13:25:41.266  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_messaging_jar__name to integer.
+11-28 13:25:41.268  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_nativesrp_activity_jar__name to integer.
+11-28 13:25:41.279  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_nativesrp_presenter_jar__name to integer.
+11-28 13:25:41.280  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_nowcontent_jar__name to integer.
+11-28 13:25:41.280  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_recents_activity_jar__name to integer.
+11-28 13:25:41.280  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_save_jar__name to integer.
+11-28 13:25:41.280  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_searchresults_activity_jar__name to integer.
+11-28 13:25:41.280  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_test_jar__name to integer.
+11-28 13:25:41.280  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_weather_jar__name to integer.
+11-28 13:25:41.280  1863  2387 W A       : Can't format flag bindle_flags__bloblobber_blob to integer.
+11-28 13:25:41.281  1863  2387 W A       : Can't format flag bindle_flags__velour_jar to integer.
+11-28 13:25:41.297  1529  5344 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.clearcut.uploader.QosUploaderService started execution. cause:5 exec_start_elapsed_seconds: 111 [CONTEXT service_id=218 ]
+11-28 13:25:41.305  4127  5307 I PhenotypeBackgroundRecv: Successfully updated snapshot for com.google.android.libraries.consentverifier#com.google.android.projection.gearhead
+11-28 13:25:41.306  1583  5083 I Icing   : Indexing com.google.android.gms-apps from com.google.android.gms
+11-28 13:25:41.311  1087  5595 D TrafficStats: tagSocket(6) with statsTag=0xffffff81, statsUid=-1
+11-28 13:25:41.314  1087  5595 D TrafficStats: tagSocket(6) with statsTag=0xffffff81, statsUid=-1
+11-28 13:25:41.314  2223  2278 V DownloadManager: Deleting /data/data/com.android.providers.downloads/cache/08202014-metadata.txt via provider delete
+11-28 13:25:41.320  1583  5083 I Icing   : Indexing done com.google.android.gms-apps
+11-28 13:25:41.320  1583  5083 I Icing   : Indexing com.google.android.gms-internal.3p:MobileApplication from com.google.android.gms
+11-28 13:25:41.322  1583  5083 I Icing   : Indexing done com.google.android.gms-internal.3p:MobileApplication
+11-28 13:25:41.324  1087  5594 D TrafficStats: tagSocket(108) with statsTag=0xffffff81, statsUid=-1
+11-28 13:25:41.332  1087  5594 D TrafficStats: tagSocket(68) with statsTag=0xffffff81, statsUid=-1
+11-28 13:25:41.334  1863  2383 I A       : Refusing EXCLUSIVE task 24, it is already pending. Try again in 311 seconds.
+11-28 13:25:41.336   914  1042 V WallpaperService: Setting wallpaper dimming: 0
+11-28 13:25:41.348   357  5596 I resolv  : ResNSendHandler::run: 0 / {100 983140 100 983140 1073 1}
+11-28 13:25:41.348   357  5596 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x752106268850
+11-28 13:25:41.349  1863  2382 I FedAssExpListener: Fed-ass not supported for signed out users.
+11-28 13:25:41.351  1863  2382 I FedAssExpListener: Successfully processed experiments changed.
+11-28 13:25:41.352  1863  2386 I A       : NGA disabled since it's running Panthera and at least one a11y feature is on.
+11-28 13:25:41.353   914   976 D EGL_emulation: app_time_stats: avg=337.02ms min=16.77ms max=1251.93ms count=4
+11-28 13:25:41.362  1863  2383 I OpaEligibilityChecker: send OpaEligibilityChange broadcast to CommonBroadcastReceiver
+11-28 13:25:41.364   357  5597 I resolv  : ResNSendHandler::run: 0 / {100 983140 100 983140 1073 1}
+11-28 13:25:41.364   357  5597 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x752116263690
+11-28 13:25:41.365   357  5598 I resolv  : ResNSendHandler::run: 0 / {100 983140 100 983140 1073 1}
+11-28 13:25:41.365   357  5598 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x7521062660f0
+11-28 13:25:41.365  1087  1087 D TrafficStats: tagSocket(6) with statsTag=0xffffffff, statsUid=-1
+11-28 13:25:41.366   914   914 D Tonal   : Tonal Palette - index: 4. Main color: ff343e65
+11-28 13:25:41.366   914   914 D Tonal   : Colors: ff0b0c16, ff141627, ff1d2138, ff272d4c, ff343e65, ff41477e, ff4e5597, ff8184a4, ff898cc3, ff9e9ecd, ffb7b6d9, ffd9d7eb, ffefeef7
+11-28 13:25:41.366   914   914 D Tonal   : Gradients:
+11-28 13:25:41.366   914   914 D Tonal   : 	Normal GradientColors(ff343e65, ff343e65)
+11-28 13:25:41.366   914   914 D Tonal   : 	Dark GradientColors(ff272d4c, ff272d4c)
+11-28 13:25:41.366   914   914 D Tonal   : 	Extra dark: GradientColors(ff1d2138, ff1d2138)
+11-28 13:25:41.381   357  5599 I resolv  : ResNSendHandler::run: 0 / {100 983140 100 983140 1073 1}
+11-28 13:25:41.381   357  5599 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x7520e6265d10
+11-28 13:25:41.384  1087  1087 D TrafficStats: tagSocket(6) with statsTag=0xffffffff, statsUid=-1
+11-28 13:25:41.385  1087  1087 D TrafficStats: tagSocket(6) with statsTag=0xffffffff, statsUid=-1
+11-28 13:25:41.389  1087  1087 D TrafficStats: tagSocket(6) with statsTag=0xffffffff, statsUid=-1
+11-28 13:25:41.392  1677  2019 I SP      : Sync for content_cache succeeded in 3737 ms: {added: [8722425f4121ffdea802b1066df73991, e9a5a2de48a4f8b9a658b411bcfb375d, fa1da98da1212aad6fb9a8efaff48148], removed: [3514c1e9a5c7d614d5646bd12032bfa6], metadata: true
+11-28 13:25:41.392  1087  1087 D TrafficStats: tagSocket(6) with statsTag=0xffffffff, statsUid=-1
+11-28 13:25:41.393  1087  1087 D TrafficStats: tagSocket(6) with statsTag=0xffffffff, statsUid=-1
+11-28 13:25:41.394  1087  1087 D TrafficStats: tagSocket(6) with statsTag=0xffffffff, statsUid=-1
+11-28 13:25:41.397  1087  1087 D TrafficStats: tagSocket(6) with statsTag=0xffffffff, statsUid=-1
+11-28 13:25:41.397  1757  4303 W ModernMediaScanner: Failed to visit /data/data/com.android.providers.downloads/cache/08202014-metadata.txt: java.nio.file.NoSuchFileException: /data/data/com.android.providers.downloads/cache/08202014-metadata.txt
+11-28 13:25:41.397  1757  4303 I MediaProvider: Scanned internal due to REASON_DEMAND, found 0 items in 79ms, 0 inserts 0 updates 0 deletes
+11-28 13:25:41.406  1087  1087 D TrafficStats: tagSocket(6) with statsTag=0xffffffff, statsUid=-1
+11-28 13:25:41.409  1087  1087 D TrafficStats: tagSocket(6) with statsTag=0xffffffff, statsUid=-1
+11-28 13:25:41.409  1087  1087 D TrafficStats: tagSocket(6) with statsTag=0xffffffff, statsUid=-1
+11-28 13:25:41.409  1087  1087 D TrafficStats: tagSocket(6) with statsTag=0xffffffff, statsUid=-1
+11-28 13:25:41.410  1087  1087 D TrafficStats: tagSocket(6) with statsTag=0xffffffff, statsUid=-1
+11-28 13:25:41.431  2223  2278 V DownloadManager: Deleting /data/data/com.android.providers.downloads/cache/08202014-pins.txt via provider delete
+11-28 13:25:41.439  5012  5135 I DaymarkReminders: Next alarm at 2026-11-28T13:55:41.100Z (in 29 min, reminder=true)
+11-28 13:25:41.440  1677  2021 E PhenotypeModule: PhenotypeModule.handlePhenotypeConfigurationUpdates():268 Get empty configurations.
+11-28 13:25:41.443  1677  2021 I PhenotypeModule: PhenotypeModule.lambda$fetchAndUpdate$2():220 fetchAndUpdate() : Success, hasFlags=false, fetchStatus=2026-11-28 13:25:41{reason=2, isFullFetch=false, success=true, isEmpty=true, isDelta=false, fetchedFlagsCount=0, deletedFlagsCount=0, updatedFlagsCount=0, totalTime=208}
+11-28 13:25:41.443  5012  5135 I DaymarkActions: Group action io.github.funnyhell.daymark.action.MED_SNOOZE_ALL: [Recorded(eventId=b8cee3b7-b23e-4da5-af98-b36df0de9e2e, insufficientStock=false, becameLow=false), Recorded(eventId=24abfa44-b9ae-47f0-bb05-eac95bc937ca, insufficientStock=false, becameLow=false)]
+11-28 13:25:41.446  1757  4303 W ModernMediaScanner: Failed to visit /data/data/com.android.providers.downloads/cache/08202014-pins.txt: java.nio.file.NoSuchFileException: /data/data/com.android.providers.downloads/cache/08202014-pins.txt
+11-28 13:25:41.447  1863  2383 W CorpusConfigHelper: Invalid input from icing corpus JSON flag.
+11-28 13:25:41.447  1863  2383 W CorpusConfigHelper: android.util.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 123 column 2
+11-28 13:25:41.447  1863  2383 W CorpusConfigHelper: 	at android.util.JsonReader.syntaxError(JsonReader.java:1162)
+11-28 13:25:41.447  1863  2383 W CorpusConfigHelper: 	at android.util.JsonReader.checkLenient(JsonReader.java:840)
+11-28 13:25:41.447  1863  2383 W CorpusConfigHelper: 	at android.util.JsonReader.nextInArray(JsonReader.java:615)
+11-28 13:25:41.447  1863  2383 W CorpusConfigHelper: 	at android.util.JsonReader.peek(JsonReader.java:345)
+11-28 13:25:41.447  1863  2383 W CorpusConfigHelper: 	at android.util.JsonReader.hasNext(JsonReader.java:321)
+11-28 13:25:41.447  1863  2383 W CorpusConfigHelper: 	at com.google.android.apps.gsa.searchbox.c.b.b.k.c(PG:7)
+11-28 13:25:41.447  1863  2383 W CorpusConfigHelper: 	at com.google.android.apps.gsa.searchbox.c.b.b.j.a(Unknown Source:2)
+11-28 13:25:41.447  1863  2383 W CorpusConfigHelper: 	at com.google.android.apps.gsa.search.core.i.r.run(PG:5)
+11-28 13:25:41.447  1863  2383 W CorpusConfigHelper: 	at com.google.android.libraries.gsa.k.a.h.run(PG:2)
+11-28 13:25:41.447  1863  2383 W CorpusConfigHelper: 	at com.google.android.apps.gsa.shared.logger.f.a.a.l.p(PG:2)
+11-28 13:25:41.447  1863  2383 W CorpusConfigHelper: 	at com.google.android.apps.gsa.shared.logger.f.a.a.g.run(Unknown Source:4)
+11-28 13:25:41.447  1863  2383 W CorpusConfigHelper: 	at com.google.android.apps.gsa.shared.util.c.a.cf.b(PG:1)
+11-28 13:25:41.447  1863  2383 W CorpusConfigHelper: 	at com.google.android.apps.gsa.shared.util.c.a.ci.run(PG:1)
+11-28 13:25:41.447  1863  2383 W CorpusConfigHelper: 	at com.google.android.libraries.i.ae.run(PG:1)
+11-28 13:25:41.447  1863  2383 W CorpusConfigHelper: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-28 13:25:41.447  1863  2383 W CorpusConfigHelper: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-28 13:25:41.447  1863  2383 W CorpusConfigHelper: 	at com.google.android.libraries.i.k.run(PG:2)
+11-28 13:25:41.447  1863  2383 W CorpusConfigHelper: 	at com.google.android.libraries.i.p.run(PG:4)
+11-28 13:25:41.447  1863  2383 W CorpusConfigHelper: 	at java.lang.Thread.run(Thread.java:1012)
+11-28 13:25:41.448  1757  4303 I MediaProvider: Scanned internal due to REASON_DEMAND, found 0 items in 2ms, 0 inserts 0 updates 0 deletes
+11-28 13:25:41.456  1583  3083 I Icing   : IndexChimeraService.getServiceInterface callingPackage=com.google.android.googlequicksearchbox componentName=agsa_icing_connection serviceId=32
+11-28 13:25:41.461  1776  2154 I AiAiEcho: Predicting[0]:
+11-28 13:25:41.463  1776  2154 I AiAiEcho: EchoTargets:
+11-28 13:25:41.463  1776  2154 I AiAiEcho: Filtered by AiAi flag check:
+11-28 13:25:41.463  1776  2154 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata:
+11-28 13:25:41.466  1583  2952 I Icing   : IndexChimeraService.getServiceInterface callingPackage=com.google.android.googlequicksearchbox componentName=agsa_icing_connection serviceId=33
+11-28 13:25:41.471  1863  2715 W SearchServiceCore: Abort, client detached.
+11-28 13:25:41.472   547   547 D BluetoothDeviceConfigChangeTracker: shouldRestartWhenPropertiesUpdated: INIT_gd_hal_snoop_logger_filtering='true',scan_timeout_millis='300000',location_denylist_name='',audio_policy_hf_enabled='true',INIT_gd_hal_snoop_logger_socket='true',location_denylist_advertising_data='⊈0016AAFE40/00FFFFFFF0,⊆0016AAFE/00FFFFFF,⊆00FF4C0002/00FFFFFFFF',le_audio_enabled_by_default='false',location_denylist_mac='',audio_policy_ag_enabled='true'
+11-28 13:25:41.472   547   547 D BluetoothDeviceConfigChangeTracker: Property INIT_gd_hal_snoop_logger_filtering changed from null -> true
+11-28 13:25:41.472   547   547 D BluetoothDeviceConfigChangeTracker: Property INIT_gd_hal_snoop_logger_socket changed from null -> true
+11-28 13:25:41.472   547   547 D BluetoothDeviceConfigListener: Properties changed, enqueuing restart
+11-28 13:25:41.476  1776  2154 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+11-28 13:25:41.483   914   914 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+11-28 13:25:41.488   547  2012 I RemoteProvisionSysSvc: getRegistration(android.hardware.security.keymint.IRemotelyProvisionedComponent/default)
+11-28 13:25:41.493  1087  1087 D TrafficStats: tagSocket(6) with statsTag=0xffffffff, statsUid=-1
+11-28 13:25:41.494  1087  1087 D TrafficStats: tagSocket(6) with statsTag=0xffffffff, statsUid=-1
+11-28 13:25:41.495  1087  1087 D TrafficStats: tagSocket(6) with statsTag=0xffffffff, statsUid=-1
+11-28 13:25:41.495   547   547 I RegistrationProxy: onServiceConnected: com.android.rkpdapp.service.RemoteProvisioningService
+11-28 13:25:41.497  1087  1087 D TrafficStats: tagSocket(6) with statsTag=0xffffffff, statsUid=-1
+11-28 13:25:41.498  1087  1087 D TrafficStats: tagSocket(6) with statsTag=0xffffffff, statsUid=-1
+11-28 13:25:41.499  1087  5595 D NetworkMonitor/100: PROBE_DNS connectivitycheck.gstatic.com 187ms OK 142.251.150.120,2001:4860:4826:7800::
+11-28 13:25:41.501  1087  5594 D NetworkMonitor/100: PROBE_DNS www.google.com 177ms OK 142.251.153.119,142.251.157.119,142.251.154.119,142.251.155.119,142.251.152.119,142.251.150.119,142.251.156.119,142.251.151.119,2001:4860:4826:7700::,2001:4860:482d:7700::,2001:4860:4828:7700::,2001:4860:4827:7700::,2001:4860:482a:7700::,2001:4860:4829:7700::,2001:4860:482b:7700::,2001:4860:482c:7700::
+11-28 13:25:41.510   547  2012 I RegistrationProxy: IGetRegistrationCallback.onSuccess
+11-28 13:25:41.512   914   914 D TileServices: Couldn't find tile for ComponentInfo{com.google.android.apps.wellbeing/com.google.android.apps.wellbeing.screen.ui.GrayscaleTileService}(0)
+11-28 13:25:41.513   357  5602 I resolv  : GetAddrInfoHandler::run: {100 983140 100 983140 1073 1}
+11-28 13:25:41.513   357  5603 I resolv  : res_nmkquery: (QUERY, IN, AAAA)
+11-28 13:25:41.513   357  5603 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x752116263690
+11-28 13:25:41.514   357  5603 I resolv  : doQuery: rcode=0, ancount=8, return value=256
+11-28 13:25:41.515   547   560 I RemoteProvisionSysSvc: Fetching key 10128 for client 79166594
+11-28 13:25:41.515   547   560 I RegistrationProxy: getKeyAsync operation started with callback 265441171
+11-28 13:25:41.515   357  5601 I resolv  : GetAddrInfoHandler::run: {100 983140 100 983140 1073 1}
+11-28 13:25:41.515  3760  3870 I RkpdRegistrationBinder: Key requested for : android.hardware.security.keymint.IRemotelyProvisionedComponent/default, clientUid: 1017, keyId: 10128, callback: 48440505
+11-28 13:25:41.515   357  5605 I resolv  : res_nmkquery: (QUERY, IN, AAAA)
+11-28 13:25:41.515   357  5605 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x752106268850
+11-28 13:25:41.515   357  5605 I resolv  : doQuery: rcode=0, ancount=1, return value=75
+11-28 13:25:41.515  3760  3870 I RkpdRegistrationBinder: Key successfully assigned to client
+11-28 13:25:41.520   547   547 I RemoteProvisionSysSvc: Successfully fetched key for client 79166594
+11-28 13:25:41.523   357  5604 I resolv  : res_nmkquery: (QUERY, IN, A)
+11-28 13:25:41.523   357  5604 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x7520e6265d10
+11-28 13:25:41.523   357  5604 I resolv  : doQuery: rcode=0, ancount=8, return value=160
+11-28 13:25:41.525   357  5606 I resolv  : res_nmkquery: (QUERY, IN, A)
+11-28 13:25:41.525   357  5606 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x7521062660f0
+11-28 13:25:41.525   357  5606 I resolv  : doQuery: rcode=0, ancount=1, return value=63
+11-28 13:25:41.526  1087  5595 D TrafficStats: tagSocket(6) with statsTag=0xffffff81, statsUid=-1
+11-28 13:25:41.526  1087  5594 D TrafficStats: tagSocket(68) with statsTag=0xffffff81, statsUid=-1
+11-28 13:25:41.546  1087  5595 D NetworkMonitor/100: PROBE_HTTP http://connectivitycheck.gstatic.com/generate_204 time=33ms ret=204 request={Connection=[close], User-Agent=[Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.32 Safari/537.36]} headers={null=[HTTP/1.1 204 No Content], Connection=[close], Content-Length=[0], Cross-Origin-Resource-Policy=[cross-origin], Date=[Sat, 28 Nov 2026 13:25:41 GMT], X-Android-Received-Millis=[1795872341546], X-Android-Response-Source=[NETWORK 204], X-Android-Selected-Protocol=[http/1.1], X-Android-Sent-Millis=[1795872341533]}
+11-28 13:25:41.559  1677  2019 I SP      : GC for 'content_cache' (10) with ttl of 0 ms took 3 ms (0/3/0)
+11-28 13:25:41.566  1677  2896 I PhenotypeBackgroundRecv: Successfully updated snapshot for com.google.android.gms.clearcut_client#com.google.android.inputmethod.latin
+11-28 13:25:41.567  1677  1677 I PhenotypeModule: PhenotypeModule.receiveBroadcast():373 onReceive() urgent = false
+11-28 13:25:41.567  1677  1677 I PhenotypeModule: PhenotypeModule.maybeFetchAndUpdate():166 maybeFetchAndUpdate: start new task to fetch
+11-28 13:25:41.568  1677  1677 I PhenotypeBackgroundRecv: Skipping com.google.android.gms.icing.mdd#com.google.android.inputmethod.latin which doesn't use ProcessStable flags.
+11-28 13:25:41.571  1677  1677 I PhenotypeModule: PhenotypeModule.receiveBroadcast():373 onReceive() urgent = false
+11-28 13:25:41.572  1677  1677 I PhenotypeBackgroundRecv: Skipping com.google.android.inputmethod.latin#com.google.android.inputmethod.latin which doesn't use ProcessStable flags.
+11-28 13:25:41.574  1087  5594 D NetworkMonitor/100: PROBE_HTTPS https://www.google.com/generate_204 time=61ms ret=204 request={Connection=[close], User-Agent=[Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.32 Safari/537.36]} headers={null=[HTTP/1.1 204 No Content], Alt-Svc=[h3=":443"; ma=2592000,h3-29=":443"; ma=2592000], Connection=[close], Content-Length=[0], Cross-Origin-Resource-Policy=[cross-origin], Date=[Sat, 28 Nov 2026 13:25:41 GMT], X-Android-Received-Millis=[1795872341574], X-Android-Response-Source=[NETWORK 204], X-Android-Selected-Protocol=[http/1.1], X-Android-Sent-Millis=[1795872341565]}
+11-28 13:25:41.574  1087  5593 D NetworkMonitor/100: isCaptivePortal: isSuccessful()=true isPortal()=false RedirectUrl=null isPartialConnectivity()=false Time=265ms
+11-28 13:25:41.574   914  1042 V WallpaperService: Setting wallpaper dimming: 0
+11-28 13:25:41.577   547   841 D ConnectivityService: [100 WIFI] validation passed
+11-28 13:25:41.596   914   914 D Tonal   : Tonal Palette - index: 4. Main color: ff343e65
+11-28 13:25:41.596   914   914 D Tonal   : Colors: ff0b0c16, ff141627, ff1d2138, ff272d4c, ff343e65, ff41477e, ff4e5597, ff8184a4, ff898cc3, ff9e9ecd, ffb7b6d9, ffd9d7eb, ffefeef7
+11-28 13:25:41.596   914   914 D Tonal   : Gradients:
+11-28 13:25:41.596   914   914 D Tonal   : 	Normal GradientColors(ff343e65, ff343e65)
+11-28 13:25:41.596   914   914 D Tonal   : 	Dark GradientColors(ff272d4c, ff272d4c)
+11-28 13:25:41.596   914   914 D Tonal   : 	Extra dark: GradientColors(ff1d2138, ff1d2138)
+11-28 13:25:41.596  1583  5083 W Icing   : No valid account for uploading user actions
+11-28 13:25:41.597  2223  5589 D TrafficStats: tagSocket(85) with statsTag=0xffffff01, statsUid=10129
+11-28 13:25:41.599   914   914 D TileServices: Couldn't find tile for ComponentInfo{com.google.android.apps.wellbeing/com.google.android.apps.wellbeing.screen.ui.GrayscaleTileService}(0)
+11-28 13:25:41.606  1583  5083 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0
+11-28 13:25:41.607  1583  5083 W Icing   : No valid account for uploading user actions
+11-28 13:25:41.617  1529  1537 I .gms.persistent: Background concurrent copying GC freed 464518(17MB) AllocSpace objects, 13(540KB) LOS objects, 50% free, 20MB/41MB, paused 98us,31us total 653.435ms
+11-28 13:25:41.623  5141  5174 W BugleRcsEngine: [51] bpxc.w: Unable to send diagnostic log
+11-28 13:25:41.632  1529  3355 I PTCommittedOperation: Receive new configuration for com.google.android.gms.people
+11-28 13:25:41.635  1529  4002 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.clearcut.uploader.QosUploaderService finished executing. cause:5 result: 1 elapsed_millis: 523 uptime_millis: 523 exec_start_elapsed_seconds: 111 [CONTEXT service_id=218 ]
+11-28 13:25:41.637   914  1042 V WallpaperService: Setting wallpaper dimming: 0
+11-28 13:25:41.643  4503  4623 I BugleRcsProvisioning: RcsProvisioningEventReceiver: Received ProvisioningEvent: Send Provisioning Session ID
+11-28 13:25:41.643  4503  4614 I Bugle   : BroadcastReceiverAsyncWorkTracker: Acknowledging broadcast of com.google.android.apps.messaging.shared.receiver.RcsProvisioningEventReceiver@c5e991e
+11-28 13:25:41.646   914   914 D TileServices: Couldn't find tile for ComponentInfo{com.google.android.apps.wellbeing/com.google.android.apps.wellbeing.screen.ui.GrayscaleTileService}(0)
+11-28 13:25:41.664  5141  5174 I BugleRcsEngine: [51] brga.s: ProvisioningEngineManager: onCsLibPhenotypeUpdated, provisioningTaskInBugleEnabled = true, currentProvisioningStrategy = brka
+11-28 13:25:41.665  5141  5174 I BugleRcsEngine: [51] brga.s: ProvisioningEngineManager: onCsLibPhenotypeUpdated, provisioningTaskInBugleEnabled = true, currentProvisioningStrategy = brka
+11-28 13:25:41.665  5141  5174 I BugleRcsEngine: [51] brga.s: ProvisioningEngineManager: onCsLibPhenotypeUpdated, provisioningTaskInBugleEnabled = true, currentProvisioningStrategy = brka
+11-28 13:25:41.665  5141  5174 I BugleRcsEngine: [51] brga.s: ProvisioningEngineManager: onCsLibPhenotypeUpdated, provisioningTaskInBugleEnabled = true, currentProvisioningStrategy = brka
+11-28 13:25:41.665  1583  5574 W ModuleInitIntentOp: Dropping unexpected action com.google.android.gms.phenotype.COMMITTED
+11-28 13:25:41.665  1583  5390 W ModuleInitIntentOp: Dropping unexpected action com.google.android.gms.phenotype.COMMITTED
+11-28 13:25:41.678  1583  5394 W ModuleInitIntentOp: Dropping unexpected action com.google.android.gms.phenotype.COMMITTED
+11-28 13:25:41.688  1529  5564 I NamespaceManager: Package com.android.refreshratecontrol name not found! Using module version.
+11-28 13:25:41.689  1529  5564 I NamespaceManager: Package com.google.oslo name not found! Using module version.
+11-28 13:25:41.689  1529  5564 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:41.689  1529  5564 I NamespaceManager: Package com.android.media.swcodec name not found! Using module version.
+11-28 13:25:41.689  1529  5564 I NamespaceManager: Package com.android.appsearch name not found! Using module version.
+11-28 13:25:41.689  1529  5564 I NamespaceManager: Package com.android.neuralnetworks name not found! Using module version.
+11-28 13:25:41.690  1529  5564 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:41.691  1583  5390 I SyncIntentOperation: Handling the intent: Intent { act=com.google.android.gms.phenotype.COMMITTED flg=0x10 pkg=com.google.android.gms cmp=com.google.android.gms/.chimera.GmsIntentOperationService (has extras) }. [CONTEXT service_id=80 ]
+11-28 13:25:41.693  1529  5564 I NamespaceManager: Package 1 name not found! Using module version.
+11-28 13:25:41.703  4503  4623 I BugleRcsProvisioning: RcsProvisioningEventReceiver: Received ProvisioningEvent: Availability updated
+11-28 13:25:41.703  4503  4623 I BugleRcsProvisioning: RcsProvisioningEventReceiver: Bugle receives rcs availability update to: 10
+11-28 13:25:41.713   914   914 D Tonal   : Tonal Palette - index: 4. Main color: ff343e65
+11-28 13:25:41.713   914   914 D Tonal   : Colors: ff0b0c16, ff141627, ff1d2138, ff272d4c, ff343e65, ff41477e, ff4e5597, ff8184a4, ff898cc3, ff9e9ecd, ffb7b6d9, ffd9d7eb, ffefeef7
+11-28 13:25:41.713   914   914 D Tonal   : Gradients:
+11-28 13:25:41.713   914   914 D Tonal   : 	Normal GradientColors(ff343e65, ff343e65)
+11-28 13:25:41.713   914   914 D Tonal   : 	Dark GradientColors(ff272d4c, ff272d4c)
+11-28 13:25:41.713   914   914 D Tonal   : 	Extra dark: GradientColors(ff1d2138, ff1d2138)
+11-28 13:25:41.713  1677  2028 E PhenotypeModule: PhenotypeModule.handlePhenotypeConfigurationUpdates():268 Get empty configurations.
+11-28 13:25:41.714  1677  2028 I PhenotypeModule: PhenotypeModule.lambda$fetchAndUpdate$2():220 fetchAndUpdate() : Success, hasFlags=false, fetchStatus=2026-11-28 13:25:41{reason=2, isFullFetch=false, success=true, isEmpty=true, isDelta=false, fetchedFlagsCount=0, deletedFlagsCount=0, updatedFlagsCount=0, totalTime=147}
+11-28 13:25:41.717   914  1042 V WallpaperService: Setting wallpaper dimming: 0
+11-28 13:25:41.718  1583  5574 V Backup  : [PhenotypeConfigIO] Phenotype broadcast received for different package
+11-28 13:25:41.718  1677  2019 I SP      : Download stopped: next-word-predictor:tflite-nwp-be541314788c7304827a9710c3ac4edb, succeeded, size: 1950106
+11-28 13:25:41.720  1583  5388 I MdiSyncModule: flag handling is skipping irrelevant intent.
+11-28 13:25:41.729  1529  5610 I NamespaceManager: Package com.android.refreshratecontrol name not found! Using module version.
+11-28 13:25:41.733  1583  5083 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0
+11-28 13:25:41.742  1583  5083 I Icing   : Indexing com.google.android.gms-apps from com.google.android.gms
+11-28 13:25:41.744  4503  4614 I Bugle   : BroadcastReceiverAsyncWorkTracker: Acknowledging broadcast of com.google.android.apps.messaging.shared.receiver.RcsProvisioningEventReceiver@46d35f7
+11-28 13:25:41.745  4503  4503 W BugleRcsEngine: [2] brcu.d: [SR]: Single Registration is disabled. Skipping Single Registration capability check for subId: 1, OS.isAtLeastS:[true], enableSingleRegistrationProvisioning:[false]
+11-28 13:25:41.748  1529  5610 I NamespaceManager: Package com.google.oslo name not found! Using module version.
+11-28 13:25:41.753  4503  4503 I BugleRcsEngine: [2] brnl.e: No RCS Configuration was found in Bugle for simID: redacted-pii:sim_id[chars:20,last3:897]
+11-28 13:25:41.753  4503  4503 I BugleRcsProvisioning: RcsAvailabilityUpdaterLocal: RcsAvailability configuration availability and enabled status: simId: redacted-pii:sim_id[chars:20,last3:897], SipConnectionType: DUAL_REG, isConfigurationAvailableAndEnabled: false
+11-28 13:25:41.758  4503  4503 I BugleRcsEngine: [2] brox.b: Using config server URL from bqas
+11-28 13:25:41.758  4503  4503 I BugleRcsProvisioning: RcsAvailabilityUpdaterLocal: RcsAvailability subscription{id:1}, simId: redacted-pii:sim_id[chars:20,last3:897], sipConnectionType: DUAL_REG, isRcsAvailable: false
+11-28 13:25:41.758  4503  4503 I BugleRcsProvisioning: RcsAvailabilityUpdaterLocal: updateRcsAvailability, currentAvailability: 10, newAvailability: 10, hint: NO_HINT
+11-28 13:25:41.765  5012  5036 I DaymarkReminders: Next alarm at 2026-11-28T13:55:41.100Z (in 29 min, reminder=true)
+11-28 13:25:41.774  1529  5610 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:41.775  1529  5610 I NamespaceManager: Package com.android.media.swcodec name not found! Using module version.
+11-28 13:25:41.775  1529  5610 I NamespaceManager: Package com.android.appsearch name not found! Using module version.
+11-28 13:25:41.775  1529  5610 I NamespaceManager: Package com.android.neuralnetworks name not found! Using module version.
+11-28 13:25:41.779  1529  5610 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:41.779  1529  5610 I NamespaceManager: Package 1 name not found! Using module version.
+11-28 13:25:41.782  1583  5083 I Icing   : Indexing done com.google.android.gms-apps
+11-28 13:25:41.793  1583  5401 I MlBenchmarkInstaller: Intent: com.google.android.gms.phenotype.COMMITTED [CONTEXT service_id=340 ]
+11-28 13:25:41.793  1583  5401 I MlBenchmarkInstaller: COMMITTED Extra package name: com.google.android.gms.people [CONTEXT service_id=340 ]
+11-28 13:25:41.798  1583  5574 W ModuleInitIntentOp: Dropping unexpected action com.google.android.gms.phenotype.COMMITTED
+11-28 13:25:41.805  4503  4610 I BugleRcsProvisioning: RcsProvisioningTrigger: onRcsAvailabilityUpdate : availability is updated to Carrier RCS is not set up, lastAvailability is Carrier RCS is not set up, simId hash = -4229792515567788269, simId = redacted-pii:sim_id[chars:20,last3:897], isPev3Enabled = true
+11-28 13:25:41.811   914   914 D Tonal   : Tonal Palette - index: 4. Main color: ff343e65
+11-28 13:25:41.811   914   914 D Tonal   : Colors: ff0b0c16, ff141627, ff1d2138, ff272d4c, ff343e65, ff41477e, ff4e5597, ff8184a4, ff898cc3, ff9e9ecd, ffb7b6d9, ffd9d7eb, ffefeef7
+11-28 13:25:41.811   914   914 D Tonal   : Gradients:
+11-28 13:25:41.811   914   914 D Tonal   : 	Normal GradientColors(ff343e65, ff343e65)
+11-28 13:25:41.811   914   914 D Tonal   : 	Dark GradientColors(ff272d4c, ff272d4c)
+11-28 13:25:41.811   914   914 D Tonal   : 	Extra dark: GradientColors(ff1d2138, ff1d2138)
+11-28 13:25:41.824  2958  5555 D TrafficStats: tagSocket(118) with statsTag=0x1809, statsUid=-1
+11-28 13:25:41.834  2958  5555 D TrafficStats: tagSocket(118) with statsTag=0x1809, statsUid=-1
+11-28 13:25:41.837  1583  5394 I LocationHistory: [IntentOperation] Module is disabled [CONTEXT service_id=314 ]
+11-28 13:25:41.844  2958  5555 D TrafficStats: tagSocket(118) with statsTag=0x1809, statsUid=-1
+11-28 13:25:41.869  1583  5401 W PeoplePU: getServiceInfo failed.
+11-28 13:25:41.869  1583  5401 W PeoplePU: android.content.pm.PackageManager$NameNotFoundException: ComponentInfo{com.google.android.gms/com.google.android.gms.people.sync.focus.ContactsSyncAdapterService}
+11-28 13:25:41.869  1583  5401 W PeoplePU: 	at android.app.ApplicationPackageManager.getServiceInfo(ApplicationPackageManager.java:616)
+11-28 13:25:41.869  1583  5401 W PeoplePU: 	at android.app.ApplicationPackageManager.getServiceInfo(ApplicationPackageManager.java:599)
+11-28 13:25:41.869  1583  5401 W PeoplePU: 	at bvox.b(:com.google.android.gms@231818047@23.18.18 (190800-535401451):3)
+11-28 13:25:41.869  1583  5401 W PeoplePU: 	at bvgq.a(:com.google.android.gms@231818047@23.18.18 (190800-535401451):3)
+11-28 13:25:41.869  1583  5401 W PeoplePU: 	at com.google.android.gms.people.service.SettingsChangedBroadcastIntentOperation.onHandleIntent(:com.google.android.gms@231818047@23.18.18 (190800-535401451):11)
+11-28 13:25:41.869  1583  5401 W PeoplePU: 	at com.google.android.chimera.IntentOperation.onHandleIntent(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-28 13:25:41.869  1583  5401 W PeoplePU: 	at zhv.onHandleIntent(:com.google.android.gms@231818047@23.18.18 (190800-535401451):4)
+11-28 13:25:41.869  1583  5401 W PeoplePU: 	at hjm.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):3)
+11-28 13:25:41.869  1583  5401 W PeoplePU: 	at hjl.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):11)
+11-28 13:25:41.869  1583  5401 W PeoplePU: 	at dfhf.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-28 13:25:41.869  1583  5401 W PeoplePU: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-28 13:25:41.869  1583  5401 W PeoplePU: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-28 13:25:41.869  1583  5401 W PeoplePU: 	at java.lang.Thread.run(Thread.java:1012)
+11-28 13:25:41.886   914   914 D TileServices: Couldn't find tile for ComponentInfo{com.google.android.apps.wellbeing/com.google.android.apps.wellbeing.screen.ui.GrayscaleTileService}(0)
+11-28 13:25:41.894  1776  2154 I AiAiEcho: Predicting[0]:
+11-28 13:25:41.894  1776  2154 I AiAiEcho: EchoTargets:
+11-28 13:25:41.894  1776  2154 I AiAiEcho: Filtered by AiAi flag check:
+11-28 13:25:41.895  1776  2154 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata:
+11-28 13:25:41.895  1776  2154 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+11-28 13:25:41.896   914   914 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+11-28 13:25:41.898  5012  5036 I DaymarkReminders: Next alarm at 2026-11-29T00:01:00Z (in 635 min, reminder=false)
+11-28 13:25:41.901  5012  5036 I TestRunner: finished: snoozeAllFromNotification_setsTheAlarmForTheSnoozeEnd(io.github.funnyhell.daymark.SnoozeInstrumentedTest)

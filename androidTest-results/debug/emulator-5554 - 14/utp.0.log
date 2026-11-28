@@ -1,0 +1,50 @@
+INFO: Constructing runner from config.
+INFO: Configuring Android Instrumentation driver: android_instrumentation_runtime {
+  instrumentation_info {
+    app_package: "io.github.funnyhell.daymark.debug"
+    test_package: "io.github.funnyhell.daymark.debug.test"
+    test_runner_class: "androidx.test.runner.AndroidJUnitRunner"
+  }
+  instrumentation_args {
+    args_map {
+      key: "additionalTestOutputDir"
+      value: "/sdcard/Android/media/io.github.funnyhell.daymark.debug/additional_test_output"
+    }
+  }
+}
+am_instrument_timeout: 31536000
+
+INFO: Configuring AndroidTestApkInstallerPlugin: apks_to_install {
+  apk_paths: "/home/runner/work/daymark/daymark/app/build/outputs/apk/debug/app-debug.apk"
+  install_options {
+  }
+  uninstall_after_test: true
+}
+apks_to_install {
+  apk_paths: "/home/runner/work/daymark/daymark/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk"
+  install_options {
+  }
+  uninstall_after_test: true
+}
+
+INFO: No installables found in test fixture. Nothing to install.
+INFO: Installing [/home/runner/work/daymark/daymark/app/build/outputs/apk/debug/app-debug.apk] on device emulator-5554.
+INFO: Installing [/home/runner/work/daymark/daymark/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk] on device emulator-5554.
+INFO: Start logcat streaming.
+INFO: Running Android Instrumentation driver.
+INFO: Copying files from device to host: /sdcard/Android/media/io.github.funnyhell.daymark.debug/additional_test_output to /home/runner/work/daymark/daymark/app/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected/emulator-5554 - 14
+INFO: Copying /sdcard/Android/media/io.github.funnyhell.daymark.debug/additional_test_output/week-widget.png to /home/runner/work/daymark/daymark/app/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected/emulator-5554 - 14/week-widget.png
+INFO: Stop logcat streaming.
+INFO: Uninstalling io.github.funnyhell.daymark.debug for device emulator-5554.
+INFO: Uninstalling io.github.funnyhell.daymark.debug.test for device emulator-5554.
+INFO: Execute io.github.funnyhell.daymark.GroupNotificationInstrumentedTest.groupShrinksAsDosesAreRecorded_andDisappearsWhenEmpty: PASSED
+INFO: Execute io.github.funnyhell.daymark.HabitFlowInstrumentedTest.createHabitAndCompleteIt: PASSED
+INFO: Execute io.github.funnyhell.daymark.IntervalsModuleInstrumentedTest.doneFromNotification_countsAndClears: PASSED
+INFO: Execute io.github.funnyhell.daymark.NotificationActionInstrumentedTest.duplicatedTakenBroadcast_recordsOnceAndConsumesStockOnce: PASSED
+INFO: Execute io.github.funnyhell.daymark.SnoozeInstrumentedTest.snoozeAllFromNotification_setsTheAlarmForTheSnoozeEnd: PASSED
+INFO: Execute io.github.funnyhell.daymark.SnoozeInstrumentedTest.reminderIsShownAgainWhenTheSnoozeEnds: PASSED
+INFO: Execute io.github.funnyhell.daymark.SnoozeInstrumentedTest.skipAllFromGroupNotification_skipsEveryDose: PASSED
+INFO: Execute io.github.funnyhell.daymark.WidgetHostInstrumentedTest.everyWidget_composesAndInflatesInRussian: PASSED
+INFO: Execute io.github.funnyhell.daymark.WidgetHostInstrumentedTest.everyWidget_isDrawnForABoundWidgetId: PASSED
+INFO: Execute io.github.funnyhell.daymark.WidgetRenderInstrumentedTest.allWidgets_composeAndInflate: PASSED
+INFO: Execute io.github.funnyhell.daymark.WidgetRenderInstrumentedTest.weekWidget_drawsSampleHabits: PASSED

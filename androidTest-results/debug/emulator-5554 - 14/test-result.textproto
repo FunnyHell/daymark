@@ -1,0 +1,637 @@
+# proto-message: google.testing.platform.proto.api.core.TestSuiteResult
+# 2026-11-28T13:26:49.312911017Z:
+test_suite_meta_data {
+  scheduled_test_case_count: 11
+  device {
+    id: "emulator-5554"
+    friendly_name: "primary"
+  }
+}
+test_status: PASSED
+test_result {
+  test_case {
+    test_class: "GroupNotificationInstrumentedTest"
+    test_package: "io.github.funnyhell.daymark"
+    test_method: "groupShrinksAsDosesAreRecorded_andDisappearsWhenEmpty"
+    start_time {
+      seconds: 1795872323
+      nanos: 213000000
+    }
+    end_time {
+      seconds: 1795872323
+      nanos: 979000000
+    }
+    device {
+      id: "emulator-5554"
+      friendly_name: "primary"
+    }
+  }
+  test_status: PASSED
+  output_artifact {
+    label {
+      label: "logcat"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/logcat-io.github.funnyhell.daymark.GroupNotificationInstrumentedTest-groupShrinksAsDosesAreRecorded_andDisappearsWhenEmpty.txt"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/device-info.pb"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.meminfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/meminfo"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.cpuinfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/cpuinfo"
+    }
+  }
+}
+test_result {
+  test_case {
+    test_class: "HabitFlowInstrumentedTest"
+    test_package: "io.github.funnyhell.daymark"
+    test_method: "createHabitAndCompleteIt"
+    start_time {
+      seconds: 1795872324
+      nanos: 5000000
+    }
+    end_time {
+      seconds: 1795872336
+      nanos: 664000000
+    }
+    device {
+      id: "emulator-5554"
+      friendly_name: "primary"
+    }
+  }
+  test_status: PASSED
+  output_artifact {
+    label {
+      label: "logcat"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/logcat-io.github.funnyhell.daymark.HabitFlowInstrumentedTest-createHabitAndCompleteIt.txt"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/device-info.pb"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.meminfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/meminfo"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.cpuinfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/cpuinfo"
+    }
+  }
+}
+test_result {
+  test_case {
+    test_class: "IntervalsModuleInstrumentedTest"
+    test_package: "io.github.funnyhell.daymark"
+    test_method: "doneFromNotification_countsAndClears"
+    start_time {
+      seconds: 1795872336
+      nanos: 671000000
+    }
+    end_time {
+      seconds: 1795872337
+      nanos: 870000000
+    }
+    device {
+      id: "emulator-5554"
+      friendly_name: "primary"
+    }
+  }
+  test_status: PASSED
+  output_artifact {
+    label {
+      label: "logcat"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/logcat-io.github.funnyhell.daymark.IntervalsModuleInstrumentedTest-doneFromNotification_countsAndClears.txt"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/device-info.pb"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.meminfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/meminfo"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.cpuinfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/cpuinfo"
+    }
+  }
+}
+test_result {
+  test_case {
+    test_class: "NotificationActionInstrumentedTest"
+    test_package: "io.github.funnyhell.daymark"
+    test_method: "duplicatedTakenBroadcast_recordsOnceAndConsumesStockOnce"
+    start_time {
+      seconds: 1795872337
+      nanos: 980000000
+    }
+    end_time {
+      seconds: 1795872340
+      nanos: 951000000
+    }
+    device {
+      id: "emulator-5554"
+      friendly_name: "primary"
+    }
+  }
+  test_status: PASSED
+  output_artifact {
+    label {
+      label: "logcat"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/logcat-io.github.funnyhell.daymark.NotificationActionInstrumentedTest-duplicatedTakenBroadcast_recordsOnceAndConsumesStockOnce.txt"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/device-info.pb"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.meminfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/meminfo"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.cpuinfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/cpuinfo"
+    }
+  }
+}
+test_result {
+  test_case {
+    test_class: "SnoozeInstrumentedTest"
+    test_package: "io.github.funnyhell.daymark"
+    test_method: "snoozeAllFromNotification_setsTheAlarmForTheSnoozeEnd"
+    start_time {
+      seconds: 1795872340
+      nanos: 962000000
+    }
+    end_time {
+      seconds: 1795872342
+      nanos: 156000000
+    }
+    device {
+      id: "emulator-5554"
+      friendly_name: "primary"
+    }
+  }
+  test_status: PASSED
+  output_artifact {
+    label {
+      label: "logcat"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/logcat-io.github.funnyhell.daymark.SnoozeInstrumentedTest-snoozeAllFromNotification_setsTheAlarmForTheSnoozeEnd.txt"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/device-info.pb"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.meminfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/meminfo"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.cpuinfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/cpuinfo"
+    }
+  }
+}
+test_result {
+  test_case {
+    test_class: "SnoozeInstrumentedTest"
+    test_package: "io.github.funnyhell.daymark"
+    test_method: "reminderIsShownAgainWhenTheSnoozeEnds"
+    start_time {
+      seconds: 1795872342
+      nanos: 160000000
+    }
+    end_time {
+      seconds: 1795872345
+      nanos: 415000000
+    }
+    device {
+      id: "emulator-5554"
+      friendly_name: "primary"
+    }
+  }
+  test_status: PASSED
+  output_artifact {
+    label {
+      label: "logcat"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/logcat-io.github.funnyhell.daymark.SnoozeInstrumentedTest-reminderIsShownAgainWhenTheSnoozeEnds.txt"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/device-info.pb"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.meminfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/meminfo"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.cpuinfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/cpuinfo"
+    }
+  }
+}
+test_result {
+  test_case {
+    test_class: "SnoozeInstrumentedTest"
+    test_package: "io.github.funnyhell.daymark"
+    test_method: "skipAllFromGroupNotification_skipsEveryDose"
+    start_time {
+      seconds: 1795872345
+      nanos: 422000000
+    }
+    end_time {
+      seconds: 1795872345
+      nanos: 932000000
+    }
+    device {
+      id: "emulator-5554"
+      friendly_name: "primary"
+    }
+  }
+  test_status: PASSED
+  output_artifact {
+    label {
+      label: "logcat"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/logcat-io.github.funnyhell.daymark.SnoozeInstrumentedTest-skipAllFromGroupNotification_skipsEveryDose.txt"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/device-info.pb"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.meminfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/meminfo"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.cpuinfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/cpuinfo"
+    }
+  }
+}
+test_result {
+  test_case {
+    test_class: "WidgetHostInstrumentedTest"
+    test_package: "io.github.funnyhell.daymark"
+    test_method: "everyWidget_composesAndInflatesInRussian"
+    start_time {
+      seconds: 1795872345
+      nanos: 936000000
+    }
+    end_time {
+      seconds: 1795872362
+      nanos: 63000000
+    }
+    device {
+      id: "emulator-5554"
+      friendly_name: "primary"
+    }
+  }
+  test_status: PASSED
+  output_artifact {
+    label {
+      label: "logcat"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/logcat-io.github.funnyhell.daymark.WidgetHostInstrumentedTest-everyWidget_composesAndInflatesInRussian.txt"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/device-info.pb"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.meminfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/meminfo"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.cpuinfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/cpuinfo"
+    }
+  }
+}
+test_result {
+  test_case {
+    test_class: "WidgetHostInstrumentedTest"
+    test_package: "io.github.funnyhell.daymark"
+    test_method: "everyWidget_isDrawnForABoundWidgetId"
+    start_time {
+      seconds: 1795872362
+      nanos: 68000000
+    }
+    end_time {
+      seconds: 1795872401
+      nanos: 78000000
+    }
+    device {
+      id: "emulator-5554"
+      friendly_name: "primary"
+    }
+  }
+  test_status: PASSED
+  output_artifact {
+    label {
+      label: "logcat"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/logcat-io.github.funnyhell.daymark.WidgetHostInstrumentedTest-everyWidget_isDrawnForABoundWidgetId.txt"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/device-info.pb"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.meminfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/meminfo"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.cpuinfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/cpuinfo"
+    }
+  }
+}
+test_result {
+  test_case {
+    test_class: "WidgetRenderInstrumentedTest"
+    test_package: "io.github.funnyhell.daymark"
+    test_method: "allWidgets_composeAndInflate"
+    start_time {
+      seconds: 1795872401
+      nanos: 82000000
+    }
+    end_time {
+      seconds: 1795872407
+      nanos: 133000000
+    }
+    device {
+      id: "emulator-5554"
+      friendly_name: "primary"
+    }
+  }
+  test_status: PASSED
+  output_artifact {
+    label {
+      label: "logcat"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/logcat-io.github.funnyhell.daymark.WidgetRenderInstrumentedTest-allWidgets_composeAndInflate.txt"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/device-info.pb"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.meminfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/meminfo"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.cpuinfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/cpuinfo"
+    }
+  }
+}
+test_result {
+  test_case {
+    test_class: "WidgetRenderInstrumentedTest"
+    test_package: "io.github.funnyhell.daymark"
+    test_method: "weekWidget_drawsSampleHabits"
+    start_time {
+      seconds: 1795872407
+      nanos: 136000000
+    }
+    end_time {
+      seconds: 1795872407
+      nanos: 990000000
+    }
+    device {
+      id: "emulator-5554"
+      friendly_name: "primary"
+    }
+  }
+  test_status: PASSED
+  output_artifact {
+    label {
+      label: "logcat"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/logcat-io.github.funnyhell.daymark.WidgetRenderInstrumentedTest-weekWidget_drawsSampleHabits.txt"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/device-info.pb"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.meminfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/meminfo"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.cpuinfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/cpuinfo"
+    }
+  }
+}
+output_artifact {
+  label {
+    label: "test-results.log"
+    namespace: "com.google.testing.platform.runtime.android.driver.AndroidInstrumentationDriver"
+  }
+  source_path {
+    path: "/home/runner/work/daymark/daymark/app/build/outputs/androidTest-results/connected/debug/emulator-5554 - 14/testlog/test-results.log"
+  }
+  type: TEST_DATA
+  mime_type: "text/plain"
+}

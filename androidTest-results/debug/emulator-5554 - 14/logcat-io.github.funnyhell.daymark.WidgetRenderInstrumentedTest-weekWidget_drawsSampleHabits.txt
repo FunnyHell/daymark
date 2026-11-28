@@ -1,0 +1,23 @@
+11-28 13:26:46.876  5012  5036 I TestRunner: started: weekWidget_drawsSampleHabits(io.github.funnyhell.daymark.WidgetRenderInstrumentedTest)
+11-28 13:26:46.892  5012  5036 I DaymarkReminders: Next alarm at 2026-11-29T00:01:00Z (in 634 min, reminder=false)
+11-28 13:26:46.908  5012  5036 I DaymarkReminders: Next alarm at 2026-11-29T00:01:00Z (in 634 min, reminder=false)
+11-28 13:26:46.953  5012  5036 I DaymarkReminders: Next alarm at 2026-11-29T00:01:00Z (in 634 min, reminder=false)
+11-28 13:26:46.974  5012  5036 I DaymarkReminders: Next alarm at 2026-11-29T00:01:00Z (in 634 min, reminder=false)
+11-28 13:26:46.995  5012  5036 I DaymarkReminders: Next alarm at 2026-11-29T00:01:00Z (in 634 min, reminder=false)
+11-28 13:26:47.021  5012  5036 I DaymarkReminders: Next alarm at 2026-11-29T00:01:00Z (in 634 min, reminder=false)
+11-28 13:26:47.049  5012  5036 I DaymarkReminders: Next alarm at 2026-11-29T00:01:00Z (in 634 min, reminder=false)
+11-28 13:26:47.062  4503  4614 I Bugle   : BroadcastReceiverAsyncWorkTracker: Acknowledging broadcast of bdxy@d5cb6f6
+11-28 13:26:47.063  5707  6016 I PeopleGalProvider: Gal directories started.
+11-28 13:26:47.064  5707  6016 I PeopleGalProvider: Method 1 completed.
+11-28 13:26:47.064  5707  6016 I PeopleGalProvider: Method 1 finished successfully.
+11-28 13:26:47.152   914   914 D StatusBarIconController: ignoring old pipeline callbacks, because the new mobile icons are enabled
+11-28 13:26:47.257   914   976 D EGL_emulation: app_time_stats: avg=36999.69ms min=36999.69ms max=36999.69ms count=1
+11-28 13:26:47.664  1757  2211 W MediaProvider: isAppCloneUserPair for user 0: false
+11-28 13:26:47.665  1757  2211 W MediaProvider: isAppCloneUserPair for user 0: false
+11-28 13:26:47.665  1757  2211 W MediaProvider: isAppCloneUserPair for user 0: false
+11-28 13:26:47.683  5652  6261 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService started execution. cause:9 exec_start_elapsed_seconds: 178 [CONTEXT service_id=218 ]
+11-28 13:26:47.687  5652  6261 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.ipa.base.IpaGcmTaskService finished executing. cause:9 result: 1 elapsed_millis: 6 uptime_millis: 6 exec_start_elapsed_seconds: 178 [CONTEXT service_id=218 ]
+11-28 13:26:47.707  5012  5036 I DaymarkReminders: Next alarm at 2026-11-29T00:01:00Z (in 634 min, reminder=false)
+11-28 13:26:47.720  5012  5036 I DaymarkReminders: Next alarm at 2026-11-29T00:01:00Z (in 634 min, reminder=false)
+11-28 13:26:47.734  5012  5036 I DaymarkReminders: Next alarm at 2026-11-29T00:01:00Z (in 634 min, reminder=false)
+11-28 13:26:47.734  5012  5036 I TestRunner: finished: weekWidget_drawsSampleHabits(io.github.funnyhell.daymark.WidgetRenderInstrumentedTest)

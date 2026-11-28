@@ -1,0 +1,336 @@
+11-28 13:25:36.411  5012  5036 I TestRunner: started: doneFromNotification_countsAndClears(io.github.funnyhell.daymark.IntervalsModuleInstrumentedTest)
+11-28 13:25:36.412  1529  3309 W BpBinder: Large outgoing transaction of 323832 bytes, interface descriptor , code 4
+11-28 13:25:36.421  5012  5036 I UiAutomationPermGranter: Permission: android.permission.POST_NOTIFICATIONS is already granted!
+11-28 13:25:36.425  1863  1863 I A       : Constructor was called
+11-28 13:25:36.430  1677  5482 W putmethod.latin: Accessing hidden method Lcom/android/org/conscrypt/OpenSSLSocketImpl;->getAlpnSelectedProtocol()[B (max-target-q,core-platform-api, reflection, denied)
+11-28 13:25:36.431  1863  1863 I A       : No savedInstanceState.
+11-28 13:25:36.431  1863  1863 I A       : makeRequest: subscribing to new source
+11-28 13:25:36.436  1863  1863 I A       : OnCreate Was Called
+11-28 13:25:36.444  1863  1863 I A       : getMinusOnePromotion
+11-28 13:25:36.445  1677  5482 W putmethod.latin: Accessing hidden method Lcom/android/org/conscrypt/AbstractConscryptSocket;->getAlpnSelectedProtocol()[B (max-target-q, reflection, denied)
+11-28 13:25:36.459  1863  1885 I earchbox:search: JIT allocated 64KB for compiled code of java.lang.Object com.google.android.apps.gsa.binaries.velvet.app.ala.e()
+11-28 13:25:36.477  1863  1885 I earchbox:search: JIT allocated 50KB for compiled code of java.lang.Object com.google.android.apps.gsa.binaries.velvet.app.mw.a()
+11-28 13:25:36.497  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_birthdaydoodle_jar__name to integer.
+11-28 13:25:36.501  1183  1183 W TextView: onProvideContentCaptureStructure(): calling assumeLayout()
+11-28 13:25:36.507  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_call_jar__name to integer.
+11-28 13:25:36.510  1863  1885 I earchbox:search: JIT allocated 65KB for compiled code of java.lang.Object com.google.android.apps.gsa.binaries.velvet.app.ala.d()
+11-28 13:25:36.511  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_canvas_jar__name to integer.
+11-28 13:25:36.511  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_chkpkg_jar__name to integer.
+11-28 13:25:36.511  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_crashtest_jar__name to integer.
+11-28 13:25:36.511  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_dining_jar__name to integer.
+11-28 13:25:36.511  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_doodle_notifications_jar__name to integer.
+11-28 13:25:36.511  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_imageviewer_jar__name to integer.
+11-28 13:25:36.511  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_ipa_jar__name to integer.
+11-28 13:25:36.511  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_jslocation_jar__name to integer.
+11-28 13:25:36.511  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_localintent_jar__name to integer.
+11-28 13:25:36.511  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_messaging_jar__name to integer.
+11-28 13:25:36.511  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_nativesrp_activity_jar__name to integer.
+11-28 13:25:36.511  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_nativesrp_presenter_jar__name to integer.
+11-28 13:25:36.511  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_nowcontent_jar__name to integer.
+11-28 13:25:36.511  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_recents_activity_jar__name to integer.
+11-28 13:25:36.511  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_save_jar__name to integer.
+11-28 13:25:36.512  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_searchresults_activity_jar__name to integer.
+11-28 13:25:36.512  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_test_jar__name to integer.
+11-28 13:25:36.512  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_weather_jar__name to integer.
+11-28 13:25:36.512  1863  2383 W A       : Can't format flag bindle_flags__bloblobber_blob to integer.
+11-28 13:25:36.512  1863  2383 W A       : Can't format flag bindle_flags__velour_jar to integer.
+11-28 13:25:36.524  1863  2581 I A       : #enqueuePeriodicJob: running = false
+11-28 13:25:36.525  1863  2581 I A       : #scheduledRefresh: enable_prod_refresh is true but we have no valid refresh schedule
+11-28 13:25:36.528  1776  2154 I AiAiEcho: Predicting[0]:
+11-28 13:25:36.528  1776  2154 I AiAiEcho: EchoTargets:
+11-28 13:25:36.528  1776  2154 I AiAiEcho: Filtered by AiAi flag check:
+11-28 13:25:36.534  1776  2154 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata:
+11-28 13:25:36.535  1776  2154 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+11-28 13:25:36.537   547  1834 W AppSearchIcing: icing-search-engine.cc:283: Error: 5, Message: Document (com.google.android.googlequicksearchbox$OneSearchZeroStateGoogleSuggestions/default, zp) not found.
+11-28 13:25:36.539  1183  2619 D OneSearchSuggestProvider: Created the binder channel successfully for end point service =com.google.android.apps.search.googleapp.search.suggest.plugins.onesearch.server.OneSearchSuggestService , mChannel=z1{delegate=s1{logId=9, target=directaddress:///AndroidComponentAddress%5BIntent%20%7B%20act=grpc.io.action.BIND%20cmp=com.google.android.googlequicksearchbox/com.google.android.apps.search.googleapp.search.suggest.plugins.onesearch.server.OneSearchSuggestService%20%7D%5D}} , mOneSearchConnection=X1.T@a7636f
+11-28 13:25:36.549  1863  2574 I A       : loading data on surface MinusOne.
+11-28 13:25:36.568  1863  2387 W A       : Didn't find the session (MAIN_FEED, true)
+11-28 13:25:36.597  1529  3351 W ChimeraUtils: Module com.google.android.gms.nearby_en missing resource null(0)
+11-28 13:25:36.604  1529  3351 W ChimeraUtils: Module com.google.android.gms.nearby_en missing resource null(0)
+11-28 13:25:36.612  1863  1863 I A       : onApplyWindowInsets: systemWindowInsets=Insets{left=0, top=128, right=0, bottom=63}
+11-28 13:25:36.612  1863  1863 I A       : onApplyWindowInsets: systemWindowInsets=Insets{left=0, top=128, right=0, bottom=63}
+11-28 13:25:36.626   547   569 W system_server: Long monitor contention with owner android.anim (570) at void com.android.server.wm.WindowSurfacePlacer$Traverser.run()(WindowSurfacePlacer.java:58) waiters=0 in void com.android.server.wm.WindowManagerService$H.handleMessage(android.os.Message) for 115ms
+11-28 13:25:36.639  1529  5111 I bwir    : updateFromConfigurations using legacy put method [CONTEXT service_id=204 ]
+11-28 13:25:36.653  1863  2387 W A       : Didn't find the session (MAIN_FEED, false)
+11-28 13:25:36.655  4503  4622 I BugleRcsProvisioning: BugleSystemBindingManager: onBuglePhenotypeFlagChanged
+11-28 13:25:36.656  4503  4622 I BugleTransport: onBuglePhenotypeFlagChanged: kicking off updateActiveTransport
+11-28 13:25:36.662  4503  4623 W BugleAction: Null config in BugleSharedPrefs
+11-28 13:25:36.662  4503  4623 W BugleAction: Failed to get msisdn from Bugle
+11-28 13:25:36.662  4503  4623 W BugleAction: Failed to get msisdn from RcsProfileService
+11-28 13:25:36.662  4503  4623 W BugleAction: cksi: Jibe SDK Service not available. Is the Jibe SDK service running? Did you call connect() and wait for the notification before calling an API function?
+11-28 13:25:36.662  4503  4623 W BugleAction: 	at cksa.b(PG:2)
+11-28 13:25:36.662  4503  4623 W BugleAction: 	at com.google.android.rcs.client.profile.RcsProfileService.g(PG:1)
+11-28 13:25:36.662  4503  4623 W BugleAction: 	at com.google.android.rcs.client.profile.RcsProfileService.getMsisdn(PG:3)
+11-28 13:25:36.662  4503  4623 W BugleAction: 	at awsw.aj(PG:17)
+11-28 13:25:36.662  4503  4623 W BugleAction: 	at awsw.z(PG:2)
+11-28 13:25:36.662  4503  4623 W BugleAction: 	at aule.k(PG:1)
+11-28 13:25:36.662  4503  4623 W BugleAction: 	at aulc.call(Unknown Source:2)
+11-28 13:25:36.662  4503  4623 W BugleAction: 	at cnsg.a(PG:1)
+11-28 13:25:36.662  4503  4623 W BugleAction: 	at cnpm.a(PG:3)
+11-28 13:25:36.662  4503  4623 W BugleAction: 	at ctfv.a(PG:1)
+11-28 13:25:36.662  4503  4623 W BugleAction: 	at ctet.run(PG:4)
+11-28 13:25:36.662  4503  4623 W BugleAction: 	at ctfx.run(PG:1)
+11-28 13:25:36.662  4503  4623 W BugleAction: 	at bxfd.run(PG:1)
+11-28 13:25:36.662  4503  4623 W BugleAction: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-28 13:25:36.662  4503  4623 W BugleAction: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-28 13:25:36.662  4503  4623 W BugleAction: 	at bxef.run(PG:2)
+11-28 13:25:36.662  4503  4623 W BugleAction: 	at java.lang.Thread.run(Thread.java:1012)
+11-28 13:25:36.662  4503  4623 W BugleAction: 	at bxfj.run(PG:5)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: Bugle: SubscriptionMetadataUtils get: unexpected subId = -2, replacing with -1
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: cpwb: FULL
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at bdsy.h(PG:6)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at bdvp.a(PG:1)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at bgit.<init>(PG:1)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at bgiu.a(PG:1)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at awsw.ai(PG:3)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at awsw.aj(PG:25)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at awsw.z(PG:2)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at aule.k(PG:1)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at aulc.call(Unknown Source:2)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at cnsg.a(PG:1)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at cnpm.a(PG:3)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at ctfv.a(PG:1)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at ctet.run(PG:4)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at ctfx.run(PG:1)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at bxfd.run(PG:1)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at bxef.run(PG:2)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at java.lang.Thread.run(Thread.java:1012)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at bxfj.run(PG:5)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: Bugle: SubscriptionMetadataUtils get: unexpected subId = -2, replacing with -1
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: cpwb: FULL
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at bdsy.h(PG:6)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at bgit.<init>(PG:2)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at bgiu.a(PG:1)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at awsw.ai(PG:3)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at awsw.aj(PG:25)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at awsw.z(PG:2)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at aule.k(PG:1)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at aulc.call(Unknown Source:2)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at cnsg.a(PG:1)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at cnpm.a(PG:3)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at ctfv.a(PG:1)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at ctet.run(PG:4)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at ctfx.run(PG:1)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at bxfd.run(PG:1)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at bxef.run(PG:2)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at java.lang.Thread.run(Thread.java:1012)
+11-28 13:25:36.662  4503  4623 W SubscriptionMetadataUti: 	at bxfj.run(PG:5)
+11-28 13:25:36.663  4503  4623 W SubscriptionMetadataUti: Bugle: SubscriptionMetadataUtils get: unexpected subId = -2, replacing with -1
+11-28 13:25:36.663  4503  4623 W SubscriptionMetadataUti: cpwb: FULL
+11-28 13:25:36.663  4503  4623 W SubscriptionMetadataUti: 	at bdsy.h(PG:6)
+11-28 13:25:36.663  4503  4623 W SubscriptionMetadataUti: 	at awsw.ai(PG:18)
+11-28 13:25:36.663  4503  4623 W SubscriptionMetadataUti: 	at awsw.aj(PG:25)
+11-28 13:25:36.663  4503  4623 W SubscriptionMetadataUti: 	at awsw.z(PG:2)
+11-28 13:25:36.663  4503  4623 W SubscriptionMetadataUti: 	at aule.k(PG:1)
+11-28 13:25:36.663  4503  4623 W SubscriptionMetadataUti: 	at aulc.call(Unknown Source:2)
+11-28 13:25:36.663  4503  4623 W SubscriptionMetadataUti: 	at cnsg.a(PG:1)
+11-28 13:25:36.663  4503  4623 W SubscriptionMetadataUti: 	at cnpm.a(PG:3)
+11-28 13:25:36.663  4503  4623 W SubscriptionMetadataUti: 	at ctfv.a(PG:1)
+11-28 13:25:36.663  4503  4623 W SubscriptionMetadataUti: 	at ctet.run(PG:4)
+11-28 13:25:36.663  4503  4623 W SubscriptionMetadataUti: 	at ctfx.run(PG:1)
+11-28 13:25:36.663  4503  4623 W SubscriptionMetadataUti: 	at bxfd.run(PG:1)
+11-28 13:25:36.663  4503  4623 W SubscriptionMetadataUti: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-28 13:25:36.663  4503  4623 W SubscriptionMetadataUti: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-28 13:25:36.663  4503  4623 W SubscriptionMetadataUti: 	at bxef.run(PG:2)
+11-28 13:25:36.663  4503  4623 W SubscriptionMetadataUti: 	at java.lang.Thread.run(Thread.java:1012)
+11-28 13:25:36.663  4503  4623 W SubscriptionMetadataUti: 	at bxfj.run(PG:5)
+11-28 13:25:36.663  4503  4623 I Bugle   : SubscriptionUtilsAsOfLMR1: getActiveSubscriptionInfo(): empty sub info for subscription{id:-1}
+11-28 13:25:36.663  4503  4623 I Bugle   : SubscriptionUtilsAsOfLMR1: getActiveSubscriptionInfo(): empty sub info for subscription{id:-1}
+11-28 13:25:36.663  4503  4623 W Bugle   : SubscriptionUtilsAsOfLMR1: getSelfRawNumber: subInfo is null for subscription{id:-1}
+11-28 13:25:36.664  4503  5139 I BugleRcsEngine: [104] brnl.h: RCS Configuration storage in Bugle is disabled by p/h flag, using ProvisioningEngineStateCacheUtil.getProvisioningConfigurationForGivenSimIfExist()
+11-28 13:25:36.666  1863  2581 W A       : RenderableStreamDataSource#loadData - failed precheck
+11-28 13:25:36.666  1863  2581 W A       : DiscoverPrecheckException(precheckFailureReason=com.google.android.apps.search.googleapp.discover.w.a.c@78e1ac7)
+11-28 13:25:36.666  1863  2581 W A       : 	at com.google.android.apps.search.googleapp.discover.w.bb.d(PG:16)
+11-28 13:25:36.666  1863  2581 W A       : 	at com.google.android.apps.search.googleapp.discover.w.ap.invokeSuspend(PG:5)
+11-28 13:25:36.666  1863  2581 W A       : 	at com.google.android.apps.search.googleapp.discover.w.ap.invoke(PG:1)
+11-28 13:25:36.666  1863  2581 W A       : 	at kotlinx.coroutines.f.b.a(PG:1)
+11-28 13:25:36.666  1863  2581 W A       : 	at kotlinx.coroutines.m.a(PG:11)
+11-28 13:25:36.666  1863  2581 W A       : 	at com.google.android.apps.search.googleapp.discover.v.bb.f(PG:2)
+11-28 13:25:36.666  1863  2581 W A       : 	at com.google.android.apps.search.googleapp.discover.v.bb.d(PG:15)
+11-28 13:25:36.666  1863  2581 W A       : 	at com.google.android.apps.search.googleapp.discover.v.an.invokeSuspend(PG:1)
+11-28 13:25:36.666  1863  2581 W A       : 	at i.c.b.a.a.resumeWith(PG:4)
+11-28 13:25:36.666  1863  2581 W A       : 	at kotlinx.coroutines.bk.run(PG:14)
+11-28 13:25:36.666  1863  2581 W A       : 	at com.google.apps.tiktok.coroutines.f.run(PG:1)
+11-28 13:25:36.666  1863  2581 W A       : 	at com.google.android.libraries.i.ae.run(PG:1)
+11-28 13:25:36.666  1863  2581 W A       : 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-28 13:25:36.666  1863  2581 W A       : 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-28 13:25:36.666  1863  2581 W A       : 	at com.google.android.libraries.i.k.run(PG:2)
+11-28 13:25:36.666  1863  2581 W A       : 	at com.google.android.libraries.i.p.run(PG:4)
+11-28 13:25:36.666  1863  2581 W A       : 	at java.lang.Thread.run(Thread.java:1012)
+11-28 13:25:36.669  4503  4621 W BugleRcsEngine: [53] bpxc.w: Unable to send diagnostic log
+11-28 13:25:36.672  4503  5138 I BugleTransport: isChatAvailable: RcsAvailability is DISABLED_VIA_GSERVICES (RCS is disabled for this carrier by Google)
+11-28 13:25:36.674  1863  1863 I A       : Created gRPC endpoint to "search" for service class com.google.android.apps.search.googleapp.search.suggest.plugins.onesearch.server.OneSearchSuggestService
+11-28 13:25:36.681   547   566 I GnssBlocklistHelper: Update GNSS satellite blocklist:
+11-28 13:25:36.684   914   976 D EGL_emulation: app_time_stats: avg=5430.48ms min=5430.48ms max=5430.48ms count=1
+11-28 13:25:36.722  4503  4623 W BugleAction: No default number, returning empty msisdn
+11-28 13:25:36.723  4503  4610 I BugleTransport: updateActiveTransport: refreshing chat transport
+11-28 13:25:36.724  4503  4610 I BugleTransport: refreshChatTransport: isChatAvailable: false, enabledTransport: 1, configuration: <empty>
+11-28 13:25:36.725  4503  4610 I RcsClientLib: Connecting RcsEngineLifecycleService
+11-28 13:25:36.741   547   547 D FlashNotifController: requestStartFlashNotification
+11-28 13:25:36.741   547   547 I FlashNotifController: startFlashNotification: type=1, tag=android
+11-28 13:25:36.741   547   547 D FlashNotifController: Flash notification is disabled
+11-28 13:25:36.766  1863  1863 I A       : StreamFragmentPeer#onPending
+11-28 13:25:36.767  1863  1863 I A       : #fetchAndStoreData() on surface MinusOne.
+11-28 13:25:36.768  1863  2581 W A       : Fetch failed. Renderable stream failure reason: USER_SIGNED_OUT
+11-28 13:25:36.768  1863  2581 W A       : DiscoverPrecheckException(precheckFailureReason=com.google.android.apps.search.googleapp.discover.w.a.c@78e1ac7)
+11-28 13:25:36.768  1863  2581 W A       : 	at com.google.android.apps.search.googleapp.discover.w.bb.d(PG:16)
+11-28 13:25:36.768  1863  2581 W A       : 	at com.google.android.apps.search.googleapp.discover.w.ax.invokeSuspend(PG:5)
+11-28 13:25:36.768  1863  2581 W A       : 	at com.google.android.apps.search.googleapp.discover.w.ax.invoke(PG:1)
+11-28 13:25:36.768  1863  2581 W A       : 	at kotlinx.coroutines.f.b.a(PG:1)
+11-28 13:25:36.768  1863  2581 W A       : 	at kotlinx.coroutines.m.a(PG:11)
+11-28 13:25:36.768  1863  2581 W A       : 	at com.google.android.apps.search.googleapp.discover.w.bb.c(PG:2)
+11-28 13:25:36.768  1863  2581 W A       : 	at com.google.android.apps.search.googleapp.discover.v.am.invokeSuspend(PG:5)
+11-28 13:25:36.768  1863  2581 W A       : 	at com.google.android.apps.search.googleapp.discover.v.am.invoke(PG:1)
+11-28 13:25:36.768  1863  2581 W A       : 	at kotlinx.coroutines.f.b.a(PG:1)
+11-28 13:25:36.768  1863  2581 W A       : 	at kotlinx.coroutines.m.a(PG:11)
+11-28 13:25:36.768  1863  2581 W A       : 	at com.google.android.apps.search.googleapp.discover.v.al.invokeSuspend(PG:4)
+11-28 13:25:36.768  1863  2581 W A       : 	at i.c.b.a.a.resumeWith(PG:4)
+11-28 13:25:36.768  1863  2581 W A       : 	at kotlinx.coroutines.bk.run(PG:14)
+11-28 13:25:36.768  1863  2581 W A       : 	at com.google.apps.tiktok.coroutines.f.run(PG:1)
+11-28 13:25:36.768  1863  2581 W A       : 	at com.google.android.libraries.i.ae.run(PG:1)
+11-28 13:25:36.768  1863  2581 W A       : 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-28 13:25:36.768  1863  2581 W A       : 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-28 13:25:36.768  1863  2581 W A       : 	at com.google.android.libraries.i.k.run(PG:2)
+11-28 13:25:36.768  1863  2581 W A       : 	at com.google.android.libraries.i.p.run(PG:4)
+11-28 13:25:36.768  1863  2581 W A       : 	at java.lang.Thread.run(Thread.java:1012)
+11-28 13:25:36.780  1863  2386 I A       : Refusing EXCLUSIVE task 24, it is already pending. Try again in 315 seconds.
+11-28 13:25:36.786   914   976 D EGL_emulation: app_time_stats: avg=12239.78ms min=12239.78ms max=12239.78ms count=1
+11-28 13:25:36.809  1863  2382 I FedAssExpListener: Fed-ass not supported for signed out users.
+11-28 13:25:36.809  1863  2382 I FedAssExpListener: Successfully processed experiments changed.
+11-28 13:25:36.809  1863  2382 I A       : NGA disabled since it's running Panthera and at least one a11y feature is on.
+11-28 13:25:36.815  1863  2386 I OpaEligibilityChecker: send OpaEligibilityChange broadcast to CommonBroadcastReceiver
+11-28 13:25:36.816  1776  2416 W AiAiEcho: LyftNotificationParser Ridesharing ETA not enabled
+11-28 13:25:36.816  1776  2416 W AiAiEcho: SmartspaceNotificationPredictor no parser can handle this notification or notification is invalid
+11-28 13:25:36.819  5141  5208 D CompatibilityChangeReporter: Compat change id reported: 150939131; UID 10131; state: ENABLED
+11-28 13:25:36.829  1863  1863 W A       : Failed RenderableStream callback; SubscriptionCallbacks#onError(Throwable) called.
+11-28 13:25:36.829  1863  1863 W A       : com.google.android.apps.search.googleapp.discover.v.i: DiscoverPrecheckException(precheckFailureReason=com.google.android.apps.search.googleapp.discover.w.a.c@78e1ac7)
+11-28 13:25:36.829  1863  1863 W A       : 	at com.google.android.apps.search.googleapp.discover.v.ak.a(PG:1)
+11-28 13:25:36.829  1863  1863 W A       : 	at com.google.android.apps.search.googleapp.discover.v.am.invokeSuspend(PG:17)
+11-28 13:25:36.829  1863  1863 W A       : 	at com.google.android.apps.search.googleapp.discover.v.am.invoke(PG:1)
+11-28 13:25:36.829  1863  1863 W A       : 	at kotlinx.coroutines.f.b.a(PG:1)
+11-28 13:25:36.829  1863  1863 W A       : 	at kotlinx.coroutines.m.a(PG:11)
+11-28 13:25:36.829  1863  1863 W A       : 	at com.google.android.apps.search.googleapp.discover.v.al.invokeSuspend(PG:4)
+11-28 13:25:36.829  1863  1863 W A       : 	at i.c.b.a.a.resumeWith(PG:4)
+11-28 13:25:36.829  1863  1863 W A       : 	at kotlinx.coroutines.bk.run(PG:14)
+11-28 13:25:36.829  1863  1863 W A       : 	at com.google.apps.tiktok.coroutines.f.run(PG:1)
+11-28 13:25:36.829  1863  1863 W A       : 	at com.google.android.libraries.i.ae.run(PG:1)
+11-28 13:25:36.829  1863  1863 W A       : 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-28 13:25:36.829  1863  1863 W A       : 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-28 13:25:36.829  1863  1863 W A       : 	at com.google.android.libraries.i.k.run(PG:2)
+11-28 13:25:36.829  1863  1863 W A       : 	at com.google.android.libraries.i.p.run(PG:4)
+11-28 13:25:36.829  1863  1863 W A       : 	at java.lang.Thread.run(Thread.java:1012)
+11-28 13:25:36.829  1863  1863 W A       : Caused by: DiscoverPrecheckException(precheckFailureReason=com.google.android.apps.search.googleapp.discover.w.a.c@78e1ac7)
+11-28 13:25:36.829  1863  1863 W A       : 	at com.google.android.apps.search.googleapp.discover.w.bb.d(PG:16)
+11-28 13:25:36.829  1863  1863 W A       : 	at com.google.android.apps.search.googleapp.discover.w.ax.invokeSuspend(PG:5)
+11-28 13:25:36.829  1863  1863 W A       : 	at com.google.android.apps.search.googleapp.discover.w.ax.invoke(PG:1)
+11-28 13:25:36.829  1863  1863 W A       : 	at kotlinx.coroutines.f.b.a(PG:1)
+11-28 13:25:36.829  1863  1863 W A       : 	at kotlinx.coroutines.m.a(PG:11)
+11-28 13:25:36.829  1863  1863 W A       : 	at com.google.android.apps.search.googleapp.discover.w.bb.c(PG:2)
+11-28 13:25:36.829  1863  1863 W A       : 	at com.google.android.apps.search.googleapp.discover.v.am.invokeSuspend(PG:5)
+11-28 13:25:36.829  1863  1863 W A       : 	... 13 more
+11-28 13:25:36.834  1529  3978 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.phenotype.service.sync.PhenotypeConfigurator finished executing. cause:5 result: 1 elapsed_millis: 9124 uptime_millis: 9124 exec_start_elapsed_seconds: 98 [CONTEXT service_id=218 ]
+11-28 13:25:36.835  4503  4598 I BugleRcsEngine: [41] bptz.run: SystemBindingManager: SystemBinding enabled: true
+11-28 13:25:36.836   547   561 I ImeTracker: com.google.android.apps.nexuslauncher:9dce5620: onRequestHide at ORIGIN_SERVER_HIDE_INPUT reason HIDE_UNSPECIFIED_WINDOW
+11-28 13:25:36.836   547   561 I ImeTracker: com.google.android.apps.nexuslauncher:9dce5620: onCancelled at PHASE_SERVER_SHOULD_HIDE
+11-28 13:25:36.842  4503  4610 W RcsClientLib: No CS.apk RCS service found. Is RCS running in Bugle?
+11-28 13:25:36.848  1677  1677 I GoogleInputMethodService: GoogleInputMethodService.onFinishInput():3227
+11-28 13:25:36.849  1677  1677 I GoogleInputMethodService: GoogleInputMethodService.updateDeviceLockedStatus():2087 repeatCheckTimes = 0, unlocked = true
+11-28 13:25:36.874  1677  1677 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1877 onStartInput(EditorInfo{inputType=0x0(NULL) imeOptions=0x0 privateImeOptions=null actionName=UNSPECIFIED actionLabel=null actionId=0 initialSelStart=-1 initialSelEnd=-1 initialCapsMode=0x0 hintText=null label=null packageName=com.google.android.apps.nexuslauncher fieldId=0 fieldName=null extras=null}, false)
+11-28 13:25:36.874  1677  1677 I GoogleInputMethodService: GoogleInputMethodService.shouldHideHeaderOnInitialState():4008 ShouldHideHeaderOnInitialState = false
+11-28 13:25:36.875  1677  1677 I GoogleInputMethodService: GoogleInputMethodService.updateDeviceLockedStatus():2087 repeatCheckTimes = 2, unlocked = true
+11-28 13:25:36.875  1863  1863 W View    : requestLayout() improperly called by android.widget.FrameLayout{589ba8e V.E...... ......ID 0,0-1080,525 #7f0b0fee app:id/googleapp_discover_header_container} during layout: running second layout pass
+11-28 13:25:36.962   914   975 D LocalImageResolver: Couldn't use ImageDecoder for drawable, falling back to non-resized load.
+11-28 13:25:36.977  1677  2019 I SP.FP   : Fetched file delight:main_en_840_2022102600_1.fst-decompress.fetched is found with 762074 bytes, expected: 20290852, will resume fetching with  partial file.
+11-28 13:25:36.992   914   975 D LocalImageResolver: Couldn't use ImageDecoder for drawable, falling back to non-resized load.
+11-28 13:25:36.995  1677  2019 I SP      : Scheduling: download registered, 0 started, 0 paused, 0 scheduled, 1 pending: delight:main_en_840_2022102600_1 @ {m:b:u:l, fg}
+11-28 13:25:37.013  1677  2019 I SP      : Successfully got manifest for content_cache-manifest: manifests:content_cache-2022112214
+11-28 13:25:37.026  1677  2019 I SP      : Successfully got manifest for kc_tflite_model-manifest: manifests:kc_tflite_model-20220919
+11-28 13:25:37.090   486   986 D NuPlayerDriver: NuPlayerDriver(0x7895dd48d310) created, clientPid(914)
+11-28 13:25:37.092   156   156 I hwservicemanager: getTransport: Cannot find entry android.hardware.media.omx@1.0::IOmx/default in either framework or device VINTF manifest.
+11-28 13:25:37.093   486   986 D MediaPlayerService: OMX service is not available
+11-28 13:25:37.107  5221  5255 I PhenotypeBackgroundRecv: Successfully updated snapshot for com.google.android.libraries.consentverifier#com.google.android.googlequicksearchbox
+11-28 13:25:37.109  5012  5040 I DaymarkReminders: Next alarm at 2026-11-29T00:01:00Z (in 635 min, reminder=false)
+11-28 13:25:37.113  5221  5221 I PhenotypeBackgroundRecv: Skipping assistant_auto_tng_libraries_device#com.google.android.googlequicksearchbox which doesn't use ProcessStable flags.
+11-28 13:25:37.117  1863  1863 I A       : Refusing EXCLUSIVE task 21, it is already pending. Try again in 358 seconds.
+11-28 13:25:37.119  4503  4598 I BugleRcsEngine: [41] bpua.b: System Binding updated
+11-28 13:25:37.120  4503  4623 W BugleRcsEngine: [56] bpxc.w: Unable to send diagnostic log
+11-28 13:25:37.120  4503  4610 I RcsClientLib: shouldUseCarrierServicesJibeService: false, CarrierServices rcs service found: false
+11-28 13:25:37.134  4503  4622 I RcsClientLib: com.google.android.rcs.client.lifecycle.RcsEngineLifecycleService connected
+11-28 13:25:37.138  5141  5156 I BugleRcsEngine: [37] RcsEngineImpl.triggerStopRcsStack: RcsEngineImpl[DUAL_REG]:[a62ba709-b4ca]: triggerStopRcsStack for msisdn:redacted-pii:phone_number[chars:0,last2:]
+11-28 13:25:37.152   486  5541 D GenericSource: FileSource remote
+11-28 13:25:37.169  1677  2019 I SP      : Sync for bundled_delight succeeded in 2800 ms: no changes
+11-28 13:25:37.170  1677  2019 I EmojiSlicingStrategy: EmojiSlicingStrategy.matchEnabledLocalesWithPackLocales():127 matchEnabledLocalesWithPackLocales() : User enabled 1 locales; returning 1 slices
+11-28 13:25:37.170  1677  2019 I SP      : Syncing bundled_emoji (2023020111) with slices: [{7b9ddb0b8c001e17cee03b1edf554b20, m:*:*:*}], metadata: false
+11-28 13:25:37.170  1677  2019 I SP      : Requesting download of URL https://www.gstatic.com/android/keyboard/modelpack/transformer_expression/2023012522/superpacks_manifest.json to transformer_expression-2023012522.fetched (constraints: m:b:u:l)
+11-28 13:25:37.171  1677  2019 I SP      : GC for 'delight' (10) with ttl of 0 ms took 0 ms (0/0/0)
+11-28 13:25:37.171  1677  1770 I AbstractSyncResultCallback: AbstractSyncResultCallback.onFailure():36 onFailure(): delight.sync cancelled; expected if new request supersedes pending one.
+11-28 13:25:37.171  1677  2019 I SP      : GC for 'delight' (10) with ttl of 0 ms took 0 ms (0/0/0)
+11-28 13:25:37.171  1677  1763 I AbstractSyncResultCallback: AbstractSyncResultCallback.onFailure():36 onFailure(): delight.sync cancelled; expected if new request supersedes pending one.
+11-28 13:25:37.172  1677  2019 I SP      : GC for 'bundled_delight' (10) with ttl of 0 ms took 0 ms (0/0/0)
+11-28 13:25:37.172  1677  2019 I LmManager: LmManager$1.onSuccess():76 Bundled delight sync success
+11-28 13:25:37.260  5141  5266 I BugleRcsEngine: [85] brqh.handleMessage: RcsEngineImpl[DUAL_REG]:[a62ba709-b4ca]>Handler: handleMessage processing message:[STOP_RCS_STACK] with [non-null]:RcsEngineImpl reference
+11-28 13:25:37.260  5141  5266 I BugleRcsEngine: [85] brqh.handleMessage: RcsEngineImpl[DUAL_REG]:[a62ba709-b4ca]>Handler: RCS engine STOP RCS stack
+11-28 13:25:37.262  1677  2019 I SP      : Successfully got manifest for next-word-predictor-manifest: manifests:next-word-predictor-20230317
+11-28 13:25:37.263  5141  5266 W BugleRcsEngine: [85] RcsEngineImpl.e: RcsEngineImpl[DUAL_REG]:[a62ba709-b4ca]: imsModule is null, shutdown not required
+11-28 13:25:37.263  5141  5266 I BugleRcsEngine: [85] RcsEngineImpl.stopRcsStackInternal: RcsEngineImpl[DUAL_REG]:[a62ba709-b4ca]: skipping imsModule.stop
+11-28 13:25:37.263  5141  5266 I BugleRcsEngine: [85] brqh.handleMessage: RcsEngineImpl[DUAL_REG]:[a62ba709-b4ca]>Handler: handleMessage processing message:[NOTIFY_UPTIME_IGNORE_STATE_CHANGED] with [non-null]:RcsEngineImpl reference
+11-28 13:25:37.294  1677  2019 I AbstractSyncResultCallback: AbstractSyncResultCallback.onFailure():36 onFailure(): delight.sync cancelled; expected if new request supersedes pending one.
+11-28 13:25:37.294  1677  2019 I AbstractSyncResultCallback: AbstractSyncResultCallback.onFailure():36 onFailure(): delight.sync cancelled; expected if new request supersedes pending one.
+11-28 13:25:37.360  1862  2753 W YouTubeMusic: Could not register for notifications with InnerTube:
+11-28 13:25:37.360  1862  2753 W YouTubeMusic: abqx: zvm: Precondition check failed.
+11-28 13:25:37.360  1862  2753 W YouTubeMusic: 	at abqn.apply(Unknown Source:4)
+11-28 13:25:37.360  1862  2753 W YouTubeMusic: 	at yyi.r(PG:5)
+11-28 13:25:37.360  1862  2753 W YouTubeMusic: 	at yyi.b(PG:2)
+11-28 13:25:37.360  1862  2753 W YouTubeMusic: 	at abqp.d(PG:4)
+11-28 13:25:37.360  1862  2753 W YouTubeMusic: 	at agsb.c(PG:63)
+11-28 13:25:37.360  1862  2753 W YouTubeMusic: 	at agsb.j(PG:38)
+11-28 13:25:37.360  1862  2753 W YouTubeMusic: 	at agsb.d(PG:3)
+11-28 13:25:37.360  1862  2753 W YouTubeMusic: 	at agrz.run(Unknown Source:2)
+11-28 13:25:37.360  1862  2753 W YouTubeMusic: 	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:487)
+11-28 13:25:37.360  1862  2753 W YouTubeMusic: 	at java.util.concurrent.FutureTask.run(FutureTask.java:264)
+11-28 13:25:37.360  1862  2753 W YouTubeMusic: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-28 13:25:37.360  1862  2753 W YouTubeMusic: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-28 13:25:37.360  1862  2753 W YouTubeMusic: 	at smg.run(PG:2)
+11-28 13:25:37.360  1862  2753 W YouTubeMusic: 	at java.lang.Thread.run(Thread.java:1012)
+11-28 13:25:37.360  1862  2753 W YouTubeMusic: 	at snu.run(PG:5)
+11-28 13:25:37.360  1862  2753 W YouTubeMusic: Caused by: zvm: Precondition check failed.
+11-28 13:25:37.360  1862  2753 W YouTubeMusic: 	at abpb.e(PG:5)
+11-28 13:25:37.360  1862  2753 W YouTubeMusic: 	at zhp.f(PG:1)
+11-28 13:25:37.360  1862  2753 W YouTubeMusic: 	at zhp.e(PG:1)
+11-28 13:25:37.360  1862  2753 W YouTubeMusic: 	at zgl.run(PG:19)
+11-28 13:25:37.360  1862  2753 W YouTubeMusic: 	at aosb.run(PG:3)
+11-28 13:25:37.360  1862  2753 W YouTubeMusic: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-28 13:25:37.360  1862  2753 W YouTubeMusic: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-28 13:25:37.360  1862  2753 W YouTubeMusic: 	at yxr.run(PG:11)
+11-28 13:25:37.360  1862  2753 W YouTubeMusic: 	at java.lang.Thread.run(Thread.java:1012)
+11-28 13:25:37.360  1862  2753 W YouTubeMusic: Caused by: efc
+11-28 13:25:37.360  1862  2753 W YouTubeMusic: 	at zgl.run(PG:13)
+11-28 13:25:37.360  1862  2753 W YouTubeMusic: 	... 5 more
+11-28 13:25:37.380  4503  4614 I RcsClientLib: Disconnecting RcsEngineLifecycleService
+11-28 13:25:37.402  5141  5152 I s.messaging:rcs: Background concurrent copying GC freed 102889(4956KB) AllocSpace objects, 24(940KB) LOS objects, 49% free, 3472KB/6944KB, paused 37us,14us total 221.860ms
+11-28 13:25:37.421   547   561 W system_server: Long monitor contention with owner binder:547_20 (2621) at void com.android.server.wm.WindowManagerService.onAnimationFinished()(WindowManagerService.java:8599) waiters=0 in int com.android.server.wm.WindowManagerService$LocalService.getDisplayIdForWindow(android.os.IBinder) for 137ms
+11-28 13:25:37.464  5141  5266 I BugleRcsEngine: [85] brnl.h: RCS Configuration storage in Bugle is disabled by p/h flag, using ProvisioningEngineStateCacheUtil.getProvisioningConfigurationForGivenSimIfExist()
+11-28 13:25:37.482  1863  2386 W CorpusConfigHelper: Invalid input from icing corpus JSON flag.
+11-28 13:25:37.482  1863  2386 W CorpusConfigHelper: android.util.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 123 column 2
+11-28 13:25:37.482  1863  2386 W CorpusConfigHelper: 	at android.util.JsonReader.syntaxError(JsonReader.java:1162)
+11-28 13:25:37.482  1863  2386 W CorpusConfigHelper: 	at android.util.JsonReader.checkLenient(JsonReader.java:840)
+11-28 13:25:37.482  1863  2386 W CorpusConfigHelper: 	at android.util.JsonReader.nextInArray(JsonReader.java:615)
+11-28 13:25:37.482  1863  2386 W CorpusConfigHelper: 	at android.util.JsonReader.peek(JsonReader.java:345)
+11-28 13:25:37.482  1863  2386 W CorpusConfigHelper: 	at android.util.JsonReader.hasNext(JsonReader.java:321)
+11-28 13:25:37.482  1863  2386 W CorpusConfigHelper: 	at com.google.android.apps.gsa.searchbox.c.b.b.k.c(PG:7)
+11-28 13:25:37.482  1863  2386 W CorpusConfigHelper: 	at com.google.android.apps.gsa.searchbox.c.b.b.j.a(Unknown Source:2)
+11-28 13:25:37.482  1863  2386 W CorpusConfigHelper: 	at com.google.android.apps.gsa.search.core.i.r.run(PG:5)
+11-28 13:25:37.482  1863  2386 W CorpusConfigHelper: 	at com.google.android.libraries.gsa.k.a.h.run(PG:2)
+11-28 13:25:37.482  1863  2386 W CorpusConfigHelper: 	at com.google.android.apps.gsa.shared.util.c.a.cf.b(PG:1)
+11-28 13:25:37.482  1863  2386 W CorpusConfigHelper: 	at com.google.android.apps.gsa.shared.util.c.a.ci.run(PG:1)
+11-28 13:25:37.482  1863  2386 W CorpusConfigHelper: 	at com.google.android.libraries.i.ae.run(PG:1)
+11-28 13:25:37.482  1863  2386 W CorpusConfigHelper: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-28 13:25:37.482  1863  2386 W CorpusConfigHelper: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-28 13:25:37.482  1863  2386 W CorpusConfigHelper: 	at com.google.android.libraries.i.k.run(PG:2)
+11-28 13:25:37.482  1863  2386 W CorpusConfigHelper: 	at com.google.android.libraries.i.p.run(PG:4)
+11-28 13:25:37.482  1863  2386 W CorpusConfigHelper: 	at java.lang.Thread.run(Thread.java:1012)
+11-28 13:25:37.501  5012  5036 I TestRunner: finished: doneFromNotification_countsAndClears(io.github.funnyhell.daymark.IntervalsModuleInstrumentedTest)

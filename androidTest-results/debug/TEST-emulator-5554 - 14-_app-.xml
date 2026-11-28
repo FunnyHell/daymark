@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuite name="io.github.funnyhell.daymark.GroupNotificationInstrumentedTest" tests="11" failures="0" errors="0" skipped="0" time="85.783" timestamp="2026-11-28T13:26:49" hostname="localhost">
+  <properties>
+    <property name="device" value="emulator-5554 - 14" />
+    <property name="flavor" value="" />
+    <property name="project" value=":app" />
+  </properties>
+  <testcase name="groupShrinksAsDosesAreRecorded_andDisappearsWhenEmpty" classname="io.github.funnyhell.daymark.GroupNotificationInstrumentedTest" time="0.529" />
+  <testcase name="createHabitAndCompleteIt" classname="io.github.funnyhell.daymark.HabitFlowInstrumentedTest" time="12.668" />
+  <testcase name="doneFromNotification_countsAndClears" classname="io.github.funnyhell.daymark.IntervalsModuleInstrumentedTest" time="1.195" />
+  <testcase name="duplicatedTakenBroadcast_recordsOnceAndConsumesStockOnce" classname="io.github.funnyhell.daymark.NotificationActionInstrumentedTest" time="2.976" />
+  <testcase name="snoozeAllFromNotification_setsTheAlarmForTheSnoozeEnd" classname="io.github.funnyhell.daymark.SnoozeInstrumentedTest" time="1.195" />
+  <testcase name="reminderIsShownAgainWhenTheSnoozeEnds" classname="io.github.funnyhell.daymark.SnoozeInstrumentedTest" time="3.252" />
+  <testcase name="skipAllFromGroupNotification_skipsEveryDose" classname="io.github.funnyhell.daymark.SnoozeInstrumentedTest" time="0.518" />
+  <testcase name="everyWidget_composesAndInflatesInRussian" classname="io.github.funnyhell.daymark.WidgetHostInstrumentedTest" time="16.123" />
+  <testcase name="everyWidget_isDrawnForABoundWidgetId" classname="io.github.funnyhell.daymark.WidgetHostInstrumentedTest" time="39.009" />
+  <testcase name="allWidgets_composeAndInflate" classname="io.github.funnyhell.daymark.WidgetRenderInstrumentedTest" time="6.046" />
+  <testcase name="weekWidget_drawsSampleHabits" classname="io.github.funnyhell.daymark.WidgetRenderInstrumentedTest" time="0.866" />
+</testsuite>

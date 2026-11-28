@@ -1,0 +1,840 @@
+11-28 13:25:37.710  5012  5036 I TestRunner: started: duplicatedTakenBroadcast_recordsOnceAndConsumesStockOnce(io.github.funnyhell.daymark.NotificationActionInstrumentedTest)
+11-28 13:25:37.713  1583  5083 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0
+11-28 13:25:37.718  1183  2086 D EGL_emulation: app_time_stats: avg=162.89ms min=19.36ms max=416.45ms count=7
+11-28 13:25:37.731  1529  5053 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.auth.account.be.legacy.AuthCronService started execution. cause:5 exec_start_elapsed_seconds: 107 [CONTEXT service_id=218 ]
+11-28 13:25:37.741   914   976 D EGL_emulation: app_time_stats: avg=211.40ms min=71.22ms max=471.08ms count=5
+11-28 13:25:37.758  1529  5111 I NamespaceManager: Package com.google.oslo name not found! Using module version.
+11-28 13:25:37.759  1529  5111 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:37.759  1529  5111 I NamespaceManager: Package com.android.media.swcodec name not found! Using module version.
+11-28 13:25:37.759  1529  5111 I NamespaceManager: Package com.android.appsearch name not found! Using module version.
+11-28 13:25:37.760  1529  5111 I NamespaceManager: Package com.android.neuralnetworks name not found! Using module version.
+11-28 13:25:37.760  1529  5111 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:37.805  1529  1607 W ChimeraUtils: Module com.google.android.gms.nearby_en missing resource null(0)
+11-28 13:25:37.810  1183  1183 W FrameTracker: Missed App frame:UNKNOWN: 76, 6665, 419268130, CUJ=J<LAUNCHER_APP_CLOSE_TO_HOME>
+11-28 13:25:37.810  1183  1183 W FrameTracker: Missed SF frame:UNKNOWN: 76, 6665, 419268130, CUJ=J<LAUNCHER_APP_CLOSE_TO_HOME>
+11-28 13:25:37.810  1183  1183 W FrameTracker: Missed App frame:UNKNOWN: 74, 6679, 0, CUJ=J<LAUNCHER_APP_CLOSE_TO_HOME>
+11-28 13:25:37.810  1183  1183 W FrameTracker: Missed SF frame:UNKNOWN: 74, 6679, 0, CUJ=J<LAUNCHER_APP_CLOSE_TO_HOME>
+11-28 13:25:37.810  1183  1183 W FrameTracker: Missing HWUI jank callback for vsyncId: 6679, CUJ=J<LAUNCHER_APP_CLOSE_TO_HOME>
+11-28 13:25:37.825  1583  2952 I Icing   : IndexChimeraService.getServiceInterface callingPackage=com.google.android.googlequicksearchbox componentName=agsa_icing_connection serviceId=33
+11-28 13:25:37.835  1863  2715 W SearchServiceCore: Abort, client detached.
+11-28 13:25:37.848  1529  1607 W ChimeraUtils: Module com.google.android.gms.nearby_en missing resource null(0)
+11-28 13:25:37.849  1529  1607 W ChimeraUtils: Module com.google.android.gms.nearby_en missing resource null(0)
+11-28 13:25:37.851  1583  5083 W Icing   : No valid account for uploading user actions
+11-28 13:25:37.857  5221  5253 I PhenotypeBackgroundRecv: Successfully updated snapshot for com.google.android.gms.clearcut_client#com.google.android.googlequicksearchbox
+11-28 13:25:37.861  5221  5221 I PhenotypeBackgroundRecv: Skipping com.google.android.apps.search.assistant.device#com.google.android.googlequicksearchbox which doesn't use ProcessStable flags.
+11-28 13:25:37.863  1863  2904 I BgTaskExecutorImpl: Starting EXCLUSIVE background task FETCH_CONFIGS_FROM_PHENOTYPE.
+11-28 13:25:37.869  5221  5221 I PhenotypeBackgroundRecv: Skipping com.google.android.libraries.search.googleapp.user#com.google.android.googlequicksearchbox which doesn't use ProcessStable flags.
+11-28 13:25:37.875  5221  5221 I PhenotypeBackgroundRecv: Skipping com.google.android.apps.search.assistant.mobile.user#com.google.android.googlequicksearchbox which doesn't use ProcessStable flags.
+11-28 13:25:37.929  1529  5111 I NamespaceManager: Package 1 name not found! Using module version.
+11-28 13:25:37.942  1583  5083 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0
+11-28 13:25:37.962  5221  5221 I PhenotypeBackgroundRecv: Skipping com.google.android.libraries.search.googleapp.device#com.google.android.googlequicksearchbox which doesn't use ProcessStable flags.
+11-28 13:25:37.993  1863  2581 I A       : GMSCore Auth returned 0 accounts.
+11-28 13:25:37.993  1863  2581 I A       : GoogleOwnersProvider returned 0 accounts.
+11-28 13:25:38.092  5012  5036 I DaymarkReminders: Next alarm at 2026-11-29T00:00:00Z (in 634 min, reminder=true)
+11-28 13:25:38.099   486  5540 I GenericSource: start
+11-28 13:25:38.107   914   914 D MediaRouter: onRestoreRoute() : route=RouteInfo{ name=Phone, description=null, status=null, category=RouteCategory{ name=System types=ROUTE_TYPE_LIVE_AUDIO ROUTE_TYPE_LIVE_VIDEO  groupable=false }, supportedTypes=ROUTE_TYPE_LIVE_AUDIO ROUTE_TYPE_LIVE_VIDEO , presentationDisplay=null }
+11-28 13:25:38.107   914   914 V MediaRouter: Selecting route: RouteInfo{ name=Phone, description=null, status=null, category=RouteCategory{ name=System types=ROUTE_TYPE_LIVE_AUDIO ROUTE_TYPE_LIVE_VIDEO  groupable=false }, supportedTypes=ROUTE_TYPE_LIVE_AUDIO ROUTE_TYPE_LIVE_VIDEO , presentationDisplay=null }
+11-28 13:25:38.107   914  5534 W RingtonePlayer: Notification sound delayed by 1291msecs
+11-28 13:25:38.107   914  5534 W RingtonePlayer: Notification stop delayed by 1089msecs
+11-28 13:25:38.126  1529  3351 W BpBinder: Large outgoing transaction of 323832 bytes, interface descriptor , code 4
+11-28 13:25:38.126   486   986 D NuPlayerDriver: stop(0x7895dd48d310)
+11-28 13:25:38.126   914  5534 V MediaPlayer: resetDrmState:  mDrmInfo=null mDrmProvisioningThread=null mPrepareDrmInProgress=false mActiveDrmScheme=false
+11-28 13:25:38.126   914  5534 V MediaPlayer: cleanDrmObj: mDrmObj=null mDrmSessionId=null
+11-28 13:25:38.126   486   986 D NuPlayerDriver: reset(0x7895dd48d310) at state 8
+11-28 13:25:38.128  1863  2886 W TimedProcessReaper: Scheduling killing of process to refresh configuration
+11-28 13:25:38.131  1821  2414 W TimedProcessReaper: Scheduling killing of process to refresh configuration
+11-28 13:25:38.134  1529  5111 I NamespaceManager: Package com.android.refreshratecontrol name not found! Using module version.
+11-28 13:25:38.136  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_birthdaydoodle_jar__name to integer.
+11-28 13:25:38.136  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_call_jar__name to integer.
+11-28 13:25:38.136  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_canvas_jar__name to integer.
+11-28 13:25:38.136  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_chkpkg_jar__name to integer.
+11-28 13:25:38.136  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_crashtest_jar__name to integer.
+11-28 13:25:38.136  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_dining_jar__name to integer.
+11-28 13:25:38.136  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_doodle_notifications_jar__name to integer.
+11-28 13:25:38.136  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_imageviewer_jar__name to integer.
+11-28 13:25:38.136  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_ipa_jar__name to integer.
+11-28 13:25:38.137  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_jslocation_jar__name to integer.
+11-28 13:25:38.137  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_localintent_jar__name to integer.
+11-28 13:25:38.137  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_messaging_jar__name to integer.
+11-28 13:25:38.137  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_nativesrp_activity_jar__name to integer.
+11-28 13:25:38.137  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_nativesrp_presenter_jar__name to integer.
+11-28 13:25:38.137  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_nowcontent_jar__name to integer.
+11-28 13:25:38.137  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_recents_activity_jar__name to integer.
+11-28 13:25:38.137  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_save_jar__name to integer.
+11-28 13:25:38.137  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_searchresults_activity_jar__name to integer.
+11-28 13:25:38.137  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_test_jar__name to integer.
+11-28 13:25:38.137  1863  2387 W A       : Can't format flag AndroidGsaVelourJars__velour_weather_jar__name to integer.
+11-28 13:25:38.137  1863  2387 W A       : Can't format flag bindle_flags__bloblobber_blob to integer.
+11-28 13:25:38.137  1863  2387 W A       : Can't format flag bindle_flags__velour_jar to integer.
+11-28 13:25:38.143  1529  5111 I NamespaceManager: Package com.google.oslo name not found! Using module version.
+11-28 13:25:38.143  1529  5111 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:38.143  1529  5111 I NamespaceManager: Package com.android.media.swcodec name not found! Using module version.
+11-28 13:25:38.144  1529  5111 I NamespaceManager: Package com.android.appsearch name not found! Using module version.
+11-28 13:25:38.144  1529  5111 I NamespaceManager: Package com.android.neuralnetworks name not found! Using module version.
+11-28 13:25:38.144  1529  5111 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:38.144  1529  5111 I NamespaceManager: Package 1 name not found! Using module version.
+11-28 13:25:38.148  1183  1183 D SearchTargetUtil:  query= size=15
+11-28 13:25:38.148  1183  1183 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=tim robinson burbank police,group_id=web102934,response_id=5dea0f47-3140-49fb-85be-7b8b59ea2066,support_query_builder=false,} searchAction=tim robinson burbank police searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: 4a9d0e21-871d-4eeb-85a1-8810a1fc7da3
+11-28 13:25:38.149  1183  1183 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=hollow knight silksong dlc,group_id=web102934,response_id=5dea0f47-3140-49fb-85be-7b8b59ea2066,support_query_builder=false,} searchAction=hollow knight silksong dlc searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: 8a0af582-b70e-4bdc-b0b5-2cb4eb25ac93
+11-28 13:25:38.149  1183  1183 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=donald trump iran war,group_id=web102934,response_id=5dea0f47-3140-49fb-85be-7b8b59ea2066,support_query_builder=false,} searchAction=donald trump iran war searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: 391749d6-aba1-4910-a636-a6ee27c09c30
+11-28 13:25:38.149  1183  1183 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=big ten football championship game,group_id=web102934,response_id=5dea0f47-3140-49fb-85be-7b8b59ea2066,support_query_builder=false,} searchAction=big ten football championship game searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: 2e5809d7-d347-421a-bf51-5728330fb152
+11-28 13:25:38.149  1183  1183 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=united fidelity bank failure,group_id=web102934,response_id=5dea0f47-3140-49fb-85be-7b8b59ea2066,support_query_builder=false,} searchAction=united fidelity bank failure searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: cc42c531-c618-4a8c-9c19-176bb6a145ad
+11-28 13:25:38.149  1183  1183 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=snowfall totals st louis,group_id=web102934,response_id=5dea0f47-3140-49fb-85be-7b8b59ea2066,support_query_builder=false,} searchAction=snowfall totals st louis searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: 767ec0a2-9ad1-4f54-a9f4-26047f8c1df9
+11-28 13:25:38.149  1183  1183 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=atlas experiment,group_id=web102934,response_id=5dea0f47-3140-49fb-85be-7b8b59ea2066,support_query_builder=false,} searchAction=atlas experiment searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: d8ec58c9-5c35-4f45-b5ef-3b13014f44cb
+11-28 13:25:38.149  1183  1183 D SearchTargetUtil: layoutType=extra_tall_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{bitmap_url=data:image/jpeg;base64,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
+11-28 13:25:38.149  1183  1183 D SearchTargetUtil: layoutType=extra_tall_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{bitmap_url=data:image/png;base64,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,suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=true,is_personal=false,suggest_raw_text=portland trail blazers,group_id=web102934,response_id=5dea0f47-3140-49fb-85be-7b8b59ea2066,support_query_builder=false,} searchAction=Portland Trail Blazers searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: ca9aad24-2e5f-4c0a-b4b6-4de2b3906f3e
+11-28 13:25:38.149  1183  1183 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=ai cyberattack,group_id=web102934,response_id=5dea0f47-3140-49fb-85be-7b8b59ea2066,support_query_builder=false,} searchAction=ai cyberattack searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: 6aa1f2c0-e9fc-49c7-b8c1-1523eeb423ad
+11-28 13:25:38.149  1183  1183 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=samsung camera patent infringement case,group_id=web102934,response_id=5dea0f47-3140-49fb-85be-7b8b59ea2066,support_query_builder=false,} searchAction=samsung camera patent infringement case searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: 6b76565a-a480-487e-b68c-36d89a3f5630
+11-28 13:25:38.150  1183  1183 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=ios 27.3 beta,group_id=web102934,response_id=5dea0f47-3140-49fb-85be-7b8b59ea2066,support_query_builder=false,} searchAction=ios 27.3 beta searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: 7ce204c3-33b8-47e2-b50a-1f1d62e5f052
+11-28 13:25:38.150  1183  1183 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=wwe wrestler bronson reed passed away,group_id=web102934,response_id=5dea0f47-3140-49fb-85be-7b8b59ea2066,support_query_builder=false,} searchAction=wwe wrestler bronson reed passed away searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: f57819b6-aaff-4c90-8f46-d27c4ae78b72
+11-28 13:25:38.150  1183  1183 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=emirates cup standings nba,group_id=web102934,response_id=5dea0f47-3140-49fb-85be-7b8b59ea2066,support_query_builder=false,} searchAction=emirates cup standings nba searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: 6512eb4a-e577-4c5c-b446-29c7459eea41
+11-28 13:25:38.150  1183  1183 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=video games black friday deals,group_id=web102934,response_id=5dea0f47-3140-49fb-85be-7b8b59ea2066,support_query_builder=false,} searchAction=video games black friday deals searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: 65fbc5bc-526d-4882-bde0-9fbfe5fbe39e
+11-28 13:25:38.151  1713  2155 I PhenotypeBackgroundRecv: Successfully updated snapshot for com.google.android.libraries.performance.primes#com.google.android.apps.wellbeing
+11-28 13:25:38.162  1863  2383 I A       : Refusing EXCLUSIVE task 24, it is already pending. Try again in 314 seconds.
+11-28 13:25:38.165   486  5547 D CCodec  : allocate(c2.android.vorbis.decoder)
+11-28 13:25:38.169   486  5547 I CCodec  : setting up 'default' as default (vendor) store
+11-28 13:25:38.178   486  5547 I CCodec  : Created component [c2.android.vorbis.decoder]
+11-28 13:25:38.178   486  5547 D CCodecConfig: read media type: audio/vorbis
+11-28 13:25:38.180  1863  2382 I FedAssExpListener: Fed-ass not supported for signed out users.
+11-28 13:25:38.180  1863  2382 I FedAssExpListener: Successfully processed experiments changed.
+11-28 13:25:38.181  1863  2382 I A       : NGA disabled since it's running Panthera and at least one a11y feature is on.
+11-28 13:25:38.181   486  5547 D ReflectedParamUpdater: extent() != 1 for single value type: algo.buffers.max-count.values
+11-28 13:25:38.181   486  5547 D ReflectedParamUpdater: extent() != 1 for single value type: output.subscribed-indices.values
+11-28 13:25:38.181   486  5547 D ReflectedParamUpdater: extent() != 1 for single value type: input.buffers.allocator-ids.values
+11-28 13:25:38.182   486  5547 D ReflectedParamUpdater: extent() != 1 for single value type: output.buffers.allocator-ids.values
+11-28 13:25:38.182   486  5547 D ReflectedParamUpdater: extent() != 1 for single value type: algo.buffers.allocator-ids.values
+11-28 13:25:38.182   486  5547 D ReflectedParamUpdater: extent() != 1 for single value type: output.buffers.pool-ids.values
+11-28 13:25:38.182   486  5547 D ReflectedParamUpdater: extent() != 1 for single value type: algo.buffers.pool-ids.values
+11-28 13:25:38.182   486  5547 I CCodecConfig: query failed after returning 7 values (BAD_INDEX)
+11-28 13:25:38.182   486  5547 D CCodecConfig: c2 config diff is Dict {
+11-28 13:25:38.182   486  5547 D CCodecConfig:   c2::u32 coded.bitrate.value = 64000
+11-28 13:25:38.182   486  5547 D CCodecConfig:   c2::u32 input.buffers.max-size.value = 32768
+11-28 13:25:38.182   486  5547 D CCodecConfig:   c2::u32 input.delay.value = 0
+11-28 13:25:38.182   486  5547 D CCodecConfig:   string input.media-type.value = "audio/vorbis"
+11-28 13:25:38.182   486  5547 D CCodecConfig:   string output.media-type.value = "audio/raw"
+11-28 13:25:38.182   486  5547 D CCodecConfig:   c2::u32 raw.channel-count.value = 1
+11-28 13:25:38.182   486  5547 D CCodecConfig:   c2::u32 raw.sample-rate.value = 48000
+11-28 13:25:38.182   486  5547 D CCodecConfig: }
+11-28 13:25:38.183  1863  2383 I OpaEligibilityChecker: send OpaEligibilityChange broadcast to CommonBroadcastReceiver
+11-28 13:25:38.183   486  5547 D MediaCodec: flushMediametrics
+11-28 13:25:38.183   486  5547 D CCodec  : [c2.android.vorbis.decoder] buffers are bound to CCodec for this session
+11-28 13:25:38.183   486  5547 D CCodecConfig: no c2 equivalents for durationUs
+11-28 13:25:38.183   486  5547 D CCodecConfig: no c2 equivalents for csd-1
+11-28 13:25:38.183   486  5547 D CCodecConfig: no c2 equivalents for flags
+11-28 13:25:38.185   486  5547 D CCodecConfig: c2 config diff is   c2::u32 coded.bitrate.value = 70000
+11-28 13:25:38.185   486  5547 W Codec2Client: query -- param skipped: index = 1107298332.
+11-28 13:25:38.186   486  5547 D CCodec  : encoding statistics level = 0
+11-28 13:25:38.186   486  5547 D CCodec  : setup formats input: AMessage(what = 0x00000000) = {
+11-28 13:25:38.186   486  5547 D CCodec  :   int32_t bitrate = 70000
+11-28 13:25:38.186   486  5547 D CCodec  :   int32_t channel-count = 1
+11-28 13:25:38.186   486  5547 D CCodec  :   int32_t max-input-size = 32768
+11-28 13:25:38.186   486  5547 D CCodec  :   string mime = "audio/vorbis"
+11-28 13:25:38.186   486  5547 D CCodec  :   int32_t sample-rate = 48000
+11-28 13:25:38.186   486  5547 D CCodec  : }
+11-28 13:25:38.186   486  5547 D CCodec  : setup formats output: AMessage(what = 0x00000000) = {
+11-28 13:25:38.186   486  5547 D CCodec  :   int32_t channel-count = 1
+11-28 13:25:38.186   486  5547 D CCodec  :   string mime = "audio/raw"
+11-28 13:25:38.186   486  5547 D CCodec  :   int32_t sample-rate = 48000
+11-28 13:25:38.186   486  5547 D CCodec  :   int32_t channel-mask = 1
+11-28 13:25:38.186   486  5547 D CCodec  :   int32_t android._config-pcm-encoding = 2
+11-28 13:25:38.186   486  5547 D CCodec  : }
+11-28 13:25:38.186   486  5547 I CCodecConfig: query failed after returning 7 values (BAD_INDEX)
+11-28 13:25:38.187   486  5547 I MediaCodec: MediaCodec will operate in async mode
+11-28 13:25:38.187   486  5546 D MediaCodec: keep callback message for reclaim
+11-28 13:25:38.187   486  5547 W Codec2Client: query -- param skipped: index = 1342179345.
+11-28 13:25:38.187   486  5547 W Codec2Client: query -- param skipped: index = 2415921170.
+11-28 13:25:38.188   486  5547 D CCodecBufferChannel: [c2.android.vorbis.decoder#705] Created input block pool with allocatorID 16 => poolID 18 - OK (0)
+11-28 13:25:38.188   486  5136 D BufferPoolAccessor2.0: bufferpool2 0x78961d48a598 : 0(0 size) total buffers - 0(0 size) used buffers - 0/5 (recycle/alloc) - 2/4 (fetch/transfer)
+11-28 13:25:38.189   486  5547 I CCodecBufferChannel: [c2.android.vorbis.decoder#705] Created output block pool with allocatorID 16 => poolID 27 - OK
+11-28 13:25:38.189   486  5547 D CCodecBufferChannel: [c2.android.vorbis.decoder#705] Configured output block pool ids 27 => OK
+11-28 13:25:38.189  1677  2019 I SP      : Scheduling: download registered, 0 started, 0 paused, 0 scheduled, 2 pending: delight:main_en_840_2022102600_1 @ {m:b:u:l, fg}, content_cache:e9a5a2de48a4f8b9a658b411bcfb375d {m:b:u:l, bg}
+11-28 13:25:38.192   496  5548 D SimpleC2Component: Using output block pool with poolID 27 => got 27 - 0
+11-28 13:25:38.193  1863  1885 I earchbox:search: JIT allocated 57KB for compiled code of java.lang.Object com.google.android.apps.gsa.binaries.velvet.app.amm.h()
+11-28 13:25:38.194   486  5136 D BufferPoolAccessor2.0: Destruction - bufferpool2 0x78961d48a598 cached: 0/0M, 0/0% in use; allocs: 5, 0% recycled; transfers: 4, 50% unfetched
+11-28 13:25:38.194  1713  2155 W TimedProcessReaper: Scheduling killing of process to refresh configuration
+11-28 13:25:38.195   496  5548 D SimpleC2Component: work form old generation: was 1 now 0
+11-28 13:25:38.196   486  5547 D CCodecBufferChannel: [c2.android.vorbis.decoder#705] Discard frames from previous generation.
+11-28 13:25:38.203  1677  2019 I SP      : Scheduling: download registered, 0 started, 0 paused, 0 scheduled, 3 pending: delight:main_en_840_2022102600_1 @ {m:b:u:l, fg}, content_cache:e9a5a2de48a4f8b9a658b411bcfb375d {m:b:u:l, bg}, content_cache:8722425f4121ffdea802b1066df73991 {m:b:u:l, bg}
+11-28 13:25:38.209  1677  2019 I SP      : Scheduling: download registered, 0 started, 0 paused, 0 scheduled, 4 pending: delight:main_en_840_2022102600_1 @ {m:b:u:l, fg}, content_cache:e9a5a2de48a4f8b9a658b411bcfb375d {m:b:u:l, bg}, content_cache:8722425f4121ffdea802b1066df73991 {m:b:u:l, bg}, content_cache:fa1da98da1212aad6fb9a8efaff48148 {m:b:u:l, bg}
+11-28 13:25:38.209  1677  2019 I SP      : Syncing next-word-predictor (20230317) with slices: [tflite-nwp-be541314788c7304827a9710c3ac4edb], metadata: false
+11-28 13:25:38.220   496   982 D BufferPoolAccessor2.0: Destruction - bufferpool2 0x7b97ed9ab538 cached: 0/0M, 0/0% in use; allocs: 0, 0% recycled; transfers: 0, 0% unfetched
+11-28 13:25:38.220   486  5546 D MediaCodec: flushMediametrics
+11-28 13:25:38.224   496   982 I hw-BpHwBinder: onLastStrongRef automatically unlinking death recipients
+11-28 13:25:38.224   486  5550 I hw-BpHwBinder: onLastStrongRef automatically unlinking death recipients
+11-28 13:25:38.228   486  5540 D NuPlayerDriver: notifyResetComplete(0x7895dd48d310)
+11-28 13:25:38.228   486   986 W AMessage: failed to post message as target looper for handler 0 is gone.
+11-28 13:25:38.230   547  2621 I MediaFocusControl: abandonAudioFocus() from uid/pid 10167/914 clientId=android.media.AudioManager@6abec6e
+11-28 13:25:38.250  1863  2383 W CorpusConfigHelper: Invalid input from icing corpus JSON flag.
+11-28 13:25:38.250  1863  2383 W CorpusConfigHelper: android.util.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 123 column 2
+11-28 13:25:38.250  1863  2383 W CorpusConfigHelper: 	at android.util.JsonReader.syntaxError(JsonReader.java:1162)
+11-28 13:25:38.250  1863  2383 W CorpusConfigHelper: 	at android.util.JsonReader.checkLenient(JsonReader.java:840)
+11-28 13:25:38.250  1863  2383 W CorpusConfigHelper: 	at android.util.JsonReader.nextInArray(JsonReader.java:615)
+11-28 13:25:38.250  1863  2383 W CorpusConfigHelper: 	at android.util.JsonReader.peek(JsonReader.java:345)
+11-28 13:25:38.250  1863  2383 W CorpusConfigHelper: 	at android.util.JsonReader.hasNext(JsonReader.java:321)
+11-28 13:25:38.250  1863  2383 W CorpusConfigHelper: 	at com.google.android.apps.gsa.searchbox.c.b.b.k.c(PG:7)
+11-28 13:25:38.250  1863  2383 W CorpusConfigHelper: 	at com.google.android.apps.gsa.searchbox.c.b.b.j.a(Unknown Source:2)
+11-28 13:25:38.250  1863  2383 W CorpusConfigHelper: 	at com.google.android.apps.gsa.search.core.i.r.run(PG:5)
+11-28 13:25:38.250  1863  2383 W CorpusConfigHelper: 	at com.google.android.libraries.gsa.k.a.h.run(PG:2)
+11-28 13:25:38.250  1863  2383 W CorpusConfigHelper: 	at com.google.android.apps.gsa.shared.util.c.a.cf.b(PG:1)
+11-28 13:25:38.250  1863  2383 W CorpusConfigHelper: 	at com.google.android.apps.gsa.shared.util.c.a.ci.run(PG:1)
+11-28 13:25:38.250  1863  2383 W CorpusConfigHelper: 	at com.google.android.libraries.i.ae.run(PG:1)
+11-28 13:25:38.250  1863  2383 W CorpusConfigHelper: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-28 13:25:38.250  1863  2383 W CorpusConfigHelper: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-28 13:25:38.250  1863  2383 W CorpusConfigHelper: 	at com.google.android.libraries.i.k.run(PG:2)
+11-28 13:25:38.250  1863  2383 W CorpusConfigHelper: 	at com.google.android.libraries.i.p.run(PG:4)
+11-28 13:25:38.250  1863  2383 W CorpusConfigHelper: 	at java.lang.Thread.run(Thread.java:1012)
+11-28 13:25:38.259  1529  5111 I NamespaceManager: Package com.android.refreshratecontrol name not found! Using module version.
+11-28 13:25:38.261  1529  5111 I NamespaceManager: Package com.google.oslo name not found! Using module version.
+11-28 13:25:38.261  1529  5111 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:38.261  1529  5111 I NamespaceManager: Package com.android.media.swcodec name not found! Using module version.
+11-28 13:25:38.262  1529  5111 I NamespaceManager: Package com.android.appsearch name not found! Using module version.
+11-28 13:25:38.262  1529  5111 I NamespaceManager: Package com.android.neuralnetworks name not found! Using module version.
+11-28 13:25:38.262  1529  5111 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:38.262  1529  5111 I NamespaceManager: Package 1 name not found! Using module version.
+11-28 13:25:38.266  1776  2416 W AiAiEcho: LyftNotificationParser Ridesharing ETA not enabled
+11-28 13:25:38.266  1776  2416 W AiAiEcho: SmartspaceNotificationPredictor no parser can handle this notification or notification is invalid
+11-28 13:25:38.290   547   556 I system_server: NativeAlloc concurrent copying GC freed 533710(21MB) AllocSpace objects, 18(308KB) LOS objects, 46% free, 27MB/51MB, paused 4.245ms,113us total 777.993ms
+11-28 13:25:38.290   547   557 W JavaBinder: BinderProxy is being destroyed but the application did not call unlinkToDeath to unlink all of its death recipients beforehand.  Releasing leaked death recipient: com.android.server.wm.ActivityRecord$$ExternalSyntheticLambda0
+11-28 13:25:38.292   547   557 I BpBinder: onLastStrongRef automatically unlinking death recipients:
+11-28 13:25:38.297   547   557 W JavaBinder: BinderProxy is being destroyed but the application did not call unlinkToDeath to unlink all of its death recipients beforehand.  Releasing leaked death recipient: com.android.server.am.ActivityManagerService$14
+11-28 13:25:38.300   547   557 I BpBinder: onLastStrongRef automatically unlinking death recipients:
+11-28 13:25:38.310   547   557 W JavaBinder: BinderProxy is being destroyed but the application did not call unlinkToDeath to unlink all of its death recipients beforehand.  Releasing leaked death recipient: com.android.server.am.ActivityManagerService$14
+11-28 13:25:38.310   547   557 I BpBinder: onLastStrongRef automatically unlinking death recipients:
+11-28 13:25:38.313  1713  1713 I PhenotypeBackgroundRecv: Skipping com.google.android.apps.wellbeing.device#com.google.android.apps.wellbeing which doesn't use ProcessStable flags.
+11-28 13:25:38.340  1583  2952 I Icing   : IndexChimeraService.getServiceInterface callingPackage=com.google.android.googlequicksearchbox componentName=agsa_icing_connection serviceId=32
+11-28 13:25:38.345  1583  2952 I Icing   : IndexChimeraService.getServiceInterface callingPackage=com.google.android.googlequicksearchbox componentName=agsa_icing_connection serviceId=33
+11-28 13:25:38.388   914   914 W AlarmManager: Unrecognized alarm listener com.android.systemui.keyguard.KeyguardSliceProvider$$ExternalSyntheticLambda0@a43b3a6
+11-28 13:25:38.390  1583  5083 W Icing   : No valid account for uploading user actions
+11-28 13:25:38.392  1529  5554 W ChimeraUtils: Module com.google.android.gms.nearby_en missing resource null(0)
+11-28 13:25:38.404  1529  5554 W ChimeraUtils: Module com.google.android.gms.nearby_en missing resource null(0)
+11-28 13:25:38.405  1529  5554 W ChimeraUtils: Module com.google.android.gms.nearby_en missing resource null(0)
+11-28 13:25:38.433  1529  1537 I .gms.persistent: Background concurrent copying GC freed 452705(17MB) AllocSpace objects, 15(640KB) LOS objects, 50% free, 16MB/32MB, paused 31us,25us total 300.194ms
+11-28 13:25:38.444  5012  5041 I DaymarkReminders: Next alarm at 2026-11-29T00:00:00Z (in 634 min, reminder=true)
+11-28 13:25:38.444  5012  5041 I DaymarkActions: Medication action io.github.funnyhell.daymark.action.MED_TAKEN for ff6cbf1f-cdd4-4cce-b1f2-285327612c3d@2026-11-28: Recorded(eventId=e5221038-5c8f-4543-b1a3-37c6fa918e15, insufficientStock=false, becameLow=false)
+11-28 13:25:38.445   914   914 W AlarmManager: Unrecognized alarm listener com.google.android.systemui.smartspace.KeyguardZenAlarmViewController$showNextAlarm$1@d06df0
+11-28 13:25:38.456   357   397 I netd    : tetherGetStats() -> {[]} <0.28ms>
+11-28 13:25:38.464   357   397 I netd    : bandwidthSetGlobalAlert(2097152) <0.10ms>
+11-28 13:25:38.466   357   397 I netd    : bandwidthRemoveInterfaceQuota(eth0) <0.55ms>
+11-28 13:25:38.468   357   397 I netd    : bandwidthSetInterfaceQuota(eth0, 9223372036854775807) <0.93ms>
+11-28 13:25:38.472  1583  5083 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0
+11-28 13:25:38.489  1529  5111 I NamespaceManager: Package com.android.refreshratecontrol name not found! Using module version.
+11-28 13:25:38.489  1529  5111 I NamespaceManager: Package com.google.oslo name not found! Using module version.
+11-28 13:25:38.489  1529  5111 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:38.489  1529  5111 I NamespaceManager: Package com.android.media.swcodec name not found! Using module version.
+11-28 13:25:38.489  1529  5111 I NamespaceManager: Package com.android.appsearch name not found! Using module version.
+11-28 13:25:38.490  1529  5111 I NamespaceManager: Package com.android.neuralnetworks name not found! Using module version.
+11-28 13:25:38.490  1529  5111 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:38.490  1529  5111 I NamespaceManager: Package 1 name not found! Using module version.
+11-28 13:25:38.490   914   975 D LocalImageResolver: Couldn't use ImageDecoder for drawable, falling back to non-resized load.
+11-28 13:25:38.515  1863  2715 W SearchServiceCore: Abort, client detached.
+11-28 13:25:38.526  1776  2154 I AiAiEcho: Predicting[0]:
+11-28 13:25:38.526  1776  2154 I AiAiEcho: EchoTargets:
+11-28 13:25:38.526  1776  2154 I AiAiEcho: Filtered by AiAi flag check:
+11-28 13:25:38.526  1776  2154 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata:
+11-28 13:25:38.526  1776  2154 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+11-28 13:25:38.552  1529  5110 I NamespaceManager: Package com.android.refreshratecontrol name not found! Using module version.
+11-28 13:25:38.552  1529  5110 I NamespaceManager: Package com.google.oslo name not found! Using module version.
+11-28 13:25:38.552  1529  5110 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:38.553  1529  5110 I NamespaceManager: Package com.android.media.swcodec name not found! Using module version.
+11-28 13:25:38.553  1529  5110 I NamespaceManager: Package com.android.appsearch name not found! Using module version.
+11-28 13:25:38.553  1529  5110 I NamespaceManager: Package com.android.neuralnetworks name not found! Using module version.
+11-28 13:25:38.553  1529  5110 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:38.553  1529  5110 I NamespaceManager: Package 1 name not found! Using module version.
+11-28 13:25:38.560  1677  2019 I SP      : Scheduling: download registered, 0 started, 0 paused, 0 scheduled, 5 pending: delight:main_en_840_2022102600_1 @ {m:b:u:l, fg}, content_cache:e9a5a2de48a4f8b9a658b411bcfb375d {m:b:u:l, bg}, content_cache:8722425f4121ffdea802b1066df73991 {m:b:u:l, bg}, content_cache:fa1da98da1212aad6fb9a8efaff48148 {m:b:u:l, bg}, kc_tflite_model:tflite-kc-en_us_secagg-20220805_235142 {m:b:u:l, fg}
+11-28 13:25:38.561   914   914 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+11-28 13:25:38.568   914   975 D LocalImageResolver: Couldn't use ImageDecoder for drawable, falling back to non-resized load.
+11-28 13:25:38.586  1863  2882 W TimedProcessReaper: Scheduling killing of process to refresh configuration
+11-28 13:25:38.587  1713  1771 W TimedProcessReaper: Scheduling killing of process to refresh configuration
+11-28 13:25:38.591  1677  2019 I SP      : Scheduling: download registered, 0 started, 0 paused, 0 scheduled, 6 pending: delight:main_en_840_2022102600_1 @ {m:b:u:l, fg}, content_cache:e9a5a2de48a4f8b9a658b411bcfb375d {m:b:u:l, bg}, content_cache:8722425f4121ffdea802b1066df73991 {m:b:u:l, bg}, content_cache:fa1da98da1212aad6fb9a8efaff48148 {m:b:u:l, bg}, kc_tflite_model:tflite-kc-en_us_secagg-20220805_235142 {m:b:u:l, fg}, next-word-predictor:tflite-nwp-be541314788c7304827a9710c3ac4edb {m:b:u:l, bg}
+11-28 13:25:38.592  1677  2019 I SP      : Sync for dynamic_art succeeded in 6418 ms: {added: [305f81355a729e382ea9f374dd286d9f, b1f6f47a53f7820be91b9fe247728980], metadata: false
+11-28 13:25:38.601  1863  1863 I A       : Refusing EXCLUSIVE task 21, it is already pending. Try again in 359 seconds.
+11-28 13:25:38.620  1583  5083 W Icing   : No valid account for uploading user actions
+11-28 13:25:38.632  1677  2019 I SP      : Sync for transformer_concept succeeded in 5005 ms: {added: [2023011913_en], metadata: false
+11-28 13:25:38.633  1583  5083 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0
+11-28 13:25:38.639  1863  1863 I BgTaskExecutorImpl: Starting EXCLUSIVE background task FETCH_CONFIGS_FROM_PHENOTYPE.
+11-28 13:25:38.647  1677  2019 I SP      : Sync for emoji succeeded in 4456 ms: {added: [60932fe37d5f6d7a3e60488d8a1755c4], metadata: false
+11-28 13:25:38.651  1863  2715 W SearchServiceCore: Abort, client detached.
+11-28 13:25:38.654  1713  1764 I PhenotypeBackgroundRecv: Successfully updated snapshot for com.google.android.libraries.consentverifier#com.google.android.apps.wellbeing
+11-28 13:25:38.654  1529  3355 I NamespaceManager: Package com.android.refreshratecontrol name not found! Using module version.
+11-28 13:25:38.662  1677  2019 I SP      : GC for 'dynamic_art' (10) with ttl of 0 ms took 0 ms (0/0/0)
+11-28 13:25:38.662  1677  2019 I SP      : Syncing expressive_concepts_triggering (2022062400) with slices: [2022011819_en], metadata: false
+11-28 13:25:38.663  1677  2019 I SP      : GC for 'transformer_concept' (10) with ttl of 0 ms took 0 ms (0/0/0)
+11-28 13:25:38.663  1529  3355 I NamespaceManager: Package com.google.oslo name not found! Using module version.
+11-28 13:25:38.663  1677  2019 I SP      : GC for 'emoji' (10) with ttl of 0 ms took 0 ms (0/0/0)
+11-28 13:25:38.668  2936  2936 I PhenotypeBackgroundRecv: Skipping com.google.android.gms.icing.mdd#com.google.android.dialer which doesn't use ProcessStable flags.
+11-28 13:25:38.668  1529  3355 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:38.669  1776  2154 I AiAiEcho: Predicting[0]:
+11-28 13:25:38.669  1776  2154 I AiAiEcho: EchoTargets:
+11-28 13:25:38.669  1776  2154 I AiAiEcho: Filtered by AiAi flag check:
+11-28 13:25:38.669  1776  2154 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata:
+11-28 13:25:38.669  1776  2154 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+11-28 13:25:38.670  1677  2071 I Environment: Environment.isPackageInstalled():237 com.bitstrips.imoji is not installed
+11-28 13:25:38.672   914   914 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+11-28 13:25:38.673  1529  3355 I NamespaceManager: Package com.android.media.swcodec name not found! Using module version.
+11-28 13:25:38.673  1529  3355 I NamespaceManager: Package com.android.appsearch name not found! Using module version.
+11-28 13:25:38.674  1529  3355 I NamespaceManager: Package com.android.neuralnetworks name not found! Using module version.
+11-28 13:25:38.674  1529  3355 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:38.674  1529  3355 I NamespaceManager: Package 1 name not found! Using module version.
+11-28 13:25:38.677  1776  2154 I AiAiEcho: Predicting[0]:
+11-28 13:25:38.677  1776  2154 I AiAiEcho: EchoTargets:
+11-28 13:25:38.677  1776  2154 I AiAiEcho: Filtered by AiAi flag check:
+11-28 13:25:38.677  1776  2154 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata:
+11-28 13:25:38.677  1776  2154 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+11-28 13:25:38.680   914   914 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+11-28 13:25:38.686  2936  3130 I PhenotypeBackgroundRecv: Successfully updated snapshot for com.google.android.libraries.notifications.platform#com.google.android.dialer
+11-28 13:25:38.692  5012  5042 I DaymarkReminders: Next alarm at 2026-11-29T00:00:00Z (in 634 min, reminder=true)
+11-28 13:25:38.693  5012  5042 I DaymarkActions: Medication action io.github.funnyhell.daymark.action.MED_TAKEN for ff6cbf1f-cdd4-4cce-b1f2-285327612c3d@2026-11-28: AlreadyResolved(existingType=TAKEN)
+11-28 13:25:38.696  1529  5115 W ChimeraUtils: Module com.google.android.gms.nearby_en missing resource null(0)
+11-28 13:25:38.701  2936  2936 I PhenotypeBackgroundRecv: Skipping com.google.android.dialer which doesn't use ProcessStable flags.
+11-28 13:25:38.749  1529  3309 W BpBinder: Large outgoing transaction of 323832 bytes, interface descriptor , code 4
+11-28 13:25:38.756  2958  5555 W DG      : [flow devicekey] DroidGuardRunner.newVmProcessForFastSignalCollection(): Fast program not found [CONTEXT service_id=25 ]
+11-28 13:25:38.756  1863  2382 W A       : Can't format flag AndroidGsaVelourJars__velour_birthdaydoodle_jar__name to integer.
+11-28 13:25:38.756  1863  2382 W A       : Can't format flag AndroidGsaVelourJars__velour_call_jar__name to integer.
+11-28 13:25:38.756  1863  2382 W A       : Can't format flag AndroidGsaVelourJars__velour_canvas_jar__name to integer.
+11-28 13:25:38.756  1863  2382 W A       : Can't format flag AndroidGsaVelourJars__velour_chkpkg_jar__name to integer.
+11-28 13:25:38.756  1863  2382 W A       : Can't format flag AndroidGsaVelourJars__velour_crashtest_jar__name to integer.
+11-28 13:25:38.757  1863  2382 W A       : Can't format flag AndroidGsaVelourJars__velour_dining_jar__name to integer.
+11-28 13:25:38.757  1863  2382 W A       : Can't format flag AndroidGsaVelourJars__velour_doodle_notifications_jar__name to integer.
+11-28 13:25:38.757  1863  2382 W A       : Can't format flag AndroidGsaVelourJars__velour_imageviewer_jar__name to integer.
+11-28 13:25:38.757  1863  2382 W A       : Can't format flag AndroidGsaVelourJars__velour_ipa_jar__name to integer.
+11-28 13:25:38.757  1863  2382 W A       : Can't format flag AndroidGsaVelourJars__velour_jslocation_jar__name to integer.
+11-28 13:25:38.757  1863  2382 W A       : Can't format flag AndroidGsaVelourJars__velour_localintent_jar__name to integer.
+11-28 13:25:38.757  1863  2382 W A       : Can't format flag AndroidGsaVelourJars__velour_messaging_jar__name to integer.
+11-28 13:25:38.757  1863  2382 W A       : Can't format flag AndroidGsaVelourJars__velour_nativesrp_activity_jar__name to integer.
+11-28 13:25:38.757  1863  2382 W A       : Can't format flag AndroidGsaVelourJars__velour_nativesrp_presenter_jar__name to integer.
+11-28 13:25:38.757  1863  2382 W A       : Can't format flag AndroidGsaVelourJars__velour_nowcontent_jar__name to integer.
+11-28 13:25:38.757  1863  2382 W A       : Can't format flag AndroidGsaVelourJars__velour_recents_activity_jar__name to integer.
+11-28 13:25:38.757  1863  2382 W A       : Can't format flag AndroidGsaVelourJars__velour_save_jar__name to integer.
+11-28 13:25:38.758  1863  2382 W A       : Can't format flag AndroidGsaVelourJars__velour_searchresults_activity_jar__name to integer.
+11-28 13:25:38.758  1863  2382 W A       : Can't format flag AndroidGsaVelourJars__velour_test_jar__name to integer.
+11-28 13:25:38.758  1863  2382 W A       : Can't format flag AndroidGsaVelourJars__velour_weather_jar__name to integer.
+11-28 13:25:38.758  1863  2382 W A       : Can't format flag bindle_flags__bloblobber_blob to integer.
+11-28 13:25:38.758  1863  2382 W A       : Can't format flag bindle_flags__velour_jar to integer.
+11-28 13:25:38.776  1863  2386 I A       : Refusing EXCLUSIVE task 24, it is already pending. Try again in 313 seconds.
+11-28 13:25:38.779  1863  2383 I FedAssExpListener: Fed-ass not supported for signed out users.
+11-28 13:25:38.779  1863  2387 I FedAssExpListener: Successfully processed experiments changed.
+11-28 13:25:38.780  1863  2387 I A       : NGA disabled since it's running Panthera and at least one a11y feature is on.
+11-28 13:25:38.787  5012  5042 I DaymarkReminders: Next alarm at 2026-11-29T00:00:00Z (in 634 min, reminder=true)
+11-28 13:25:38.788  5012  5042 I DaymarkActions: Medication action io.github.funnyhell.daymark.action.MED_SNOOZE for ff6cbf1f-cdd4-4cce-b1f2-285327612c3d@2026-11-28: AlreadyResolved(existingType=TAKEN)
+11-28 13:25:38.791  1677  2019 I SP      : Scheduling: download registered, 0 started, 0 paused, 0 scheduled, 7 pending: delight:main_en_840_2022102600_1 @ {m:b:u:l, fg}, content_cache:e9a5a2de48a4f8b9a658b411bcfb375d {m:b:u:l, bg}, content_cache:8722425f4121ffdea802b1066df73991 {m:b:u:l, bg}, content_cache:fa1da98da1212aad6fb9a8efaff48148 {m:b:u:l, bg}, kc_tflite_model:tflite-kc-en_us_secagg-20220805_235142 {m:b:u:l, fg}, next-word-predictor:tflite-nwp-be541314788c7304827a9710c3ac4edb {m:b:u:l, bg}, expressive_concepts_triggering:2022011819_en {m:b:u:l, bg}
+11-28 13:25:38.792  1863  2386 I OpaEligibilityChecker: send OpaEligibilityChange broadcast to CommonBroadcastReceiver
+11-28 13:25:38.794  1677  2019 I SP      : Sync for bundled_emoji succeeded in 1796 ms: {added: [7b9ddb0b8c001e17cee03b1edf554b20], metadata: false
+11-28 13:25:38.798   357   397 I netd    : setProcSysNet(4, 2, wlan0, retrans_time_ms, 750) <0.10ms>
+11-28 13:25:38.799   357   397 I netd    : setProcSysNet(4, 2, wlan0, ucast_solicit, 10) <0.03ms>
+11-28 13:25:38.799   357   397 I netd    : setProcSysNet(6, 2, wlan0, retrans_time_ms, 750) <0.06ms>
+11-28 13:25:38.799   357   397 I netd    : setProcSysNet(6, 2, wlan0, ucast_solicit, 10) <0.03ms>
+11-28 13:25:38.801  2936  3287 W TimedProcessReaper: Scheduling killing of process to refresh configuration
+11-28 13:25:38.802  1529  5421 I NamespaceManager: Package com.android.refreshratecontrol name not found! Using module version.
+11-28 13:25:38.803  1529  5421 I NamespaceManager: Package com.google.oslo name not found! Using module version.
+11-28 13:25:38.805  1713  2155 W TimedProcessReaper: Scheduling killing of process to refresh configuration
+11-28 13:25:38.806  1529  5421 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:38.806  1529  5421 I NamespaceManager: Package com.android.media.swcodec name not found! Using module version.
+11-28 13:25:38.806  1529  5421 I NamespaceManager: Package com.android.appsearch name not found! Using module version.
+11-28 13:25:38.807  1529  5421 I NamespaceManager: Package com.android.neuralnetworks name not found! Using module version.
+11-28 13:25:38.807  1529  5421 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:38.810  1529  5421 I NamespaceManager: Package 1 name not found! Using module version.
+11-28 13:25:38.813  1677  2071 I EmojiSuperpacksManager: EmojiSuperpacksManager.processPackSet():498 processPackSet() : isBundled = false
+11-28 13:25:38.815  1863  2386 W CorpusConfigHelper: Invalid input from icing corpus JSON flag.
+11-28 13:25:38.815  1863  2386 W CorpusConfigHelper: android.util.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 123 column 2
+11-28 13:25:38.815  1863  2386 W CorpusConfigHelper: 	at android.util.JsonReader.syntaxError(JsonReader.java:1162)
+11-28 13:25:38.815  1863  2386 W CorpusConfigHelper: 	at android.util.JsonReader.checkLenient(JsonReader.java:840)
+11-28 13:25:38.815  1863  2386 W CorpusConfigHelper: 	at android.util.JsonReader.nextInArray(JsonReader.java:615)
+11-28 13:25:38.815  1863  2386 W CorpusConfigHelper: 	at android.util.JsonReader.peek(JsonReader.java:345)
+11-28 13:25:38.815  1863  2386 W CorpusConfigHelper: 	at android.util.JsonReader.hasNext(JsonReader.java:321)
+11-28 13:25:38.815  1863  2386 W CorpusConfigHelper: 	at com.google.android.apps.gsa.searchbox.c.b.b.k.c(PG:7)
+11-28 13:25:38.815  1863  2386 W CorpusConfigHelper: 	at com.google.android.apps.gsa.searchbox.c.b.b.j.a(Unknown Source:2)
+11-28 13:25:38.815  1863  2386 W CorpusConfigHelper: 	at com.google.android.apps.gsa.search.core.i.r.run(PG:5)
+11-28 13:25:38.815  1863  2386 W CorpusConfigHelper: 	at com.google.android.libraries.gsa.k.a.h.run(PG:2)
+11-28 13:25:38.815  1863  2386 W CorpusConfigHelper: 	at com.google.android.apps.gsa.shared.util.c.a.cf.b(PG:1)
+11-28 13:25:38.815  1863  2386 W CorpusConfigHelper: 	at com.google.android.apps.gsa.shared.util.c.a.ci.run(PG:1)
+11-28 13:25:38.815  1863  2386 W CorpusConfigHelper: 	at com.google.android.libraries.i.ae.run(PG:1)
+11-28 13:25:38.815  1863  2386 W CorpusConfigHelper: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-28 13:25:38.815  1863  2386 W CorpusConfigHelper: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-28 13:25:38.815  1863  2386 W CorpusConfigHelper: 	at com.google.android.libraries.i.k.run(PG:2)
+11-28 13:25:38.815  1863  2386 W CorpusConfigHelper: 	at com.google.android.libraries.i.p.run(PG:4)
+11-28 13:25:38.815  1863  2386 W CorpusConfigHelper: 	at java.lang.Thread.run(Thread.java:1012)
+11-28 13:25:38.817  1677  2033 I EmojiShortcutsLoader: EmojiShortcutsLoader.getEmojiShortcuts():117 Reading en_US emoji shortcuts
+11-28 13:25:38.824  1677  1689 W SP      : File ref is being finalized but wasn't closed, file: main_en_us_2022051700_2[8]
+11-28 13:25:38.824  1677  1689 W SP      : File ref is being finalized but wasn't closed, file: main_en_us_2022101700_1[10]
+11-28 13:25:38.824  1677  1689 W SP      : File ref is being finalized but wasn't closed, file: main_en_us_2022101700_1[10]
+11-28 13:25:38.824  1677  1689 W SP      : File ref is being finalized but wasn't closed, file: main_en_us_2022051700_2[8]
+11-28 13:25:38.839  1583  2952 I Icing   : IndexChimeraService.getServiceInterface callingPackage=com.google.android.googlequicksearchbox componentName=agsa_icing_connection serviceId=32
+11-28 13:25:38.843  1583  3083 I Icing   : IndexChimeraService.getServiceInterface callingPackage=com.google.android.googlequicksearchbox componentName=agsa_icing_connection serviceId=33
+11-28 13:25:38.847  1583  5083 W Icing   : No valid account for uploading user actions
+11-28 13:25:38.862  1583  5083 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0
+11-28 13:25:38.876  1583  5083 W Icing   : No valid account for uploading user actions
+11-28 13:25:38.906  1677  2033 I EmojiShortcutsLoader: EmojiShortcutsLoader.getEmojiShortcuts():134 Read en_US emoji shortcuts successfully.
+11-28 13:25:38.911  2936  3130 W TimedProcessReaper: Scheduling killing of process to refresh configuration
+11-28 13:25:38.914  2936  2936 I PhenotypeBackgroundRecv: Skipping com.google.android.dialer.directboot#com.google.android.dialer which doesn't use ProcessStable flags.
+11-28 13:25:38.916  1677  2019 I SP      : GC for 'bundled_emoji' (10) with ttl of 0 ms took 0 ms (0/0/0)
+11-28 13:25:38.924  1677  2071 I EmojiSuperpacksManager: EmojiSuperpacksManager.processPackSet():498 processPackSet() : isBundled = true
+11-28 13:25:38.932  1677  2033 I EmojiShortcutsLoader: EmojiShortcutsLoader.call():63 1 emoji shortcut maps loaded.
+11-28 13:25:38.940  1863  2715 W SearchServiceCore: Abort, client detached.
+11-28 13:25:38.953  1677  2033 I EmojiShortcutsLoader: EmojiShortcutsLoader.call():72 Finished loading emoji shortcuts
+11-28 13:25:38.960  1677  2033 I EmojiShortcutsLoader: EmojiShortcutsLoader.getEmojiShortcuts():117 Reading en_US emoji shortcuts
+11-28 13:25:38.993   914   976 D EGL_emulation: app_time_stats: avg=376.57ms min=67.11ms max=683.46ms count=3
+11-28 13:25:38.998  1529  5421 I NamespaceManager: Package com.android.refreshratecontrol name not found! Using module version.
+11-28 13:25:38.999  2936  3287 W TimedProcessReaper: Scheduling killing of process to refresh configuration
+11-28 13:25:39.006  1529  5421 I NamespaceManager: Package com.google.oslo name not found! Using module version.
+11-28 13:25:39.006  1583  5083 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0
+11-28 13:25:39.010  1529  5421 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:39.010  1529  5421 I NamespaceManager: Package com.android.media.swcodec name not found! Using module version.
+11-28 13:25:39.011  1529  5421 I NamespaceManager: Package com.android.appsearch name not found! Using module version.
+11-28 13:25:39.011  1529  5421 I NamespaceManager: Package com.android.neuralnetworks name not found! Using module version.
+11-28 13:25:39.011  1529  5421 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:39.012  1529  5421 I NamespaceManager: Package 1 name not found! Using module version.
+11-28 13:25:39.020  1776  2154 I AiAiEcho: Predicting[0]:
+11-28 13:25:39.020  1776  2154 I AiAiEcho: EchoTargets:
+11-28 13:25:39.020  1776  2154 I AiAiEcho: Filtered by AiAi flag check:
+11-28 13:25:39.020  1677  2033 I EmojiShortcutsLoader: EmojiShortcutsLoader.getEmojiShortcuts():134 Read en_US emoji shortcuts successfully.
+11-28 13:25:39.020  1776  2154 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata:
+11-28 13:25:39.022  1776  2154 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+11-28 13:25:39.027   914   914 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+11-28 13:25:39.037  2936  2936 I PhenotypeBackgroundRecv: Skipping com.google.android.dialershared.directboot#com.google.android.dialer which doesn't use ProcessStable flags.
+11-28 13:25:39.054  1677  2033 I EmojiShortcutsLoader: EmojiShortcutsLoader.call():63 1 emoji shortcut maps loaded.
+11-28 13:25:39.064  1677  2033 I EmojiShortcutsLoader: EmojiShortcutsLoader.call():72 Finished loading emoji shortcuts
+11-28 13:25:39.083  5141  5174 I BugleRcsEngine: [51] ProvisioningEventReceiver.d: Received Provisioning Event: [Bugle information (100)]
+11-28 13:25:39.084  5141  5174 I BugleRcsEngine: [51] ProvisioningEventReceiver.d: JibeService is running, passing event to provisioning engine.
+11-28 13:25:39.092  5141  5174 I BugleRcsEngine: [51] ProvisioningEventReceiver.d: Received Provisioning Event: [Bugle information (100)]
+11-28 13:25:39.093  5141  5174 I BugleRcsEngine: [51] ProvisioningEventReceiver.d: JibeService is running, passing event to provisioning engine.
+11-28 13:25:39.097  4503  4614 I Bugle   : BroadcastReceiverAsyncWorkTracker: Acknowledging broadcast of bdxy@d5cb6f6
+11-28 13:25:39.100  1529  5421 I NamespaceManager: Package com.android.refreshratecontrol name not found! Using module version.
+11-28 13:25:39.100  1529  5421 I NamespaceManager: Package com.google.oslo name not found! Using module version.
+11-28 13:25:39.100  4503  4622 I BugleRcsProvisioning: RcsProvisioningTrigger: Schedule provisioning on system binding.
+11-28 13:25:39.100  1529  5421 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:39.100  1529  5421 I NamespaceManager: Package com.android.media.swcodec name not found! Using module version.
+11-28 13:25:39.100  1529  5421 I NamespaceManager: Package com.android.appsearch name not found! Using module version.
+11-28 13:25:39.101  1529  5421 I NamespaceManager: Package com.android.neuralnetworks name not found! Using module version.
+11-28 13:25:39.101  1529  5421 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:39.101  1529  5421 I NamespaceManager: Package 1 name not found! Using module version.
+11-28 13:25:39.101  4503  4622 I BugleRcsProvisioning: scheduleProvisioning using legacy code path
+11-28 13:25:39.101  4503  4622 W BugleRcsEngine: [55] brcu.d: [SR]: Single Registration is disabled. Skipping Single Registration capability check for subId: 1, OS.isAtLeastS:[true], enableSingleRegistrationProvisioning:[false]
+11-28 13:25:39.101  4503  4622 I BugleRcsProvisioning: RcsProvisioningTrigger: DR is active, initializing DR provisioning. DUAL_REG
+11-28 13:25:39.102  4503  5139 W BugleRcsEngine: [104] brcu.d: [SR]: Single Registration is disabled. Skipping Single Registration capability check for subId: 1, OS.isAtLeastS:[true], enableSingleRegistrationProvisioning:[false]
+11-28 13:25:39.105  4503  4614 I Bugle   : BroadcastReceiverAsyncWorkTracker: Acknowledging broadcast of com.google.android.apps.messaging.rcsprovisioning.RcsProvisioningBroadcastReceiver@fd8840
+11-28 13:25:39.106  4503  5139 I BugleRcsEngine: [104] zzm.run: Skipping provisioning scheduling since RCS is disabled
+11-28 13:25:39.109  4503  4614 I Bugle   : BroadcastReceiverAsyncWorkTracker: Acknowledging broadcast of bdxy@d5cb6f6
+11-28 13:25:39.109  4503  4614 I Bugle   : BroadcastReceiverAsyncWorkTracker: Acknowledging broadcast of com.google.android.apps.messaging.shared.experiments.receiver.BuglePhenotypeBroadcastReceiver@8a60e35
+11-28 13:25:39.152  1863  1863 I BgTaskExecutorImpl: Starting EXCLUSIVE background task UPLOAD_ASSISTANT_DEVICE_SETTINGS.
+11-28 13:25:39.156  1863  4247 W LocationOracle: getBestLocation(): no location is available
+11-28 13:25:39.158  1863  2882 I NetworkRecognitionRnr: Using pair HTTP connection
+11-28 13:25:39.159  1863  4238 I A       : [Upload] Connected
+11-28 13:25:39.165  1863  2581 W CronetNetworkRqstWrppr: Upload request without a content type.
+11-28 13:25:39.173  5141  5171 W TimedProcessReaper: Scheduling killing of process to refresh configuration
+11-28 13:25:39.178  1863  2387 W LocationOracle: No location returned by GMS core getLastLocation()
+11-28 13:25:39.179  1863  1863 E A       : onError
+11-28 13:25:39.179  1863  1863 E A       : com.google.android.apps.gsa.shared.speech.a.m: errorCode: 65561, engine: 2
+11-28 13:25:39.179  1863  1863 E A       : 	at com.google.android.apps.gsa.staticplugins.dc.a.e.a(PG:3)
+11-28 13:25:39.179  1863  1863 E A       : 	at com.google.android.apps.gsa.s3.n.hh(PG:1)
+11-28 13:25:39.179  1863  1863 E A       : 	at com.google.cd.g.a.f.e(PG:2)
+11-28 13:25:39.179  1863  1863 E A       : 	at com.google.android.apps.gsa.speech.k.a.g.d(PG:22)
+11-28 13:25:39.179  1863  1863 E A       : 	at com.google.android.apps.gsa.speech.k.a.g.ks(PG:6)
+11-28 13:25:39.179  1863  1863 E A       : 	at com.google.android.apps.gsa.s3.o.e(PG:14)
+11-28 13:25:39.179  1863  1863 E A       : 	at com.google.android.apps.gsa.s3.p.run(PG:1)
+11-28 13:25:39.179  1863  1863 E A       : 	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:487)
+11-28 13:25:39.179  1863  1863 E A       : 	at java.util.concurrent.FutureTask.run(FutureTask.java:264)
+11-28 13:25:39.179  1863  1863 E A       : 	at com.google.android.apps.gsa.shared.util.c.a.e.run(PG:2)
+11-28 13:25:39.179  1863  1863 E A       : 	at com.google.android.apps.gsa.shared.util.c.a.bi.run(PG:1)
+11-28 13:25:39.179  1863  1863 E A       : 	at com.google.android.apps.gsa.shared.util.c.a.bi.run(PG:1)
+11-28 13:25:39.179  1863  1863 E A       : 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-28 13:25:39.179  1863  1863 E A       : 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-28 13:25:39.179  1863  1863 E A       : 	at java.lang.Thread.run(Thread.java:1012)
+11-28 13:25:39.179  1863  1863 E A       : 	at com.google.android.apps.gsa.shared.util.c.a.l.run(PG:5)
+11-28 13:25:39.179  1863  1863 E A       : Caused by: com.google.android.apps.gsa.shared.speech.a.o: errorCode: 65586, engine: 2
+11-28 13:25:39.179  1863  1863 E A       : 	... 15 more
+11-28 13:25:39.179  1863  1863 E A       : Caused by: com.google.android.apps.gsa.shared.speech.a.k: errorCode: 401, engine: 2
+11-28 13:25:39.179  1863  1863 E A       : 	at com.google.android.apps.gsa.assistant.shared.n.h.a(PG:5)
+11-28 13:25:39.179  1863  1863 E A       : 	at com.google.android.apps.gsa.s3.producers.j.hE(PG:2)
+11-28 13:25:39.179  1863  1863 E A       : 	at com.google.android.apps.gsa.speech.k.a.g.d(PG:16)
+11-28 13:25:39.179  1863  1863 E A       : 	... 12 more
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: Exception in upload method
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: com.google.android.apps.gsa.shared.r.d: Error code: 262182
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.android.apps.gsa.shared.ab.bk.d(PG:5)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.android.libraries.gsa.c.a.ar.d(PG:1)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.android.libraries.gsa.c.a.bo.b(PG:5)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.android.libraries.gsa.c.a.e.a(PG:2)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.android.libraries.gsa.c.a.a.run(PG:2)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.bf.execute(PG:1)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.d.i(PG:1)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.d.l(PG:12)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.d.cancel(PG:8)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.d.m(PG:2)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.j.a(PG:1)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.d.l(PG:3)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.d.cancel(PG:8)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.d.m(PG:2)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.j.a(PG:1)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.d.l(PG:3)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.d.cancel(PG:8)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.d.m(PG:2)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.j.a(PG:1)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.d.l(PG:3)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.d.cancel(PG:8)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.d.m(PG:2)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.j.a(PG:1)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.d.l(PG:3)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.d.cancel(PG:8)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.d.m(PG:2)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.c.a(PG:1)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.d.l(PG:3)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.d.cancel(PG:8)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.bu.cancel(PG:1)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.d.cancel(PG:17)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.android.apps.gsa.staticplugins.bk.b.h.run(PG:2)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.bf.execute(PG:1)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.d.i(PG:1)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.d.l(PG:12)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.d.cancel(PG:8)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.d.m(PG:2)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.j.a(PG:1)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.d.l(PG:3)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.d.cancel(PG:8)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.android.apps.gsa.shared.util.c.aj.a(PG:2)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.d.l(PG:3)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.d.cancel(PG:8)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.d.m(PG:2)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.c.a(PG:1)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.d.l(PG:3)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.common.util.concurrent.d.cancel(PG:8)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.android.apps.gsa.s3.o.c(PG:2)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.android.apps.gsa.s3.r.a(PG:1)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.android.apps.gsa.staticplugins.dc.a.c.e(PG:2)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.android.apps.gsa.staticplugins.dc.a.c.c(PG:3)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.android.apps.gsa.staticplugins.dc.a.e.a(PG:5)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.android.apps.gsa.s3.n.hh(PG:1)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.cd.g.a.f.e(PG:2)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.android.apps.gsa.speech.k.a.g.d(PG:22)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.android.apps.gsa.speech.k.a.g.ks(PG:6)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.android.apps.gsa.s3.o.e(PG:14)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.android.apps.gsa.s3.p.run(PG:1)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:487)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at java.util.concurrent.FutureTask.run(FutureTask.java:264)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.android.apps.gsa.shared.util.c.a.e.run(PG:2)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.android.apps.gsa.shared.util.c.a.bi.run(PG:1)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.android.apps.gsa.shared.util.c.a.bi.run(PG:1)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at java.lang.Thread.run(Thread.java:1012)
+11-28 13:25:39.180  1863  2574 E cr_CronetUrlRequestContext: 	at com.google.android.apps.gsa.shared.util.c.a.l.run(PG:5)
+11-28 13:25:39.180  1863  4238 I NetworkRecognitionRnr: Using pair HTTP connection
+11-28 13:25:39.181  1863  4247 I A       : [Upload] Connected
+11-28 13:25:39.182  1863  1863 W A       : Failed to sync device settings.
+11-28 13:25:39.182  1863  1863 I A       : Retrying to sync device settings.
+11-28 13:25:39.191  5275  5275 W rules.WifiRx: FenceState currentState is not true
+11-28 13:25:39.191  1529  5421 I NamespaceManager: Package com.android.refreshratecontrol name not found! Using module version.
+11-28 13:25:39.192  1529  5421 I NamespaceManager: Package com.google.oslo name not found! Using module version.
+11-28 13:25:39.193  1529  5421 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:39.193  1529  5421 I NamespaceManager: Package com.android.media.swcodec name not found! Using module version.
+11-28 13:25:39.193  1529  5421 I NamespaceManager: Package com.android.appsearch name not found! Using module version.
+11-28 13:25:39.193  1529  5421 I NamespaceManager: Package com.android.neuralnetworks name not found! Using module version.
+11-28 13:25:39.194  1529  5421 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:39.195  1529  5421 I NamespaceManager: Package 1 name not found! Using module version.
+11-28 13:25:39.197  5275  5275 W rules.WifiRx: FenceState currentState is not true
+11-28 13:25:39.201  4503  5138 I PhenotypeBackgroundRecv: Successfully updated snapshot for com.google.android.libraries.mobileconfiguration#com.google.android.apps.messaging
+11-28 13:25:39.204  4503  4640 I Bugle   : BroadcastReceiverAsyncWorkTracker: Acknowledging broadcast of com.google.android.apps.messaging.shared.experiments.receiver.BuglePhenotypeBroadcastReceiver@fa6ceed
+11-28 13:25:39.208  4503  4610 I PhenotypeBackgroundRecv: Successfully updated snapshot for com.google.android.libraries.performance.primes#com.google.android.apps.messaging
+11-28 13:25:39.215  1529  5111 I NamespaceManager: Package com.android.refreshratecontrol name not found! Using module version.
+11-28 13:25:39.221  1529  5111 I NamespaceManager: Package com.google.oslo name not found! Using module version.
+11-28 13:25:39.222  1529  5111 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:39.223  1529  5111 I NamespaceManager: Package com.android.media.swcodec name not found! Using module version.
+11-28 13:25:39.226  4503  4614 I Bugle   : BroadcastReceiverAsyncWorkTracker: Acknowledging broadcast of com.google.android.apps.messaging.shared.experiments.receiver.BuglePhenotypeBroadcastReceiver@1a38170
+11-28 13:25:39.227  1529  4757 W ctxmgr  : [WorkManager] Long workInfo: pkg=com.google.android.gms, lbl=DispatcherDeliver, start=2026-11-28 13:25:29.707+0000, stop=2026-11-28 13:25:39.226+0000, durtn=9519ms [CONTEXT service_id=47 ]
+11-28 13:25:39.229  1529  5111 I NamespaceManager: Package com.android.appsearch name not found! Using module version.
+11-28 13:25:39.235  4503  4503 I PhenotypeBackgroundRecv: Skipping com.google.lighter.android#com.google.android.apps.messaging which doesn't use ProcessStable flags.
+11-28 13:25:39.235  1529  5111 I NamespaceManager: Package com.android.neuralnetworks name not found! Using module version.
+11-28 13:25:39.236  4503  4610 W TimedProcessReaper: Scheduling killing of process to refresh configuration
+11-28 13:25:39.241  1529  5111 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:39.242  1529  5111 I NamespaceManager: Package 1 name not found! Using module version.
+11-28 13:25:39.256   914   914 D TileServices: Couldn't find tile for ComponentInfo{com.google.android.apps.wellbeing/com.google.android.apps.wellbeing.screen.ui.GrayscaleTileService}(0)
+11-28 13:25:39.275   547  2010 I RemoteProvisionSysSvc: getRegistration(android.hardware.security.keymint.IRemotelyProvisionedComponent/default)
+11-28 13:25:39.288   547   547 I RegistrationProxy: onServiceConnected: com.android.rkpdapp.service.RemoteProvisioningService
+11-28 13:25:39.290   154   154 I lowmemorykiller: lmkd data connection established
+11-28 13:25:39.292  1529  5111 I NamespaceManager: Package com.android.refreshratecontrol name not found! Using module version.
+11-28 13:25:39.297  1529  5111 I NamespaceManager: Package com.google.oslo name not found! Using module version.
+11-28 13:25:39.297  1529  5111 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:39.297  1529  5111 I NamespaceManager: Package com.android.media.swcodec name not found! Using module version.
+11-28 13:25:39.297  1529  5111 I NamespaceManager: Package com.android.appsearch name not found! Using module version.
+11-28 13:25:39.298  1529  5111 I NamespaceManager: Package com.android.neuralnetworks name not found! Using module version.
+11-28 13:25:39.298  1529  5111 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:39.298  1529  5111 I NamespaceManager: Package 1 name not found! Using module version.
+11-28 13:25:39.305   547  2621 I RegistrationProxy: IGetRegistrationCallback.onSuccess
+11-28 13:25:39.327   547  2618 I RemoteProvisionSysSvc: Fetching key 10128 for client 161620436
+11-28 13:25:39.327   547  2618 I RegistrationProxy: getKeyAsync operation started with callback 240070525
+11-28 13:25:39.328  3760  3859 I RkpdRegistrationBinder: Key requested for : android.hardware.security.keymint.IRemotelyProvisionedComponent/default, clientUid: 1017, keyId: 10128, callback: 62786482
+11-28 13:25:39.331   154   154 I lowmemorykiller: Using psi monitors for memory pressure detection
+11-28 13:25:39.331   154   154 I lowmemorykiller: Properties reinitilized
+11-28 13:25:39.337  5561  5561 I lowmemorykiller: lmkd updated properties successfully
+11-28 13:25:39.337   154   154 I lowmemorykiller: lmkd data connection dropped
+11-28 13:25:39.337   154   154 I lowmemorykiller: closing lmkd data connection
+11-28 13:25:39.340  3760  3859 I RkpdRegistrationBinder: Key successfully assigned to client
+11-28 13:25:39.372  1863  2882 W TimedProcessReaper: Scheduling killing of process to refresh configuration
+11-28 13:25:39.374   547   547 I RemoteProvisionSysSvc: Successfully fetched key for client 161620436
+11-28 13:25:39.386  1863  1863 I BgTaskExecutorImpl: Starting EXCLUSIVE background task FETCH_CONFIGS_FROM_PHENOTYPE.
+11-28 13:25:39.438  1529  5111 I NamespaceManager: Package com.android.refreshratecontrol name not found! Using module version.
+11-28 13:25:39.438  1529  5111 I NamespaceManager: Package com.google.oslo name not found! Using module version.
+11-28 13:25:39.439  1529  5111 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:39.439  1529  5111 I NamespaceManager: Package com.android.media.swcodec name not found! Using module version.
+11-28 13:25:39.439  1529  5111 I NamespaceManager: Package com.android.appsearch name not found! Using module version.
+11-28 13:25:39.439  1529  5111 I NamespaceManager: Package com.android.neuralnetworks name not found! Using module version.
+11-28 13:25:39.440  1529  5111 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:39.440  1529  5111 I NamespaceManager: Package 1 name not found! Using module version.
+11-28 13:25:39.484  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_birthdaydoodle_jar__name to integer.
+11-28 13:25:39.485  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_call_jar__name to integer.
+11-28 13:25:39.485  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_canvas_jar__name to integer.
+11-28 13:25:39.485  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_chkpkg_jar__name to integer.
+11-28 13:25:39.485  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_crashtest_jar__name to integer.
+11-28 13:25:39.485  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_dining_jar__name to integer.
+11-28 13:25:39.485  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_doodle_notifications_jar__name to integer.
+11-28 13:25:39.485  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_imageviewer_jar__name to integer.
+11-28 13:25:39.485  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_ipa_jar__name to integer.
+11-28 13:25:39.485  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_jslocation_jar__name to integer.
+11-28 13:25:39.485  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_localintent_jar__name to integer.
+11-28 13:25:39.485  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_messaging_jar__name to integer.
+11-28 13:25:39.485  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_nativesrp_activity_jar__name to integer.
+11-28 13:25:39.485  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_nativesrp_presenter_jar__name to integer.
+11-28 13:25:39.486  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_nowcontent_jar__name to integer.
+11-28 13:25:39.486  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_recents_activity_jar__name to integer.
+11-28 13:25:39.486  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_save_jar__name to integer.
+11-28 13:25:39.486  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_searchresults_activity_jar__name to integer.
+11-28 13:25:39.486  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_test_jar__name to integer.
+11-28 13:25:39.486  1863  2383 W A       : Can't format flag AndroidGsaVelourJars__velour_weather_jar__name to integer.
+11-28 13:25:39.486  1863  2383 W A       : Can't format flag bindle_flags__bloblobber_blob to integer.
+11-28 13:25:39.486  1863  2383 W A       : Can't format flag bindle_flags__velour_jar to integer.
+11-28 13:25:39.486  1529  3309 W BpBinder: Large outgoing transaction of 323832 bytes, interface descriptor , code 4
+11-28 13:25:39.498  1863  2387 I A       : Refusing EXCLUSIVE task 24, it is already pending. Try again in 312 seconds.
+11-28 13:25:39.501  1863  2382 I FedAssExpListener: Fed-ass not supported for signed out users.
+11-28 13:25:39.501  1863  2382 I FedAssExpListener: Successfully processed experiments changed.
+11-28 13:25:39.502  1863  2382 I A       : NGA disabled since it's running Panthera and at least one a11y feature is on.
+11-28 13:25:39.509  1863  2387 I OpaEligibilityChecker: send OpaEligibilityChange broadcast to CommonBroadcastReceiver
+11-28 13:25:39.529  1863  2387 W CorpusConfigHelper: Invalid input from icing corpus JSON flag.
+11-28 13:25:39.529  1863  2387 W CorpusConfigHelper: android.util.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 123 column 2
+11-28 13:25:39.529  1863  2387 W CorpusConfigHelper: 	at android.util.JsonReader.syntaxError(JsonReader.java:1162)
+11-28 13:25:39.529  1863  2387 W CorpusConfigHelper: 	at android.util.JsonReader.checkLenient(JsonReader.java:840)
+11-28 13:25:39.529  1863  2387 W CorpusConfigHelper: 	at android.util.JsonReader.nextInArray(JsonReader.java:615)
+11-28 13:25:39.529  1863  2387 W CorpusConfigHelper: 	at android.util.JsonReader.peek(JsonReader.java:345)
+11-28 13:25:39.529  1863  2387 W CorpusConfigHelper: 	at android.util.JsonReader.hasNext(JsonReader.java:321)
+11-28 13:25:39.529  1863  2387 W CorpusConfigHelper: 	at com.google.android.apps.gsa.searchbox.c.b.b.k.c(PG:7)
+11-28 13:25:39.529  1863  2387 W CorpusConfigHelper: 	at com.google.android.apps.gsa.searchbox.c.b.b.j.a(Unknown Source:2)
+11-28 13:25:39.529  1863  2387 W CorpusConfigHelper: 	at com.google.android.apps.gsa.search.core.i.r.run(PG:5)
+11-28 13:25:39.529  1863  2387 W CorpusConfigHelper: 	at com.google.android.libraries.gsa.k.a.h.run(PG:2)
+11-28 13:25:39.529  1863  2387 W CorpusConfigHelper: 	at com.google.android.apps.gsa.shared.logger.f.a.a.l.p(PG:2)
+11-28 13:25:39.529  1863  2387 W CorpusConfigHelper: 	at com.google.android.apps.gsa.shared.logger.f.a.a.g.run(Unknown Source:4)
+11-28 13:25:39.529  1863  2387 W CorpusConfigHelper: 	at com.google.android.apps.gsa.shared.util.c.a.cf.b(PG:1)
+11-28 13:25:39.529  1863  2387 W CorpusConfigHelper: 	at com.google.android.apps.gsa.shared.util.c.a.ci.run(PG:1)
+11-28 13:25:39.529  1863  2387 W CorpusConfigHelper: 	at com.google.android.libraries.i.ae.run(PG:1)
+11-28 13:25:39.529  1863  2387 W CorpusConfigHelper: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-28 13:25:39.529  1863  2387 W CorpusConfigHelper: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-28 13:25:39.529  1863  2387 W CorpusConfigHelper: 	at com.google.android.libraries.i.k.run(PG:2)
+11-28 13:25:39.529  1863  2387 W CorpusConfigHelper: 	at com.google.android.libraries.i.p.run(PG:4)
+11-28 13:25:39.529  1863  2387 W CorpusConfigHelper: 	at java.lang.Thread.run(Thread.java:1012)
+11-28 13:25:39.539  1863  2871 W TimedProcessReaper: Scheduling killing of process to refresh configuration
+11-28 13:25:39.546  1583  2952 I Icing   : IndexChimeraService.getServiceInterface callingPackage=com.google.android.googlequicksearchbox componentName=agsa_icing_connection serviceId=32
+11-28 13:25:39.550  1583  5083 W Icing   : No valid account for uploading user actions
+11-28 13:25:39.554  1583  2952 I Icing   : IndexChimeraService.getServiceInterface callingPackage=com.google.android.googlequicksearchbox componentName=agsa_icing_connection serviceId=33
+11-28 13:25:39.575  1863  1863 I A       : Refusing EXCLUSIVE task 21, it is already pending. Try again in 359 seconds.
+11-28 13:25:39.589  2205  2205 I PhenotypeBackgroundRecv: Skipping com.google.android.partnersetup which doesn't use ProcessStable flags.
+11-28 13:25:39.591  1863  2715 W SearchServiceCore: Abort, client detached.
+11-28 13:25:39.594  1863  2871 I BgTaskExecutorImpl: Starting EXCLUSIVE background task FETCH_CONFIGS_FROM_PHENOTYPE.
+11-28 13:25:39.600  1529  5421 I Fitness : OnPackageChangedOperation got intent: Intent { act=android.intent.action.PACKAGE_CHANGED dat=package: flg=0x5000010 pkg=com.google.android.gms cmp=com.google.android.gms/.chimera.PersistentIntentOperationService (has extras) } [CONTEXT service_id=17 ]
+11-28 13:25:39.626  1529  5421 I NamespaceManager: Package com.android.refreshratecontrol name not found! Using module version.
+11-28 13:25:39.626  1583  5083 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0
+11-28 13:25:39.630  1529  5421 I NamespaceManager: Package com.google.oslo name not found! Using module version.
+11-28 13:25:39.630  1529  5421 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:39.631  1529  5421 I NamespaceManager: Package com.android.media.swcodec name not found! Using module version.
+11-28 13:25:39.632  1529  5421 I NamespaceManager: Package com.android.appsearch name not found! Using module version.
+11-28 13:25:39.632  1529  5421 I NamespaceManager: Package com.android.neuralnetworks name not found! Using module version.
+11-28 13:25:39.632  1529  5421 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:39.637  1529  5421 I NamespaceManager: Package 1 name not found! Using module version.
+11-28 13:25:39.646  1713  1764 I PhenotypeBackgroundRecv: Successfully updated snapshot for com.google.android.libraries.performance.primes#com.google.android.apps.wellbeing
+11-28 13:25:39.661  2223  5565 D DownloadManager: [9] Starting
+11-28 13:25:39.665  2958  5555 W SystemServiceRegistry: No service published for: persistent_data_block
+11-28 13:25:39.671  1713  1764 W TimedProcessReaper: Scheduling killing of process to refresh configuration
+11-28 13:25:39.671  2998  3258 I PhenotypeBackgroundRecv: Successfully updated snapshot for com.google.android.libraries.consentverifier#com.google.android.tts
+11-28 13:25:39.706   357  5567 I resolv  : GetAddrInfoHandler::run: {100 983140 100 983140 10087 0}
+11-28 13:25:39.707   357  5568 I resolv  : res_nmkquery: (QUERY, IN, AAAA)
+11-28 13:25:39.708   357  5568 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x752116261390
+11-28 13:25:39.708   357  5568 I resolv  : doQuery: rcode=0, ancount=8, return value=257
+11-28 13:25:39.709  1583  5083 W Icing   : No valid account for uploading user actions
+11-28 13:25:39.711   357  5569 I resolv  : res_nmkquery: (QUERY, IN, A)
+11-28 13:25:39.711   357  5569 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x7520f626f5b0
+11-28 13:25:39.711   357  5569 I resolv  : doQuery: rcode=0, ancount=8, return value=161
+11-28 13:25:39.714  2223  5565 D TrafficStats: tagSocket(79) with statsTag=0xffffff01, statsUid=10129
+11-28 13:25:39.725  1583  5083 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0
+11-28 13:25:39.731   914  1042 V WallpaperService: Setting wallpaper dimming: 0
+11-28 13:25:39.744  1529  5564 I Fitness : FitCleanupIntentOperation received Intent android.intent.action.PACKAGE_CHANGED [CONTEXT service_id=17 ]
+11-28 13:25:39.751   914   914 D Tonal   : Tonal Palette - index: 4. Main color: ff343e65
+11-28 13:25:39.751   914   914 D Tonal   : Colors: ff0b0c16, ff141627, ff1d2138, ff272d4c, ff343e65, ff41477e, ff4e5597, ff8184a4, ff898cc3, ff9e9ecd, ffb7b6d9, ffd9d7eb, ffefeef7
+11-28 13:25:39.751   914   914 D Tonal   : Gradients:
+11-28 13:25:39.751   914   914 D Tonal   : 	Normal GradientColors(ff343e65, ff343e65)
+11-28 13:25:39.751   914   914 D Tonal   : 	Dark GradientColors(ff272d4c, ff272d4c)
+11-28 13:25:39.751   914   914 D Tonal   : 	Extra dark: GradientColors(ff1d2138, ff1d2138)
+11-28 13:25:39.760   914   914 D TileServices: Couldn't find tile for ComponentInfo{com.google.android.apps.wellbeing/com.google.android.apps.wellbeing.screen.ui.GrayscaleTileService}(0)
+11-28 13:25:39.763  1529  5109 I Fitness : OnPackageChangedOperation got intent: Intent { act=android.intent.action.PACKAGE_CHANGED dat=package: flg=0x5000010 pkg=com.google.android.gms cmp=com.google.android.gms/.chimera.PersistentIntentOperationService (has extras) } [CONTEXT service_id=17 ]
+11-28 13:25:39.767  1529  5053 W ctxmgr  : [NetworkStateProducer] No state change for network connection context [CONTEXT service_id=47 ]
+11-28 13:25:39.768  2998  3258 I PhenotypeBackgroundRecv: Successfully updated snapshot for com.google.android.gms.clearcut_client#com.google.android.tts
+11-28 13:25:39.774   357   397 I netd    : tetherGetStats() -> {[]} <0.33ms>
+11-28 13:25:39.782   357   397 I netd    : bandwidthSetGlobalAlert(2097152) <0.09ms>
+11-28 13:25:39.783  2998  2998 I PhenotypeBackgroundRecv: Skipping com.google.android.gms.icing.mdd#com.google.android.tts which doesn't use ProcessStable flags.
+11-28 13:25:39.792   914  1042 V WallpaperService: Setting wallpaper dimming: 0
+11-28 13:25:39.794  4503  4640 I Bugle   : BroadcastReceiverAsyncWorkTracker: Acknowledging broadcast of com.google.android.apps.messaging.shared.experiments.receiver.BuglePhenotypeBroadcastReceiver@765127a
+11-28 13:25:39.795  4503  4503 I PhenotypeBackgroundRecv: Skipping com.google.android.gms.icing.mdd#com.google.android.apps.messaging which doesn't use ProcessStable flags.
+11-28 13:25:39.806  4503  4640 I Bugle   : BroadcastReceiverAsyncWorkTracker: Acknowledging broadcast of com.google.android.apps.messaging.shared.experiments.receiver.BuglePhenotypeBroadcastReceiver@aac4e07
+11-28 13:25:39.809   914   914 D Tonal   : Tonal Palette - index: 4. Main color: ff343e65
+11-28 13:25:39.809   914   914 D Tonal   : Colors: ff0b0c16, ff141627, ff1d2138, ff272d4c, ff343e65, ff41477e, ff4e5597, ff8184a4, ff898cc3, ff9e9ecd, ffb7b6d9, ffd9d7eb, ffefeef7
+11-28 13:25:39.809   914   914 D Tonal   : Gradients:
+11-28 13:25:39.809   914   914 D Tonal   : 	Normal GradientColors(ff343e65, ff343e65)
+11-28 13:25:39.809   914   914 D Tonal   : 	Dark GradientColors(ff272d4c, ff272d4c)
+11-28 13:25:39.809   914   914 D Tonal   : 	Extra dark: GradientColors(ff1d2138, ff1d2138)
+11-28 13:25:39.812  4503  4623 I PhenotypeBackgroundRecv: Successfully updated snapshot for com.google.android.libraries.notifications.platform#com.google.android.apps.messaging
+11-28 13:25:39.815  4503  4614 I Bugle   : BroadcastReceiverAsyncWorkTracker: Acknowledging broadcast of com.google.android.apps.messaging.shared.experiments.receiver.BuglePhenotypeBroadcastReceiver@cb5c3a3
+11-28 13:25:39.829   914   914 D TileServices: Couldn't find tile for ComponentInfo{com.google.android.apps.wellbeing/com.google.android.apps.wellbeing.screen.ui.GrayscaleTileService}(0)
+11-28 13:25:39.864  1529  5109 I Fitness : FitCleanupIntentOperation received Intent android.intent.action.PACKAGE_CHANGED [CONTEXT service_id=17 ]
+11-28 13:25:39.889   914  1042 V WallpaperService: Setting wallpaper dimming: 0
+11-28 13:25:39.899  1529  5111 I Fitness : OnPackageChangedOperation got intent: Intent { act=android.intent.action.PACKAGE_CHANGED dat=package: flg=0x45000010 pkg=com.google.android.gms cmp=com.google.android.gms/.chimera.PersistentIntentOperationService (has extras) } [CONTEXT service_id=17 ]
+11-28 13:25:39.901   914   914 D Tonal   : Tonal Palette - index: 4. Main color: ff343e65
+11-28 13:25:39.901   914   914 D Tonal   : Colors: ff0b0c16, ff141627, ff1d2138, ff272d4c, ff343e65, ff41477e, ff4e5597, ff8184a4, ff898cc3, ff9e9ecd, ffb7b6d9, ffd9d7eb, ffefeef7
+11-28 13:25:39.901   914   914 D Tonal   : Gradients:
+11-28 13:25:39.901   914   914 D Tonal   : 	Normal GradientColors(ff343e65, ff343e65)
+11-28 13:25:39.901   914   914 D Tonal   : 	Dark GradientColors(ff272d4c, ff272d4c)
+11-28 13:25:39.901   914   914 D Tonal   : 	Extra dark: GradientColors(ff1d2138, ff1d2138)
+11-28 13:25:39.915  1529  5564 I Fitness : OnPackageChangedOperation got intent: Intent { act=android.intent.action.PACKAGE_CHANGED dat=package: flg=0x5000010 pkg=com.google.android.gms cmp=com.google.android.gms/.chimera.PersistentIntentOperationService (has extras) } [CONTEXT service_id=17 ]
+11-28 13:25:39.920  1529  5564 I Fitness : OnPackageChangedOperation got intent: Intent { act=android.intent.action.PACKAGE_CHANGED dat=package: flg=0x5000010 pkg=com.google.android.gms cmp=com.google.android.gms/.chimera.PersistentIntentOperationService (has extras) } [CONTEXT service_id=17 ]
+11-28 13:25:39.929  1529  5564 I Fitness : FitCleanupIntentOperation received Intent android.intent.action.PACKAGE_CHANGED [CONTEXT service_id=17 ]
+11-28 13:25:39.949  1529  5421 I NamespaceManager: Package com.android.refreshratecontrol name not found! Using module version.
+11-28 13:25:39.949  1529  5421 I NamespaceManager: Package com.google.oslo name not found! Using module version.
+11-28 13:25:39.949  1529  5421 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:39.949  1529  5421 I NamespaceManager: Package com.android.media.swcodec name not found! Using module version.
+11-28 13:25:39.949  1529  5421 I NamespaceManager: Package com.android.appsearch name not found! Using module version.
+11-28 13:25:39.950  1529  5421 I NamespaceManager: Package com.android.neuralnetworks name not found! Using module version.
+11-28 13:25:39.950  1529  5421 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:39.950  1529  5421 I NamespaceManager: Package 1 name not found! Using module version.
+11-28 13:25:39.961   914   914 D TileServices: Couldn't find tile for ComponentInfo{com.google.android.apps.wellbeing/com.google.android.apps.wellbeing.screen.ui.GrayscaleTileService}(0)
+11-28 13:25:39.970  4023  4039 D CompatibilityChangeReporter: Compat change id reported: 150939131; UID 10129; state: ENABLED
+11-28 13:25:39.977   914   976 E OpenGLRenderer: Unable to match the desired swap behavior.
+11-28 13:25:39.978  2223  5572 D DownloadManager: [10] Starting
+11-28 13:25:40.044  1529  5564 I Fitness : FitCleanupIntentOperation received Intent android.intent.action.PACKAGE_CHANGED [CONTEXT service_id=17 ]
+11-28 13:25:40.052  1529  5564 I Fitness : FitCleanupIntentOperation received Intent android.intent.action.PACKAGE_CHANGED [CONTEXT service_id=17 ]
+11-28 13:25:40.078   914  1042 V WallpaperService: Setting wallpaper dimming: 0
+11-28 13:25:40.096   914   914 D Tonal   : Tonal Palette - index: 4. Main color: ff343e65
+11-28 13:25:40.096   914   914 D Tonal   : Colors: ff0b0c16, ff141627, ff1d2138, ff272d4c, ff343e65, ff41477e, ff4e5597, ff8184a4, ff898cc3, ff9e9ecd, ffb7b6d9, ffd9d7eb, ffefeef7
+11-28 13:25:40.096   914   914 D Tonal   : Gradients:
+11-28 13:25:40.096   914   914 D Tonal   : 	Normal GradientColors(ff343e65, ff343e65)
+11-28 13:25:40.096   914   914 D Tonal   : 	Dark GradientColors(ff272d4c, ff272d4c)
+11-28 13:25:40.096   914   914 D Tonal   : 	Extra dark: GradientColors(ff1d2138, ff1d2138)
+11-28 13:25:40.101  2223  5572 D TrafficStats: tagSocket(84) with statsTag=0xffffff01, statsUid=10129
+11-28 13:25:40.116  1529  5564 I Fitness : OnPackageChangedOperation got intent: Intent { act=android.intent.action.PACKAGE_CHANGED dat=package: flg=0x45000010 pkg=com.google.android.gms cmp=com.google.android.gms/.chimera.PersistentIntentOperationService (has extras) } [CONTEXT service_id=17 ]
+11-28 13:25:40.130  1529  3355 I Fitness : FitCleanupIntentOperation received Intent android.intent.action.PACKAGE_CHANGED [CONTEXT service_id=17 ]
+11-28 13:25:40.148   914   914 D TileServices: Couldn't find tile for ComponentInfo{com.google.android.apps.wellbeing/com.google.android.apps.wellbeing.screen.ui.GrayscaleTileService}(0)
+11-28 13:25:40.164  1529  5421 I NamespaceManager: Package com.android.refreshratecontrol name not found! Using module version.
+11-28 13:25:40.168  1529  5421 I NamespaceManager: Package com.google.oslo name not found! Using module version.
+11-28 13:25:40.172  1529  5421 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:40.172  1529  5421 I NamespaceManager: Package com.android.media.swcodec name not found! Using module version.
+11-28 13:25:40.172  1529  5421 I NamespaceManager: Package com.android.appsearch name not found! Using module version.
+11-28 13:25:40.172  1529  5421 I NamespaceManager: Package com.android.neuralnetworks name not found! Using module version.
+11-28 13:25:40.172  1529  5421 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:40.173  1529  5421 I NamespaceManager: Package 1 name not found! Using module version.
+11-28 13:25:40.183  4503  4623 W TimedProcessReaper: Scheduling killing of process to refresh configuration
+11-28 13:25:40.217  2223  2252 I d.process.media: Background young concurrent copying GC freed 24775(1247KB) AllocSpace objects, 0(0B) LOS objects, 18% free, 4097KB/5047KB, paused 22us,10us total 246.851ms
+11-28 13:25:40.227  1529  3309 W BpBinder: Large outgoing transaction of 323832 bytes, interface descriptor , code 4
+11-28 13:25:40.239  1863  2386 W A       : Can't format flag AndroidGsaVelourJars__velour_birthdaydoodle_jar__name to integer.
+11-28 13:25:40.239  1863  2386 W A       : Can't format flag AndroidGsaVelourJars__velour_call_jar__name to integer.
+11-28 13:25:40.239  1863  2386 W A       : Can't format flag AndroidGsaVelourJars__velour_canvas_jar__name to integer.
+11-28 13:25:40.239  1863  2386 W A       : Can't format flag AndroidGsaVelourJars__velour_chkpkg_jar__name to integer.
+11-28 13:25:40.239  1863  2386 W A       : Can't format flag AndroidGsaVelourJars__velour_crashtest_jar__name to integer.
+11-28 13:25:40.239  1863  2386 W A       : Can't format flag AndroidGsaVelourJars__velour_dining_jar__name to integer.
+11-28 13:25:40.239  1863  2386 W A       : Can't format flag AndroidGsaVelourJars__velour_doodle_notifications_jar__name to integer.
+11-28 13:25:40.239  1863  2386 W A       : Can't format flag AndroidGsaVelourJars__velour_imageviewer_jar__name to integer.
+11-28 13:25:40.239  1863  2386 W A       : Can't format flag AndroidGsaVelourJars__velour_ipa_jar__name to integer.
+11-28 13:25:40.239  1863  2386 W A       : Can't format flag AndroidGsaVelourJars__velour_jslocation_jar__name to integer.
+11-28 13:25:40.239  1863  2386 W A       : Can't format flag AndroidGsaVelourJars__velour_localintent_jar__name to integer.
+11-28 13:25:40.239  1863  2386 W A       : Can't format flag AndroidGsaVelourJars__velour_messaging_jar__name to integer.
+11-28 13:25:40.239  1863  2386 W A       : Can't format flag AndroidGsaVelourJars__velour_nativesrp_activity_jar__name to integer.
+11-28 13:25:40.239  1863  2386 W A       : Can't format flag AndroidGsaVelourJars__velour_nativesrp_presenter_jar__name to integer.
+11-28 13:25:40.266  2958  5555 W libc    : Access denied finding property "persist.adb.tls_server.enable"
+11-28 13:25:40.267  2958  5555 W libc    : Access denied finding property "service.adb.tls.port"
+11-28 13:25:40.269  1863  2386 W A       : Can't format flag AndroidGsaVelourJars__velour_nowcontent_jar__name to integer.
+11-28 13:25:40.269  1863  2386 W A       : Can't format flag AndroidGsaVelourJars__velour_recents_activity_jar__name to integer.
+11-28 13:25:40.269  1863  2386 W A       : Can't format flag AndroidGsaVelourJars__velour_save_jar__name to integer.
+11-28 13:25:40.270  1863  2386 W A       : Can't format flag AndroidGsaVelourJars__velour_searchresults_activity_jar__name to integer.
+11-28 13:25:40.270  1863  2386 W A       : Can't format flag AndroidGsaVelourJars__velour_test_jar__name to integer.
+11-28 13:25:40.270  1863  2386 W A       : Can't format flag AndroidGsaVelourJars__velour_weather_jar__name to integer.
+11-28 13:25:40.270  1863  2386 W A       : Can't format flag bindle_flags__bloblobber_blob to integer.
+11-28 13:25:40.270  1863  2386 W A       : Can't format flag bindle_flags__velour_jar to integer.
+11-28 13:25:40.272  2223  5565 D DownloadManager: [9] Finished with status SUCCESS
+11-28 13:25:40.294  4503  4623 I PhenotypeBackgroundRecv: Successfully updated snapshot for com.google.android.libraries.consentverifier#com.google.android.apps.messaging
+11-28 13:25:40.298  1863  2387 I A       : Refusing EXCLUSIVE task 24, it is already pending. Try again in 312 seconds.
+11-28 13:25:40.239  2958  2958 W binder:2958_9: type=1400 audit(0.0:189): avc:  denied  { read } for  name="u:object_r:system_adbd_prop:s0" dev="tmpfs" ino=292 scontext=u:r:gmscore_app:s0:c512,c768 tcontext=u:object_r:system_adbd_prop:s0 tclass=file permissive=0 app=com.google.android.gms
+11-28 13:25:40.308  1863  2387 I OpaEligibilityChecker: send OpaEligibilityChange broadcast to CommonBroadcastReceiver
+11-28 13:25:40.320  1863  2383 I FedAssExpListener: Fed-ass not supported for signed out users.
+11-28 13:25:40.323  1863  2383 I FedAssExpListener: Successfully processed experiments changed.
+11-28 13:25:40.323  1863  2382 I A       : NGA disabled since it's running Panthera and at least one a11y feature is on.
+11-28 13:25:40.331  1863  2387 W CorpusConfigHelper: Invalid input from icing corpus JSON flag.
+11-28 13:25:40.331  1863  2387 W CorpusConfigHelper: android.util.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 123 column 2
+11-28 13:25:40.331  1863  2387 W CorpusConfigHelper: 	at android.util.JsonReader.syntaxError(JsonReader.java:1162)
+11-28 13:25:40.331  1863  2387 W CorpusConfigHelper: 	at android.util.JsonReader.checkLenient(JsonReader.java:840)
+11-28 13:25:40.331  1863  2387 W CorpusConfigHelper: 	at android.util.JsonReader.nextInArray(JsonReader.java:615)
+11-28 13:25:40.331  1863  2387 W CorpusConfigHelper: 	at android.util.JsonReader.peek(JsonReader.java:345)
+11-28 13:25:40.331  1863  2387 W CorpusConfigHelper: 	at android.util.JsonReader.hasNext(JsonReader.java:321)
+11-28 13:25:40.331  1863  2387 W CorpusConfigHelper: 	at com.google.android.apps.gsa.searchbox.c.b.b.k.c(PG:7)
+11-28 13:25:40.331  1863  2387 W CorpusConfigHelper: 	at com.google.android.apps.gsa.searchbox.c.b.b.j.a(Unknown Source:2)
+11-28 13:25:40.331  1863  2387 W CorpusConfigHelper: 	at com.google.android.apps.gsa.search.core.i.r.run(PG:5)
+11-28 13:25:40.331  1863  2387 W CorpusConfigHelper: 	at com.google.android.libraries.gsa.k.a.h.run(PG:2)
+11-28 13:25:40.331  1863  2387 W CorpusConfigHelper: 	at com.google.android.apps.gsa.shared.logger.f.a.a.l.p(PG:2)
+11-28 13:25:40.331  1863  2387 W CorpusConfigHelper: 	at com.google.android.apps.gsa.shared.logger.f.a.a.g.run(Unknown Source:4)
+11-28 13:25:40.331  1863  2387 W CorpusConfigHelper: 	at com.google.android.apps.gsa.shared.util.c.a.cf.b(PG:1)
+11-28 13:25:40.331  1863  2387 W CorpusConfigHelper: 	at com.google.android.apps.gsa.shared.util.c.a.ci.run(PG:1)
+11-28 13:25:40.331  1863  2387 W CorpusConfigHelper: 	at com.google.android.libraries.i.ae.run(PG:1)
+11-28 13:25:40.331  1863  2387 W CorpusConfigHelper: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-28 13:25:40.331  1863  2387 W CorpusConfigHelper: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-28 13:25:40.331  1863  2387 W CorpusConfigHelper: 	at com.google.android.libraries.i.k.run(PG:2)
+11-28 13:25:40.331  1863  2387 W CorpusConfigHelper: 	at com.google.android.libraries.i.p.run(PG:4)
+11-28 13:25:40.331  1863  2387 W CorpusConfigHelper: 	at java.lang.Thread.run(Thread.java:1012)
+11-28 13:25:40.333  1863  2886 W TimedProcessReaper: Scheduling killing of process to refresh configuration
+11-28 13:25:40.336  1529  5421 I NamespaceManager: Package com.android.refreshratecontrol name not found! Using module version.
+11-28 13:25:40.336  1529  5421 I NamespaceManager: Package com.google.oslo name not found! Using module version.
+11-28 13:25:40.337  1529  5421 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:40.337  1529  5421 I NamespaceManager: Package com.android.media.swcodec name not found! Using module version.
+11-28 13:25:40.338  1529  5421 I NamespaceManager: Package com.android.appsearch name not found! Using module version.
+11-28 13:25:40.339  1529  5421 I NamespaceManager: Package com.android.neuralnetworks name not found! Using module version.
+11-28 13:25:40.342  1529  5421 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:40.342  1529  1537 I .gms.persistent: Background young concurrent copying GC freed 333263(12MB) AllocSpace objects, 2(64KB) LOS objects, 30% free, 22MB/32MB, paused 6.932ms,31us total 408.637ms
+11-28 13:25:40.343  1529  5421 I NamespaceManager: Package 1 name not found! Using module version.
+11-28 13:25:40.348  4503  4614 I BuglePhenotype: onReceive for bugle package [CONTEXT package_name="com.google.android.apps.messaging#com.google.android.apps.messaging" ]
+11-28 13:25:40.349  4503  4614 I Bugle   : BroadcastReceiverAsyncWorkTracker: Acknowledging broadcast of com.google.android.apps.messaging.shared.experiments.receiver.BuglePhenotypeBroadcastReceiver@6ae041b
+11-28 13:25:40.263  2958  2958 W binder:2958_9: type=1400 audit(0.0:190): avc:  denied  { read } for  name="u:object_r:adbd_prop:s0" dev="tmpfs" ino=60 scontext=u:r:gmscore_app:s0:c512,c768 tcontext=u:object_r:adbd_prop:s0 tclass=file permissive=0 app=com.google.android.gms
+11-28 13:25:40.371  4503  4503 I PhenotypeBackgroundRecv: Skipping com.google.android.apps.messaging#com.google.android.apps.messaging which doesn't use ProcessStable flags.
+11-28 13:25:40.374  1583  3083 I Icing   : IndexChimeraService.getServiceInterface callingPackage=com.google.android.googlequicksearchbox componentName=agsa_icing_connection serviceId=32
+11-28 13:25:40.374  1583  2952 I Icing   : IndexChimeraService.getServiceInterface callingPackage=com.google.android.googlequicksearchbox componentName=agsa_icing_connection serviceId=33
+11-28 13:25:40.395  4503  4640 I Bugle   : BroadcastReceiverAsyncWorkTracker: Acknowledging broadcast of com.google.android.apps.messaging.shared.experiments.receiver.BuglePhenotypeBroadcastReceiver@4442964
+11-28 13:25:40.407  4503  4503 I PhenotypeBackgroundRecv: Skipping com.google.android.apps.messaging.auto#com.google.android.apps.messaging which doesn't use ProcessStable flags.
+11-28 13:25:40.435  1863  2715 W SearchServiceCore: Abort, client detached.
+11-28 13:25:40.442  1863  2904 I BgTaskExecutorImpl: Starting EXCLUSIVE background task FETCH_CONFIGS_FROM_PHENOTYPE.
+11-28 13:25:40.484  1583  5083 W Icing   : No valid account for uploading user actions
+11-28 13:25:40.490  1583  5083 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0
+11-28 13:25:40.494  1529  5421 I NamespaceManager: Package com.android.refreshratecontrol name not found! Using module version.
+11-28 13:25:40.495  1529  5421 I NamespaceManager: Package com.google.oslo name not found! Using module version.
+11-28 13:25:40.496  1529  5421 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:40.497  1529  5421 I NamespaceManager: Package com.android.media.swcodec name not found! Using module version.
+11-28 13:25:40.499  1529  5421 I NamespaceManager: Package com.android.appsearch name not found! Using module version.
+11-28 13:25:40.501  1529  5421 I NamespaceManager: Package com.android.neuralnetworks name not found! Using module version.
+11-28 13:25:40.502  1529  5421 I NamespaceManager: Package com.android.media name not found! Using module version.
+11-28 13:25:40.503  1529  5421 I NamespaceManager: Package 1 name not found! Using module version.
+11-28 13:25:40.509  1583  5083 W Icing   : No valid account for uploading user actions
+11-28 13:25:40.531  1863  2904 W TimedProcessReaper: Scheduling killing of process to refresh configuration
+11-28 13:25:40.541  1863  1863 I A       : Refusing EXCLUSIVE task 21, it is already pending. Try again in 359 seconds.
+11-28 13:25:40.555  5221  5221 I PhenotypeBackgroundRecv: Skipping com.google.android.gms.icing.mdd#com.google.android.googlequicksearchbox which doesn't use ProcessStable flags.
+11-28 13:25:40.570  1583  5083 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0
+11-28 13:25:40.611  2223  5578 D DownloadManager: [11] Starting
+11-28 13:25:40.622   357  5580 I resolv  : GetAddrInfoHandler::run: {100 786532 100 983140 10128 0}
+11-28 13:25:40.624  2958  5555 D TrafficStats: tagSocket(123) with statsTag=0x1809, statsUid=-1
+11-28 13:25:40.626  2958  5555 D TrafficStats: tagSocket(123) with statsTag=0x1809, statsUid=-1
+11-28 13:25:40.631  2958  5555 D TrafficStats: tagSocket(123) with statsTag=0x1809, statsUid=-1
+11-28 13:25:40.653  1529  3351 W BpBinder: Large outgoing transaction of 381360 bytes, interface descriptor , code 4
+11-28 13:25:40.662  1863  2904 W TimedProcessReaper: Scheduling killing of process to refresh configuration
+11-28 13:25:40.663  1863  1863 I A       : Refusing EXCLUSIVE task 21, it is already pending. Try again in 359 seconds.
+11-28 13:25:40.669  1863  1863 I A       : Refusing EXCLUSIVE task 21, it is already pending. Try again in 359 seconds.
+11-28 13:25:40.674  1863  1863 I A       : Refusing EXCLUSIVE task 21, it is already pending. Try again in 359 seconds.
+11-28 13:25:40.676  1863  2715 W SearchServiceCore: Abort, client detached.
+11-28 13:25:40.676  1863  2715 W SearchServiceCore: Abort, client detached.
+11-28 13:25:40.685  5012  5036 I DaymarkReminders: Next alarm at 2026-11-29T00:01:00Z (in 635 min, reminder=false)
+11-28 13:25:40.687  5012  5036 I TestRunner: finished: duplicatedTakenBroadcast_recordsOnceAndConsumesStockOnce(io.github.funnyhell.daymark.NotificationActionInstrumentedTest)
